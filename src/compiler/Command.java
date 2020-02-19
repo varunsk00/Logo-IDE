@@ -13,6 +13,8 @@ abstract class Command {
 
   abstract double execute();
 
+  abstract boolean isComplete();
+
   public void addArg(Command arg) {
     args.add(arg);
   }
