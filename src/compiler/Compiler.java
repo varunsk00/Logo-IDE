@@ -22,7 +22,19 @@ public class Compiler {
     check type (variable, constant, command, list open/close)
     if not command, create appropriate class and return
     else, lookup command and create corresponding empty class
+
+    setup type map
+    setup command map
+
+    iterate over type map
+    if matches, create class
+
+    else, iterate over command map
+    if matches, create command class
+
+    else, throw invalidsyntaxex
      */
+    return null; //FIXME obviously WIP
   }
 
 }
