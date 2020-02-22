@@ -29,7 +29,7 @@ public class VariableType extends Command {
     return "var:"+name;
   }
 
-  protected String getName() {
+  public String getName() {
     return name;
   }
 }
