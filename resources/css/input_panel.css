@@ -1,0 +1,33 @@
+.text-field {
+    -fx-background-color: black;
+    -fx-text-box-border: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+.text-field:focused {
+    -fx-focus-color: transparent;
+}
+
+.text-area {
+    -fx-background-insets: 0;
+    -fx-background-color: transparent, black, transparent, black;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, black, transparent, black;
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent, black, transparent, black;
+}
+
+.text-area:focused {
+    -fx-highlight-fill: white;
+}
+
+.text-area .content {
+    -fx-padding: 10px;
+    -fx-text-fill: white;
+    -fx-highlight-fill: #7ecfff;
+}

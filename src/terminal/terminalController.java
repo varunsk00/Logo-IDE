@@ -6,6 +6,7 @@ public class terminalController{
     /* TODO:
         1. key binding
         2. passing input to the compiler/parser
+        3. enable copy/paste
     * */
 
 }

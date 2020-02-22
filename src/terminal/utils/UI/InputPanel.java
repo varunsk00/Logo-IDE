@@ -1,14 +1,15 @@
 package terminal.utils.UI;
 
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 
+//TODO ignore input
 public class InputPanel extends HBox {
     private final int PROMPT_WIDTH = 5; //TODO: empirical adjusstment
+    private final String CSS_FILEPATH = "/css/input_panel.css";
     private int width;
     private int height;
     private InputField inputField;
-    private PromptLabel promptLabel;
+    private PromptArea promptArea;
 
     public InputPanel(int width, int height){
         super();
@@ -36,8 +37,9 @@ public class InputPanel extends HBox {
     }
 
     private void initializeInputPanel(){
-        promptLabel = new PromptLabel();
+        promptArea = new PromptArea();
         inputField = new InputField(width);
-        this.getChildren().addAll(promptLabel, inputField);
+        getChildren().addAll(promptArea, inputField);
+        getStylesheets().add(getClass().getResource(CSS_FILEPATH).toExternalForm());
     }
 }
