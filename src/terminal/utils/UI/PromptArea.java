@@ -1,6 +1,7 @@
 package terminal.utils.UI;
 
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Font;
 
 
 public class PromptArea extends TextArea {
@@ -13,6 +14,7 @@ public class PromptArea extends TextArea {
 
         this.height = height;
         setEditable(false);
+        setStyle("-fx-font-family: \"Consolas\";");
         changeSize();
     }
 

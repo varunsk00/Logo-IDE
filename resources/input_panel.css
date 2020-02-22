@@ -1,3 +1,8 @@
+@font-face{
+    font-family: "Consolas";
+    src: url("font/consola.ttf");
+}
+
 .hbox-pane {
     -fx-background-color: black;
 }
@@ -14,8 +19,9 @@
 }
 
 .text-area {
-    -fx-text-fill: white;
+    -fx-font-size: 20;
     -fx-font-weight: bold;
+    -fx-text-fill: white;
 
     -fx-background-radius: 0;
     -fx-background-insets: 0;

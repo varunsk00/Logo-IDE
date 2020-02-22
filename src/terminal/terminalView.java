@@ -1,9 +1,8 @@
 package terminal;
 
 import javafx.scene.control.ScrollPane;
-import terminal.utils.UI.InputField;
 import terminal.utils.UI.InputPanel;
-import terminal.utils.UI.TerminalPast;
+import terminal.utils.UI.OutputPanel;
 
 //TODO: Caret Control
 
@@ -22,7 +21,7 @@ public class terminalView extends ScrollPane {
     final static String COMMANDLINE_CODE = "+101+";
 
     private InputPanel inputPanel;
-    private TerminalPast terminalPast;
+    private OutputPanel outputPanel;
 
     /**
      * Constructor
