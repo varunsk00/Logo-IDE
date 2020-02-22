@@ -3,6 +3,7 @@
     -fx-text-box-border: transparent;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
+    -fx-text-fill: white;
 }
 
 .text-field:focused {
@@ -12,6 +13,7 @@
 .text-area {
     -fx-background-insets: 0;
     -fx-background-color: transparent, black, transparent, black;
+     -fx-text-fill: white;
 }
 
 .text-area .content {
@@ -27,7 +29,6 @@
 }
 
 .text-area .content {
-    -fx-padding: 10px;
     -fx-text-fill: white;
-    -fx-highlight-fill: #7ecfff;
+    -fx-highlight-fill: white;
 }

@@ -1,6 +1,7 @@
 package terminal.utils.UI;
 
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 //TODO ignore input
 public class InputPanel extends HBox {
@@ -13,13 +14,16 @@ public class InputPanel extends HBox {
 
     public InputPanel(int width, int height){
         super();
-        setSize(width, height);
         initializeInputPanel();
+        setSize(width, height);
     }
 
     public void setSize(int width, int height){
         this.width = width;
         this.height = height;
+        HBox.setHgrow(inputField, Priority.ALWAYS);
+
+        //HBox.setHgrow(promptArea, Priority.ALWAYS);
         setMaxSize(width, height);
         setPrefSize(width, height);
     }
