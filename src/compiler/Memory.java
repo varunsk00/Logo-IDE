@@ -11,7 +11,7 @@ public class Memory {
   public static double getVariable(String name) {
     Double ret = variableMap.getOrDefault(name, null);
     if (ret == null) {
-      throw new UnknownVariableException("The variable "+name+"has not yet been defined.");
+      throw new UnknownVariableException("The variable " + name + " has not yet been defined.");
     }
     return ret;
   }

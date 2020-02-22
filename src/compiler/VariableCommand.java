@@ -16,8 +16,7 @@ public class VariableCommand extends Command {
 
   @Override
   void register() {
-    TypeFactory fact = new TypeFactory();
-    fact.registerCommand("Variable", new VariableCommand(Command.INITIALIZATION));
+    TypeFactory.registerCommand("Variable", new VariableCommand(Command.INITIALIZATION));
   }
 
   @Override

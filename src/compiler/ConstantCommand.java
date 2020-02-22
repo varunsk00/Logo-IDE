@@ -1,13 +1,18 @@
 package compiler;
 
-public class ConstantCommand extends Command
-{
+public class ConstantCommand extends Command {
 
   private double value;
+
   public ConstantCommand(String val) {
     super(val);
-    value = Double.parseDouble(val);
+    try {
+      value = Double.parseDouble(val);
+    } catch (NumberFormatException e) {
+      System.out.println("bad number given: "+val); //FIXME bandaid
+    }
   }
+
   @Override
   double execute() {
     return value;
@@ -15,8 +20,7 @@ public class ConstantCommand extends Command
 
   @Override
   void register() {
-    TypeFactory fact = new TypeFactory();
-    fact.registerCommand("Command", new ConstantCommand(Command.INITIALIZATION));
+    TypeFactory.registerCommand("Constant", new ConstantCommand(Command.INITIALIZATION));
   }
 
   @Override

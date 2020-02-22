@@ -1,6 +1,7 @@
 package compiler;
 
 import compiler.exceptions.CompilerException;
+import compiler.exceptions.InvalidSyntaxException;
 import compiler.exceptions.StackOverflowException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayDeque;
@@ -10,12 +11,12 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+import java.util.zip.Deflater;
 
 public class Compiler {
 
-  private static final String LANGUAGES_PACKAGE_EXTENSION = ".resources.languages.";
-  private static final String RESOURCES_PACKAGE =
-      Compiler.class.getPackageName() + LANGUAGES_PACKAGE_EXTENSION;
+  private static final String LANGUAGES_PACKAGE_EXTENSION = "resources.languages.";
+  private static final String RESOURCES_PACKAGE = LANGUAGES_PACKAGE_EXTENSION;
   private static final String DEFAULT_LANGUAGE = "English";
   private static final String SYNTAX_FILE = "Syntax";
 
@@ -25,10 +26,18 @@ public class Compiler {
   public Compiler() {
     myTypes = new ArrayList<>();
     myCommands = new ArrayList<>();
-    addPatterns(DEFAULT_LANGUAGE, myTypes);
-    addPatterns(SYNTAX_FILE, myCommands); //FIXME add support for multiple languages
+    addPatterns(DEFAULT_LANGUAGE, myCommands); //FIXME add support for multiple languages
+    addPatterns(SYNTAX_FILE, myTypes);
     //FIXME add resource file validator
     //FIXME add error msg strings
+
+    initAllCommands();
+  }
+
+  private void initAllCommands() { //FIXME delete this trash
+    new ConstantCommand("");
+    new VariableCommand("");
+    new MakeVariableCommand("");
   }
 
   public String execute(String input) {
@@ -47,6 +56,12 @@ public class Compiler {
       stack.push(comm);
       while (stack.peek().isComplete()) {
         Command arg = stack.pop();
+        if (stack.peek()==null) {
+          if (arg.isComplete()) {
+            return arg;
+          }
+          throw new InvalidSyntaxException("Ran out of commands to parse before finishing given commands.");
+        }
         stack.peek().addArg(arg);
         if (stack.size() >= StackOverflowException.MAX_RECURSION_DEPTH) {
           throw new StackOverflowException(
@@ -59,31 +74,13 @@ public class Compiler {
   }
 
   private Command getCommandFromString(String str) {
-    /*
-    check type (variable, constant, command, list open/close)
-    if not command, create appropriate class and return
-    else, lookup command and create corresponding empty class
-
-    setup type map
-    setup command map
-
-    iterate over type map
-    if matches, create class
-
-    else, iterate over command map
-    if matches, create command class
-
-    else, throw invalidsyntaxex
-     */
     str = str.toLowerCase();
     String type = getSymbol(str, myTypes);
     if (!type.equals("Command")) {
-      TypeFactory typebuilder = new TypeFactory();
-      return typebuilder.createCommand(type, str);
+      return TypeFactory.createCommand(type, str);
     }
-    CommandFactory comm = new CommandFactory();
     String commType = getSymbol(str, myCommands);
-    return comm.createCommand(commType, str);
+    return CommandFactory.createCommand(commType, str);
   }
 
   /**
@@ -103,14 +100,12 @@ public class Compiler {
    * Returns language's type associated with the given text if one exists
    */
   public String getSymbol(String text, List<Entry<String, Pattern>> list) {
-    final String ERROR = "NO MATCH";
     for (Entry<String, Pattern> e : list) {
       if (match(text, e.getValue())) {
         return e.getKey();
       }
     }
-    // FIXME: perhaps throw an exception instead
-    return ERROR;
+    throw new InvalidSyntaxException("Identifier (" + text + ") not recognized.");
   }
 
 

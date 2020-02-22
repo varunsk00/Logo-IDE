@@ -9,7 +9,7 @@ abstract class Command {
   public int desiredArgs;
   protected ArrayList<Command> args;
 
-  public Command(String declaration){
+  public Command(String declaration) {
     if (declaration.equals(INITIALIZATION)) {
       return;
     }
@@ -30,7 +30,7 @@ abstract class Command {
   }
 
   public void addArg(Command arg, int n) {
-    while(args.size()<n) {
+    while (args.size() < n) {
       args.add(null);
     }
     args.set(n, arg);
