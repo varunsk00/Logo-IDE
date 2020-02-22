@@ -1,11 +1,14 @@
 package compiler;
 
-public class ConstantCommand extends Command {
+public class ConstantType extends Command {
 
   private double value;
 
-  public ConstantCommand(String val) {
+  public ConstantType(String val) {
     super(val);
+    if (val.equals(Command.INITIALIZATION)) {
+      return;
+    }
     try {
       value = Double.parseDouble(val);
     } catch (NumberFormatException e) {
@@ -19,12 +22,7 @@ public class ConstantCommand extends Command {
   }
 
   @Override
-  void register() {
-    TypeFactory.registerCommand("Constant", new ConstantCommand(Command.INITIALIZATION));
-  }
-
-  @Override
-  boolean isComplete() {
+  boolean isCompleteSub() {
     return true;
   }
 
@@ -35,6 +33,6 @@ public class ConstantCommand extends Command {
 
   @Override
   Command createCommand(String declaration) {
-    return new ConstantCommand(declaration);
+    return new ConstantType(declaration);
   }
 }

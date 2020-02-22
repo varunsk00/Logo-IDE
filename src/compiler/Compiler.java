@@ -10,8 +10,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.zip.Deflater;
+import org.reflections.Reflections;
 
 public class Compiler {
 
@@ -34,10 +36,20 @@ public class Compiler {
     initAllCommands();
   }
 
-  private void initAllCommands() { //FIXME delete this trash
-    new ConstantCommand("");
-    new VariableCommand("");
-    new MakeVariableCommand("");
+  private void initAllCommands() { //FIXME uses the reflections library
+    Reflections reflections = new Reflections("");//Compiler.class.getPackageName());
+    Set<Class<? extends Command>> allClasses = reflections.getSubTypesOf(Command.class);
+
+    for (Class c: allClasses) {
+      try {
+        Command a = (Command) c.getConstructor(String.class).newInstance(Command.INITIALIZATION);
+        a.register();
+      } catch (Exception e) {
+        //do nothing. This is okay because I'm just trying to initialize every command class
+        //exceptions thrown by the constructors et al are okay
+        System.out.println("Maybe something bad happened? "+e);
+      }
+    }
   }
 
   public String execute(String input) {
