@@ -1,0 +1,9 @@
+@font-face{
+    font-family: 'dvsm';
+    src: url("./fonts/dvsm.ttf");
+}
+.text{
+    -fx-font-family: dvsm;
+    -fx-font-size: 20;
+    -fx-fill: white;
+}
