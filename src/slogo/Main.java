@@ -1,5 +1,5 @@
 package slogo;
-import slogo.Controller.ParserController;
+import slogo.controller.ParserController;
 
 /**
  * Feel free to completely change this code or delete it entirely. 
