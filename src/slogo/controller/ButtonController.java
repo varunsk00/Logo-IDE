@@ -1,4 +1,4 @@
-package slogo.Controller;
+package slogo.controller;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
