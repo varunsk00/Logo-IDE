@@ -5,7 +5,7 @@ public class VariableCommand extends Command {
   private String name;
 
   public VariableCommand(String nm) {
-    super();
+    super(nm);
     name = nm;
   }
 
@@ -15,8 +15,19 @@ public class VariableCommand extends Command {
   }
 
   @Override
+  void register() {
+    TypeFactory fact = new TypeFactory();
+    fact.registerCommand("Variable", new VariableCommand(Command.INITIALIZATION));
+  }
+
+  @Override
   boolean isComplete() {
     return true;
+  }
+
+  @Override
+  Command createCommand(String declaration) {
+    return new VariableCommand(declaration);
   }
 
   protected String getName() {

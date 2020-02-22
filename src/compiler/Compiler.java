@@ -1,5 +1,7 @@
 package compiler;
 
+import compiler.exceptions.CompilerException;
+import compiler.exceptions.StackOverflowException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -7,12 +9,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
-import java.util.concurrent.SynchronousQueue;
 import java.util.regex.Pattern;
 
 public class Compiler {
+
   private static final String LANGUAGES_PACKAGE_EXTENSION = ".resources.languages.";
-  private static final String RESOURCES_PACKAGE = Compiler.class.getPackageName() + LANGUAGES_PACKAGE_EXTENSION;
+  private static final String RESOURCES_PACKAGE =
+      Compiler.class.getPackageName() + LANGUAGES_PACKAGE_EXTENSION;
   private static final String DEFAULT_LANGUAGE = "English";
   private static final String SYNTAX_FILE = "Syntax";
 
@@ -28,15 +31,28 @@ public class Compiler {
     //FIXME add error msg strings
   }
 
+  public String execute(String input) {
+    try {
+      return "" + parse(input).execute();
+    } catch (CompilerException e) {
+      return e.toString();
+    }
+  }
+
 
   public Command parse(String input) {
     ArrayDeque<Command> stack = new ArrayDeque<>();
-    for (String word: input.split(" ")) {
+    for (String word : input.split(" ")) {
       Command comm = getCommandFromString(word);
       stack.push(comm);
-      while(stack.peek().isComplete()) {
+      while (stack.peek().isComplete()) {
         Command arg = stack.pop();
         stack.peek().addArg(arg);
+        if (stack.size() >= StackOverflowException.MAX_RECURSION_DEPTH) {
+          throw new StackOverflowException(
+              "Max recursion depth: (" + StackOverflowException.MAX_RECURSION_DEPTH
+                  + ") exceeded.");
+        }
       }
     }
     return stack.getLast();
@@ -59,12 +75,13 @@ public class Compiler {
 
     else, throw invalidsyntaxex
      */
+    str = str.toLowerCase();
     String type = getSymbol(str, myTypes);
     if (!type.equals("Command")) {
-      TypeBuilder typebuilder = new TypeBuilder();
+      TypeFactory typebuilder = new TypeFactory();
       return typebuilder.createCommand(type, str);
     }
-    CommandBuilder comm = new CommandBuilder();
+    CommandFactory comm = new CommandFactory();
     String commType = getSymbol(str, myCommands);
     return comm.createCommand(commType, str);
   }
@@ -72,7 +89,7 @@ public class Compiler {
   /**
    * Adds the given resource file to this language's recognized types
    */
-  public void addPatterns (String filename, List<Entry<String, Pattern>> list) {
+  public void addPatterns(String filename, List<Entry<String, Pattern>> list) {
     ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + filename);
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
@@ -85,7 +102,7 @@ public class Compiler {
   /**
    * Returns language's type associated with the given text if one exists
    */
-  public String getSymbol (String text, List<Entry<String, Pattern>> list) {
+  public String getSymbol(String text, List<Entry<String, Pattern>> list) {
     final String ERROR = "NO MATCH";
     for (Entry<String, Pattern> e : list) {
       if (match(text, e.getValue())) {
@@ -98,7 +115,7 @@ public class Compiler {
 
 
   // Returns true if the given text matches the given regular expression pattern
-  private boolean match (String text, Pattern regex) {
+  private boolean match(String text, Pattern regex) {
     // THIS IS THE IMPORTANT LINE
     return regex.matcher(text).matches();
   }

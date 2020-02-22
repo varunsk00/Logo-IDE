@@ -2,10 +2,11 @@ package compiler;
 
 public class ConstantCommand extends Command
 {
+
   private double value;
-  public ConstantCommand(double val) {
-    super();
-    value = val;
+  public ConstantCommand(String val) {
+    super(val);
+    value = Double.parseDouble(val);
   }
   @Override
   double execute() {
@@ -13,7 +14,18 @@ public class ConstantCommand extends Command
   }
 
   @Override
+  void register() {
+    TypeFactory fact = new TypeFactory();
+    fact.registerCommand("Command", new ConstantCommand(Command.INITIALIZATION));
+  }
+
+  @Override
   boolean isComplete() {
     return true;
+  }
+
+  @Override
+  Command createCommand(String declaration) {
+    return new ConstantCommand(declaration);
   }
 }

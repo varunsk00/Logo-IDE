@@ -6,4 +6,8 @@ public class CompilerException extends RuntimeException {
     super(msg);
   }
 
+  public CompilerException(Exception e) {
+    super(e);
+  }
+
 }
