@@ -42,7 +42,11 @@ public class Compiler {
 
   public String execute(String input) {
     try {
-      return "" + parse(input).execute();
+      Command comm = parse(input);
+      if (!comm.isComplete()) {
+        throw new InvalidSyntaxException("Input ("+input+") not a complete command.");
+      }
+      return ""+comm.execute();
     } catch (CompilerException e) {
       return e.toString();
     }

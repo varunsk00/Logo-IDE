@@ -21,6 +21,11 @@ public class MakeVariableCommand extends Command {
 
   @Override
   boolean isComplete() {
+    for (Command c: args) {
+      if (!c.isComplete()) {
+        return false;
+      }
+    }
     return args.size()==2 && args.get(0) instanceof VariableCommand;
   }
 

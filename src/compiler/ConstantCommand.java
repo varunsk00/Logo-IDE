@@ -29,6 +29,11 @@ public class ConstantCommand extends Command {
   }
 
   @Override
+  public String toString(){
+    return "const:"+value;
+  }
+
+  @Override
   Command createCommand(String declaration) {
     return new ConstantCommand(declaration);
   }

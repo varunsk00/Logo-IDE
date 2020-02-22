@@ -29,6 +29,11 @@ public class VariableCommand extends Command {
     return new VariableCommand(declaration);
   }
 
+  @Override
+  public String toString(){
+    return "var:"+name;
+  }
+
   protected String getName() {
     return name;
   }

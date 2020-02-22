@@ -36,5 +36,14 @@ abstract class Command {
     args.set(n, arg);
   }
 
+  @Override
+  public String toString() {
+    StringBuilder ret = new StringBuilder(this.getClass().getName() + " ");
+    for (Command i: args) {
+      ret.append(i.toString()).append(" ");
+    }
+    return ret.toString();
+  }
+
 
 }

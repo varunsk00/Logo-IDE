@@ -1,5 +1,6 @@
 package compiler;
 
+import compiler.exceptions.InvalidSyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,10 @@ public class CommandFactory {
   }
 
   public static Command createCommand(String name, String declaration) {
-    return registeredCommands.get(name).createCommand(declaration);
+    try {
+      return registeredCommands.get(name).createCommand(declaration);
+    } catch (NullPointerException e) {
+      throw new InvalidSyntaxException("Command ("+name+") recognized but not parsed.");
+    }
   }
 }
