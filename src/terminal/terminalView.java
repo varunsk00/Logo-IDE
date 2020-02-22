@@ -1,9 +1,7 @@
 package terminal;
 
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import terminal.utils.UI.InputArea;
+import terminal.utils.UI.InputField;
 import terminal.utils.UI.PromptPanel;
 import terminal.utils.UI.TerminalPast;
 
@@ -22,7 +20,7 @@ public class terminalView extends ScrollPane {
     final static String COMMANDLINE_CODE = "+101+";
 
     private PromptPanel consolePrompt;
-    private InputArea inputArea;
+    private InputField inputField;
     private TerminalPast terminalPast;
 
     /**
