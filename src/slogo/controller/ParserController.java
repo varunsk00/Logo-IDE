@@ -1,4 +1,4 @@
-package slogo.Controller;
+package slogo.controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -11,12 +11,14 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import slogo.Main;
 
 import java.util.ResourceBundle;
 
 
 public class ParserController extends Application{
-    private static final String STYLESHEET = "parser_parser_team06/Resources/default.css";
+    private static final String STYLESHEET = "parser_parser_team06/src/slogo/resources/default.css";
+    private static final String RESOURCES_PACKAGE = "slogo.resources";
     private static final String GUI_LANGUAGE = "English_GUI";
     private static ResourceBundle myResources = ResourceBundle.getBundle(GUI_LANGUAGE);
 
