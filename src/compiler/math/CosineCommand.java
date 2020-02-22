@@ -15,7 +15,7 @@ public class CosineCommand extends Command {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size()==1;
+    return args.size() == 1;
   }
 
   @Override

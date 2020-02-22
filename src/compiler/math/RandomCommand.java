@@ -12,12 +12,12 @@ public class RandomCommand extends Command {
   @Override
   public double execute() {
     Random rand = new Random();
-    return rand.nextDouble()*args.get(0).execute();
+    return rand.nextDouble() * args.get(0).execute();
   }
 
   @Override
   public boolean isCompleteSub() {
-    return args.size()==1;
+    return args.size() == 1;
   }
 
   @Override

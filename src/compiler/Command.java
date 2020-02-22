@@ -20,12 +20,12 @@ public abstract class Command {
 
   public abstract double execute();
 
-  public void register(){
+  public void register() {
     Command obj = this.createCommand(INITIALIZATION);
     String className = this.getClass().getName();
     String[] classNameArr = className.split("\\.");
-    className = classNameArr[classNameArr.length-1];
-    String classType = className.substring(className.length()-4);
+    className = classNameArr[classNameArr.length - 1];
+    String classType = className.substring(className.length() - 4);
     if (classType.equals("Type")) {
       className = className.substring(0, className.length() - 4);
       TypeFactory.registerCommand(className, obj);
@@ -42,8 +42,8 @@ public abstract class Command {
 
   public abstract Command createCommand(String declaration);
 
-  public boolean isComplete(){
-    for (Command c: args){
+  public boolean isComplete() {
+    for (Command c : args) {
       if (!c.isComplete()) {
         return false;
       }
@@ -69,7 +69,7 @@ public abstract class Command {
   @Override
   public String toString() {
     StringBuilder ret = new StringBuilder(this.getClass().getName() + " ");
-    for (Command i: args) {
+    for (Command i : args) {
       ret.append(i.toString()).append(" ");
     }
     return ret.toString();

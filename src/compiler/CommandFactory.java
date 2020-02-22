@@ -16,7 +16,7 @@ public class CommandFactory {
     try {
       return registeredCommands.get(name).createCommand(declaration);
     } catch (NullPointerException e) {
-      throw new InvalidSyntaxException("Command ("+name+") recognized but not parsed.");
+      throw new InvalidSyntaxException("Command (" + name + ") recognized but not parsed.");
     }
   }
 }

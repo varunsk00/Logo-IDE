@@ -23,7 +23,8 @@ public class IfElseCommand extends Command {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size()==3 && args.get(1) instanceof ListStartType && args.get(2) instanceof ListStartType; //FIXME instanceof
+    return args.size() == 3 && args.get(1) instanceof ListStartType && args
+        .get(2) instanceof ListStartType; //FIXME instanceof
   }
 
   @Override

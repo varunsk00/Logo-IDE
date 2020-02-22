@@ -10,7 +10,7 @@ public class SumCommand extends Command {
 
   @Override
   public double execute() {
-    return args.get(0).execute()+args.get(1).execute();
+    return args.get(0).execute() + args.get(1).execute();
   }
 
   @Override

@@ -20,12 +20,13 @@ public class MakeVariableCommand extends Command {
 
   @Override
   public boolean isCompleteSub() {
-    for (Command c: args) {
+    for (Command c : args) {
       if (!c.isComplete()) {
         return false;
       }
     }
-    return args.size()==2 && args.get(0) instanceof VariableType; //FIXME refactor args to remove instanceof?
+    return args.size() == 2 && args
+        .get(0) instanceof VariableType; //FIXME refactor args to remove instanceof?
   }
 
   @Override

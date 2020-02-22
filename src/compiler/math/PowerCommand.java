@@ -15,7 +15,7 @@ public class PowerCommand extends Command {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size()==2;
+    return args.size() == 2;
   }
 
   @Override

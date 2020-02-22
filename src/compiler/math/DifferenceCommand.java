@@ -10,12 +10,12 @@ public class DifferenceCommand extends Command {
 
   @Override
   public double execute() {
-    return args.get(0).execute()-args.get(1).execute();
+    return args.get(0).execute() - args.get(1).execute();
   }
 
   @Override
   public boolean isCompleteSub() {
-    return args.size()==2;
+    return args.size() == 2;
   }
 
   @Override

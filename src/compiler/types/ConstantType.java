@@ -14,7 +14,7 @@ public class ConstantType extends Command {
     try {
       value = Double.parseDouble(val);
     } catch (NumberFormatException e) {
-      System.out.println("bad number given: "+val); //FIXME bandaid
+      System.out.println("bad number given: " + val); //FIXME bandaid
     }
   }
 
@@ -29,8 +29,8 @@ public class ConstantType extends Command {
   }
 
   @Override
-  public String toString(){
-    return "const:"+value;
+  public String toString() {
+    return "const:" + value;
   }
 
   @Override

@@ -39,14 +39,14 @@ public class Compiler {
     Reflections reflections = new Reflections("");//Compiler.class.getPackageName());
     Set<Class<? extends Command>> allClasses = reflections.getSubTypesOf(Command.class);
 
-    for (Class c: allClasses) {
+    for (Class c : allClasses) {
       try {
         Command a = (Command) c.getConstructor(String.class).newInstance(Command.INITIALIZATION);
         a.register();
       } catch (Exception e) {
         //do nothing. This is okay because I'm just trying to initialize every command class
         //exceptions thrown by the constructors et al are okay
-        System.out.println("Maybe something bad happened? "+e);
+        System.out.println("Maybe something bad happened? " + e);
       }
     }
   }
@@ -63,9 +63,9 @@ public class Compiler {
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
-        throw new InvalidSyntaxException("Input ("+input+") not a complete command.");
+        throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
       }
-      return ""+comm.execute();
+      return "" + comm.execute();
     } catch (CompilerException e) {
       return e.toString();
     }
@@ -79,11 +79,12 @@ public class Compiler {
       stack.push(comm);
       while (stack.peek().isComplete()) {
         Command arg = stack.pop();
-        if (stack.peek()==null) {
+        if (stack.peek() == null) {
           if (arg.isComplete()) {
             return arg;
           }
-          throw new InvalidSyntaxException("Ran out of commands to parse before finishing given commands.");
+          throw new InvalidSyntaxException(
+              "Ran out of commands to parse before finishing given commands.");
         }
         stack.peek().addArg(arg);
         if (stack.size() >= StackOverflowException.MAX_RECURSION_DEPTH) {
@@ -97,7 +98,7 @@ public class Compiler {
   }
 
   private String getWhitespace() {
-    for (Entry<String, Pattern> e: myTypes) {
+    for (Entry<String, Pattern> e : myTypes) {
       if (e.getKey().equals("Whitespace")) {
         return e.getValue().toString();
       }

@@ -12,10 +12,10 @@ public class QuotientCommand extends Command {
   @Override
   public double execute() {
     double denom = args.get(1).execute();
-    if (denom==0) {
+    if (denom == 0) {
       throw new InvalidArithmeticException("Attempted to divide by 0");
     }
-    return args.get(0).execute()/args.get(1).execute();
+    return args.get(0).execute() / args.get(1).execute();
   }
 
   @Override

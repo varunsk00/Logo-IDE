@@ -28,8 +28,8 @@ public class VariableType extends Command {
   }
 
   @Override
-  public String toString(){
-    return "var:"+name;
+  public String toString() {
+    return "var:" + name;
   }
 
   public String getName() {
