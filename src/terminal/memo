@@ -1,0 +1,5 @@
+features:
+   - text color
+   - up/down previous/next
+   - print default banner
+   - scrollable
