@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.zip.Deflater;
+import javafx.scene.Parent;
 import org.reflections.Reflections;
 
 public class Compiler {
@@ -67,7 +68,7 @@ public class Compiler {
 
   public Command parse(String input) {
     ArrayDeque<Command> stack = new ArrayDeque<>();
-    for (String word : input.split(" ")) {
+    for (String word : input.split(getWhitespace())) {
       Command comm = getCommandFromString(word);
       stack.push(comm);
       while (stack.peek().isComplete()) {
@@ -87,6 +88,15 @@ public class Compiler {
       }
     }
     return stack.getLast();
+  }
+
+  private String getWhitespace() {
+    for (Entry<String, Pattern> e: myTypes) {
+      if (e.getKey().equals("Whitespace")) {
+        return e.getValue().toString();
+      }
+    }
+    throw new CompilerException("Invalid Syntax resource file - whitespace not found.");
   }
 
   private Command getCommandFromString(String str) {
