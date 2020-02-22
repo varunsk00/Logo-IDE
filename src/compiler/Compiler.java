@@ -12,8 +12,6 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.zip.Deflater;
-import javafx.scene.Parent;
 import org.reflections.Reflections;
 
 public class Compiler {
@@ -53,6 +51,14 @@ public class Compiler {
     }
   }
 
+  public void setLanguage(String lang) {
+    myCommands.clear();
+    addPatterns(lang, myCommands);
+  }
+
+  //fixme allow for read from file? or make new multiline parser
+  //for multiline parser, split by newline regex, delete comments (regex), then join all by spaces
+  //then execute as one line3
   public String execute(String input) {
     try {
       Command comm = parse(input);

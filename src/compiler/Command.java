@@ -1,9 +1,9 @@
 package compiler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
-abstract class Command {
+public abstract class Command {
 
   protected static final String INITIALIZATION = "this is an initialization string that should never happen";
 
@@ -18,7 +18,7 @@ abstract class Command {
     register();
   }
 
-  abstract double execute();
+  public abstract double execute();
 
   public void register(){
     Command obj = this.createCommand(INITIALIZATION);
@@ -38,9 +38,9 @@ abstract class Command {
     }
   }
 
-  abstract boolean isCompleteSub();
+  public abstract boolean isCompleteSub();
 
-  abstract Command createCommand(String declaration);
+  public abstract Command createCommand(String declaration);
 
   public boolean isComplete(){
     for (Command c: args){
@@ -60,6 +60,10 @@ abstract class Command {
       args.add(null);
     }
     args.set(n, arg);
+  }
+
+  public List<Command> getArgs() {
+    return args;
   }
 
   @Override
