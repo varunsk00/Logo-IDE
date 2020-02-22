@@ -8,12 +8,12 @@ Parser Team 6
 - Primary Architecture(open/closed): The main Turtle object is open to extension in terms of the creation of multiple turtles. It is closed to direct changes from the front end/user except through commands. We also plan to implement a command abstract object which is open to extension as new command objects can be created to perform different tasks. Also, our API design was done with the goal of minimal interactions as well as to allow for seamless API extraction and placement in another program. 
 - High Level Design: There will be three main stages in the program. The first stage is the display of the program. It is in this stage that the user will be able to input commands as well as view turtle movement. The second stage is an interpretive one. Here, commands entered by the user are parsed and converted to actionable command objects that can perform change on the turtle(s). The third and final stage is an execution stage where the turtle is actually updated. 
 ## Overview
-We intend to create 4 APIs: Compiler, Command Prompt, Turtle, and Controller. The Compiler API will handle parsing the strings into commands that will be used to run the program. The Command Prompt will read text input from the user and send it to the compiler, as well as store history and display text. The Turtle API will handle both the backend of tracking turtle location and orientation, as well as the frontend of drawing and updating the turtle's location, color, and image.
+We intend to create 4 APIs: Compiler, Command Prompt, Turtle, and Controller. The Compiler API will handle parsing the strings into commands that will be used to run the program. The Command Prompt will read text input from the user and send it to the slogo.compiler, as well as store history and display text. The Turtle API will handle both the backend of tracking turtle location and orientation, as well as the frontend of drawing and updating the turtle's location, color, and image.
 
 ![](https://i.imgur.com/EJptkZx.png)
 
 
-One way that we could implement the compiler is to have commands be trees that contain further expressions, as all expressions (including defining variables!) can be nested infinitely. This would allow for recursively executing the innermost nested commands, allowing for incredibly powerful execution. Alternatively, we could use a stack-like data structure to hold the commands, which has the advantages of allowing the compiler to know initially how large the command is, as well as still allowing iterative execution of the highest nested commands.
+One way that we could implement the slogo.compiler is to have commands be trees that contain further expressions, as all expressions (including defining variables!) can be nested infinitely. This would allow for recursively executing the innermost nested commands, allowing for incredibly powerful execution. Alternatively, we could use a stack-like data structure to hold the commands, which has the advantages of allowing the slogo.compiler to know initially how large the command is, as well as still allowing iterative execution of the highest nested commands.
 ## User Interface
 As presented in the figure below, the user interface mianly consists of four components: the header bar, the terminal, the display screen for the turtle habitat, and the display tab for viewing previous commands, variables or user-defined commands. The following paragraphs would discuss the details of each component. 
 
@@ -112,7 +112,7 @@ package Compiler;
 import java.util.*;
 
 /**
- * Checks commands passed in from the compiler
+ * Checks commands passed in from the slogo.compiler
  * Differentiates and Interprets each command before sending to Logic Analyzer
  */
 public class Command Handler {
@@ -413,14 +413,14 @@ public class memory {
 ```
 
 - Exceptions
-    - Invalid Command Exception (compiler)
+    - Invalid Command Exception (slogo.compiler)
     - Invalid Syntax Exception (logic analyzer)
     - Stack Overflow Exception (logic analyzer)
     - Infinite Loop Exception (logic analyzer)
     - Invalid User Entry
         - Invalid Color (UI)
         - Invalid Image File (UI)
-        - Invalid Reource File Exception (compiler)
+        - Invalid Reource File Exception (slogo.compiler)
 - Steps for a use cases below
 
 ## Design Considerations
@@ -429,7 +429,7 @@ public class memory {
 In preparation for having multiple turtles living together in our SLogo environmnent, we decided to create a TurtleHabitat class to house multiple TurtleView objects. This allows the controller to interact with the habitat alone, sending commands such as set color and image to the habitat, and having the habitat decide the outcomes. We chose to do this over designing to hold a single turtle to make our design more dynamic and expandable, as support for multiple turtles is a very reasonable request.
 
 #### Compiler Setup
-The compiler setup took us a long time to hash out. The current setup is that the **CommandPrompt** feeds raw strings into the **Compiler**. The **Compiler** turns the strings into Command objects via the various **Handle** classes. These objects are then passed to the **LogicAnalyzer**, which runs the commands and executes the logic. We decided to do this over having the compiler exectute the logic to spread out the work among different classes and to support more complex program structures such as while loops, which require repeatedly checking a variable value at runtime.
+The slogo.compiler setup took us a long time to hash out. The current setup is that the **CommandPrompt** feeds raw strings into the **Compiler**. The **Compiler** turns the strings into Command objects via the various **Handle** classes. These objects are then passed to the **LogicAnalyzer**, which runs the commands and executes the logic. We decided to do this over having the slogo.compiler exectute the logic to spread out the work among different classes and to support more complex program structures such as while loops, which require repeatedly checking a variable value at runtime.
 
 ## Use Cases
 

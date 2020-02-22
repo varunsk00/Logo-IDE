@@ -1,3 +1,3 @@
 # slogo
 
-Put your source code, modules, resources, and property files here.
+Put your source code, modules, slogo.resources, and property files here.

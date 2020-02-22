@@ -17,8 +17,8 @@ import java.util.ResourceBundle;
 
 
 public class ParserController extends Application{
-    private static final String STYLESHEET = "parser_parser_team06/src/slogo/resources/default.css";
-    private static final String RESOURCES_PACKAGE = "slogo.resources";
+    private static final String STYLESHEET = "parser_parser_team06/src/slogo/slogo.resources/default.css";
+    private static final String RESOURCES_PACKAGE = "slogo.slogo.resources";
     private static final String GUI_LANGUAGE = "English_GUI";
     private static ResourceBundle myResources = ResourceBundle.getBundle(GUI_LANGUAGE);
 
