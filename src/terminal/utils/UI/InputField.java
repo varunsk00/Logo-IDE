@@ -1,13 +1,19 @@
 package terminal.utils.UI;
 
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.paint.Color;
+import javafx.scene.control.TextArea;
 
-public class InputField extends TextField {
-    public InputField(int width){
+public class InputField extends TextArea {
+    private double height;
+    private double width;
+
+    public InputField(double width, double height){
         super();
-        super.setPrefColumnCount(width);
+        this.width = width;
+        this.height = height;
     }
 
+    private void changeSize(){
+        setPrefHeight(height);
+        setPrefWidth(width);
+    }
 }

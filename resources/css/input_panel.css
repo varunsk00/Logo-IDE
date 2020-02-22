@@ -1,3 +1,6 @@
+.hbox-pane {
+    -fx-background-color: black;
+}
 .text-field {
     -fx-background-color: black;
     -fx-text-box-border: transparent;
@@ -11,13 +14,17 @@
 }
 
 .text-area {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 0;
     -fx-background-insets: 0;
     -fx-background-color: transparent, black, transparent, black;
-     -fx-text-fill: white;
 }
 
 .text-area .content {
     -fx-background-color: transparent, black, transparent, black;
+    -fx-background-radius: 0;
 }
 
 .text-area:focused .content {

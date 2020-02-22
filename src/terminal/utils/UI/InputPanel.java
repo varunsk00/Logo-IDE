@@ -22,8 +22,6 @@ public class InputPanel extends HBox {
         this.width = width;
         this.height = height;
         HBox.setHgrow(inputField, Priority.ALWAYS);
-
-        //HBox.setHgrow(promptArea, Priority.ALWAYS);
         setMaxSize(width, height);
         setPrefSize(width, height);
     }
@@ -41,8 +39,8 @@ public class InputPanel extends HBox {
     }
 
     private void initializeInputPanel(){
-        promptArea = new PromptArea();
-        inputField = new InputField(width);
+        promptArea = new PromptArea(height);
+        inputField = new InputField(width, height);
         getChildren().addAll(promptArea, inputField);
         getStylesheets().add(getClass().getResource(CSS_FILEPATH).toExternalForm());
     }

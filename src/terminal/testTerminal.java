@@ -11,7 +11,7 @@ public class testTerminal extends Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle("Test");
 
-        InputPanel panel = new InputPanel(20, 4);
+        InputPanel panel = new InputPanel(20, 25);
         Scene sceneVis = new Scene(panel);
 
         stage.setScene(sceneVis);
