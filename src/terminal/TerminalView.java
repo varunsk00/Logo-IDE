@@ -9,7 +9,7 @@ import terminal.utils.UI.OutputPanel;
 /**
  * terminalView generates the visualization of the terminal console.
  */
-public class terminalView extends ScrollPane {
+public class TerminalView extends ScrollPane {
     final static String BANNER_FILEPATH = "";
     final static String WELCOME_BANNER = "";
 
@@ -26,7 +26,7 @@ public class terminalView extends ScrollPane {
     /**
      * Constructor
      */
-    public terminalView(){}
+    public TerminalView(){}
 
     /**
      * Sets the terminal to default style
@@ -51,6 +51,22 @@ public class terminalView extends ScrollPane {
     public void displaySysMessage(String msg){}
 
     public void displayCommand(){}
+
+    public String getSelectedText(){
+        if (!inputPanel.getSelectedText().equals(""))
+            return inputPanel.getSelectedText();
+        if (!outputPanel.getSelectedText().equals(""))
+            return inputPanel.getSelectedText();
+        return "";
+    }
+
+    public String getCurrentInput(){
+        return inputPanel.getText();
+    }
+
+    public void setCurrentInput(String str){
+        inputPanel.setText(str);
+    }
 
     private void clearTerminal(){}
 

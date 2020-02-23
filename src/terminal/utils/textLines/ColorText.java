@@ -11,6 +11,7 @@ public class ColorText extends Text {
     }
 
     private Color getColorfromType(String type){
+
         if (type.equals("ERROR_MSG")){
             return Color.rgb(161, 34, 34);
         }
@@ -34,6 +35,7 @@ public class ColorText extends Text {
             return Color.rgb(238, 233, 229);
         }
         System.out.println("Error: unimplemented string type in terminal display");
+        //default color
         return Color.rgb(238, 233, 229);
     }
 }

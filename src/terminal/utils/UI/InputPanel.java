@@ -39,6 +39,10 @@ public class InputPanel extends HBox {
         return inputArea.getText();
     }
 
+    public String getSelectedText(){
+        return inputArea.getSelectedText();
+    }
+
     private void initializeInputPanel(){
         promptArea = new PromptArea(height);
         inputArea = new InputArea(width, height);

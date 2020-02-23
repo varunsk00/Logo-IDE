@@ -11,11 +11,11 @@ public class textCell extends ListCell<String> {
     private String EMPTY_TEXT = "";
     private String SEPARATOR = " ";
 
-    final static String ERRORMSG_CODE = "+898+";
-    final static String SUCCESSMSG_CODE = "+200+";
-    final static String BANNER_CODE = "+788+";
-    final static String MSG_CODE = "+400+";
-    final static String COMMANDLINE_CODE = "+101+";
+    final static String ERRORMSG_TYPENAME = "";
+    final static String SUCCESSMSG_TYPENAME = "+200+";
+    final static String BANNER_TYPENAME = "+788+";
+    final static String MSG_TYPENAME = "+400+";
+    final static String COMMANDLINE_TYPENAME = "+101+";
 
     @Override
     protected void updateItem(String textLine, boolean empty){
