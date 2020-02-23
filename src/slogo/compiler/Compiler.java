@@ -1,5 +1,6 @@
 package slogo.compiler;
 
+import slogo.compiler.control.MakeUserInstructionCommand;
 import slogo.compiler.exceptions.CompilerException;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.StackOverflowException;
@@ -13,6 +14,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.reflections.Reflections;
+import slogo.compiler.types.CommandType;
 
 public class Compiler {
 
@@ -41,6 +43,7 @@ public class Compiler {
 
     for (Class c : allClasses) {
       try {
+        //System.out.println(c);
         Command a = (Command) c.getConstructor(String.class).newInstance(Command.INITIALIZATION);
         a.register();
       } catch (Exception e) {
@@ -65,6 +68,14 @@ public class Compiler {
       if (!comm.isComplete()) {
         throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
       }
+      if (comm instanceof MakeUserInstructionCommand) {
+        comm.execute(); //FIXME
+        comm = parse(input);
+        if (!comm.isComplete()) {
+          comm.recPrint(); //fixme
+          throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
+        }
+      }
       return "" + comm.execute();
     } catch (CompilerException e) {
       return e.toString();
@@ -73,9 +84,22 @@ public class Compiler {
 
 
   public Command parse(String input) {
+    boolean defineFlag = false;
+    boolean setFlagNext = false;
     ArrayDeque<Command> stack = new ArrayDeque<>();
     for (String word : input.split(getWhitespace())) {
       Command comm = getCommandFromString(word);
+      if (setFlagNext) {
+        defineFlag = true; //FIXME you monster fix this right now
+        setFlagNext = false;
+      }
+      if (comm instanceof MakeUserInstructionCommand) {
+        setFlagNext = true;
+      }
+      if (defineFlag) {
+        ((CommandType)comm).setBeingDefined(true);
+        defineFlag = false; //fixme too
+      }
       stack.push(comm);
       //System.out.println( stack.size());
       while (stack.peek().isComplete()) {

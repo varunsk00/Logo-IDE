@@ -1,5 +1,6 @@
 package slogo.compiler.control;
 
+import java.util.ArrayList;
 import slogo.compiler.Command;
 import slogo.compiler.Memory;
 import slogo.compiler.exceptions.CompilerException;
@@ -16,12 +17,15 @@ public class MakeUserInstructionCommand extends Command {
   @Override
   public double execute() {
     try {
+      ArrayList<String> vars = new ArrayList<>();
       for (Command var: args.get(1).getArgs()) {
         if (var instanceof VariableType) {
-          Memory.putIfAbsent(((VariableType) var).getName()); //FIXME oh my god you monster
+          vars.add(((VariableType) var).getName()); //FIXME oh my god you monster
         }
       }
-      Memory.setUserDefinedCommand(((CommandType) args.get(0)).getName(), args.get(2));
+      String commName = ((CommandType) args.get(0)).getName();
+      Memory.setUserDefinedCommand(commName, args.get(2));
+      Memory.setUserDefinedCommandVariables(commName, vars);
     } catch (CompilerException e) {
       return 0;
     }
@@ -40,4 +44,12 @@ public class MakeUserInstructionCommand extends Command {
   public Command createCommand(String declaration) {
     return new MakeUserInstructionCommand(declaration);
   }
+
+  /*@Override
+  public void addArg(Command c) {
+    super.addArg(c);
+    if (c instanceof CommandType) {
+      ((CommandType) c).setBeingDefined(true);
+    }
+  }*/
 }

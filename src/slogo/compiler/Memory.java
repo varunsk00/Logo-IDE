@@ -1,5 +1,7 @@
 package slogo.compiler;
 
+import java.util.ArrayList;
+import java.util.List;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.UnknownVariableException;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ public class Memory {
 
   private static Map<String, Double> variableMap = new HashMap<>();
   private static Map<String, Command> userDefinedCommandMap = new HashMap<>();
+  private static Map<String, List<String>> userDefinedCommandVariablesMap = new HashMap<>();
 
   public static double getVariable(String name) {
     Double ret = variableMap.getOrDefault(name, null);
@@ -36,6 +39,18 @@ public class Memory {
       throw new InvalidSyntaxException("Identifier (" + name + ") not recognized.");
     }
     return ret;
+  }
+
+  public static List<String> getCommandVariables(String name) {
+    List<String> ret = userDefinedCommandVariablesMap.getOrDefault(name, new ArrayList<>());
+    /*if (ret == null) {
+      throw new InvalidSyntaxException("Identifier (" + name + ") not recognized.");
+    }*/
+    return ret;
+  }
+
+  public static void setUserDefinedCommandVariables(String name, List<String> list) {
+    userDefinedCommandVariablesMap.put(name, list);
   }
 
 }

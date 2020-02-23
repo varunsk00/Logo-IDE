@@ -69,10 +69,22 @@ public abstract class Command {
   @Override
   public String toString() {
     StringBuilder ret = new StringBuilder(this.getClass().getName() + " ");
-    for (Command i : args) {
+    /*for (Command i : args) {
       ret.append(i.toString()).append(" ");
-    }
+    }*/
     return ret.toString();
+  }
+
+  public void recPrint() {
+    System.out.print(""+this+" ");
+    for (Command c: args) {
+      System.out.print(""+c+" ");
+    }
+    for (Command c: args) {
+      c.recPrint();
+    }
+    System.out.println();
+
   }
 
 
