@@ -1,8 +1,14 @@
 package terminal;
 
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import terminal.utils.UI.InputPanel;
 import terminal.utils.UI.OutputPanel;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 //TODO: Caret Control
 
@@ -10,15 +16,9 @@ import terminal.utils.UI.OutputPanel;
  * terminalView generates the visualization of the terminal console.
  */
 public class TerminalView extends ScrollPane {
-    final static String BANNER_FILEPATH = "";
-    final static String WELCOME_BANNER = "";
-
-    // Identification of string type
-    final static String ERRORMSG_CODE = "+898+";
-    final static String SUCCESSMSG_CODE = "+200+";
-    final static String BANNER_CODE = "+788+";
-    final static String MSG_CODE = "+400+";
-    final static String COMMANDLINE_CODE = "+101+";
+    final static int INPUT_PANEL_HEIGHT = 40; //TODO: Empirical adjustment, needs calculation of the font size
+    final static String BANNER_FILEPATH = "banners/";
+    final static String WELCOME_BANNER = "welcome";
 
     private InputPanel inputPanel;
     private OutputPanel outputPanel;
@@ -26,12 +26,8 @@ public class TerminalView extends ScrollPane {
     /**
      * Constructor
      */
-    public TerminalView(){}
+    public TerminalView(int width, int height){initializeTerminal(width, height);}
 
-    /**
-     * Sets the terminal to default style
-     */
-    public void setDefaultStyle(){}
 
     /**
      * Sets the size of the terminal
@@ -43,14 +39,9 @@ public class TerminalView extends ScrollPane {
         super.setPrefSize(width, height);
     }
 
-    /**
-     * TODO: should keep the scroll bar at bottom every time the user input text?
-     */
-    public void setScrollBarToMax(){}
-
-    public void displaySysMessage(String msg){}
-
-    public void displayCommand(){}
+   public void displayTextstoOutput(String textLine){
+        outputPanel.addTexts(textLine);
+   }
 
     public String getSelectedText(){
         if (!inputPanel.getSelectedText().equals(""))
@@ -72,10 +63,33 @@ public class TerminalView extends ScrollPane {
         return inputPanel.getUSER_INPUT_CODE();
     }
 
-    private void clearTerminal(){}
+    private void clearTerminal(){
+        inputPanel.clearInput();
+        outputPanel.clearTexts();
+    }
 
-    private void initializeTerminal(){}
+    private void initializeTerminal(int width, int height){
+        outputPanel = new OutputPanel(width, height);
+        inputPanel = new InputPanel(width, INPUT_PANEL_HEIGHT);
+        VBox box = new VBox(outputPanel, inputPanel); //TODO: do we really need this box;
+        getChildren().add(box);
 
-    private void printBanner(String FilePath){}
+        printBanner(String.format("%s%s", BANNER_FILEPATH, WELCOME_BANNER));
+    }
 
+    /**
+     * TODO: should keep the scroll bar at bottom every time the user input text?
+     */
+    public void setScrollBarToMax(){}
+
+    private void printBanner(String filePath){displayTextstoOutput(filePath);}
+
+    private String readBannerfromFile(String filePath){
+        try {
+            return new String(Files.readAllBytes(Paths.get(filePath)));
+        } catch (IOException e) {
+            System.out.println("Banner file could not be founded.");
+            return "Welcome to the Turtle Parser.";
+        }
+    }
 }

@@ -10,9 +10,7 @@ public class TerminalController {
 
 
     /* TODO:
-        1. key binding
-        2. passing input to the compiler/parser
-        3. enable copy/paste
+        1. where is the compiler
         4. control the cursor
     * */
 
@@ -55,11 +53,12 @@ public class TerminalController {
     private void displayTextTerminalInput(String str){terminalView.setCurrentInput(str);}
 
     private void appendToOutput(String str){
-
+        terminalView.displayTextstoOutput(str);
     }
 
     private String sendCurrentInput(){
         String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
+        history.addEntry(userInput, 1);
         System.out.println(userInput);
         System.out.println("Unlinked to the compiler right now");
         return null;

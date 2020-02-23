@@ -3,8 +3,8 @@ package terminal.utils.textLines;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -19,6 +19,7 @@ public class TestLine extends ListCell<String> {
     private final static String OTHER_COMMAND_CODE = "OTHER_COMMAND";
 
     private final static String SEPARATOR = " ";
+    private final static String INPUT_PROMPT = ">>>   "; // TODO: empirical adjustment
     private final static String LOCAL_RESOURCE_MATCH_DICT = String.format("%s.regex_type.properties", TestLine.class.getPackageName());
     private final static String LOCAL_RESOURCE_RESERVE_WORD_DICT = String.format("%s.reserved_words.properties", TestLine.class.getPackageName());
     private final static String regexDigits = "-?[0-9]+(?:\\.[0-9]+)?";
@@ -54,7 +55,7 @@ public class TestLine extends ListCell<String> {
 
     private Node createErrotMsgFlow(String textLine){
         String[] textsStr = textLine.split(SEPARATOR);
-        FlowPane flow = new FlowPane();
+        TextFlow flow = new TextFlow();
 
         for (String textStr: textsStr){
             ColorText text = new ColorText(textStr, ERROR_MSG_CODE);
@@ -64,8 +65,9 @@ public class TestLine extends ListCell<String> {
     }
 
     private Node createUserInputFlow(String textLine){
+        textLine = String.format("%s%s",INPUT_PROMPT, textLine);
         String[] textsStr = textLine.split(SEPARATOR);
-        FlowPane flow = new FlowPane();
+        TextFlow flow = new TextFlow();
 
         for (String textStr: textsStr){
             ColorText text = new ColorText(textStr, getTextStrType(textStr));
@@ -76,7 +78,7 @@ public class TestLine extends ListCell<String> {
 
     private Node createOtherFlow(String textLine){
         String[] textsStr = textLine.split(SEPARATOR);
-        FlowPane flow = new FlowPane();
+        TextFlow flow = new TextFlow();
 
         for (String textStr: textsStr){
             ColorText text = new ColorText(textStr, OTHER_TYPE_CODE);
