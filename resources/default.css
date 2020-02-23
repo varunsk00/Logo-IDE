@@ -1,0 +1,15 @@
+.root {
+    -fx-font-family: "American Typewriter";
+}
+
+.button {
+    -fx-background-color: #5272B2;
+    -fx-text-fill: #ffffff;
+    -fx-border-width: 3;
+    -fx-border-color: #000000;
+}
+
+.label {
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
+}

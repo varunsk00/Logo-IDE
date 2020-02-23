@@ -1,5 +1,6 @@
 package slogo.compiler;
 
+import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.UnknownVariableException;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 public class Memory {
 
   private static Map<String, Double> variableMap = new HashMap<>();
+  private static Map<String, Command> userDefinedCommandMap = new HashMap<>();
 
   public static double getVariable(String name) {
     Double ret = variableMap.getOrDefault(name, null);
@@ -18,6 +20,22 @@ public class Memory {
 
   public static void setVariable(String name, double value) {
     variableMap.put(name, value);
+  }
+
+  public static void putIfAbsent(String name) {
+    variableMap.putIfAbsent(name, 0.0);
+  }
+
+  public static void setUserDefinedCommand(String name, Command c) {
+    userDefinedCommandMap.put(name, c);
+  }
+
+  public static Command getUserDefinedCommand(String name) {
+    Command ret = userDefinedCommandMap.getOrDefault(name, null);
+    if (ret == null) {
+      throw new InvalidSyntaxException("Identifier (" + name + ") not recognized.");
+    }
+    return ret;
   }
 
 }

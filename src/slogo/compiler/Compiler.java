@@ -109,11 +109,15 @@ public class Compiler {
   private Command getCommandFromString(String str) {
     str = str.toLowerCase();
     String type = getSymbol(str, myTypes);
-    if (!type.equals("Command")) {
+    if (!type.equals("Command")) { //FIXME magic val
       return TypeFactory.createCommand(type, str);
     }
-    String commType = getSymbol(str, myCommands);
-    return CommandFactory.createCommand(commType, str);
+    try {
+      String commType = getSymbol(str, myCommands);
+      return CommandFactory.createCommand(commType, str);
+    } catch (InvalidSyntaxException e) {
+      return TypeFactory.createCommand("Command", str); //FIXME magic val
+    }
   }
 
   /**
