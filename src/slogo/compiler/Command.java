@@ -100,5 +100,18 @@ public abstract class Command {
     return false;
   }
 
+  public Command findFirstDef() {
+    if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
+      return this;
+    }
+    for (Command c: args) {
+      Command ret = c.findFirstDef();
+      if (ret != null) {
+        return ret;
+      }
+    }
+    return null;
+  }
+
 
 }

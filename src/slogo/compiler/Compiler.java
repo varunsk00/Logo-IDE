@@ -65,24 +65,33 @@ public class Compiler {
   //for multiline parser, split by newline regex, delete comments (regex), then join all by spaces
   //then execute as one line3
   public String execute(String input) {
-    input = "[ "+String.join(" ", input.split(getNewline()))+" ]";
+    input = "[ " + String.join(" ", input.split(getNewline())) + " ]";
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
         throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
       }
       if (comm.containsDefinition()) {
-        comm.execute(); //FIXME
-        comm = parse(input);
-        if (!comm.isComplete()) {
-          comm.recPrint(); //fixme
-          throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
-        }
+        comm =rerunParsing(comm, input);
       }
       return "" + comm.execute();
     } catch (CompilerException e) {
-      return e.toString();
+      throw e;
+      //return e.toString();
     }
+  }
+
+  private Command rerunParsing(Command comm, String input) {
+    Command def = comm.findFirstDef();
+    if (def != null) {
+      def.execute(); //FIXME
+    }
+    comm = parse(input);
+    if (!comm.isComplete()) {
+      comm.recPrint(); //fixme
+      throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
+    }
+    return comm;
   }
 
 
@@ -92,9 +101,13 @@ public class Compiler {
     for (String word : input.split(getWhitespace())) {
       Command comm = getCommandFromString(word);
       if (defineFlag) {
-        ((CommandType) comm).setBeingDefined(true);
-        //FIXME you're a bad person and you should feel bad
-        defineFlag = false;
+        if (comm instanceof CommandType) {
+          ((CommandType) comm).setBeingDefined(true);
+          //FIXME you're a bad person and you should feel bad
+          defineFlag = false;
+        } else {
+          throw new InvalidSyntaxException("Cannot redefine builtin function '" + word + "'");
+        }
       }
       if (comm instanceof MakeUserInstructionCommand) {
         defineFlag = true;
