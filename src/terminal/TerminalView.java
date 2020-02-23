@@ -68,6 +68,10 @@ public class TerminalView extends ScrollPane {
         inputPanel.setText(str);
     }
 
+    public String getUSER_INPUT_CODE(){
+        return inputPanel.getUSER_INPUT_CODE();
+    }
+
     private void clearTerminal(){}
 
     private void initializeTerminal(){}

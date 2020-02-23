@@ -5,9 +5,8 @@ import javafx.scene.layout.Priority;
 
 //TODO ignore input
 public class InputPanel extends HBox {
-    private final int PROMPT_WIDTH = 5; //TODO: empirical adjusstment
+    private final String USER_INPUT_CODE = "U@@U";
     private final String CSS_FILEPATH = "/input_panel.css";
-    private final String FONT_FILEPATH = "/font.css";
     private int width;
     private int height;
     private InputArea inputArea;
@@ -36,18 +35,19 @@ public class InputPanel extends HBox {
     }
 
     public String getText(){
-        return inputArea.getText();
+        return String.format("%s%s", USER_INPUT_CODE, inputArea.getText());
     }
 
     public String getSelectedText(){
         return inputArea.getSelectedText();
     }
 
+    public String getUSER_INPUT_CODE(){ return USER_INPUT_CODE; }
+
     private void initializeInputPanel(){
         promptArea = new PromptArea(height);
         inputArea = new InputArea(width, height);
         getChildren().addAll(promptArea, inputArea);
         getStylesheets().add(getClass().getResource(CSS_FILEPATH).toExternalForm());
-        getStylesheets().add(getClass().getResource(FONT_FILEPATH).toExternalForm());
     }
 }

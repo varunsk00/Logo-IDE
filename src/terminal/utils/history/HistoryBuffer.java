@@ -20,12 +20,10 @@ public class HistoryBuffer{
         index = -1;
     }
 
-    //TODO: More advanced handling of Exception
     public String getPrevEntry(){
         if (isEmpty()){
            return handleEmptyBuffer();
         }
-
         return buffer[moveIndexBy(-1)];
     }
 

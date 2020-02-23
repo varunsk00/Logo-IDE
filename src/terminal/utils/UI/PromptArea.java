@@ -1,8 +1,6 @@
 package terminal.utils.UI;
 
 import javafx.scene.control.TextArea;
-import javafx.scene.text.Font;
-
 
 public class PromptArea extends TextArea {
     private static int PREF_MARGIN_COUNT = 1;

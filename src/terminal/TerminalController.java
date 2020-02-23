@@ -59,7 +59,8 @@ public class TerminalController {
     }
 
     private String sendCurrentInput(){
-        System.out.println(terminalView.getCurrentInput());
+        String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
+        System.out.println(userInput);
         System.out.println("Unlinked to the compiler right now");
         return null;
     }
