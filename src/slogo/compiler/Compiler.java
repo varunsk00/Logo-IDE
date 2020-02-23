@@ -77,6 +77,7 @@ public class Compiler {
     for (String word : input.split(getWhitespace())) {
       Command comm = getCommandFromString(word);
       stack.push(comm);
+      //System.out.println( stack.size());
       while (stack.peek().isComplete()) {
         Command arg = stack.pop();
         if (stack.peek() == null) {
@@ -87,11 +88,11 @@ public class Compiler {
               "Ran out of commands to parse before finishing given commands.");
         }
         stack.peek().addArg(arg);
-        if (stack.size() >= StackOverflowException.MAX_RECURSION_DEPTH) {
-          throw new StackOverflowException(
-              "Max recursion depth: (" + StackOverflowException.MAX_RECURSION_DEPTH
-                  + ") exceeded.");
         }
+      if (stack.size() >= StackOverflowException.MAX_RECURSION_DEPTH) {
+        throw new StackOverflowException(
+            "Max recursion depth: (" + StackOverflowException.MAX_RECURSION_DEPTH
+                + ") exceeded.");
       }
     }
     return stack.getLast();
