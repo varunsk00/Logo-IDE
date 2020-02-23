@@ -2,6 +2,7 @@ package slogo.compiler;
 
 import java.util.ArrayList;
 import java.util.List;
+import slogo.compiler.control.MakeUserInstructionCommand;
 
 public abstract class Command {
 
@@ -85,6 +86,18 @@ public abstract class Command {
     }
     System.out.println();
 
+  }
+
+  public boolean containsDefinition() {
+    if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
+      return true;
+    }
+    for (Command c: args) {
+      if (c.containsDefinition()) {
+        return true;
+      }
+    }
+    return false;
   }
 
 

@@ -21,6 +21,7 @@ public class CommandType extends Command {
 
   @Override
   public double execute() {
+    Memory.pushMemoryStack();
     for (int i = 0; i < variables.size(); i++) {
       Memory.setVariable(variables.get(i), args.get(i).execute());
       //System.out.println(variables.get(i));
@@ -28,7 +29,9 @@ public class CommandType extends Command {
     //recPrint();
     //Command exe = Memory.getUserDefinedCommand(name);
     //exe.recPrint();
-    return Memory.getUserDefinedCommand(name).execute();
+    double ret =  Memory.getUserDefinedCommand(name).execute();
+    Memory.popMemoryStack();
+    return ret;
   }
 
   @Override

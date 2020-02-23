@@ -1,9 +1,5 @@
 package slogo.compiler;
 
-import slogo.compiler.control.MakeUserInstructionCommand;
-import slogo.compiler.exceptions.CompilerException;
-import slogo.compiler.exceptions.InvalidSyntaxException;
-import slogo.compiler.exceptions.StackOverflowException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -14,6 +10,10 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.reflections.Reflections;
+import slogo.compiler.control.MakeUserInstructionCommand;
+import slogo.compiler.exceptions.CompilerException;
+import slogo.compiler.exceptions.InvalidSyntaxException;
+import slogo.compiler.exceptions.StackOverflowException;
 import slogo.compiler.types.CommandType;
 
 public class Compiler {
@@ -25,6 +25,8 @@ public class Compiler {
 
   private List<Entry<String, Pattern>> myTypes;
   private List<Entry<String, Pattern>> myCommands;
+
+  public static int MAX_RECURSION_DEPTH = 1000;
 
   public Compiler() {
     myTypes = new ArrayList<>();
@@ -63,12 +65,13 @@ public class Compiler {
   //for multiline parser, split by newline regex, delete comments (regex), then join all by spaces
   //then execute as one line3
   public String execute(String input) {
+    input = "[ "+String.join(" ", input.split(getNewline()))+" ]";
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
         throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
       }
-      if (comm instanceof MakeUserInstructionCommand) {
+      if (comm.containsDefinition()) {
         comm.execute(); //FIXME
         comm = parse(input);
         if (!comm.isComplete()) {
@@ -85,46 +88,57 @@ public class Compiler {
 
   public Command parse(String input) {
     boolean defineFlag = false;
-    boolean setFlagNext = false;
     ArrayDeque<Command> stack = new ArrayDeque<>();
     for (String word : input.split(getWhitespace())) {
       Command comm = getCommandFromString(word);
-      if (setFlagNext) {
-        defineFlag = true; //FIXME you monster fix this right now
-        setFlagNext = false;
+      if (defineFlag) {
+        ((CommandType) comm).setBeingDefined(true);
+        //FIXME you're a bad person and you should feel bad
+        defineFlag = false;
       }
       if (comm instanceof MakeUserInstructionCommand) {
-        setFlagNext = true;
-      }
-      if (defineFlag) {
-        ((CommandType)comm).setBeingDefined(true);
-        defineFlag = false; //fixme too
+        defineFlag = true;
       }
       stack.push(comm);
-      //System.out.println( stack.size());
-      while (stack.peek().isComplete()) {
-        Command arg = stack.pop();
-        if (stack.peek() == null) {
-          if (arg.isComplete()) {
-            return arg;
-          }
-          throw new InvalidSyntaxException(
-              "Ran out of commands to parse before finishing given commands.");
-        }
-        stack.peek().addArg(arg);
-        }
-      if (stack.size() >= StackOverflowException.MAX_RECURSION_DEPTH) {
+      Command ret = collapseStack(stack);
+      if (ret != null) {
+        return ret;
+      }
+      if (stack.size() >= MAX_RECURSION_DEPTH) {
         throw new StackOverflowException(
-            "Max recursion depth: (" + StackOverflowException.MAX_RECURSION_DEPTH
-                + ") exceeded.");
+            "Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
       }
     }
     return stack.getLast();
   }
 
+  private Command collapseStack(ArrayDeque<Command> stack) {
+    while (stack.peek().isComplete()) {
+      Command arg = stack.pop();
+      if (stack.peek() == null) {
+        if (arg.isComplete()) {
+          return arg;
+        }
+        throw new InvalidSyntaxException(
+            "Ran out of commands to parse before finishing given commands.");
+      }
+      stack.peek().addArg(arg);
+    }
+    return null;
+  }
+
   private String getWhitespace() {
     for (Entry<String, Pattern> e : myTypes) {
       if (e.getKey().equals("Whitespace")) {
+        return e.getValue().toString();
+      }
+    }
+    throw new CompilerException("Invalid Syntax resource file - whitespace not found.");
+  }
+
+  private String getNewline() {
+    for (Entry<String, Pattern> e : myTypes) {
+      if (e.getKey().equals("Newline")) {
         return e.getValue().toString();
       }
     }
