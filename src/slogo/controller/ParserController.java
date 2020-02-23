@@ -18,9 +18,9 @@ import java.util.ResourceBundle;
 
 public class ParserController extends Application{
     private static final String STYLESHEET = "parser_parser_team06/src/slogo/slogo.resources/default.css";
-    private static final String RESOURCES_PACKAGE = "slogo.slogo.resources";
+    private static final String RESOURCES_PACKAGE = "slogo.resources.languages.";
     private static final String GUI_LANGUAGE = "English_GUI";
-    private static ResourceBundle myResources = ResourceBundle.getBundle(GUI_LANGUAGE);
+    private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + GUI_LANGUAGE);
 
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
@@ -81,7 +81,7 @@ public class ParserController extends Application{
     }
 
     private void setHeader() {
-        header = new ButtonController(GUI_LANGUAGE);
+        header = new ButtonController(RESOURCES_PACKAGE + GUI_LANGUAGE);
         root.setTop(header.getHeader());
     }
 
