@@ -1,7 +1,6 @@
 package terminal.utils.UI;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import terminal.utils.textLines.TestLine;
 

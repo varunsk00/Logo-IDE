@@ -13,13 +13,14 @@ public class TestLine extends ListCell<String> {
     private final static String OTHER_TYPE_CODE = "OTHER_TYPE";
     private final static String ERROR_MSG_CODE = "ERROR_MSG";
     private final static String USER_INPUT_CODE = "USER_INPUT";
+    private final static String USER_CODE = "U@@U";
+    private final static String INPUT_PROMPT = ">>>   "; // TODO: empirical adjustment
 
     private final static String RESERVED_COMMAND_CODE = "RESERVED_COMMAND";
     private final static String DIGITS_CODE = "DIGITS";
     private final static String OTHER_COMMAND_CODE = "OTHER_COMMAND";
 
     private final static String SEPARATOR = " ";
-    private final static String INPUT_PROMPT = ">>>   "; // TODO: empirical adjustment
     private final static String LOCAL_RESOURCE_MATCH_DICT = String.format("%s.regex_type", TestLine.class.getPackageName());
     private final static String LOCAL_RESOURCE_RESERVE_WORD_DICT = String.format("%s.reserved_words", TestLine.class.getPackageName());
     private final static String regexDigits = "\\-?[0-9]+(?:\\.[0-9]+)?";
@@ -94,7 +95,8 @@ public class TestLine extends ListCell<String> {
     }
 
     private String stripInputText(String input){
-        return input.substring(USER_INPUT_CODE.length(), input.length()-1);
+        System.out.println(input);
+        return input.substring(INPUT_PROMPT.length()+USER_CODE.length(), input.length());
     }
 
     private Text createSpacer(){return new Text(SEPARATOR);}

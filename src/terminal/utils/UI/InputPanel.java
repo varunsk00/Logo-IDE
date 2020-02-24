@@ -47,7 +47,7 @@ public class InputPanel extends HBox {
     }
 
     public String getText(){
-        return String.format("%s%s", USER_INPUT_CODE, inputArea.getText());
+        return String.format("%s%s", USER_INPUT_CODE, inputArea.getInputText());
     }
 
     public String getSelectedText(){

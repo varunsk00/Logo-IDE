@@ -11,9 +11,10 @@
 }
 
 .list-cell:empty {
-    -fx-background-color: black;
+    -fx-background-color: transparent;
     -fx-border-color: black;
     -fx-background-insets: 0;
+    -fx-border-width: 0px;
 }
 
 .list-cell:hover{
@@ -32,7 +33,7 @@ TextFlow{
     -fx-background-color: black;
     -fx-border-color: black;
     -fx-background-insets: 0;
-    
+
     -fx-font-size: 20;
     -fx-font-weight: bold;
 }

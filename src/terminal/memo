@@ -6,3 +6,7 @@ features:
    - enable clipboard (prob in controller?)
 
 more on analyzing the logic
+
+to-do lists:
+debug: history
+scrollable

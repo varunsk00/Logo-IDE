@@ -68,6 +68,8 @@ public class TerminalView extends ScrollPane {
 
     public Node getInputSection(){return inputPanel.getInputSection();}
 
+    public InputPanel getInputPanel(){return inputPanel;}
+
     public Node getOutputPanel(){ return outputPanel;}
 
     public void clearInput(){

@@ -1,7 +1,6 @@
 package terminal.utils.UI;
 
 import javafx.scene.control.TextArea;
-import javafx.scene.text.Font;
 
 //cursor
 public class InputArea extends TextArea {
@@ -12,7 +11,12 @@ public class InputArea extends TextArea {
         super();
         this.width = width;
         this.height = height;
+        // font can only be set inline
         setStyle("-fx-font-family: \"Consolas\";");
+    }
+
+    public String getInputText() {
+        return getText().replace("\n", "");
     }
 
     public void setCaretZero(){
@@ -26,5 +30,6 @@ public class InputArea extends TextArea {
         setPrefHeight(height);
         setPrefWidth(width);
     }
+
 
 }

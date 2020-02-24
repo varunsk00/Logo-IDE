@@ -27,19 +27,33 @@ public class TerminalController {
         // PageDown: next entry
         // Enter: send the input to compiler
         // Control+C: copy the selected text
+        terminalView.getInputSection().setFocusTraversable(true);
+        terminalView.setOnMouseClicked(e-> {
+            terminalView.getInputSection().requestFocus();
+        });
         KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
         // Control+V: paste the selected text
         KeyCombination CtrlP = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
-        terminalView.getInputSection().setOnKeyPressed(keyEvent -> {
 
-            if (keyEvent.getCode() == KeyCode.PAGE_UP) {
+        terminalView.getInputSection().setOnKeyPressed(keyEvent -> {
+            System.out.println(keyEvent.getCode());
+            if (keyEvent.getCode() == KeyCode.UP) {
+                System.out.println("page up");
+                terminalView.resetInputPanel();
                 displayTextTerminalInput(getPrevBufferEntry());
+                terminalView.getInputPanel().setPositionCaretAtEnding();
             }
-            else if (keyEvent.getCode() == KeyCode.PAGE_DOWN) {
+            else if (keyEvent.getCode() == KeyCode.DOWN) {
+                System.out.println("page down");
+                terminalView.resetInputPanel();
                 displayTextTerminalInput(getNextBufferEntry());
+                terminalView.getInputPanel().setPositionCaretAtEnding();
             }
             else if (keyEvent.getCode() == KeyCode.ENTER) { //TODO: Enable the output of compiler message when the compiler is up
+                System.out.println("enter");
+                terminalView.getInputPanel().setPositionCaretAtEnding();
                 appendToOutput(terminalView.getCurrentInput());
+                history.addEntry(terminalView.getCurrentInput(), 1);
                 //appendToOutput(sendCurrentInput());
                 terminalView.resetInputPanel();
             }
@@ -55,7 +69,6 @@ public class TerminalController {
             else if (CtrlP.match(keyEvent)) {
                 displayTextTerminalInput(clipboard.getString());
             }
-
              */
         });
     }
@@ -69,7 +82,6 @@ public class TerminalController {
 
     private String sendCurrentInput(){
         String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
-        history.addEntry(userInput, 1);
         System.out.println(userInput);
         System.out.println("Unlinked to the compiler right now");
         return null;
