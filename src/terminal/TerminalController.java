@@ -1,5 +1,9 @@
 package terminal;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.input.*;
 import terminal.utils.history.HistoryBuffer;
 
@@ -11,7 +15,6 @@ public class TerminalController {
 
     /* TODO:
         1. where is the compiler
-        4. control the cursor
     * */
 
     public TerminalController(TerminalView view){
@@ -27,9 +30,15 @@ public class TerminalController {
         // PageDown: next entry
         // Enter: send the input to compiler
         // Control+C: copy the selected text
-        terminalView.getInputSection().setFocusTraversable(true);
-        terminalView.setOnMouseClicked(e-> {
-            terminalView.getInputSection().requestFocus();
+        //terminalView.getOutputPanel().setFocusTraversable(true);
+        //terminalView.getOutputPanel().lookup(".scroll-bar").setMouseTransparent(false);
+        terminalView.getOutputPanel().addEventHandler(MouseEvent.ANY, e-> {
+            Node node = terminalView.getOutputPanel().lookup(".scroll-bar");
+           if (node instanceof ScrollBar){
+               System.out.println("scrollbar found");
+               final ScrollBar bar = (ScrollBar) node;
+               bar.requestFocus();
+           }
         });
         KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
         // Control+V: paste the selected text

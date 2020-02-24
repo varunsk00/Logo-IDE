@@ -79,7 +79,7 @@ public class TestLine extends ListCell<String> {
 
         //adding initial prompt
         flow.getChildren().addAll(new ColorText(INPUT_PROMPT, getTextStrType(INPUT_PROMPT)),
-                                  createSpacer(), createSpacer());
+                                  createSpacer(), createSpacer(), createSpacer());
 
         for (String textStr: textsStr){
             //System.out.println(textStr+" "+getTextStrType(textStr));

@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
 import terminal.utils.textLines.TestLine;
 
-//TODO USER INPUT NEED TO HAVE >>> BEFORE IT
+
 public class OutputPanel extends ListView<String> {
     private final static String CSS_FILEPATH = "/output_panel.css";
 
@@ -12,7 +12,7 @@ public class OutputPanel extends ListView<String> {
         super(FXCollections.observableArrayList());
 
         //disable focus
-        setMouseTransparent(true);
+        //setMouseTransparent(true);
         setFocusTraversable(false);
 
         setMinWidth(width); setMaxWidth(width);

@@ -18,15 +18,17 @@
 }
 
 .list-cell:hover{
-    -fx-background-color: black;
+    -fx-background-color: transparent;
     -fx-border-color: black;
     -fx-background-insets: 0;
+    -fx-border-width: 0px;
 }
 
 .list-cell:selected{
-    -fx-background-color: black;
+    -fx-background-color: transparent;
     -fx-border-color: black;
     -fx-background-insets: 0;
+    -fx-border-width: 0px;
 }
 
 TextFlow{
