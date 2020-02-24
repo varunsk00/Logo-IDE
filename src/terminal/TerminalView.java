@@ -1,5 +1,6 @@
 package terminal;
 
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -39,7 +40,7 @@ public class TerminalView extends ScrollPane {
         super.setPrefSize(width, height);
     }
 
-   public void displayTextstoOutput(String textLine){
+    public void displayTextstoOutput(String textLine){
         outputPanel.addTexts(textLine);
    }
 
@@ -63,6 +64,16 @@ public class TerminalView extends ScrollPane {
         return inputPanel.getUSER_INPUT_CODE();
     }
 
+    public void resetInputPanel(){ inputPanel.reset();}
+
+    public Node getInputSection(){return inputPanel.getInputSection();}
+
+    public Node getOutputPanel(){ return outputPanel;}
+
+    public void clearInput(){
+        inputPanel.clearInput();
+    }
+
     private void clearTerminal(){
         inputPanel.clearInput();
         outputPanel.clearTexts();
@@ -72,8 +83,9 @@ public class TerminalView extends ScrollPane {
         outputPanel = new OutputPanel(width, height);
         inputPanel = new InputPanel(width, INPUT_PANEL_HEIGHT);
         VBox box = new VBox(outputPanel, inputPanel); //TODO: do we really need this box;
-        getChildren().add(box);
-
+        //getChildren().add(box);
+        setContent(box);
+        //getChildren().addAll(outputPanel, inputPanel);
         printBanner(String.format("%s%s", BANNER_FILEPATH, WELCOME_BANNER));
     }
 
@@ -92,4 +104,5 @@ public class TerminalView extends ScrollPane {
             return "Welcome to the Turtle Parser.";
         }
     }
+
 }

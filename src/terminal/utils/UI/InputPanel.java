@@ -1,5 +1,6 @@
 package terminal.utils.UI;
 
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -25,6 +26,17 @@ public class InputPanel extends HBox {
         setMaxSize(width, height);
         setPrefSize(width, height);
     }
+
+    public void reset(){
+        inputArea.setCaretZero();
+        inputArea.clearInput();
+    }
+
+    public void setPositionCaretAtBeginning(int pos){inputArea.setCaretZero();}
+
+    public void setPositionCaret(int pos){inputArea.positionCaret(pos);}
+
+    public TextArea getInputSection(){return inputArea;}
 
     public void clearInput(){
         inputArea.clear();

@@ -17,6 +17,7 @@ public class TerminalController {
     public TerminalController(TerminalView view){
         this.terminalView = view;
         this.clipboard = Clipboard.getSystemClipboard();
+        this.history = new HistoryBuffer();
         keyBinding();
     }
 
@@ -29,13 +30,15 @@ public class TerminalController {
         KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
         // Control+V: paste the selected text
         KeyCombination CtrlP = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
-        terminalView.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+        terminalView.getInputSection().setOnKeyPressed(keyEvent -> {
+            System.out.println("gewh");
             if (keyEvent.getCode() == KeyCode.PAGE_UP) {
                 displayTextTerminalInput(getPrevBufferEntry());
             } else if (keyEvent.getCode() == KeyCode.PAGE_DOWN) {
                 displayTextTerminalInput(getNextBufferEntry());
             } else if (keyEvent.getCode() == KeyCode.ENTER) {
                 appendToOutput(terminalView.getCurrentInput());
+                terminalView.resetInputPanel();
                 appendToOutput(sendCurrentInput());
             } else if (CtrlC.match(keyEvent)) {
                 String selectedText = terminalView.getSelectedText();
