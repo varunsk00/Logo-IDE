@@ -3,6 +3,8 @@ import javafx.scene.shape.Rectangle;
 import slogo.compiler.Compiler;
 import slogo.turtle.Turtle;
 import slogo.turtle.TurtleHabitat;
+import slogo.terminal.TerminalView;
+import slogo.terminal.TerminalController;
 import slogo.compiler.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -56,13 +58,15 @@ public class ParserController extends Application{
     private Color backgroundColor = Color.WHITE;
     private Color penColor = Color.BLACK;
 
+    private TerminalView term;
+    private TerminalController term_controller;
+
     private TurtleHabitat myHabitat;
     private Turtle myTurtle1 = new Turtle();
     private boolean t = true;
     Rectangle r = new Rectangle(10,10);
 
     private Compiler comp;
-    Scanner kb = new Scanner(System.in);
 
     /**
      * Empty Constructor Needed to run the application due to Application requirements Not called
@@ -96,6 +100,7 @@ public class ParserController extends Application{
         setBorderPane();
         setHeader();
         setTurtleHabitat();
+        setTerminalView();
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets().add(STYLESHEET);
 
@@ -123,6 +128,13 @@ public class ParserController extends Application{
     private void setHeader() {
         header = new ButtonController(RESOURCES_PACKAGE + GUI_LANGUAGE);
         root.setTop(header.getHeader());
+    }
+
+    private void setTerminalView() {
+        term = new TerminalView( (int) SCENE_WIDTH/2, (int) SCENE_HEIGHT);
+        term_controller = new TerminalController(term);
+        term_controller.setCompiler(comp);
+        root.setLeft(term);
     }
 
     private void setTurtleHabitat() {
@@ -157,17 +169,18 @@ public class ParserController extends Application{
             handleFileChooser();
         }
         if (header.getHelpStatus()) {
-            String[] commands = {"fd 50"};
+            String[] commands = {"fd fd 50"};
             for(int i = 0; i < commands.length; i++) {
                 String var = comp.execute(commands[i]);
                 //myHabitat.updateHabitat(penColor);
-                System.out.println(myTurtle1.getXLocation() + ": " + myTurtle1.getYLocation());
                 System.out.println(var);
             }
             header.setHelpOff();
         }
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
         root.setRight(myHabitat.getTurtleHabitat());
+        term_controller.changeLanguage(header.getLanguageStatus());
+        System.out.println(header.getLanguageStatus());
     }
 
     private void launchPenColorChooser() {
