@@ -37,9 +37,6 @@ public class Compiler {
     addPatterns(SYNTAX_FILE, myTypes);
     //FIXME add resource file validator
     //FIXME add error msg strings
-
-    addTurtle("Turtle1", new Turtle()); //fixme remove in the future, this is just for testing
-
     initAllCommands();
   }
 
