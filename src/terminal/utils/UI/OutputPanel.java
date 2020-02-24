@@ -7,9 +7,10 @@ import terminal.utils.textLines.TestLine;
 
 //TODO USER INPUT NEED TO HAVE >>> BEFORE IT
 public class OutputPanel extends ListView<String> {
+    private final static String CSS_FILEPATH = "/output_panel.css";
 
     public OutputPanel(int width, int max_height){
-        super(FXCollections.observableArrayList("fuvk", "gfgf", "fg"));
+        super(FXCollections.observableArrayList());
 
         //disable focus
         setMouseTransparent(true);
@@ -17,6 +18,8 @@ public class OutputPanel extends ListView<String> {
 
         setMinWidth(width); setMaxWidth(width);
         setMaxHeight(max_height); // grows with the list
+
+        getStylesheets().add(getClass().getResource(CSS_FILEPATH).toExternalForm());
 
         setCellFactory(listView -> new TestLine());
     }

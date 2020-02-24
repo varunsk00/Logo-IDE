@@ -22,11 +22,11 @@ public class TestLine extends ListCell<String> {
     private final static String INPUT_PROMPT = ">>>   "; // TODO: empirical adjustment
     private final static String LOCAL_RESOURCE_MATCH_DICT = String.format("%s.regex_type", TestLine.class.getPackageName());
     private final static String LOCAL_RESOURCE_RESERVE_WORD_DICT = String.format("%s.reserved_words", TestLine.class.getPackageName());
-    private final static String regexDigits = "-?[0-9]+(?:\\.[0-9]+)?";
+    private final static String regexDigits = "\\-?[0-9]+(?:\\.[0-9]+)?";
 
     private List<Map.Entry<String, Pattern>> matchDictionary;
 
-    {setContentDisplay(ContentDisplay.GRAPHIC_ONLY);}
+    {setContentDisplay(ContentDisplay.GRAPHIC_ONLY); setStyle("-fx-font-family: \"Consolas\";");}
 
     @Override
     protected void updateItem(String str, boolean empty){
@@ -45,7 +45,7 @@ public class TestLine extends ListCell<String> {
     private Node createTextFlow(String str){
         //determines the type of the text string
         matchDictionary = initializeDictionary(LOCAL_RESOURCE_MATCH_DICT);
-        System.out.println(str+ "is "+getType(str));
+        //System.out.println(str+ "is "+getType(str));
         if (getType(str).equals(ERROR_MSG_CODE)){
             return createErrorMsgFlow(str);
         }
@@ -69,12 +69,13 @@ public class TestLine extends ListCell<String> {
     }
 
     private Node createUserInputFlow(String textLine){
-        System.out.println(textLine+" this is a user input");
+        //System.out.println(textLine+" this is a user input");
         textLine = String.format("%s%s",INPUT_PROMPT, textLine);
-        String[] textsStr = textLine.split(SEPARATOR);
+        String[] textsStr = stripInputText(textLine).split(SEPARATOR);
         TextFlow flow = new TextFlow();
 
         for (String textStr: textsStr){
+            //System.out.println(textStr+" "+getTextStrType(textStr));
             ColorText text = new ColorText(textStr, getTextStrType(textStr));
             flow.getChildren().addAll(text, createSpacer());
         }
@@ -90,6 +91,10 @@ public class TestLine extends ListCell<String> {
             flow.getChildren().addAll(text, createSpacer());
         }
         return flow;
+    }
+
+    private String stripInputText(String input){
+        return input.substring(USER_INPUT_CODE.length(), input.length()-1);
     }
 
     private Text createSpacer(){return new Text(SEPARATOR);}
@@ -111,6 +116,7 @@ public class TestLine extends ListCell<String> {
     private boolean isReservedWord(String str){
         List<Map.Entry<String, Pattern>> reserveWordDictionary = initializeDictionary(LOCAL_RESOURCE_RESERVE_WORD_DICT);
         for (Map.Entry<String, Pattern> e: reserveWordDictionary){
+            //System.out.println(str+" "+e.getValue());
             if (match(str.toLowerCase(), e.getValue()) || match(str.toUpperCase(), e.getValue())) {
                 return true;
             }

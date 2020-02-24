@@ -43,6 +43,7 @@ public class TerminalController {
                 //appendToOutput(sendCurrentInput());
                 terminalView.resetInputPanel();
             }
+            /*
             else if (CtrlC.match(keyEvent)) {
                 String selectedText = terminalView.getSelectedText();
                 if (!selectedText.equals("")) {
@@ -54,6 +55,8 @@ public class TerminalController {
             else if (CtrlP.match(keyEvent)) {
                 displayTextTerminalInput(clipboard.getString());
             }
+
+             */
         });
     }
 

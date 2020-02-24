@@ -1,0 +1,37 @@
+@font-face{
+    font-family: "Consolas";
+    src: url("font/consola.ttf");
+}
+
+.list-view{
+    -fx-background-color: black;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+}
+
+.list-cell:empty {
+    -fx-background-color: black;
+    -fx-border-color: black;
+    -fx-control-inner-background: black;
+    -fx-background-insets: 0;
+}
+
+.list-cell:hover{
+    -fx-background-color: black;
+    -fx-border-color: black;
+    -fx-control-inner-background: black;
+    -fx-background-insets: 0;
+}
+
+.list-cell:selected{
+    -fx-background-color: black;
+    -fx-border-color: black;
+    -fx-control-inner-background: black;
+    -fx-background-insets: 0;
+}
+
+TextFlow{
+    -fx-background-color: black;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+}
