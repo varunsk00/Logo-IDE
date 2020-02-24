@@ -1,0 +1,3 @@
+to fact [ :n ] [ ifelse less? :n 1 [ 1 ] [ * :n fact set :n - :n 1 ] ]
+to eapprox [ :n ] [ ifelse less? :n 0 [ 0 ] [ + / 1 fact :n eapprox - :n 1 ] ]
+to e [ ] [ eapprox 20 ]

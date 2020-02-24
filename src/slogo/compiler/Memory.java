@@ -40,6 +40,9 @@ public class Memory {
     HashMap<String, Double> newLayer = new HashMap<>(variableStack.peek());
     variableStack.push(newLayer);
     if (variableStack.size() > Compiler.MAX_RECURSION_DEPTH) {
+      while (variableStack.size() > 1) {
+        variableStack.pop();
+      }
       throw new StackOverflowException("Max recursion depth: (" + Compiler.MAX_RECURSION_DEPTH + ") exceeded.");
     }
   }

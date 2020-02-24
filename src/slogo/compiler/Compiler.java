@@ -40,7 +40,7 @@ public class Compiler {
     initAllCommands();
   }
 
-  private void initAllCommands() { //FIXME uses the reflections library
+  private void initAllCommands() { //uses the reflections library
     Reflections reflections = new Reflections("");//Compiler.class.getPackageName());
     Set<Class<? extends Command>> allClasses = reflections.getSubTypesOf(Command.class);
 
@@ -64,18 +64,27 @@ public class Compiler {
     addPatterns(lang, myCommands);
   }
 
-  //fixme allow for read from file? or make new multiline parser
-  //for multiline parser, split by newline regex, delete comments (regex), then join all by spaces
-  //then execute as one line3
   public String execute(String input) {
-    input = "[ " + String.join(" ", input.split(getNewline())) + " ]";
+    String[] lines = input.split(getNewline());
+    StringBuilder noComment = new StringBuilder();
+    for (String line: lines) {
+      try {
+        if (!getSymbol(line, myTypes).equals("Comment")) {
+          noComment.append(line);
+        }
+      } catch (InvalidSyntaxException e) {
+        noComment.append(line); //If it throws an exception, it's not a comment.
+        //Later code will handle the syntax checking
+      }
+    }
+    input = "[ " + noComment.toString() + " ]";
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
         throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
       }
       if (comm.containsDefinition()) {
-        comm =rerunParsing(comm, input);
+        comm = rerunParsing(comm, input);
       }
       return "" + comm.execute();
     } catch (CompilerException e) {
@@ -91,7 +100,7 @@ public class Compiler {
     }
     comm = parse(input);
     if (!comm.isComplete()) {
-      comm.recPrint(); //fixme
+      //comm.recPrint(); //fixme
       throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
     }
     return comm;
