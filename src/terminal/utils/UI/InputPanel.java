@@ -32,7 +32,7 @@ public class InputPanel extends HBox {
         inputArea.clearInput();
     }
 
-    public void setPositionCaretAtBeginning(int pos){inputArea.setCaretZero();}
+    public void setPositionCaretAtEnding(){inputArea.positionCaret(inputArea.getLength());}
 
     public void setPositionCaret(int pos){inputArea.positionCaret(pos);}
 

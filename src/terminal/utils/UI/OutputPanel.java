@@ -9,11 +9,11 @@ import terminal.utils.textLines.TestLine;
 public class OutputPanel extends ListView<String> {
 
     public OutputPanel(int width, int max_height){
-        super(FXCollections.observableArrayList());
+        super(FXCollections.observableArrayList("fuvk", "gfgf", "fg"));
 
         //disable focus
-        setMouseTransparent( true );
-        setFocusTraversable( false );
+        setMouseTransparent(true);
+        setFocusTraversable(false);
 
         setMinWidth(width); setMaxWidth(width);
         setMaxHeight(max_height); // grows with the list
@@ -22,6 +22,7 @@ public class OutputPanel extends ListView<String> {
     }
 
     public void addTexts(String str){
+        System.out.println("added text "+str);
         getItems().add(str);
     }
 

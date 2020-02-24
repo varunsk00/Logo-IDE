@@ -94,7 +94,7 @@ public class TerminalView extends ScrollPane {
      */
     public void setScrollBarToMax(){}
 
-    private void printBanner(String filePath){displayTextstoOutput(filePath);}
+    private void printBanner(String filePath){displayTextstoOutput(readBannerfromFile(filePath));}
 
     private String readBannerfromFile(String filePath){
         try {

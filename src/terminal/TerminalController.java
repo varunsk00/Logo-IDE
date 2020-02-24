@@ -31,23 +31,27 @@ public class TerminalController {
         // Control+V: paste the selected text
         KeyCombination CtrlP = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
         terminalView.getInputSection().setOnKeyPressed(keyEvent -> {
-            System.out.println("gewh");
+
             if (keyEvent.getCode() == KeyCode.PAGE_UP) {
                 displayTextTerminalInput(getPrevBufferEntry());
-            } else if (keyEvent.getCode() == KeyCode.PAGE_DOWN) {
+            }
+            else if (keyEvent.getCode() == KeyCode.PAGE_DOWN) {
                 displayTextTerminalInput(getNextBufferEntry());
-            } else if (keyEvent.getCode() == KeyCode.ENTER) {
+            }
+            else if (keyEvent.getCode() == KeyCode.ENTER) { //TODO: Enable the output of compiler message when the compiler is up
                 appendToOutput(terminalView.getCurrentInput());
+                //appendToOutput(sendCurrentInput());
                 terminalView.resetInputPanel();
-                appendToOutput(sendCurrentInput());
-            } else if (CtrlC.match(keyEvent)) {
+            }
+            else if (CtrlC.match(keyEvent)) {
                 String selectedText = terminalView.getSelectedText();
                 if (!selectedText.equals("")) {
                     ClipboardContent clipboardContent = new ClipboardContent();
                     clipboardContent.putString(selectedText);
                     clipboard.setContent(clipboardContent);
                 }
-            } else if (CtrlP.match(keyEvent)) {
+            }
+            else if (CtrlP.match(keyEvent)) {
                 displayTextTerminalInput(clipboard.getString());
             }
         });
@@ -56,6 +60,7 @@ public class TerminalController {
     private void displayTextTerminalInput(String str){terminalView.setCurrentInput(str);}
 
     private void appendToOutput(String str){
+        System.out.println(String.format("Displayed to output panel: %s",str));
         terminalView.displayTextstoOutput(str);
     }
 

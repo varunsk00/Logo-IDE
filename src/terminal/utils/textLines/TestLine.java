@@ -20,8 +20,8 @@ public class TestLine extends ListCell<String> {
 
     private final static String SEPARATOR = " ";
     private final static String INPUT_PROMPT = ">>>   "; // TODO: empirical adjustment
-    private final static String LOCAL_RESOURCE_MATCH_DICT = String.format("%s.regex_type.properties", TestLine.class.getPackageName());
-    private final static String LOCAL_RESOURCE_RESERVE_WORD_DICT = String.format("%s.reserved_words.properties", TestLine.class.getPackageName());
+    private final static String LOCAL_RESOURCE_MATCH_DICT = String.format("%s.regex_type", TestLine.class.getPackageName());
+    private final static String LOCAL_RESOURCE_RESERVE_WORD_DICT = String.format("%s.reserved_words", TestLine.class.getPackageName());
     private final static String regexDigits = "-?[0-9]+(?:\\.[0-9]+)?";
 
     private List<Map.Entry<String, Pattern>> matchDictionary;
@@ -30,11 +30,14 @@ public class TestLine extends ListCell<String> {
 
     @Override
     protected void updateItem(String str, boolean empty){
+        System.out.println("updating a new item "+str);
         super.updateItem(str, empty);
         if (!checkEmpty(str)){
+            System.out.println(str+" is not empty");
             setGraphic(createTextFlow(str));
         }
         else{
+            System.out.println(str+" is empty");
             setGraphic(null);
         }
     }
@@ -42,8 +45,9 @@ public class TestLine extends ListCell<String> {
     private Node createTextFlow(String str){
         //determines the type of the text string
         matchDictionary = initializeDictionary(LOCAL_RESOURCE_MATCH_DICT);
+        System.out.println(str+ "is "+getType(str));
         if (getType(str).equals(ERROR_MSG_CODE)){
-            return createErrotMsgFlow(str);
+            return createErrorMsgFlow(str);
         }
         else if (getType(str).equals(USER_INPUT_CODE)){
             return createUserInputFlow(str);
@@ -53,7 +57,7 @@ public class TestLine extends ListCell<String> {
         }
     }
 
-    private Node createErrotMsgFlow(String textLine){
+    private Node createErrorMsgFlow(String textLine){
         String[] textsStr = textLine.split(SEPARATOR);
         TextFlow flow = new TextFlow();
 
@@ -65,6 +69,7 @@ public class TestLine extends ListCell<String> {
     }
 
     private Node createUserInputFlow(String textLine){
+        System.out.println(textLine+" this is a user input");
         textLine = String.format("%s%s",INPUT_PROMPT, textLine);
         String[] textsStr = textLine.split(SEPARATOR);
         TextFlow flow = new TextFlow();
@@ -90,7 +95,7 @@ public class TestLine extends ListCell<String> {
     private Text createSpacer(){return new Text(SEPARATOR);}
 
     private boolean checkEmpty(String str){
-        return str==null || str.equals("") || !isEmpty();
+        return str==null || str.equals(""); //|| !isEmpty();
     }
 
     private String getTextStrType(String str){
@@ -118,6 +123,7 @@ public class TestLine extends ListCell<String> {
         List<Map.Entry<String, Pattern>> dict = new ArrayList<>();
         for (String key: Collections.list(resources.getKeys())){
             String regex = resources.getString(key);
+            //System.out.println(key+","+regex);
             dict.add(new AbstractMap.SimpleEntry<>(key,
                     Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
         }
