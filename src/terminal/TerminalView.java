@@ -18,8 +18,8 @@ import java.nio.file.Paths;
  */
 public class TerminalView extends ScrollPane {
     final static int INPUT_PANEL_HEIGHT = 40; //TODO: Empirical adjustment, needs calculation of the font size
-    final static String BANNER_FILEPATH = "banners/";
-    final static String WELCOME_BANNER = "welcome";
+    final static String BANNER_FILEPATH = "resources/banners/";
+    final static String WELCOME_BANNER = "welcome.txt";
 
     private InputPanel inputPanel;
     private OutputPanel outputPanel;
@@ -99,6 +99,7 @@ public class TerminalView extends ScrollPane {
     private void printBanner(String filePath){displayTextstoOutput(readBannerfromFile(filePath));}
 
     private String readBannerfromFile(String filePath){
+        System.out.println(filePath);
         try {
             return new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException e) {

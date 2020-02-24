@@ -3,6 +3,7 @@ package terminal.utils.textLines;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -92,10 +93,16 @@ public class TestLine extends ListCell<String> {
         String[] textsStr = textLine.split(SEPARATOR);
         TextFlow flow = new TextFlow();
 
-        for (String textStr: textsStr){
+        Text text = new Text(textLine);
+        text.setFill(Color.WHITE);
+
+        flow.getChildren().add(text);
+
+        /*for (String textStr: textsStr){
             ColorText text = new ColorText(textStr, OTHER_TYPE_CODE);
             flow.getChildren().addAll(text, createSpacer());
-        }
+        }*/
+
         return flow;
     }
 
