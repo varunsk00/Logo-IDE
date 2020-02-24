@@ -6,6 +6,8 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
 
 public class TurtleView extends Rectangle {
+    private static final double X_OFFSET = 320;
+    private static final double Y_OFFSET = 360;
     private String image_filepath = "slogo/resources/images/turtle_green.png";
     private Image img;
     public TurtleView(int width, int height){
@@ -19,6 +21,14 @@ public class TurtleView extends Rectangle {
 
     public void setImage(String filepath){
         image_filepath = filepath;
+    }
+
+    //FIXME: CENTER RECTANGLE BECAUSE COORDINATES ARE IN THE TOP LEFT
+    public void updateTurtleView(Turtle turtle) {
+        setRotate(turtle.getHeading());
+        setX(turtle.getXLocation() + X_OFFSET);
+        setY(turtle.getYLocation()+ Y_OFFSET);
+        setVisible(turtle.isShowTurtle());
     }
 }
 

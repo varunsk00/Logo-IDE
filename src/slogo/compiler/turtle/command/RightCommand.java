@@ -12,7 +12,7 @@ public class RightCommand extends TurtleCommand {
   @Override
   public double executeTurtle() {
     double val = args.get(0).execute();
-    turtle.rotate(-val);
+    turtle.rotate(val);
     return val;
   }
 
