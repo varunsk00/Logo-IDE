@@ -1,9 +1,0 @@
-@font-face{
-    font-family: 'dvsm';
-    src: url("font/dvsm.ttf");
-}
-.text-area{
-    -fx-font-family: 'dvsm';
-}
-
-

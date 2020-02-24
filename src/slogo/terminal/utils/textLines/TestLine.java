@@ -1,4 +1,4 @@
-package terminal.utils.textLines;
+package slogo.terminal.utils.textLines;
 
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
@@ -10,6 +10,9 @@ import javafx.scene.text.TextFlow;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * TestLine is the cell factory that generates a TextFlow object accordingly to the type of the text.
+ */
 public class TestLine extends ListCell<String> {
     private final static String OTHER_TYPE_CODE = "OTHER_TYPE";
     private final static String ERROR_MSG_CODE = "ERROR_MSG";
@@ -19,29 +22,41 @@ public class TestLine extends ListCell<String> {
 
     private final static String RESERVED_COMMAND_CODE = "RESERVED_COMMAND";
     private final static String DIGITS_CODE = "DIGITS";
+    private final static String COMMENT_CODE = "COMMENT";
     private final static String OTHER_COMMAND_CODE = "OTHER_COMMAND";
+
 
     private final static String SEPARATOR = " ";
     private final static String LOCAL_RESOURCE_MATCH_DICT = String.format("%s.regex_type", TestLine.class.getPackageName());
-    private final static String LOCAL_RESOURCE_RESERVE_WORD_DICT = String.format("%s.reserved_words", TestLine.class.getPackageName());
-    private final static String regexDigits = "\\-?[0-9]+(?:\\.[0-9]+)?";
+    private final static String RESERVE_WORD_DICT_PATH = "languages.";
+    private final static String regexDigits = "-?[0-9]+(?:\\.[0-9]+)?";
+    private final static String regexComment = "^#.*";
 
     private List<Map.Entry<String, Pattern>> matchDictionary;
+    private static String currentLanguage;
 
-    {setContentDisplay(ContentDisplay.GRAPHIC_ONLY); setStyle("-fx-font-family: \"Consolas\";");}
+    {setContentDisplay(ContentDisplay.GRAPHIC_ONLY); setStyle("-fx-font-family: \"Consolas\";"); currentLanguage="English";}
 
     @Override
     protected void updateItem(String str, boolean empty){
-        System.out.println("updating a new item "+str);
+        //System.out.println("updating a new item "+str);
         super.updateItem(str, empty);
         if (!checkEmpty(str)){
-            System.out.println(str+" is not empty");
+            //System.out.println(str+" is not empty");
             setGraphic(createTextFlow(str));
         }
         else{
-            System.out.println(str+" is empty");
+            //System.out.println(str+" is empty");
             setGraphic(null);
         }
+    }
+
+    /**
+     * Change to new language
+     * @param newLanguage language string
+     */
+    static public void changeLanguage(String newLanguage){
+        currentLanguage = newLanguage;
     }
 
     private Node createTextFlow(String str){
@@ -80,9 +95,17 @@ public class TestLine extends ListCell<String> {
         flow.getChildren().addAll(new ColorText(INPUT_PROMPT, getTextStrType(INPUT_PROMPT)),
                                   createSpacer(), createSpacer(), createSpacer());
 
+        boolean commentFlag = isComment(stripInputText(textLine));
+
         for (String textStr: textsStr){
             //System.out.println(textStr+" "+getTextStrType(textStr));
-            ColorText text = new ColorText(textStr, getTextStrType(textStr));
+            ColorText text;
+            if (commentFlag){
+                text = new ColorText(textStr, COMMENT_CODE);
+            }
+            else{
+                text = new ColorText(textStr, getTextStrType(textStr));
+            }
             flow.getChildren().addAll(text, createSpacer());
         }
         return flow;
@@ -108,7 +131,7 @@ public class TestLine extends ListCell<String> {
     }
 
     private String stripInputText(String input){
-        System.out.println(input);
+        //System.out.println(input);
         return input.substring(INPUT_PROMPT.length()+USER_CODE.length());
     }
 
@@ -128,8 +151,14 @@ public class TestLine extends ListCell<String> {
         return match(str, Pattern.compile(regexDigits, Pattern.CASE_INSENSITIVE));
     }
 
+    private boolean isComment(String str) {
+        //System.out.println(str);
+        //System.out.println(match(str, Pattern.compile(regexComment, Pattern.CASE_INSENSITIVE)));
+        return match(str, Pattern.compile(regexComment, Pattern.CASE_INSENSITIVE));}
+
     private boolean isReservedWord(String str){
-        List<Map.Entry<String, Pattern>> reserveWordDictionary = initializeDictionary(LOCAL_RESOURCE_RESERVE_WORD_DICT);
+        List<Map.Entry<String, Pattern>> reserveWordDictionary = initializeDictionary(String.format("%s%s",RESERVE_WORD_DICT_PATH, currentLanguage));
+
         for (Map.Entry<String, Pattern> e: reserveWordDictionary){
             //System.out.println(str+" "+e.getValue());
             if (match(str.toLowerCase(), e.getValue()) || match(str.toUpperCase(), e.getValue())) {

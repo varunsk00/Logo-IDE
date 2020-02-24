@@ -1,10 +1,10 @@
-package terminal;
+package slogo.terminal;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import terminal.utils.UI.InputPanel;
-import terminal.utils.UI.OutputPanel;
+import slogo.terminal.utils.UI.InputPanel;
+import slogo.terminal.utils.UI.OutputPanel;
 
 public class testTerminal extends Application {
 

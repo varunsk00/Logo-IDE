@@ -1,10 +1,14 @@
-package terminal;
+package slogo.terminal;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.input.*;
-import terminal.utils.history.HistoryBuffer;
+import slogo.terminal.utils.history.HistoryBuffer;
+import slogo.terminal.utils.textLines.TestLine;
 
+/**
+ * TerminalController manages the communication between a TerminalView object and the compiler
+ */
 public class TerminalController {
     private TerminalView terminalView;
     private HistoryBuffer history;
@@ -14,6 +18,10 @@ public class TerminalController {
         1. where is the compiler
     * */
 
+    /**
+     * Constructor
+     * @param view the TerminalView object
+     */
     public TerminalController(TerminalView view){
         this.terminalView = view;
         Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -21,13 +29,20 @@ public class TerminalController {
         keyBinding();
     }
 
-    private void keyBinding(){
+    /**
+     * Change to a new language
+     * @param newLanguage string for a language type
+     */
+    public void changeLanguage(String newLanguage){
+        TestLine.changeLanguage(newLanguage);
+    }
 
+    private void keyBinding(){
         //set the focus to the scroll bar
         terminalView.getOutputPanel().addEventHandler(MouseEvent.ANY, e-> {
             Node node = terminalView.getOutputPanel().lookup(".scroll-bar");
            if (node instanceof ScrollBar){
-               System.out.println("scrollbar found");
+               //System.out.println("scrollbar found");
                final ScrollBar bar = (ScrollBar) node;
                bar.requestFocus();
            }
@@ -38,25 +53,25 @@ public class TerminalController {
         // Control+V: paste the selected text
         KeyCombination CtrlP = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
 
-        terminalView.getInputSection().setOnKeyPressed(keyEvent -> {
+        terminalView.getInputArea().setOnKeyPressed(keyEvent -> {
 
             // Up | PageUp: get previous entry
             if (keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.PAGE_UP) {
-                System.out.println("page up");
+                //System.out.println("page up");
                 terminalView.resetInputPanel();
                 displayTextTerminalInput(getPrevBufferEntry());
                 terminalView.getInputPanel().setPositionCaretAtEnding();
             }
             // Down | PageDown: get next entry
             else if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.PAGE_DOWN) {
-                System.out.println("page down");
+                //System.out.println("page down");
                 terminalView.resetInputPanel();
                 displayTextTerminalInput(getNextBufferEntry());
                 terminalView.getInputPanel().setPositionCaretAtEnding();
             }
             // Enter : send the input to compiler
             else if (keyEvent.getCode() == KeyCode.ENTER) { //TODO: Enable the output of compiler message when the compiler is up
-                System.out.println("enter");
+                //System.out.println("enter");
                 terminalView.getInputPanel().setPositionCaretAtEnding();
                 appendToOutput(terminalView.getCurrentInput());
                 history.addEntry(terminalView.getCurrentInput(), 1);
@@ -82,14 +97,14 @@ public class TerminalController {
     private void displayTextTerminalInput(String str){terminalView.setCurrentInput(str);}
 
     private void appendToOutput(String str){
-        System.out.println(String.format("Displayed to output panel: %s",str));
+        //System.out.println(String.format("Displayed to output panel: %s",str));
         terminalView.displayTextstoOutput(str);
     }
 
     private String sendCurrentInput(){
         String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
-        System.out.println(userInput);
-        System.out.println("Unlinked to the compiler right now");
+        //System.out.println(userInput);
+        //System.out.println("Unlinked to the compiler right now");
         return null;
     }
 

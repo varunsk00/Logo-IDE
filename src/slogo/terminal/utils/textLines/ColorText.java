@@ -1,10 +1,18 @@
-package terminal.utils.textLines;
+package slogo.terminal.utils.textLines;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+/**
+ * ColorText fills color to the text according to its type
+ */
 public class ColorText extends Text {
 
+    /**
+     * Constructor
+     * @param str text content
+     * @param type text type
+     */
     public ColorText(String str, String type){
         super(str);
         setFill(getColorfromType(type));
@@ -31,9 +39,13 @@ public class ColorText extends Text {
         if (type.equals("DIGITS")){
             return Color.rgb(253, 247, 124);
         }
+        if (type.equals("COMMENT")){
+            return Color.rgb(105, 105, 105);
+        }
         if (type.equals("OTHER_COMMAND")){
             return Color.rgb(238, 233, 229);
         }
+
         System.out.println("Error: unimplemented string type in terminal display");
         //default color
         return Color.rgb(238, 233, 229);

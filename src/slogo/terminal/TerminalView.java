@@ -1,10 +1,10 @@
-package terminal;
+package slogo.terminal;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import terminal.utils.UI.InputPanel;
-import terminal.utils.UI.OutputPanel;
+import slogo.terminal.utils.UI.InputPanel;
+import slogo.terminal.utils.UI.OutputPanel;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,7 +29,7 @@ public class TerminalView extends ScrollPane {
     public TerminalView(int width, int height){initializeTerminal(width, height);}
 
     /**
-     * Sets the size of the terminal
+     * Resizes of the terminal
      * @param width width
      * @param height height
      **/
@@ -38,10 +38,18 @@ public class TerminalView extends ScrollPane {
         super.setPrefSize(width, height);
     }
 
+    /**
+     * Sends a text string to the output panel to be displayed
+     * @param textLine string
+     */
     public void displayTextstoOutput(String textLine){
         outputPanel.addTexts(textLine);
    }
 
+    /**
+     * [unimplemented]
+     * @return the text selected by the user
+     */
     public String getSelectedText(){
         if (!inputPanel.getSelectedText().equals(""))
             return inputPanel.getSelectedText();
@@ -50,24 +58,51 @@ public class TerminalView extends ScrollPane {
         return "";
     }
 
+    /**
+     * Returns the current input by the user
+     * @return string
+     */
     public String getCurrentInput(){
         return inputPanel.getText();
     }
 
+    /**
+     * Sets the current input to a given text string
+     * @param str text string
+     */
     public void setCurrentInput(String str){
         inputPanel.setText(str);
     }
 
+    /**
+     * Returns the user input code for identification
+     * @return code string
+     */
     public String getUSER_INPUT_CODE(){
         return inputPanel.getUSER_INPUT_CODE();
     }
 
+    /**
+     * Resets the content of the input panel
+     */
     public void resetInputPanel(){ inputPanel.reset();}
 
-    public Node getInputSection(){return inputPanel.getInputSection();}
+    /**
+     * Gets the input area
+     * @return the InputArea object (TODO: considering to change the generic type
+     */
+    public Node getInputArea(){return inputPanel.getInputArea();}
 
+    /**
+     * Gets the entire input panel
+     * @return the InputPanel obejct
+     */
     public InputPanel getInputPanel(){return inputPanel;}
 
+    /**
+     * Gets the output panel
+     * @return the OutputPanel object
+     */
     public Node getOutputPanel(){ return outputPanel;}
 
     private void clearTerminal(){
