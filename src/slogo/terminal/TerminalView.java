@@ -124,7 +124,6 @@ public class TerminalView extends ScrollPane {
     private void printBanner(String filePath){displayTextstoOutput(readBannerfromFile(filePath));}
 
     private String readBannerfromFile(String filePath){
-        System.out.println(filePath);
         try {
             return new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException e) {
