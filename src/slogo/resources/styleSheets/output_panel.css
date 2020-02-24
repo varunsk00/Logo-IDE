@@ -1,0 +1,41 @@
+@font-face{
+    font-family: "Consolas";
+    src: url("/slogo/resources/font/consola.ttf");
+}
+
+.list-view{
+    -fx-background-color: black;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+    -fx-control-inner-background: black;
+}
+
+.list-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+    -fx-border-width: 0px;
+}
+
+.list-cell:hover{
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+    -fx-border-width: 0px;
+}
+
+.list-cell:selected{
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+    -fx-border-width: 0px;
+}
+
+TextFlow{
+    -fx-background-color: black;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
