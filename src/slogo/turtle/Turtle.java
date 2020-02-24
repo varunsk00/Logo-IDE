@@ -3,13 +3,14 @@ package slogo.turtle;
 public class Turtle {
     public static final double CENTER_X = 0.0;
     public static final double CENTER_Y = 0.0;
-    public static final double NORTH = Math.PI/2;
+    public static final double NORTH = 0;
 
     private double xLocation;
     private double yLocation;
     private double heading;
     private boolean penDown;
     private boolean showTurtle;
+    private boolean clearScreen;
 
     public Turtle(){
         xLocation = CENTER_X;
@@ -20,20 +21,20 @@ public class Turtle {
     }
 
     public void move(double pixel){
-        xLocation = Math.cos(heading)*pixel + xLocation;
-        yLocation = Math.sin(heading)*pixel + yLocation;
+        xLocation = Math.sin(Math.toRadians(heading))*pixel + xLocation;
+        yLocation = -Math.cos(Math.toRadians(heading))*pixel + yLocation;
     }
 
     public void rotate(double degree){
-        heading = heading + Math.toRadians(degree);
+        setHeading(heading + degree);
     }
 
     public void setHeading(double degree){
-        heading = Math.toRadians(degree);
+        heading = degree % 360;
     }
 
     public void towards(double x, double y){
-        heading = Math.atan2(y - yLocation, x - xLocation);
+        setHeading(Math.atan2(x + xLocation, -y + yLocation)*(180/Math.PI));
     }
 
     public void showTurtle(boolean showTurtle) {
@@ -70,10 +71,14 @@ public class Turtle {
     }
 
     public double getHeading() {
-        return Math.toDegrees(heading);
+        return heading;
     }
 
     public boolean isShowTurtle() {
         return showTurtle;
+    }
+
+    public boolean isCleared(){
+        return clearScreen;
     }
 }
