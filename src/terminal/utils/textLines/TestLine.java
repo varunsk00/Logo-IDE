@@ -14,7 +14,8 @@ public class TestLine extends ListCell<String> {
     private final static String ERROR_MSG_CODE = "ERROR_MSG";
     private final static String USER_INPUT_CODE = "USER_INPUT";
     private final static String USER_CODE = "U@@U";
-    private final static String INPUT_PROMPT = ">>>   "; // TODO: empirical adjustment
+    private final static String INPUT_PROMPT = ">>>";
+    private final static int INITIAL_SPACER_NUM = 3;
 
     private final static String RESERVED_COMMAND_CODE = "RESERVED_COMMAND";
     private final static String DIGITS_CODE = "DIGITS";
@@ -74,6 +75,10 @@ public class TestLine extends ListCell<String> {
         textLine = String.format("%s%s",INPUT_PROMPT, textLine);
         String[] textsStr = stripInputText(textLine).split(SEPARATOR);
         TextFlow flow = new TextFlow();
+
+        //adding initial prompt
+        flow.getChildren().addAll(new ColorText(INPUT_PROMPT, getTextStrType(INPUT_PROMPT)),
+                                  createSpacer(), createSpacer());
 
         for (String textStr: textsStr){
             //System.out.println(textStr+" "+getTextStrType(textStr));
