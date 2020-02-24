@@ -1,5 +1,7 @@
 package slogo.compiler;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Modifier;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayDeque;
@@ -8,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.reflections.Reflections;
@@ -104,6 +107,20 @@ public class Compiler {
       throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
     }
     return comm;
+  }
+
+  public String executeFile (File file) throws FileNotFoundException {
+    String text = getTextFromFile(file);
+    return execute(text);
+  }
+
+  private String getTextFromFile(File file) throws FileNotFoundException {
+    StringBuilder ret = new StringBuilder();
+    Scanner scan = new Scanner(file);
+    while (scan.hasNextLine()) {
+      ret.append(scan.nextLine()).append("\n");
+    }
+    return ret.toString();
   }
 
 
