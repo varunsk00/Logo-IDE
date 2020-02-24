@@ -1,5 +1,6 @@
 package slogo.compiler;
 
+import java.lang.reflect.Modifier;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import slogo.compiler.exceptions.CompilerException;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.StackOverflowException;
 import slogo.compiler.types.CommandType;
+import slogo.turtle.Turtle;
 
 public class Compiler {
 
@@ -36,6 +38,8 @@ public class Compiler {
     //FIXME add resource file validator
     //FIXME add error msg strings
 
+    addTurtle("Turtle1", new Turtle()); //fixme remove in the future, this is just for testing
+
     initAllCommands();
   }
 
@@ -46,8 +50,10 @@ public class Compiler {
     for (Class c : allClasses) {
       try {
         //System.out.println(c);
-        Command a = (Command) c.getConstructor(String.class).newInstance(Command.INITIALIZATION);
-        a.register();
+        if (!Modifier.isAbstract(c.getModifiers())) {
+          Command a = (Command) c.getConstructor(String.class).newInstance(Command.INITIALIZATION);
+          a.register();
+        }
       } catch (Exception e) {
         //do nothing. This is okay because I'm just trying to initialize every command class
         //exceptions thrown by the constructors et al are okay
@@ -76,8 +82,8 @@ public class Compiler {
       }
       return "" + comm.execute();
     } catch (CompilerException e) {
-      throw e;
-      //return e.toString();
+      //throw e;
+      return e.toString();
     }
   }
 
@@ -204,5 +210,8 @@ public class Compiler {
     return regex.matcher(text).matches();
   }
 
+  public void addTurtle(String id, Turtle t) {
+    Memory.addTurtle(id, t);
+  }
 
 }

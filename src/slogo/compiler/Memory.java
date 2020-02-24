@@ -4,17 +4,21 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import slogo.compiler.exceptions.InvalidSyntaxException;
+import slogo.compiler.exceptions.InvalidTurtleException;
 import slogo.compiler.exceptions.StackOverflowException;
 import slogo.compiler.exceptions.StackUnderflowException;
 import slogo.compiler.exceptions.UnknownVariableException;
 import java.util.HashMap;
 import java.util.Map;
+import slogo.turtle.Turtle;
 
 public class Memory {
 
   private static ArrayDeque<Map<String, Double>> variableStack = new ArrayDeque<>();
   private static Map<String, Command> userDefinedCommandMap = new HashMap<>();
   private static Map<String, List<String>> userDefinedCommandVariablesMap = new HashMap<>();
+  private static Map<String, Turtle> turtleMap = new HashMap<>();
+  private static String currentTurtleID;
 
   static {
     variableStack.push(new HashMap<>());
@@ -73,6 +77,23 @@ public class Memory {
 
   public static void setUserDefinedCommandVariables(String name, List<String> list) {
     userDefinedCommandVariablesMap.put(name, list);
+  }
+
+  public static void addTurtle(String id, Turtle t) {
+    turtleMap.put(id, t);
+    currentTurtleID = id;
+  }
+
+  public static Turtle getTurtleByID(String id) {
+    Turtle ret = turtleMap.getOrDefault(id, null);
+    if (ret == null) {
+      throw new InvalidTurtleException("Turtle (" + id + ") does not exist.");
+    }
+    return ret;
+  }
+
+  public static Turtle getCurrentTurtle() {
+    return getTurtleByID(currentTurtleID);
   }
 
 }
