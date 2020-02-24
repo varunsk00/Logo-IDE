@@ -1,6 +1,6 @@
 package slogo.turtle;
 
-public abstract class Turtle {
+public class Turtle {
     public static final double CENTER_X = 0.0;
     public static final double CENTER_Y = 0.0;
     public static final double NORTH = Math.PI/2;
