@@ -1,10 +1,13 @@
 package slogo.controller;
-import javafx.geometry.Pos;
+import javafx.scene.shape.Rectangle;
+import slogo.compiler.Compiler;
+import slogo.turtle.Turtle;
+import slogo.turtle.TurtleHabitat;
+import slogo.compiler.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.FileChooser;
-import slogo.turtle.TurtleHabitat;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -17,11 +20,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLOutput;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 
 public class ParserController extends Application{
@@ -50,9 +53,16 @@ public class ParserController extends Application{
     private ButtonController header;
     private Stage myStage;
     private Timeline animation;
-    private TurtleHabitat myHabitat;
     private Color backgroundColor = Color.WHITE;
     private Color penColor = Color.BLACK;
+
+    private TurtleHabitat myHabitat;
+    private Turtle myTurtle1 = new Turtle();
+    private boolean t = true;
+    Rectangle r = new Rectangle(10,10);
+
+    private Compiler comp;
+    Scanner kb = new Scanner(System.in);
 
     /**
      * Empty Constructor Needed to run the application due to Application requirements Not called
@@ -82,6 +92,7 @@ public class ParserController extends Application{
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SLogo");
         startAnimationLoop();
+        startCompiler();
         setBorderPane();
         setHeader();
         setTurtleHabitat();
@@ -96,7 +107,6 @@ public class ParserController extends Application{
                 ex.printStackTrace();
             }
         });
-
         myStage = primaryStage;
         myStage.setScene(scene);
         myStage.setResizable(false);
@@ -121,8 +131,11 @@ public class ParserController extends Application{
         myHabitat.getTurtle().setX(HABITAT_WIDTH/2);
         myHabitat.getTurtle().setY(HABITAT_HEIGHT/2);
         root.setRight(myHabitat.getTurtleHabitat());
-        //root.setAlignment(myHabitat.getTurtleHabitat(), Pos.TOP_RIGHT);
+    }
 
+    private void startCompiler(){
+        comp = new Compiler();
+        comp.addTurtle("Turtle 1", myTurtle1);
     }
 
     private void startAnimationLoop() {
@@ -143,6 +156,18 @@ public class ParserController extends Application{
         if(header.getImageStatus()){
             handleFileChooser();
         }
+        if (header.getHelpStatus()) {
+            String[] commands = {"fd 50"};
+            for(int i = 0; i < commands.length; i++) {
+                String var = comp.execute(commands[i]);
+                //myHabitat.updateHabitat(penColor);
+                System.out.println(myTurtle1.getXLocation() + ": " + myTurtle1.getYLocation());
+                System.out.println(var);
+            }
+            header.setHelpOff();
+        }
+        myHabitat.getTurtle().updateTurtleView(myTurtle1);
+        root.setRight(myHabitat.getTurtleHabitat());
     }
 
     private void launchPenColorChooser() {
