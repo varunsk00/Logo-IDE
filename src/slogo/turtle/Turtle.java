@@ -81,4 +81,8 @@ public class Turtle {
     public boolean isCleared(){
         return clearScreen;
     }
+
+    public void setCleared(boolean clear) {
+        clearScreen = clear;
+    }
 }
