@@ -16,7 +16,6 @@ public class TestLine extends ListCell<String> {
     private final static String USER_INPUT_CODE = "USER_INPUT";
     private final static String USER_CODE = "U@@U";
     private final static String INPUT_PROMPT = ">>>";
-    private final static int INITIAL_SPACER_NUM = 3;
 
     private final static String RESERVED_COMMAND_CODE = "RESERVED_COMMAND";
     private final static String DIGITS_CODE = "DIGITS";
@@ -90,7 +89,7 @@ public class TestLine extends ListCell<String> {
     }
 
     private Node createOtherFlow(String textLine){
-        String[] textsStr = textLine.split(SEPARATOR);
+
         TextFlow flow = new TextFlow();
 
         Text text = new Text(textLine);
@@ -98,7 +97,9 @@ public class TestLine extends ListCell<String> {
 
         flow.getChildren().add(text);
 
-        /*for (String textStr: textsStr){
+        /*
+        String[] textsStr = textLine.split(SEPARATOR);
+        for (String textStr: textsStr){
             ColorText text = new ColorText(textStr, OTHER_TYPE_CODE);
             flow.getChildren().addAll(text, createSpacer());
         }*/
@@ -108,7 +109,7 @@ public class TestLine extends ListCell<String> {
 
     private String stripInputText(String input){
         System.out.println(input);
-        return input.substring(INPUT_PROMPT.length()+USER_CODE.length(), input.length());
+        return input.substring(INPUT_PROMPT.length()+USER_CODE.length());
     }
 
     private Text createSpacer(){return new Text(SEPARATOR);}

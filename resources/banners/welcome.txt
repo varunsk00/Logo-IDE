@@ -6,4 +6,4 @@
     ██║   ╚██████╔╝██║   ██║    ██║   ███████╗███████╗      ██╗
     ╚═╝    ╚═════╝ ╚═╝   ╚═╝    ╚═╝   ╚══════╝╚══════╝      ╚═╝
 
-Welcome to Turtle Parser.
+Welcome to Turtle Parser(basic).

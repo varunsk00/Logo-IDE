@@ -2,7 +2,6 @@ package terminal;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import terminal.utils.UI.InputPanel;
 import terminal.utils.UI.OutputPanel;
@@ -71,10 +70,6 @@ public class TerminalView extends ScrollPane {
 
     public Node getOutputPanel(){ return outputPanel;}
 
-    public void clearInput(){
-        inputPanel.clearInput();
-    }
-
     private void clearTerminal(){
         inputPanel.clearInput();
         outputPanel.clearTexts();
@@ -89,11 +84,6 @@ public class TerminalView extends ScrollPane {
         //getChildren().addAll(outputPanel, inputPanel);
         printBanner(String.format("%s%s", BANNER_FILEPATH, WELCOME_BANNER));
     }
-
-    /**
-     * TODO: should keep the scroll bar at bottom every time the user input text?
-     */
-    public void setScrollBarToMax(){}
 
     private void printBanner(String filePath){displayTextstoOutput(readBannerfromFile(filePath));}
 

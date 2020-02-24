@@ -1,14 +1,11 @@
 package terminal;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.input.*;
 import terminal.utils.history.HistoryBuffer;
 
 public class TerminalController {
-    private Clipboard clipboard;
     private TerminalView terminalView;
     private HistoryBuffer history;
 
@@ -19,19 +16,14 @@ public class TerminalController {
 
     public TerminalController(TerminalView view){
         this.terminalView = view;
-        this.clipboard = Clipboard.getSystemClipboard();
+        Clipboard clipboard = Clipboard.getSystemClipboard();
         this.history = new HistoryBuffer();
         keyBinding();
     }
 
     private void keyBinding(){
 
-        // PageUp: previous entry
-        // PageDown: next entry
-        // Enter: send the input to compiler
-        // Control+C: copy the selected text
-        //terminalView.getOutputPanel().setFocusTraversable(true);
-        //terminalView.getOutputPanel().lookup(".scroll-bar").setMouseTransparent(false);
+        //set the focus to the scroll bar
         terminalView.getOutputPanel().addEventHandler(MouseEvent.ANY, e-> {
             Node node = terminalView.getOutputPanel().lookup(".scroll-bar");
            if (node instanceof ScrollBar){
@@ -40,24 +32,29 @@ public class TerminalController {
                bar.requestFocus();
            }
         });
+
+        // Control+C: copy the selected text
         KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
         // Control+V: paste the selected text
         KeyCombination CtrlP = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
 
         terminalView.getInputSection().setOnKeyPressed(keyEvent -> {
-            System.out.println(keyEvent.getCode());
-            if (keyEvent.getCode() == KeyCode.UP) {
+
+            // Up | PageUp: get previous entry
+            if (keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.PAGE_UP) {
                 System.out.println("page up");
                 terminalView.resetInputPanel();
                 displayTextTerminalInput(getPrevBufferEntry());
                 terminalView.getInputPanel().setPositionCaretAtEnding();
             }
-            else if (keyEvent.getCode() == KeyCode.DOWN) {
+            // Down | PageDown: get next entry
+            else if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.PAGE_DOWN) {
                 System.out.println("page down");
                 terminalView.resetInputPanel();
                 displayTextTerminalInput(getNextBufferEntry());
                 terminalView.getInputPanel().setPositionCaretAtEnding();
             }
+            // Enter : send the input to compiler
             else if (keyEvent.getCode() == KeyCode.ENTER) { //TODO: Enable the output of compiler message when the compiler is up
                 System.out.println("enter");
                 terminalView.getInputPanel().setPositionCaretAtEnding();

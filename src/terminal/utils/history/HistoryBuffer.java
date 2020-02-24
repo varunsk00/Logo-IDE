@@ -69,7 +69,7 @@ public class HistoryBuffer{
     }
 
     private String stripInputText(String input){
-        return input.substring(USER_INPUT_CODE.length(), input.length());
+        return input.substring(USER_INPUT_CODE.length());
     }
 
 }

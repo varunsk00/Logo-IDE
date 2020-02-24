@@ -3,11 +3,8 @@ features:
    - up/down previous/next
    - print default banner
    - scrollable
-   - enable clipboard (prob in controller?)
-
-more on analyzing the logic
 
 to-do lists:
-scrollable
 enable all the languages
 move files to correct position
+documentation
