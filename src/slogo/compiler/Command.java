@@ -2,6 +2,7 @@ package slogo.compiler;
 
 import java.util.ArrayList;
 import java.util.List;
+import slogo.compiler.control.MakeUserInstructionCommand;
 
 public abstract class Command {
 
@@ -69,10 +70,47 @@ public abstract class Command {
   @Override
   public String toString() {
     StringBuilder ret = new StringBuilder(this.getClass().getName() + " ");
-    for (Command i : args) {
+    /*for (Command i : args) {
       ret.append(i.toString()).append(" ");
-    }
+    }*/
     return ret.toString();
+  }
+
+  public void recPrint() {
+    System.out.print(""+this+" ");
+    for (Command c: args) {
+      System.out.print(""+c+" ");
+    }
+    for (Command c: args) {
+      c.recPrint();
+    }
+    System.out.println();
+
+  }
+
+  public boolean containsDefinition() {
+    if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
+      return true;
+    }
+    for (Command c: args) {
+      if (c.containsDefinition()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public Command findFirstDef() {
+    if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
+      return this;
+    }
+    for (Command c: args) {
+      Command ret = c.findFirstDef();
+      if (ret != null) {
+        return ret;
+      }
+    }
+    return null;
   }
 
 

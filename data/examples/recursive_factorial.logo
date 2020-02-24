@@ -1,0 +1,1 @@
+to fact [ :n ] [ ifelse less? :n 1 [ 1 ] [ * :n fact set :n - :n 1 ] ]
