@@ -1,5 +1,6 @@
 package slogo.turtle;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class TurtleHabitat {
@@ -20,9 +21,12 @@ public class TurtleHabitat {
         return turtle;
     }
 
-    public void updateTurtleHabitat(Turtle turtle){
-        myTurtleHabitat.getChildren().clear();
-        Rectangle r = new Rectangle();
-        myTurtleHabitat.getChildren().add(r);
+    public Rectangle updateHabitat(Color penColor){
+        Rectangle r = new Rectangle(1,1);
+        r.setX(turtle.getX());
+        System.out.println(turtle.getX());
+        r.setY(turtle.getY());
+        r.setFill(penColor);
+        return r;
     }
 }
