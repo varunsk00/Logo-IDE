@@ -157,7 +157,7 @@ public class ParserController extends Application{
             handleFileChooser();
         }
         if (header.getHelpStatus()) {
-            String[] commands = {"fd 50"};
+            String[] commands = {"fd fd 50"};
             for(int i = 0; i < commands.length; i++) {
                 String var = comp.execute(commands[i]);
                 //myHabitat.updateHabitat(penColor);
