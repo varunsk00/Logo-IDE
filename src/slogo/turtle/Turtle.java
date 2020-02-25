@@ -32,7 +32,7 @@ public class Turtle {
 
     public void setHeading(double degree){
         heading = degree % 360;
-    } 
+    }
 
     public void towards(double x, double y){
         setHeading((Math.atan2(x-xLocation, -(y-yLocation))* RAD_TO_DEG_RATIO));
