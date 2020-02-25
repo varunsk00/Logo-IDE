@@ -26,7 +26,7 @@ public class TestLine extends ListCell<String> {
     private final static String OTHER_COMMAND_CODE = "OTHER_COMMAND";
 
 
-    private final static String SEPARATOR = "\\s+";
+    private final static String SEPARATOR = " ";
     private final static String LOCAL_RESOURCE_MATCH_DICT = String.format("%s.regex_type", TestLine.class.getPackageName());
     private final static String RESERVE_WORD_DICT_PATH = "slogo/resources/languages/";
     private final static String regexDigits = "-?[0-9]+(?:\\.[0-9]+)?";
