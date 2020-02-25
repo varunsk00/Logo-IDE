@@ -78,6 +78,7 @@ public class TerminalController {
                 terminalView.getInputPanel().setPositionCaretAtEnding();
                 appendToOutput(terminalView.getCurrentInput());
                 history.addEntry(terminalView.getCurrentInput(), 1);
+                history.resetIndex(); //Added by Maverick
                 appendToOutput(sendCurrentInput());
                 terminalView.resetInputPanel();
             }
