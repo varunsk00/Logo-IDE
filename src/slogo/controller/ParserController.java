@@ -26,7 +26,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
 
-//TODO: PEN FUNCTIONALITY, SYSTEM-WIDE LANGUAGE SWITCHING, RESIZE TURTLE
+//TODO(REQUIRED): SYSTEM-WIDE LANGUAGE SWITCHING
+//TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
+//TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
+//TODO(FUN): RESIZE TURTLE SLIDER
 
 public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
@@ -126,8 +129,6 @@ public class ParserController extends Application{
     private void setTurtleHabitat() {
         myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
         myHabitat.getTurtleHabitat().getStyleClass().add("habitat");
-        myHabitat.getTurtle().setX(HABITAT_WIDTH/2);
-        myHabitat.getTurtle().setY(HABITAT_HEIGHT/2);
         root.setRight(myHabitat.getTurtleHabitat());
     }
 
@@ -156,6 +157,10 @@ public class ParserController extends Application{
         }
         if (header.getHelpStatus()) {
         }
+        if(myTurtle1.isPenDown()){
+            myHabitat.penDraw(penColor, myTurtle1.getXLocation(), myTurtle1.getYLocation());
+        }
+        myHabitat.setBackground(backgroundColor);
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
         root.setRight(myHabitat.getTurtleHabitat());
         term_controller.changeLanguage(header.getLanguageStatus());
@@ -169,11 +174,7 @@ public class ParserController extends Application{
         ColorPicker cp = new ColorPicker();
         // create a event handler
         EventHandler<ActionEvent> event = e -> {
-            // color
             penColor = cp.getValue();
-            // set text of the label to RGB value of color
-            System.out.println("Pen Color: Red = " + penColor.getRed() + ", Green = " + penColor.getGreen()
-                    + ", Blue = " + penColor.getBlue());
             s.close();
         };
         // set listener
@@ -195,7 +196,6 @@ public class ParserController extends Application{
         EventHandler<ActionEvent> event = e -> {
             // color
             backgroundColor = cp.getValue();
-            myHabitat.getTurtleHabitat().setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
             s.close();
         };
         // set listener
@@ -206,6 +206,25 @@ public class ParserController extends Application{
         s.setScene(sc);
         s.show();
     }
+
+//    private void createColorPicker(Color variable){
+//        Stage s = new Stage();
+//        s.setTitle(myResources.getString("ColorWindow"));
+//        TilePane r = new TilePane();
+//        ColorPicker cp = new ColorPicker();
+//        // create a event handler
+//        EventHandler<ActionEvent> event = e -> {
+//            variable = cp.getValue();
+//            s.close();
+//        };
+//        // set listener
+//        cp.setValue(variable);
+//        cp.setOnAction(event);
+//        r.getChildren().add(cp);
+//        Scene sc = new Scene(r, 200, 200);
+//        s.setScene(sc);
+//        s.show();
+//    }
 
     private static FileChooser makeChooser(String extensionsAccepted) {
         String[] extensions = extensionsAccepted.split(",");
