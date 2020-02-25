@@ -19,7 +19,7 @@ public class TerminalView extends ScrollPane {
     final static int INPUT_PANEL_HEIGHT = 40; //TODO: Empirical adjustment, needs calculation of the font size
     final static int HEADER_HEIGHT = 50;
     final static String BANNER_FILEPATH = "src/slogo/resources/banners/";
-    final static String WELCOME_BANNER = "welcome.txt";
+    final static String WELCOME_BANNER = "welcome_small.txt";
 
     private InputPanel inputPanel;
     private OutputPanel outputPanel;

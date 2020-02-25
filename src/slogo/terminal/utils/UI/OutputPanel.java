@@ -38,6 +38,7 @@ public class OutputPanel extends ListView<String> {
     public void addTexts(String str){
         //System.out.println("added text "+str);
         getItems().add(str);
+        scrollTo(getItems().size());
     }
 
     /**
