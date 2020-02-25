@@ -37,6 +37,12 @@ public class TestLine extends ListCell<String> {
 
     {setContentDisplay(ContentDisplay.GRAPHIC_ONLY); setStyle("-fx-font-family: \"Consolas\";"); currentLanguage="English";}
 
+    public TestLine(double width) {
+        super();
+        setWrapText(true);
+        setPrefWidth(width);
+    }
+
     @Override
     protected void updateItem(String str, boolean empty){
         //System.out.println("updating a new item "+str);
