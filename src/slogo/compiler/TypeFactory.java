@@ -6,6 +6,10 @@ import java.util.Map;
 
 public class TypeFactory {
 
+  private TypeFactory() {
+    //do nothing
+  }
+
   private static Map<String, Command> registeredCommands = new HashMap<>();
 
   public static void registerCommand(String id, Command comm) {

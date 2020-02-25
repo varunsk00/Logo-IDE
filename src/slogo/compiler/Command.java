@@ -8,7 +8,6 @@ public abstract class Command {
 
   protected static final String INITIALIZATION = "this is an initialization string that should never happen";
 
-  public int desiredArgs;
   protected ArrayList<Command> args;
 
   public Command(String declaration) {

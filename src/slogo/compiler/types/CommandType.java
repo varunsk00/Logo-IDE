@@ -12,7 +12,7 @@ public class CommandType extends Command {
 
   public CommandType(String declaration) {
     super(declaration);
-    if (declaration == Command.INITIALIZATION) {
+    if (declaration.equals(Command.INITIALIZATION)) {
       return;
     }
     name = declaration;

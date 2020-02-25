@@ -31,7 +31,7 @@ public class Compiler {
   private List<Entry<String, Pattern>> myTypes;
   private List<Entry<String, Pattern>> myCommands;
 
-  public static int MAX_RECURSION_DEPTH = 1000;
+  public static final int MAX_RECURSION_DEPTH = 1000;
 
   public Compiler() {
     myTypes = new ArrayList<>();

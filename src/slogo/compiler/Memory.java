@@ -1,7 +1,10 @@
 package slogo.compiler;
 
+import static slogo.compiler.Compiler.MAX_RECURSION_DEPTH;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.InvalidTurtleException;
@@ -24,6 +27,10 @@ public class Memory {
     variableStack.push(new HashMap<>());
   }
 
+  private Memory() {
+    //do nothing
+  }
+
   public static double getVariable(String name) {
     Double ret = variableStack.peek().getOrDefault(name, null);
     if (ret == null) {
@@ -39,17 +46,17 @@ public class Memory {
   public static void pushMemoryStack() {
     HashMap<String, Double> newLayer = new HashMap<>(variableStack.peek());
     variableStack.push(newLayer);
-    if (variableStack.size() > Compiler.MAX_RECURSION_DEPTH) {
+    if (variableStack.size() > MAX_RECURSION_DEPTH) {
       while (variableStack.size() > 1) {
         variableStack.pop();
       }
-      throw new StackOverflowException("Max recursion depth: (" + Compiler.MAX_RECURSION_DEPTH + ") exceeded.");
+      throw new StackOverflowException("Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
     }
   }
 
   public static void popMemoryStack() {
     variableStack.pop();
-    if (variableStack.size() < 1) {
+    if (variableStack.isEmpty()) {
       throw new StackUnderflowException("Attempted to pop global memory on stack");
     }
   }
@@ -71,11 +78,7 @@ public class Memory {
   }
 
   public static List<String> getCommandVariables(String name) {
-    List<String> ret = userDefinedCommandVariablesMap.getOrDefault(name, new ArrayList<>());
-    /*if (ret == null) {
-      throw new InvalidSyntaxException("Identifier (" + name + ") not recognized.");
-    }*/
-    return ret;
+    return new ArrayList<>(userDefinedCommandVariablesMap.getOrDefault(name, new ArrayList<>()));
   }
 
   public static void setUserDefinedCommandVariables(String name, List<String> list) {
@@ -97,6 +100,18 @@ public class Memory {
 
   public static Turtle getCurrentTurtle() {
     return getTurtleByID(currentTurtleID);
+  }
+
+  public static Collection<String> getAllVariableNames() {
+    return variableStack.peek().keySet();
+  }
+
+  public static Collection<String> getAllUserDefinedCommands() {
+    return userDefinedCommandMap.keySet();
+  }
+
+  public static Collection<String> getAllTurtleIDs() {
+    return turtleMap.keySet();
   }
 
 }
