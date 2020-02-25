@@ -258,6 +258,16 @@ public class Compiler {
     return memory.getAllTurtleIDs();
   }
 
+  public Turtle getTurtleByID(String id) {
+    return memory.getTurtleByID(id);
+  }
 
+  public double getVariable(String name) {
+    return memory.getVariable(name);
+  }
+
+  public List<String> getCommandVariables(String name){
+    return memory.getCommandVariables(name);
+  }
 
 }
