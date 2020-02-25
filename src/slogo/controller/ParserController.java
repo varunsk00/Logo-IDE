@@ -124,7 +124,7 @@ public class ParserController extends Application{
     }
 
     private void setTurtleHabitat() {
-        myHabitat = new TurtleHabitat();
+        myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
         myHabitat.getTurtleHabitat().getStyleClass().add("habitat");
         myHabitat.getTurtle().setX(HABITAT_WIDTH/2);
         myHabitat.getTurtle().setY(HABITAT_HEIGHT/2);
