@@ -1,13 +1,11 @@
 package slogo.controller;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Screen;
 import slogo.compiler.Compiler;
 import slogo.turtle.Turtle;
 import slogo.turtle.TurtleHabitat;
 import slogo.terminal.TerminalView;
 import slogo.terminal.TerminalController;
-import slogo.compiler.*;
+
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.ImagePattern;
@@ -26,14 +24,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
+//TODO: PEN FUNCTIONALITY, SYSTEM-WIDE LANGUAGE SWITCHING, RESIZE TURTLE
 
 public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
-    private static final String IMAGE_DIRECTORY = "slogo/resources/images";
+    private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
     private static final String RESOURCES_PACKAGE = "slogo.resources.languages.";
     private static final String GUI_LANGUAGE = "English_GUI";
     private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + GUI_LANGUAGE);
@@ -41,27 +38,17 @@ public class ParserController extends Application{
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private static final int SCENE_HEADER = 25;
-    //private static final double SCENE_WIDTH = 1280;
-    //private static final double SCENE_HEIGHT = 720;
+    private static final double SCENE_WIDTH = 1280;
+    private static final double SCENE_HEIGHT = 720;
 
-    //private static final double HABITAT_WIDTH = SCENE_WIDTH/2;
-    //private static final double HABITAT_HEIGHT = SCENE_HEIGHT;
+    private static final double HABITAT_WIDTH = SCENE_WIDTH/2;
+    private static final double HABITAT_HEIGHT = SCENE_HEIGHT;
 
-    private double SCENE_WIDTH = 1280;
-    private double SCENE_HEIGHT = 720;
-
-    private double HABITAT_WIDTH = SCENE_WIDTH/2;
-    private double HABITAT_HEIGHT = SCENE_HEIGHT;
-
-
-    private static final Color GRID_BACKGROUND = Color.BEIGE;
     private static final Color ALL_COLOR = Color.ALICEBLUE;
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
 
     public static final FileChooser FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
     private BorderPane root;
-    private HBox center;
     private ButtonController header;
     private Stage myStage;
     private Timeline animation;
@@ -73,8 +60,6 @@ public class ParserController extends Application{
 
     private TurtleHabitat myHabitat;
     private Turtle myTurtle1 = new Turtle();
-    private boolean t = true;
-    Rectangle r = new Rectangle(10,10);
 
     private Compiler comp;
 
@@ -105,39 +90,20 @@ public class ParserController extends Application{
      */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SLogo");
-        primaryStage.setMaximized(true);
-        changeSceneSize();
         startAnimationLoop();
         startCompiler();
         setBorderPane();
-        setHeader();
         setTurtleHabitat();
         setTerminalView();
+        setHeader();
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets().add(STYLESHEET);
-
-        //FIXME: WASD FOR TESTING; EVENTUALLY REMOVE
-        scene.setOnKeyPressed(e -> {
-            try {
-                handleKeyInput(e.getCode());
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
-        });
         myStage = primaryStage;
         myStage.setScene(scene);
         myStage.setResizable(false);
         myStage.show();
     }
 
-    private void changeSceneSize(){
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        SCENE_WIDTH = screenBounds.getMaxX();
-        SCENE_HEIGHT = screenBounds.getMaxY() ;
-
-        HABITAT_WIDTH = SCENE_WIDTH/2;
-        HABITAT_HEIGHT = SCENE_HEIGHT;
-    }
     private void setBorderPane() {
         root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -151,18 +117,18 @@ public class ParserController extends Application{
     }
 
     private void setTerminalView() {
-        term = new TerminalView( (int) SCENE_WIDTH/2, (int) SCENE_HEIGHT - SCENE_HEADER);
+        term = new TerminalView( (int) SCENE_WIDTH/2, (int) SCENE_HEIGHT);
         term_controller = new TerminalController(term);
         term_controller.setCompiler(comp);
         root.setLeft(term);
     }
 
     private void setTurtleHabitat() {
-        myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
+        myHabitat = new TurtleHabitat();
         myHabitat.getTurtleHabitat().getStyleClass().add("habitat");
         myHabitat.getTurtle().setX(HABITAT_WIDTH/2);
         myHabitat.getTurtle().setY(HABITAT_HEIGHT/2);
-        root.setCenter(myHabitat.getTurtleHabitat());
+        root.setRight(myHabitat.getTurtleHabitat());
     }
 
     private void startCompiler(){
@@ -189,18 +155,10 @@ public class ParserController extends Application{
             handleFileChooser();
         }
         if (header.getHelpStatus()) {
-            String[] commands = {"fd fd 50"};
-            for(int i = 0; i < commands.length; i++) {
-                String var = comp.execute(commands[i]);
-                //myHabitat.updateHabitat(penColor);
-                System.out.println(var);
-            }
-            header.setHelpOff();
         }
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
-        root.setCenter(myHabitat.getTurtleHabitat());
+        root.setRight(myHabitat.getTurtleHabitat());
         term_controller.changeLanguage(header.getLanguageStatus());
-        System.out.println(header.getLanguageStatus());
     }
 
     private void launchPenColorChooser() {
@@ -253,8 +211,8 @@ public class ParserController extends Application{
         String[] extensions = extensionsAccepted.split(",");
         FileChooser result = new FileChooser();
         result.setTitle(myResources.getString("OpenFile"));
-        // pick a reasonable place to start searching for files
-        result.setInitialDirectory(new File(System.getProperty("user.dir"),"src/slogo/resources/images"));
+        // pick Image Directory to start searching for files
+        result.setInitialDirectory(new File(System.getProperty("user.dir"),IMAGE_DIRECTORY));
         result.getExtensionFilters()
                 .setAll(new FileChooser.ExtensionFilter(myResources.getString("ImageFile"), extensions[0], extensions[1]));
         return result;
@@ -267,23 +225,6 @@ public class ParserController extends Application{
             return;
         }
         header.setImageOff();
-        System.out.println(dataFile.getPath());
         myHabitat.getTurtle().setFill(new ImagePattern(new Image("file:" + dataFile.getPath())));
     }
-
-    public void handleKeyInput (KeyCode code) throws FileNotFoundException {
-        if(code == KeyCode.W){
-            myHabitat.getTurtle().setRotate(0);
-            myHabitat.getTurtle().setY(myHabitat.getTurtle().getY()-1); }
-        if(code == KeyCode.A){
-            myHabitat.getTurtle().setRotate(-90);
-            myHabitat.getTurtle().setX(myHabitat.getTurtle().getX()-1); }
-        if(code == KeyCode.S){
-            myHabitat.getTurtle().setRotate(180);
-            myHabitat.getTurtle().setY(myHabitat.getTurtle().getY()+1); }
-        if(code == KeyCode.D){
-            myHabitat.getTurtle().setRotate(90);
-            myHabitat.getTurtle().setX(myHabitat.getTurtle().getX()+1); }
-    }
-
 }
