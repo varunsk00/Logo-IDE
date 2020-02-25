@@ -3,7 +3,7 @@ package slogo.compiler.types;
 import slogo.compiler.Command;
 import slogo.compiler.Memory;
 
-public class VariableType extends Command {
+public class VariableType extends TypeCommand {
 
   private String name;
 
@@ -14,7 +14,7 @@ public class VariableType extends Command {
 
   @Override
   public double execute() {
-    return Memory.getVariable(name);
+    return memory.getVariable(name);
   }
 
   @Override
