@@ -31,10 +31,10 @@ public class Turtle {
 
     public void setHeading(double degree){
         heading = degree % 360;
-    }
+    } //FIX MAGIC NUMBER
 
     public void towards(double x, double y){
-        setHeading(Math.atan2(x + xLocation, -y + yLocation)*(180/Math.PI));
+        setHeading((Math.atan2(-(x-xLocation), y-yLocation)*(180/Math.PI))+180);  //FIX MAGIC NUMBER
     }
 
     public void showTurtle(boolean showTurtle) {
