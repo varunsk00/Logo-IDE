@@ -5,14 +5,14 @@ import static slogo.compiler.Compiler.MAX_RECURSION_DEPTH;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.InvalidTurtleException;
 import slogo.compiler.exceptions.StackOverflowException;
 import slogo.compiler.exceptions.StackUnderflowException;
 import slogo.compiler.exceptions.UnknownVariableException;
-import java.util.HashMap;
-import java.util.Map;
 import slogo.turtle.Turtle;
 
 public class Memory {
@@ -50,7 +50,8 @@ public class Memory {
       while (variableStack.size() > 1) {
         variableStack.pop();
       }
-      throw new StackOverflowException("Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
+      throw new StackOverflowException(
+          "Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
     }
   }
 

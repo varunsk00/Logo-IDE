@@ -17,14 +17,14 @@ public class SetPostionCommand extends TurtleCommand {
     double y = args.get(1).execute();
     turtle.setXLocation(x);
     turtle.setYLocation(y);
-    double dx = x-currx;
-    double dy = y-curry;
-    return Math.pow(dx*dx+dy*dy, .5);
+    double dx = x - currx;
+    double dy = y - curry;
+    return Math.pow(dx * dx + dy * dy, .5);
   }
 
   @Override
   public boolean isCompleteSub() {
-    return args.size()==2;
+    return args.size() == 2;
   }
 
   @Override

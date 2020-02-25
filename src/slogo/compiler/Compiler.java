@@ -23,15 +23,13 @@ import slogo.turtle.Turtle;
 
 public class Compiler {
 
+  public static final int MAX_RECURSION_DEPTH = 1000;
   private static final String LANGUAGES_PACKAGE_EXTENSION = "slogo.resources.languages.";
   private static final String RESOURCES_PACKAGE = LANGUAGES_PACKAGE_EXTENSION;
   private static final String DEFAULT_LANGUAGE = "English";
   private static final String SYNTAX_FILE = "Syntax";
-
   private List<Entry<String, Pattern>> myTypes;
   private List<Entry<String, Pattern>> myCommands;
-
-  public static final int MAX_RECURSION_DEPTH = 1000;
 
   public Compiler() {
     myTypes = new ArrayList<>();
@@ -70,7 +68,7 @@ public class Compiler {
   public String execute(String input) {
     String[] lines = input.split(getNewline());
     StringBuilder noComment = new StringBuilder();
-    for (String line: lines) {
+    for (String line : lines) {
       try {
         if (!getSymbol(line, myTypes).equals("Comment")) {
           noComment.append(line);
@@ -109,7 +107,7 @@ public class Compiler {
     return comm;
   }
 
-  public String executeFile (File file) throws FileNotFoundException {
+  public String executeFile(File file) throws FileNotFoundException {
     String text = getTextFromFile(file);
     return execute(text);
   }

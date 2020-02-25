@@ -29,7 +29,7 @@ public class CommandType extends Command {
     //recPrint();
     //Command exe = Memory.getUserDefinedCommand(name);
     //exe.recPrint();
-    double ret =  Memory.getUserDefinedCommand(name).execute();
+    double ret = Memory.getUserDefinedCommand(name).execute();
     Memory.popMemoryStack();
     return ret;
   }
@@ -44,7 +44,7 @@ public class CommandType extends Command {
     return new CommandType(declaration);
   }
 
-  public String getName () {
+  public String getName() {
     return name;
   }
 

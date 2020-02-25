@@ -14,12 +14,12 @@ public class SetHeadingCommand extends TurtleCommand {
     double currentHead = turtle.getHeading();
     double val = args.get(0).execute();
     turtle.setHeading(val);
-    return val-currentHead;
+    return val - currentHead;
   }
 
   @Override
   public boolean isCompleteSub() {
-    return args.size()==1;
+    return args.size() == 1;
   }
 
   @Override
