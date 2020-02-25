@@ -1,6 +1,6 @@
 package slogo.compiler.exceptions;
 
-public class StackUnderflowException extends CompilerException{
+public class StackUnderflowException extends CompilerException {
 
   public StackUnderflowException(String msg) {
     super(msg);

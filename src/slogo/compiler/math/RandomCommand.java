@@ -1,7 +1,7 @@
 package slogo.compiler.math;
 
-import slogo.compiler.Command;
 import java.util.Random;
+import slogo.compiler.Command;
 
 public class RandomCommand extends Command {
 
