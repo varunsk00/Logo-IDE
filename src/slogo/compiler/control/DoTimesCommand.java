@@ -18,7 +18,7 @@ public class DoTimesCommand extends Command {
     String varName = ((VariableType) args.get(0).getArgs().get(0))
         .getName(); //FIXME bad bad bad maybe do a tostring?
     for (int i = 1; i < val; i++) {
-      Memory.setVariable(varName, i);
+      memory.setVariable(varName, i);
       ret = args.get(1).execute();
     }
     return ret;

@@ -15,7 +15,7 @@ public class RepeatCommand extends Command {
     double val = args.get(0).execute();
     double ret = 0;
     for (int i = 1; i <= val + .0000000001; i++) { //FIXME magic val
-      Memory.setVariable(":repcount", i); //FIXME un-hardcode String?
+      memory.setVariable(":repcount", i); //FIXME un-hardcode String?
       ret = args.get(1).execute();
     }
     return ret;

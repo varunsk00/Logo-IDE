@@ -17,21 +17,17 @@ import slogo.turtle.Turtle;
 
 public class Memory {
 
-  private static ArrayDeque<Map<String, Double>> variableStack = new ArrayDeque<>();
-  private static Map<String, Command> userDefinedCommandMap = new HashMap<>();
-  private static Map<String, List<String>> userDefinedCommandVariablesMap = new HashMap<>();
-  private static Map<String, Turtle> turtleMap = new HashMap<>();
-  private static String currentTurtleID;
+  private ArrayDeque<Map<String, Double>> variableStack = new ArrayDeque<>();
+  private Map<String, Command> userDefinedCommandMap = new HashMap<>();
+  private Map<String, List<String>> userDefinedCommandVariablesMap = new HashMap<>();
+  private Map<String, Turtle> turtleMap = new HashMap<>();
+  private String currentTurtleID;
 
-  static {
+  public Memory() {
     variableStack.push(new HashMap<>());
   }
 
-  private Memory() {
-    //do nothing
-  }
-
-  public static double getVariable(String name) {
+  public double getVariable(String name) {
     Double ret = variableStack.peek().getOrDefault(name, null);
     if (ret == null) {
       throw new UnknownVariableException("The variable " + name + " has not yet been defined.");
@@ -39,11 +35,11 @@ public class Memory {
     return ret;
   }
 
-  public static void setVariable(String name, double value) {
+  public void setVariable(String name, double value) {
     variableStack.peek().put(name, value);
   }
 
-  public static void pushMemoryStack() {
+  public void pushMemoryStack() {
     HashMap<String, Double> newLayer = new HashMap<>(variableStack.peek());
     variableStack.push(newLayer);
     if (variableStack.size() > MAX_RECURSION_DEPTH) {
@@ -55,22 +51,22 @@ public class Memory {
     }
   }
 
-  public static void popMemoryStack() {
+  public void popMemoryStack() {
     variableStack.pop();
     if (variableStack.isEmpty()) {
       throw new StackUnderflowException("Attempted to pop global memory on stack");
     }
   }
 
-  public static void putIfAbsent(String name) {
+  public void putIfAbsent(String name) {
     variableStack.peek().putIfAbsent(name, 0.0);
   }
 
-  public static void setUserDefinedCommand(String name, Command c) {
+  public void setUserDefinedCommand(String name, Command c) {
     userDefinedCommandMap.put(name, c);
   }
 
-  public static Command getUserDefinedCommand(String name) {
+  public Command getUserDefinedCommand(String name) {
     Command ret = userDefinedCommandMap.getOrDefault(name, null);
     if (ret == null) {
       throw new InvalidSyntaxException("Identifier (" + name + ") not recognized.");
@@ -78,20 +74,20 @@ public class Memory {
     return ret;
   }
 
-  public static List<String> getCommandVariables(String name) {
+  public List<String> getCommandVariables(String name) {
     return new ArrayList<>(userDefinedCommandVariablesMap.getOrDefault(name, new ArrayList<>()));
   }
 
-  public static void setUserDefinedCommandVariables(String name, List<String> list) {
+  public void setUserDefinedCommandVariables(String name, List<String> list) {
     userDefinedCommandVariablesMap.put(name, list);
   }
 
-  public static void addTurtle(String id, Turtle t) {
+  public void addTurtle(String id, Turtle t) {
     turtleMap.put(id, t);
     currentTurtleID = id;
   }
 
-  public static Turtle getTurtleByID(String id) {
+  public Turtle getTurtleByID(String id) {
     Turtle ret = turtleMap.getOrDefault(id, null);
     if (ret == null) {
       throw new InvalidTurtleException("Turtle (" + id + ") does not exist.");
@@ -99,19 +95,19 @@ public class Memory {
     return ret;
   }
 
-  public static Turtle getCurrentTurtle() {
+  public Turtle getCurrentTurtle() {
     return getTurtleByID(currentTurtleID);
   }
 
-  public static Collection<String> getAllVariableNames() {
+  public Collection<String> getAllVariableNames() {
     return variableStack.peek().keySet();
   }
 
-  public static Collection<String> getAllUserDefinedCommands() {
+  public Collection<String> getAllUserDefinedCommands() {
     return userDefinedCommandMap.keySet();
   }
 
-  public static Collection<String> getAllTurtleIDs() {
+  public Collection<String> getAllTurtleIDs() {
     return turtleMap.keySet();
   }
 
