@@ -20,7 +20,7 @@ public class ForCommand extends Command {
     double end = args.get(0).getArgs().get(2).execute() + .000000001; //FIXME magic val
     double inc = args.get(0).getArgs().get(3).execute();
     for (double i = start; i <= end; i += inc) {
-      Memory.setVariable(varName, i);
+      memory.setVariable(varName, i);
       ret = args.get(1).execute();
     }
     return ret;

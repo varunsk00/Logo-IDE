@@ -2,7 +2,7 @@ package slogo.compiler.types;
 
 import slogo.compiler.Command;
 
-public class ListEndType extends Command {
+public class ListEndType extends TypeCommand {
 
   public ListEndType(String declaration) {
     super(declaration);
