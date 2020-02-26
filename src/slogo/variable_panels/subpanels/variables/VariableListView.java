@@ -1,4 +1,4 @@
-package slogo.variable_panels;
+package slogo.variable_panels.subpanels.variables;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;

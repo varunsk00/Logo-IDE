@@ -1,4 +1,4 @@
-package slogo.variable_panels;
+package slogo.variable_panels.subpanels.userdefined;
 
 
 import javafx.collections.FXCollections;
