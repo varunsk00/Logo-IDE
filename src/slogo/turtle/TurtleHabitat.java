@@ -44,7 +44,7 @@ public class TurtleHabitat {
         pen.setStroke(penColor);
         pen.setStrokeWidth(2.0);
         if(turtle.isCleared()){
-            myTurtleHabitat.getChildren().remove(pen);
+            pen.getPoints().clear();
         }
     }
 }
