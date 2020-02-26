@@ -37,7 +37,6 @@ public class VariablesTabPaneView extends TabPane {
         tableDict = new HashMap<>();
         List<Map.Entry<String, String>> tabDict = loadTabNameDict();
         for (Map.Entry<String, String> tab: tabDict){
-            System.out.println(tab.getKey());
             AutoTableView newTable = new AutoTableView(getTabWidth(), getTabHeight(), tab.getKey());
             initializeTab(tab.getValue(), newTable);
             tableDict.put(tab.getKey(), newTable);

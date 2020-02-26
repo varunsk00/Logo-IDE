@@ -73,6 +73,7 @@ public class ParserController extends Application{
 
     private TerminalView term;
     private TerminalController term_controller;
+    private boolean status;
 
     private VariablesTabPaneView tabPaneView;
     private VariablesTabPaneController tabPaneController;
@@ -162,7 +163,8 @@ public class ParserController extends Application{
     private void setTerminalView() {
         term = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
         term_controller = new TerminalController(term);
-        term_controller.setCompiler(comp);
+        term_controller.setExternals(comp);
+        status = false;
         root.setLeft(term);
     }
 
@@ -210,7 +212,15 @@ public class ParserController extends Application{
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
         root.setCenter(myHabitat.getTurtleHabitat());
         term_controller.changeLanguage(header.getLanguageStatus());
-        tabPaneController.updateAllTables();
+        updateTabPanes();
+    }
+
+    private void updateTabPanes(){
+        if (status!=term_controller.getStatus()){
+            status = term_controller.getStatus();
+            tabPaneController.updateAllTables();
+            System.out.println("change");
+        }
     }
 
     private void launchPenColorChooser() {

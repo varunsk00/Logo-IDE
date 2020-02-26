@@ -3,6 +3,8 @@ package slogo.variable_panels;
 import slogo.compiler.Compiler;
 import slogo.terminal.TerminalController;
 
+import java.sql.Struct;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -45,11 +47,15 @@ public class VariablesTabPaneController {
     }
 
     private void updateCommand(){
-        List<String> commandList = (List<String>) terminal.getAllCommands();
+
+        List<String> commandList = terminal.getAllCommands();
         Iterator<String> commandIterator = commandList.iterator();
-        List<String> messageList = (List<String>) terminal.getAllMessages();
+
+        List<String> messageList = terminal.getAllMessages();
         Iterator<String> messageIterator = messageList.iterator();
-        while(commandIterator.hasNext() && messageIterator.hasNext()){
+
+
+        while (commandIterator.hasNext() && messageIterator.hasNext()) {
             variablesTabPaneView.addEntry(COMMAND_TYPE, commandIterator.next(), messageIterator.next());
         }
     }

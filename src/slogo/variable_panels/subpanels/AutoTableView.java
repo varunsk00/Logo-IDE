@@ -11,6 +11,7 @@ import java.util.*;
 
 public class AutoTableView extends TableView {
     private final static String LOCAL_RESOURCE_PATH = "slogo.variable_panels.local_resources.";
+    private final static double COLUMN_WIDTH = 200;
 
     private final static String COMMAND_PATH = "command_col_titles";
     private final static String DEFINED_PATH = "defined_col_titles";
@@ -77,7 +78,8 @@ public class AutoTableView extends TableView {
     }
 
     private void setColSize(TableColumn col, double width){
-        col.setMinWidth(width);
+        //col.setMinWidth(width);
+        col.setPrefWidth(COLUMN_WIDTH);
     }
 
     private double getColWidth(){
