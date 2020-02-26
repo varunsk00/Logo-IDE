@@ -23,6 +23,7 @@ public class ButtonController {
 
     private List<String> languages;
 
+    private boolean loadFilePressed;
     private boolean turtleImagePressed;
     private boolean penColorPressed;
     private boolean backgroundColorPressed;
@@ -54,6 +55,7 @@ public class ButtonController {
                                                         myResources.getString("Russian"),
                                                         myResources.getString("Spanish"),
                                                         myResources.getString("Urdu")));
+        this.loadFilePressed = false;
         this.turtleImagePressed = false;
         this.penColorPressed = false;
         this.backgroundColorPressed = false;
@@ -80,6 +82,10 @@ public class ButtonController {
      */
     public boolean getImageStatus() {
         return turtleImagePressed;
+    }
+
+    public boolean getFileStatus() {
+        return loadFilePressed;
     }
 
     /**
@@ -118,6 +124,10 @@ public class ButtonController {
         turtleImagePressed = false;
     }
 
+    public void setLoadFilePressedOff() {
+        loadFilePressed = false;
+    }
+
     /**
      * Basic setter method that sets the skipPressed variable to false Called in skipAhead() method to
      * only skip once
@@ -141,14 +151,16 @@ public class ButtonController {
 
     private void renderHeader() {
         myButtons = new HBox();
+        Button loadButton = makeButton("LoadButton", event -> loadFilePressed = true);
         Button imageButton = makeButton("ImageButton", event -> turtleImagePressed = true);
         Button penButton = makeButton("PenButton", event -> penColorPressed = true);
         Button backgroundButton = makeButton("BackgroundButton", event -> backgroundColorPressed = true);
         Button helpButton = makeButton("HelpButton", event -> helpPressed = true);
         ComboBox langMenu = makeDropDown("LanguageButton");
 
-        myButtons.getChildren().addAll(imageButton, penButton, backgroundButton, helpButton, langMenu);
+        myButtons.getChildren().addAll(loadButton, imageButton, penButton, backgroundButton, helpButton, langMenu);
 
+        formatButton(loadButton);
         formatButton(imageButton);
         formatButton(penButton);
         formatButton(backgroundButton);
