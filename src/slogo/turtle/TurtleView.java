@@ -33,6 +33,7 @@ public class TurtleView extends Rectangle {
         cleared = turtle.isCleared();
         if (cleared) {
             turtle.setCleared(false);
+            turtle.handleClear();
         }
     }
 

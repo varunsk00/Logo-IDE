@@ -1,5 +1,6 @@
 package slogo.controller;
 import slogo.compiler.Compiler;
+import slogo.turtle.Point;
 import slogo.turtle.Turtle;
 import slogo.turtle.TurtleHabitat;
 import slogo.terminal.TerminalView;
@@ -156,7 +157,9 @@ public class ParserController extends Application{
         if (header.getHelpStatus()) {
         }
         if(myTurtle1.isPenDown()){
-            myHabitat.penDraw(penColor, myTurtle1.getXLocation(), myTurtle1.getYLocation());
+            for (Point loc: myTurtle1.locationsList()) {
+                myHabitat.penDraw(penColor, loc.getX(), loc.getY());
+            }
         }
         myHabitat.setBackground(backgroundColor);
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
