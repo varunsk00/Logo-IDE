@@ -3,7 +3,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import java.util.ResourceBundle;
+
+import java.util.*;
 
 /**
  * Header Class serves as a controller unit, taking in input from the user to pause/play the game,
@@ -19,6 +20,8 @@ import java.util.ResourceBundle;
 public class ButtonController {
 
     private ResourceBundle myResources;
+
+    private List<String> languages;
 
     private boolean turtleImagePressed;
     private boolean penColorPressed;
@@ -42,11 +45,20 @@ public class ButtonController {
      */
     public ButtonController(String language) {
         myResources = ResourceBundle.getBundle(language);
+        this.languages = new ArrayList<>(Arrays.asList(myResources.getString("English"),
+                                                        myResources.getString("Chinese"),
+                                                        myResources.getString("French"),
+                                                        myResources.getString("German"),
+                                                        myResources.getString("Italian"),
+                                                        myResources.getString("Portuguese"),
+                                                        myResources.getString("Russian"),
+                                                        myResources.getString("Spanish"),
+                                                        myResources.getString("Urdu")));
         this.turtleImagePressed = false;
         this.penColorPressed = false;
         this.backgroundColorPressed = false;
         this.helpPressed = false;
-        this.languagePressed = "English";
+        this.languagePressed = myResources.getString("LanguageButton");
         renderHeader();
     }
 
@@ -153,18 +165,8 @@ public class ButtonController {
 
     private ComboBox makeDropDown(String key){
         ComboBox tempMenu = new ComboBox();
-        tempMenu.getItems().addAll(
-                myResources.getString("English"),
-                myResources.getString("Chinese"),
-                myResources.getString("French"),
-                myResources.getString("German"),
-                myResources.getString("Italian"),
-                myResources.getString("Portuguese"),
-                myResources.getString("Russian"),
-                myResources.getString("Spanish"),
-                myResources.getString("Urdu")
-        );
-        tempMenu.setValue(myResources.getString("English"));
+        tempMenu.getItems().addAll(languages);
+        tempMenu.setValue(myResources.getString("LanguageButton"));
         tempMenu.setOnAction(event -> languagePressed = (String) tempMenu.getValue());
         return tempMenu;
     }
