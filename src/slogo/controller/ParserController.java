@@ -22,7 +22,13 @@ import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+import java.util.stream.Stream;
+
+//FIXME: replace JAVA FILENOTFOUND EXCEPTION WITH comp.executeFile()
 
 //TODO(REQUIRED): SYSTEM-WIDE LANGUAGE SWITCHING
 //TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
@@ -32,6 +38,7 @@ import java.util.ResourceBundle;
 public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
     private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
+    private static final String LOGO_DIRECTORY = "data/examples";
     private static final String RESOURCES_PACKAGE = "slogo.resources.languages.";
     private static String GUI_LANGUAGE = "English_GUI";
     private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + GUI_LANGUAGE);
@@ -47,8 +54,10 @@ public class ParserController extends Application{
 
     private static final Color ALL_COLOR = Color.ALICEBLUE;
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
+    private static final String LOGO_FILE_EXTENSIONS = "*.logo";
 
-    public FileChooser FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
+    public FileChooser IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
+    public FileChooser LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
     private BorderPane root;
     private ButtonController header;
     private Stage myStage;
@@ -136,15 +145,24 @@ public class ParserController extends Application{
     }
 
     private void startAnimationLoop() {
-        KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step());
+        KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
+            try {
+                step();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();
     }
 
-    private void step() {
+    private void step() throws FileNotFoundException {
         handleLanguage(header.getLanguageStatus());
+        if(header.getFileStatus()){
+            handleLogoFileChooser();
+        }
         if(header.getPenColorStatus()){
             launchPenColorChooser();
         }
@@ -152,7 +170,7 @@ public class ParserController extends Application{
             launchBackgroundColorChooser();
         }
         if(header.getImageStatus()){
-            handleFileChooser();
+            handleImageFileChooser();
         }
         if (header.getHelpStatus()) {
         }
@@ -211,7 +229,8 @@ public class ParserController extends Application{
     private void updateLanguage(String language){
         String currentLang = language.substring(0, language.indexOf("_"));
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
-        FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
+        IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
+        LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
         setHeader();
         comp.setLanguage(currentLang);
         term_controller.changeLanguage(currentLang);
@@ -277,24 +296,44 @@ public class ParserController extends Application{
 //        s.show();
 //    }
 
-    private static FileChooser makeChooser(String extensionsAccepted) {
+    private static FileChooser makeChooser(String extensionsAccepted, String directory) {
         String[] extensions = extensionsAccepted.split(",");
         FileChooser result = new FileChooser();
         result.setTitle(myResources.getString("OpenFile"));
         // pick Image Directory to start searching for files
-        result.setInitialDirectory(new File(System.getProperty("user.dir"),IMAGE_DIRECTORY));
+        result.setInitialDirectory(new File(System.getProperty("user.dir"),directory));
         result.getExtensionFilters()
-                .setAll(new FileChooser.ExtensionFilter(myResources.getString("ImageFile"), extensions[0], extensions[1]));
+                .setAll(new FileChooser.ExtensionFilter(myResources.getString("ImageFile"), extensions));
         return result;
     }
 
-    private void handleFileChooser(){
-        File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
+    private void handleImageFileChooser(){
+        File dataFile = IMAGE_FILE_CHOOSER.showOpenDialog(myStage);
         if(dataFile == null){
             header.setImageOff();
             return;
         }
         header.setImageOff();
         myHabitat.getTurtle().setFill(new ImagePattern(new Image("file:" + dataFile.getPath())));
+    }
+
+    //FIXME: directly call comp.executeFile, and run in the terminal (maybe add method to TerminalView)
+    private void handleLogoFileChooser() throws FileNotFoundException {
+        File dataFile = LOGO_FILE_CHOOSER.showOpenDialog(myStage);
+        String input = "";
+        if(dataFile == null){
+            header.setLoadFilePressedOff();
+            return;
+        }
+        header.setLoadFilePressedOff();
+        Scanner scanner = new Scanner(dataFile);
+        while (scanner.hasNext()){
+            String line = scanner.nextLine();
+            if(line.startsWith("#")) {
+                continue;
+            }
+            input += line + " ";
+        }
+        term.setCurrentInput(input);
     }
 }
