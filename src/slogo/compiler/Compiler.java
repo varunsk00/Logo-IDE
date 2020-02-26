@@ -69,19 +69,23 @@ public class Compiler {
   }
 
   public String execute(String input) {
+    //System.out.println(input);
     String[] lines = input.split(getNewline());
-    StringBuilder noComment = new StringBuilder();
+    ArrayList<String> noComment = new ArrayList<>();
+    noComment.add("[");
     for (String line : lines) {
       try {
         if (!getSymbol(line, myTypes).equals("Comment")) {
-          noComment.append(line);
+          noComment.add(line);
         }
       } catch (InvalidSyntaxException e) {
-        noComment.append(line); //If it throws an exception, it's not a comment.
+        noComment.add(line); //If it throws an exception, it's not a comment.
         //Later code will handle the syntax checking
       }
     }
-    input = "[ " + noComment.toString() + " ]";
+    noComment.add("]");
+    input = String.join(" ", noComment);
+    //System.out.println(input);
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
@@ -262,7 +266,7 @@ public class Compiler {
     return memory.getVariable(name);
   }
 
-  public List<String> getCommandVariables(String name){
+  public List<String> getCommandVariables(String name) {
     return memory.getCommandVariables(name);
   }
 

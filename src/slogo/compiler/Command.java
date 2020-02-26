@@ -41,7 +41,7 @@ public abstract class Command {
 
   public void setMemory(Memory mem) {
     memory = mem;
-    for (Command c: args) {
+    for (Command c : args) {
       c.setMemory(mem);
     }
   }

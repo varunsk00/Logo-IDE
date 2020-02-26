@@ -20,7 +20,6 @@ public class TypeFactory {
     try {
       return registeredCommands.get(name).createCommand(declaration);
     } catch (NullPointerException e) {
-      e.printStackTrace();
       throw new InvalidSyntaxException("Command (" + name + ") recognized but not parsed.");
     }
   }

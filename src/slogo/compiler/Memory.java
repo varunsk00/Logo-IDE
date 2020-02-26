@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.InvalidTurtleException;
 import slogo.compiler.exceptions.StackOverflowException;
 import slogo.compiler.exceptions.StackUnderflowException;

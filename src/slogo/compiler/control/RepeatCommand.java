@@ -1,7 +1,6 @@
 package slogo.compiler.control;
 
 import slogo.compiler.Command;
-import slogo.compiler.Memory;
 import slogo.compiler.types.ListStartType;
 
 public class RepeatCommand extends Command {
