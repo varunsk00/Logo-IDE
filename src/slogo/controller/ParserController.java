@@ -25,23 +25,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Files;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 //FIXME: replace JAVA FILENOTFOUND EXCEPTION WITH comp.executeFile()
 //FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
 
 //TODO(REQUIRED): HELP MENU IN DIFF LANGUAGES
 
-//TODO(FUN): Slider labels in diff languages
 //TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
 //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
-//TODO(FUN): ADD REGEX FOR ZOOM AND SIZE IN OTHER LANGUAGES
 
 public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
@@ -54,8 +49,8 @@ public class ParserController extends Application{
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private double SCENE_WIDTH = 1280;
-    private double SCENE_HEIGHT = 720;
+    private double SCENE_WIDTH;
+    private double SCENE_HEIGHT;
     private double HEADER_HEIGHT = 80;
 
     private double HABITAT_WIDTH = SCENE_WIDTH/2;
@@ -133,6 +128,7 @@ public class ParserController extends Application{
         setTerminalView();
         setTabPaneView();
         setHeader();
+
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets().add(STYLESHEET);
         myStage = primaryStage;
@@ -143,7 +139,6 @@ public class ParserController extends Application{
 
 
     private void changeScreenSizetoMax(){
-
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
         SCENE_WIDTH = screenBounds.getMaxX();
@@ -164,7 +159,7 @@ public class ParserController extends Application{
         root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
         root.setMaxWidth(SCENE_WIDTH);
-        root.setMaxHeight(SCENE_WIDTH);
+        root.setMaxHeight(SCENE_HEIGHT);
     }
 
     private void setHeader() {
@@ -190,8 +185,7 @@ public class ParserController extends Application{
     }
 
     private void setTurtleHabitat() {
-        myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT, HEADER_HEIGHT);
-        myHabitat.getTurtleHabitat().getStyleClass().add("habitat");
+        myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
         root.setRight(myHabitat.getTurtleHabitat());
     }
 
@@ -215,6 +209,7 @@ public class ParserController extends Application{
     }
 
     private void step() throws FileNotFoundException {
+        myHabitat.getTurtle().updateTurtleView(myTurtle1);
         handleLanguage(buttons.getLanguageStatus());
         updateZoom();
         updateImageSize();
@@ -237,10 +232,7 @@ public class ParserController extends Application{
                 myHabitat.penDraw(penColor, loc);
             }
         }
-        myHabitat.setBackground(backgroundColor);
-        myHabitat.getTurtle().updateTurtleView(myTurtle1);
-
-        //root.setCenter(myHabitat.getTurtleHabitat());
+        setGlobalBackground(backgroundColor);
         updateTabPanes();
     }
 
@@ -248,8 +240,12 @@ public class ParserController extends Application{
         if (status != term_controller.getStatus()) {
             status = term_controller.getStatus();
             tabPaneController.updateAllTables();
-            System.out.println("change");
         }
+    }
+
+    private void setGlobalBackground(Color c){
+        root.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
+        myHabitat.setBackground(backgroundColor);
     }
 
     //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
@@ -257,7 +253,6 @@ public class ParserController extends Application{
         switch(lang){
             case "\u6c49\u8bed\u62fc\u97f3":
                 GUI_LANGUAGE = "Chinese_GUI";
-                updateLanguage(GUI_LANGUAGE);
                 break;
             case "français":
                 GUI_LANGUAGE = "French_GUI";
