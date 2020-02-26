@@ -50,8 +50,8 @@ public class AutoTableView extends TableView {
         setItems(data);
     }
 
-    public void addEntry(Object entry){
-        if (entry instanceof Variable && type.equals(VAR_TYPE) || entry instanceof Defined && type.equals(DEFINED_TYPE) || entry instanceof Command && type.equals(COMMAND_TYPE))
+    public void addEntry(slogo.variable_panels.util_classes.TableEntry entry){
+        if (entry instanceof Variable && type.equals(VAR_TYPE) || entry instanceof Defined && type.equals(DEFINED_TYPE) || entry instanceof Commands && type.equals(COMMAND_TYPE))
             data.add(entry);
         else
             System.out.println("DataType unimplemented in panel");
@@ -60,16 +60,18 @@ public class AutoTableView extends TableView {
     private void initializeCol(String colTitle, String cellFactory){
         TableColumn col  = new TableColumn(colTitle);
         setColSize(col, getColWidth());
-        switch (type){
-            case COMMAND_TYPE:
-                col.setCellValueFactory(new PropertyValueFactory<Commands, String>(cellFactory));
-                break;
-            case VAR_TYPE:
-                col.setCellValueFactory(new PropertyValueFactory<Variable, String>(cellFactory));
-                break;
-            case DEFINED_TYPE:
-                col.setCellValueFactory(new PropertyValueFactory<Defined, String>(cellFactory));
-                break;
+        if (type.equals(COMMAND_TYPE)){
+            col.setCellValueFactory(new PropertyValueFactory<Commands, String>(cellFactory));
+        }
+        else if (type.equals(VAR_TYPE)){
+            col.setCellValueFactory(new PropertyValueFactory<Variable, String>(cellFactory));
+        }
+        else if (type.equals(DEFINED_TYPE)){
+            col.setCellValueFactory(new PropertyValueFactory<Defined, String>(cellFactory));
+        }
+        else {
+            System.out.println("unimplemented type in variable panel, default to commands");
+            col.setCellValueFactory(new PropertyValueFactory<Commands, String>(cellFactory));
         }
         getColumns().add(col);
     }
@@ -88,7 +90,7 @@ public class AutoTableView extends TableView {
     }
 
     private List<Map.Entry<String, String>> loadDict(){
-        ResourceBundle resources = ResourceBundle.getBundle(currentResourcePath);;
+        ResourceBundle resources = ResourceBundle.getBundle(currentResourcePath);
         List<Map.Entry<String, String>> dict = new ArrayList<>();
         for (String tabType: Collections.list(resources.getKeys())){
             String tabName = resources.getString(tabType);
