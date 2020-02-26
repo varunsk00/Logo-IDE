@@ -247,6 +247,7 @@ public class ParserController extends Application{
         switch(lang){
             case "\u6c49\u8bed\u62fc\u97f3":
                 GUI_LANGUAGE = "Chinese_GUI";
+                updateLanguage(GUI_LANGUAGE);
                 break;
             case "français":
                 GUI_LANGUAGE = "French_GUI";
