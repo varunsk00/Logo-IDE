@@ -38,8 +38,12 @@
 
 .habitat{
     -fx-background-color: white;
-    -fx-border-style: solid;
     -fx-pref-width: 640;
+}
+
+.slider-box {
+    -fx-border-color: #000000;
+    -fx-border-width: 1;
 }
 
 .label {
