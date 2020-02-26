@@ -93,6 +93,7 @@ public class Compiler {
       return "" + comm.execute();
     } catch (CompilerException e) {
       //throw e;
+      e.printStackTrace();
       return e.toString();
     }
   }
@@ -149,7 +150,7 @@ public class Compiler {
       }
       if (stack.size() >= MAX_RECURSION_DEPTH) {
         throw new StackOverflowException(
-                "Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
+            "Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
       }
     }
     return stack.getLast();
@@ -163,7 +164,7 @@ public class Compiler {
           return arg;
         }
         throw new InvalidSyntaxException(
-                "Ran out of commands to parse before finishing given commands.");
+            "Ran out of commands to parse before finishing given commands.");
       }
       stack.peek().addArg(arg);
     }
@@ -199,11 +200,7 @@ public class Compiler {
         String commType = getSymbol(str, myCommands);
         ret = CommandFactory.createCommand(commType, str);
       } catch (InvalidSyntaxException e) {
-        if (memory.getUserDefinedCommand(str)!= null) {
-          ret = TypeFactory.createCommand("Command", str); //FIXME magic val
-        } else {
-          throw e;
-        }
+        ret = TypeFactory.createCommand("Command", str); //FIXME magic val
       }
     }
     ret.setMemory(memory);
@@ -218,8 +215,8 @@ public class Compiler {
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
       list.add(new SimpleEntry<>(key,
-              // THIS IS THE IMPORTANT LINE
-              Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+          // THIS IS THE IMPORTANT LINE
+          Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
     }
   }
 
@@ -266,7 +263,7 @@ public class Compiler {
     return memory.getVariable(name);
   }
 
-  public List<String> getCommandVariables(String name){
+  public List<String> getCommandVariables(String name) {
     return memory.getCommandVariables(name);
   }
 
