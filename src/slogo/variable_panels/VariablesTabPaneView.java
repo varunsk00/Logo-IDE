@@ -4,21 +4,19 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import slogo.terminal.utils.textLines.TestLine;
-import slogo.variable_panels.subpanels.commands.CommandListView;
-import slogo.variable_panels.subpanels.userdefined.UserDefinedListView;
-import slogo.variable_panels.subpanels.variables.VariableListView;
+import slogo.variable_panels.subpanels.AutoTableView;
+import slogo.variable_panels.util_classes.TableEntry;
 
 import java.util.*;
 
 
 public class VariablesTabPaneView extends TabPane {
     private final static String LOCAL_RESOURCE_TAB_NAMES = String.format("%s.local_resources.tab_names", TestLine.class.getPackageName());
-    private final static String VARIABLE_TYPE = "var";
-    private final static String COMMAND_TYPE = "command";
-    private final static String DEFINED_TYPE = "defined";
 
     private double width;
     private double height;
+
+    private Map<String, AutoTableView> tableDict;
 
     public VariablesTabPaneView(double width, double height){
         setSize(width, height);
@@ -31,17 +29,17 @@ public class VariablesTabPaneView extends TabPane {
         setPrefSize(width, height);
     }
 
+    public void addEntry(String type, TableEntry entry){
+        tableDict.get(type).addEntry(entry);
+    }
+
     private void initializeTabPane(){
+        tableDict = new HashMap<>();
         List<Map.Entry<String, String>> tabDict = loadTabNameDict();
         for (Map.Entry<String, String> tab: tabDict){
-            switch (tab.getKey()){
-                case VARIABLE_TYPE:
-                    initializeTab(tab.getValue(), new VariableListView(getTabWidth(), getTabHeight()));
-                case COMMAND_TYPE:
-                    initializeTab(tab.getValue(), new CommandListView(getTabWidth(), getTabHeight()));
-                case DEFINED_TYPE:
-                    initializeTab(tab.getValue(), new UserDefinedListView(getTabWidth(), getTabHeight()));
-            }
+            AutoTableView newTable = new AutoTableView(getTabWidth(), getTabHeight(), tab.getKey());
+            initializeTab(tab.getValue(), newTable);
+            tableDict.put(tab.getKey(), newTable);
         }
     }
 
