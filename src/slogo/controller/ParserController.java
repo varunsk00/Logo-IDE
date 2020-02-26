@@ -32,7 +32,8 @@ import java.util.stream.Stream;
 //FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
 
 //TODO(REQUIRED): HELP MENU IN DIFF LANGUAGES
-//TODO(REQUIRED): TURTLEVIEW IN CENTER
+
+//TODO(FUN): Slider labels in diff languages
 //TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
 //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
 //TODO(FUN): ADD REGEX FOR ZOOM AND SIZE IN OTHER LANGUAGES
@@ -129,8 +130,8 @@ public class ParserController extends Application{
     private void setHeader() {
         buttons = new ButtonController(RESOURCES_PACKAGE + GUI_LANGUAGE);
         sliders = new SliderController(RESOURCES_PACKAGE + GUI_LANGUAGE);
-        sliders.getFooter().getStyleClass().add("slider-box");
-        header.getChildren().addAll(buttons.getHeader(), sliders.getFooter());
+        sliders.getVBox().getStyleClass().add("slider-box");
+        header.getChildren().addAll(buttons.getHBox(), sliders.getVBox());
         root.setTop(header);
     }
 

@@ -40,7 +40,7 @@ public class SliderController {
 
     public SliderController(String language) {
         this.myResources = ResourceBundle.getBundle(language);
-        renderFooter();
+        renderSliders();
     }
 
     public double getZoom() {
@@ -51,11 +51,11 @@ public class SliderController {
         return imagesize.getValue();
     }
 
-    public VBox getFooter() {
+    public VBox getVBox() {
         return footer;
     }
 
-    private void renderFooter() {
+    private void renderSliders() {
         footer = new VBox();
 
         HBox allLabels = new HBox();
