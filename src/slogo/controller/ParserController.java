@@ -1,30 +1,31 @@
 package slogo.controller;
-import javafx.geometry.Rectangle2D;
-import javafx.stage.Screen;
-import slogo.compiler.Compiler;
-import slogo.turtle.Point;
-import slogo.turtle.Turtle;
-import slogo.turtle.TurtleHabitat;
-import slogo.terminal.TerminalView;
-import slogo.terminal.TerminalController;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.ImagePattern;
-import javafx.stage.FileChooser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.stage.FileChooser;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import slogo.compiler.Compiler;
+import slogo.terminal.TerminalController;
+import slogo.terminal.TerminalView;
+import slogo.turtle.Point;
+import slogo.turtle.Turtle;
+import slogo.turtle.TurtleHabitat;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
@@ -69,10 +70,13 @@ public class ParserController extends Application{
 
     public FileChooser IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
     public FileChooser LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
+
     private BorderPane root;
+
     private VBox header = new VBox();
     private ButtonController buttons;
     private SliderController sliders;
+
     private Stage myStage;
     private Timeline animation;
     private Color backgroundColor = Color.WHITE;
@@ -99,8 +103,9 @@ public class ParserController extends Application{
 
     /**
      * Constructor used in Main to begin the program Begins our JavaFX application Starts the
-     * Animation Loop and sets the Border Pane, filling it with a ButtonControls, SliderControls, and
-     * SimulationViews Sets the stage and scene and shows it
+     * Animation Loop and sets the Border Pane, filling it with a ButtonController, SliderController, and
+     * TurtleHabitat, TerminalView, and VariablesTabPaneView
+     * Sets the stage and scene and shows it
      *
      * @param args is the String[] passed in by main
      */
@@ -109,18 +114,13 @@ public class ParserController extends Application{
     }
 
     /**
-     * Start method for the Application Sets the BorderPane and fills it with ButtonControls (in the
-     * header) and SliderControls (in the Footer) Sets the Center with SimulationView objects to
-     * represent the Simulation Initializes in nested methods
      *
      * @param primaryStage is the stage to display the Application
      */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SLogo");
-
         primaryStage.setMaximized(true);
         changeScreenSizetoMax();
-
         startAnimationLoop();
         startCompiler();
         setBorderPane();
@@ -128,7 +128,6 @@ public class ParserController extends Application{
         setTerminalView();
         setTabPaneView();
         setHeader();
-
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets().add(STYLESHEET);
         myStage = primaryStage;
@@ -137,19 +136,14 @@ public class ParserController extends Application{
         myStage.show();
     }
 
-
     private void changeScreenSizetoMax(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
         SCENE_WIDTH = screenBounds.getMaxX();
         SCENE_HEIGHT = screenBounds.getMaxY();
-
         TABPANE_WIDTH = SCENE_WIDTH;
         TABPANE_HEIGHT = 150;
-
         HABITAT_WIDTH = SCENE_WIDTH/2;
         HABITAT_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
-
         TERMINAL_WIDTH = SCENE_WIDTH/2;
         TERMINAL_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
 
@@ -294,11 +288,9 @@ public class ParserController extends Application{
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
         IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
         LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
-
         header.getChildren().clear();
         root.getChildren().remove(header);
         setHeader();
-
         comp.setLanguage(currentLang);
         term_controller.changeLanguage(currentLang);
     }
@@ -310,12 +302,10 @@ public class ParserController extends Application{
         s.setTitle(myResources.getString("ColorWindow"));
         TilePane r = new TilePane();
         ColorPicker cp = new ColorPicker();
-        // create a event handler
         EventHandler<ActionEvent> event = e -> {
             penColor = cp.getValue();
             s.close();
         };
-        // set listener
         cp.setValue(penColor);
         cp.setOnAction(event);
         r.getChildren().add(cp);
@@ -330,13 +320,10 @@ public class ParserController extends Application{
         s.setTitle(myResources.getString("ColorWindow"));
         TilePane r = new TilePane();
         ColorPicker cp = new ColorPicker();
-        // create a event handler
         EventHandler<ActionEvent> event = e -> {
-            // color
             backgroundColor = cp.getValue();
             s.close();
         };
-        // set listener
         cp.setValue(backgroundColor);
         cp.setOnAction(event);
         r.getChildren().add(cp);
@@ -349,7 +336,6 @@ public class ParserController extends Application{
         String[] extensions = extensionsAccepted.split(",");
         FileChooser result = new FileChooser();
         result.setTitle(myResources.getString("OpenFile"));
-        // pick Image Directory to start searching for files
         result.setInitialDirectory(new File(System.getProperty("user.dir"),directory));
         result.getExtensionFilters()
                 .setAll(new FileChooser.ExtensionFilter(myResources.getString("ImageFile"), extensions));
