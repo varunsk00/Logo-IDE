@@ -4,6 +4,7 @@ public class Turtle {
     public static final double CENTER_X = 0.0;
     public static final double CENTER_Y = 0.0;
     public static final double NORTH = 0;
+    public static final double RAD_TO_DEG_RATIO = 180 / Math.PI;
 
     private double xLocation;
     private double yLocation;
@@ -34,7 +35,7 @@ public class Turtle {
     }
 
     public void towards(double x, double y){
-        setHeading(Math.atan2(x + xLocation, -y + yLocation)*(180/Math.PI));
+        setHeading((Math.atan2(x-xLocation, -(y-yLocation))* RAD_TO_DEG_RATIO));
     }
 
     public void showTurtle(boolean showTurtle) {

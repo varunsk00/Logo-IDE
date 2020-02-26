@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
@@ -23,19 +24,19 @@ import slogo.turtle.Turtle;
 
 public class Compiler {
 
+  public static final int MAX_RECURSION_DEPTH = 1000;
   private static final String LANGUAGES_PACKAGE_EXTENSION = "slogo.resources.languages.";
   private static final String RESOURCES_PACKAGE = LANGUAGES_PACKAGE_EXTENSION;
   private static final String DEFAULT_LANGUAGE = "English";
   private static final String SYNTAX_FILE = "Syntax";
-
   private List<Entry<String, Pattern>> myTypes;
   private List<Entry<String, Pattern>> myCommands;
-
-  public static int MAX_RECURSION_DEPTH = 1000;
+  private Memory memory;
 
   public Compiler() {
     myTypes = new ArrayList<>();
     myCommands = new ArrayList<>();
+    memory = new Memory();
     addPatterns(DEFAULT_LANGUAGE, myCommands); //FIXME add support for multiple languages
     addPatterns(SYNTAX_FILE, myTypes);
     //FIXME add resource file validator
@@ -70,7 +71,7 @@ public class Compiler {
   public String execute(String input) {
     String[] lines = input.split(getNewline());
     StringBuilder noComment = new StringBuilder();
-    for (String line: lines) {
+    for (String line : lines) {
       try {
         if (!getSymbol(line, myTypes).equals("Comment")) {
           noComment.append(line);
@@ -109,7 +110,7 @@ public class Compiler {
     return comm;
   }
 
-  public String executeFile (File file) throws FileNotFoundException {
+  public String executeFile(File file) throws FileNotFoundException {
     String text = getTextFromFile(file);
     return execute(text);
   }
@@ -188,17 +189,25 @@ public class Compiler {
   }
 
   private Command getCommandFromString(String str) {
+    Command ret = null;
     str = str.toLowerCase();
     String type = getSymbol(str, myTypes);
     if (!type.equals("Command")) { //FIXME magic val
-      return TypeFactory.createCommand(type, str);
+      ret = TypeFactory.createCommand(type, str);
+    } else {
+      try {
+        String commType = getSymbol(str, myCommands);
+        ret = CommandFactory.createCommand(commType, str);
+      } catch (InvalidSyntaxException e) {
+        if (memory.getUserDefinedCommand(str)!= null) {
+          ret = TypeFactory.createCommand("Command", str); //FIXME magic val
+        } else {
+          throw e;
+        }
+      }
     }
-    try {
-      String commType = getSymbol(str, myCommands);
-      return CommandFactory.createCommand(commType, str);
-    } catch (InvalidSyntaxException e) {
-      return TypeFactory.createCommand("Command", str); //FIXME magic val
-    }
+    ret.setMemory(memory);
+    return ret;
   }
 
   /**
@@ -234,7 +243,31 @@ public class Compiler {
   }
 
   public void addTurtle(String id, Turtle t) {
-    Memory.addTurtle(id, t);
+    memory.addTurtle(id, t);
+  }
+
+  public Collection<String> getAllVariableNames() {
+    return memory.getAllVariableNames();
+  }
+
+  public Collection<String> getAllUserDefinedCommands() {
+    return memory.getAllUserDefinedCommands();
+  }
+
+  public Collection<String> getAllTurtleIDs() {
+    return memory.getAllTurtleIDs();
+  }
+
+  public Turtle getTurtleByID(String id) {
+    return memory.getTurtleByID(id);
+  }
+
+  public double getVariable(String name) {
+    return memory.getVariable(name);
+  }
+
+  public List<String> getCommandVariables(String name){
+    return memory.getCommandVariables(name);
   }
 
 }

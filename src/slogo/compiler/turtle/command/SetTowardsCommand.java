@@ -14,13 +14,13 @@ public class SetTowardsCommand extends TurtleCommand {
     double currentHead = turtle.getHeading();
     double x = args.get(0).execute();
     double y = args.get(1).execute();
-    turtle.towards(x,y);
-    return turtle.getHeading()-currentHead;
+    turtle.towards(x, y);
+    return turtle.getHeading() - currentHead;
   }
 
   @Override
   public boolean isCompleteSub() {
-    return args.size()==2;
+    return args.size() == 2;
   }
 
   @Override

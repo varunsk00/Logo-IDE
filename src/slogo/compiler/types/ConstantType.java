@@ -2,7 +2,7 @@ package slogo.compiler.types;
 
 import slogo.compiler.Command;
 
-public class ConstantType extends Command {
+public class ConstantType extends TypeCommand {
 
   private double value;
 

@@ -1,12 +1,16 @@
 package slogo.compiler;
 
-import slogo.compiler.exceptions.InvalidSyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import slogo.compiler.exceptions.InvalidSyntaxException;
 
 public class CommandFactory {
 
   private static Map<String, Command> registeredCommands = new HashMap<>();
+
+  private CommandFactory() {
+    //do nothing
+  }
 
   public static void registerCommand(String id, Command comm) {
     registeredCommands.put(id, comm);

@@ -74,6 +74,14 @@ public class HistoryBuffer{
         return currentSize == 0;
     }
 
+    /**
+     * resets the index to point to the bottom of the buffer
+     * added by Maverick
+     */
+    public void resetIndex() {
+        index = storage_index + 1;
+    }
+
     private String handleEmptyBuffer(){
         //System.out.println("Out of Bounds in Buffer");
         return NULL_BUFFER_ENTRY;

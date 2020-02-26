@@ -28,7 +28,7 @@ public class OutputPanel extends ListView<String> {
 
         getStylesheets().add(CSS_FILEPATH);
 
-        setCellFactory(listView -> new TestLine());
+        setCellFactory(listView -> new TestLine(width));
     }
 
     /**

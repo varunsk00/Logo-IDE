@@ -8,7 +8,7 @@ public abstract class Command {
 
   protected static final String INITIALIZATION = "this is an initialization string that should never happen";
 
-  public int desiredArgs;
+  protected Memory memory;
   protected ArrayList<Command> args;
 
   public Command(String declaration) {
@@ -36,6 +36,13 @@ public abstract class Command {
       CommandFactory.registerCommand(className, obj);
     } else {
       throw new RuntimeException("bad class name");
+    }
+  }
+
+  public void setMemory(Memory mem) {
+    memory = mem;
+    for (Command c: args) {
+      c.setMemory(mem);
     }
   }
 
@@ -77,11 +84,11 @@ public abstract class Command {
   }
 
   public void recPrint() {
-    System.out.print(""+this+" ");
-    for (Command c: args) {
-      System.out.print(""+c+" ");
+    System.out.print("" + this + " ");
+    for (Command c : args) {
+      System.out.print("" + c + " ");
     }
-    for (Command c: args) {
+    for (Command c : args) {
       c.recPrint();
     }
     System.out.println();
@@ -92,7 +99,7 @@ public abstract class Command {
     if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
       return true;
     }
-    for (Command c: args) {
+    for (Command c : args) {
       if (c.containsDefinition()) {
         return true;
       }
@@ -104,7 +111,7 @@ public abstract class Command {
     if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
       return this;
     }
-    for (Command c: args) {
+    for (Command c : args) {
       Command ret = c.findFirstDef();
       if (ret != null) {
         return ret;

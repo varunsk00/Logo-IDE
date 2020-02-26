@@ -18,14 +18,14 @@ public class MakeUserInstructionCommand extends Command {
   public double execute() {
     try {
       ArrayList<String> vars = new ArrayList<>();
-      for (Command var: args.get(1).getArgs()) {
+      for (Command var : args.get(1).getArgs()) {
         if (var instanceof VariableType) {
           vars.add(((VariableType) var).getName()); //FIXME oh my god you monster
         }
       }
       String commName = ((CommandType) args.get(0)).getName();
-      Memory.setUserDefinedCommand(commName, args.get(2));
-      Memory.setUserDefinedCommandVariables(commName, vars);
+      memory.setUserDefinedCommand(commName, args.get(2));
+      memory.setUserDefinedCommandVariables(commName, vars);
     } catch (CompilerException e) {
       return 0;
     }
