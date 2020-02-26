@@ -1,11 +1,11 @@
 package slogo.controller;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.util.ResourceBundle;
 
@@ -36,7 +36,7 @@ public class SliderController {
     private static final int DEFAULT_SIZE = 3;
     private static final int MAX_SIZE = 5;
 
-    private VBox footer;
+    private VBox sliders;
 
     public SliderController(String language) {
         this.myResources = ResourceBundle.getBundle(language);
@@ -52,11 +52,11 @@ public class SliderController {
     }
 
     public VBox getVBox() {
-        return footer;
+        return sliders;
     }
 
     private void renderSliders() {
-        footer = new VBox();
+        sliders = new VBox();
 
         HBox allLabels = new HBox();
         addLabel("SizeSlider", allLabels);
@@ -64,12 +64,13 @@ public class SliderController {
 
         //addReturnSlider() adds the Sliders to the frame and then returns them as instance variables for later access
         HBox allSliders = new HBox();
+        //allSliders.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         imagesize = addAndReturnSlider(MIN_SIZE, MAX_SIZE, DEFAULT_SIZE, allSliders);
         zoom = addAndReturnSlider(MIN_ZOOM, MAX_ZOOM, DEFAULT_ZOOM,
                 allSliders);
 
-        footer.getChildren().add(allLabels);
-        footer.getChildren().add(allSliders);
+        sliders.getChildren().add(allLabels);
+        sliders.getChildren().add(allSliders);
     }
 
     private void addLabel(String key, HBox text) {
