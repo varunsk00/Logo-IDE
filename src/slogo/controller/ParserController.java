@@ -24,6 +24,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import slogo.variable_panels.VariablesTabPaneController;
+import slogo.variable_panels.VariablesTabPaneView;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
@@ -54,6 +57,9 @@ public class ParserController extends Application{
     private double TERMINAL_WIDTH = SCENE_WIDTH/2;
     private double TERMINAL_HEIGHT = SCENE_HEIGHT;
 
+    private double TABPANE_WIDTH = SCENE_WIDTH;
+    private double TABPANE_HEIGHT = 150;
+
     private static final Color ALL_COLOR = Color.ALICEBLUE;
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
 
@@ -67,6 +73,9 @@ public class ParserController extends Application{
 
     private TerminalView term;
     private TerminalController term_controller;
+
+    private VariablesTabPaneView tabPaneView;
+    private VariablesTabPaneController tabPaneController;
 
     private TurtleHabitat myHabitat;
     private Turtle myTurtle1 = new Turtle();
@@ -109,6 +118,7 @@ public class ParserController extends Application{
 
         setTurtleHabitat();
         setTerminalView();
+        setTabPaneView();
         setHeader();
 
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
@@ -124,13 +134,17 @@ public class ParserController extends Application{
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
         SCENE_WIDTH = screenBounds.getMaxX();
-        SCENE_HEIGHT = screenBounds.getMaxY();;
+        SCENE_HEIGHT = screenBounds.getMaxY();
+
+        TABPANE_WIDTH = SCENE_WIDTH;
+        TABPANE_HEIGHT = 150;
 
         HABITAT_WIDTH = SCENE_WIDTH/2;
-        HABITAT_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT;
+        HABITAT_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
 
         TERMINAL_WIDTH = SCENE_WIDTH/2;
-        TERMINAL_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT;
+        TERMINAL_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
+
     }
 
     private void setBorderPane() {
@@ -150,6 +164,12 @@ public class ParserController extends Application{
         term_controller = new TerminalController(term);
         term_controller.setCompiler(comp);
         root.setLeft(term);
+    }
+
+    private void setTabPaneView() {
+        tabPaneView = new VariablesTabPaneView(TABPANE_WIDTH, TABPANE_HEIGHT);
+        tabPaneController = new VariablesTabPaneController(tabPaneView, comp, term_controller);
+        root.setBottom(tabPaneView);
     }
 
     private void setTurtleHabitat() {
@@ -190,6 +210,7 @@ public class ParserController extends Application{
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
         root.setCenter(myHabitat.getTurtleHabitat());
         term_controller.changeLanguage(header.getLanguageStatus());
+        tabPaneController.updateAllTables();
     }
 
     private void launchPenColorChooser() {

@@ -5,6 +5,7 @@ import slogo.terminal.TerminalController;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class VariablesTabPaneController {
     private final static String COMMAND_TYPE = "COMMAND";
@@ -23,21 +24,27 @@ public class VariablesTabPaneController {
         this.terminal = t;
     }
 
-    public void updateVariableTable(){
-        List<String> varList = (List<String>) compiler.getAllVariableNames();
+    public void updateAllTables(){
+        updateVariableTable();
+        updateDefinedMethod();
+        updateCommand();
+    }
+
+    private void updateVariableTable(){
+        Set<String> varList = (Set<String>) compiler.getAllVariableNames();
         for (String var:varList){
             variablesTabPaneView.addEntry(VAR_TYPE, var, Double.toString(compiler.getVariable(var)));
         }
     }
 
-    public void addDefinedMethod(){
-        List<String> methodList = (List<String>) compiler.getAllUserDefinedCommands();
+    private void updateDefinedMethod(){
+        Set<String> methodList = (Set<String>) compiler.getAllUserDefinedCommands();
         for (String method:methodList){
             variablesTabPaneView.addEntry(DEFINED_TYPE, method, DEFINED_VALUE_PLACEHOLDER);
         }
     }
 
-    public void addCommand(){
+    private void updateCommand(){
         List<String> commandList = (List<String>) terminal.getAllCommands();
         Iterator<String> commandIterator = commandList.iterator();
         List<String> messageList = (List<String>) terminal.getAllMessages();
