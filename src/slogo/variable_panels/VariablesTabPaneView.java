@@ -11,7 +11,7 @@ import java.util.*;
 
 
 public class VariablesTabPaneView extends TabPane {
-    private final static String LOCAL_RESOURCE_TAB_NAMES = String.format("%s.local_resources.tab_names", TestLine.class.getPackageName());
+    private final static String LOCAL_RESOURCE_TAB_NAMES = String.format("slogo.variable_panels.local_resources.tab_titles", TestLine.class.getPackageName());
 
     private double width;
     private double height;
@@ -23,20 +23,21 @@ public class VariablesTabPaneView extends TabPane {
         initializeTabPane();
     }
 
+    public void addEntry(String type, TableEntry entry){
+        tableDict.get(type).addEntry(entry);
+    }
+
     public void setSize(double width, double height){
         this.width = width;
         this.height = height;
         setPrefSize(width, height);
     }
 
-    public void addEntry(String type, TableEntry entry){
-        tableDict.get(type).addEntry(entry);
-    }
-
     private void initializeTabPane(){
         tableDict = new HashMap<>();
         List<Map.Entry<String, String>> tabDict = loadTabNameDict();
         for (Map.Entry<String, String> tab: tabDict){
+            System.out.println(tab.getKey());
             AutoTableView newTable = new AutoTableView(getTabWidth(), getTabHeight(), tab.getKey());
             initializeTab(tab.getValue(), newTable);
             tableDict.put(tab.getKey(), newTable);
@@ -49,15 +50,6 @@ public class VariablesTabPaneView extends TabPane {
         getTabs().add(newTab);
     }
 
-    //TODO: what is the size of tabs?
-    private double getTabWidth(){
-        return width;
-    }
-
-    private double getTabHeight(){
-        return height;
-    }
-
     private List<Map.Entry<String, String>> loadTabNameDict(){
         ResourceBundle resources = ResourceBundle.getBundle(LOCAL_RESOURCE_TAB_NAMES);
         List<Map.Entry<String, String>> dict = new ArrayList<>();
@@ -66,6 +58,15 @@ public class VariablesTabPaneView extends TabPane {
             dict.add(new AbstractMap.SimpleEntry<>(tabType, tabName));
         }
         return dict;
+    }
+
+    //TODO: what is the size of tabs?
+    private double getTabWidth(){
+        return width;
+    }
+
+    private double getTabHeight(){
+        return height;
     }
 
 }

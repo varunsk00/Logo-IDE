@@ -13,7 +13,7 @@ import slogo.variable_panels.util_classes.Variable;
 import java.util.*;
 
 public class AutoTableView extends TableView {
-    private final static String LOCAL_RESOURCE_PATH = "slogo.variable_panels.local_resources";
+    private final static String LOCAL_RESOURCE_PATH = "slogo.variable_panels.local_resources.";
 
     private final static String COMMAND_PATH = "command_col_titles";
     private final static String DEFINED_PATH = "defined_col_titles";
@@ -40,13 +40,6 @@ public class AutoTableView extends TableView {
         setSize(width, height);
     }
 
-    public void addEntry(Object entry){
-        if (entry instanceof Variable || entry instanceof Defined || entry instanceof Command)
-            data.add(entry);
-        else
-            System.out.println("DataType unimplemented in panel");
-    }
-
     private void initializeTable(){
         setEditable(false);
         List<Map.Entry<String, String>> colDict = loadDict();
@@ -57,16 +50,26 @@ public class AutoTableView extends TableView {
         setItems(data);
     }
 
+    public void addEntry(Object entry){
+        if (entry instanceof Variable && type.equals(VAR_TYPE) || entry instanceof Defined && type.equals(DEFINED_TYPE) || entry instanceof Command && type.equals(COMMAND_TYPE))
+            data.add(entry);
+        else
+            System.out.println("DataType unimplemented in panel");
+    }
+
     private void initializeCol(String colTitle, String cellFactory){
         TableColumn col  = new TableColumn(colTitle);
         setColSize(col, getColWidth());
         switch (type){
             case COMMAND_TYPE:
                 col.setCellValueFactory(new PropertyValueFactory<Commands, String>(cellFactory));
+                break;
             case VAR_TYPE:
                 col.setCellValueFactory(new PropertyValueFactory<Variable, String>(cellFactory));
+                break;
             case DEFINED_TYPE:
                 col.setCellValueFactory(new PropertyValueFactory<Defined, String>(cellFactory));
+                break;
         }
         getColumns().add(col);
     }
@@ -95,16 +98,18 @@ public class AutoTableView extends TableView {
     }
 
     private void factoryType(){
+        System.out.println(type);
+        System.out.println(COMMAND_TYPE);
         switch (type){
             case COMMAND_TYPE:
                 currentResourcePath = String.format("%s%s", LOCAL_RESOURCE_PATH, COMMAND_PATH);
+                break;
             case VAR_TYPE:
                 currentResourcePath = String.format("%s%s", LOCAL_RESOURCE_PATH, VAR_PATH);
+                break;
             case DEFINED_TYPE:
                 currentResourcePath = String.format("%s%s", LOCAL_RESOURCE_PATH, DEFINED_PATH);
-            default:
-                currentResourcePath = String.format("%s%s", LOCAL_RESOURCE_PATH, COMMAND_PATH);
-                System.out.println("Unimplemented type of tab, default to command panel generation");
+                break;
         }
     }
 
