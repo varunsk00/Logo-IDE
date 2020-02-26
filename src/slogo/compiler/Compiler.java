@@ -199,11 +199,7 @@ public class Compiler {
         String commType = getSymbol(str, myCommands);
         ret = CommandFactory.createCommand(commType, str);
       } catch (InvalidSyntaxException e) {
-        if (memory.getUserDefinedCommand(str)!= null) {
-          ret = TypeFactory.createCommand("Command", str); //FIXME magic val
-        } else {
-          throw e;
-        }
+        ret = TypeFactory.createCommand("Command", str); //FIXME magic val
       }
     }
     ret.setMemory(memory);

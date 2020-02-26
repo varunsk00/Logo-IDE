@@ -15,7 +15,6 @@ public class ClearScreenCommand extends TurtleCommand {
     double y = turtle.getYLocation();
     turtle.setCleared(true);
     turtle.goHome();
-    turtle.setHeading(0);
     return Math.pow(x * x + y * y, .5);
   }
 
