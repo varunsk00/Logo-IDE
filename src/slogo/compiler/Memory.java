@@ -35,7 +35,7 @@ public class Memory {
     return ret;
   }
 
-  public HashMap<String, Double> getVariableMapCopy() {
+  public Map<String, Double> getVariableMapCopy() {
     return new HashMap<>(variableStack.peek());
   }
 
