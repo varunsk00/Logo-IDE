@@ -11,12 +11,10 @@ import java.util.List;
 public class TurtleHabitat {
     private Pane myTurtleHabitat;
     private TurtleView turtle;
-//<<<<<<< Updated upstream
     private List<Polyline> myLines;
-    //private Polyline pen;
+
     private double lastx;
     private double lasty;
-//>>>>>>> Stashed changes*/
 
     public TurtleHabitat(double width, double height){
         turtle = new TurtleView(50, 25);
@@ -26,12 +24,8 @@ public class TurtleHabitat {
         myTurtleHabitat = new Pane(turtle);
         myLines = new ArrayList<>();
         changeSize(width, height);
-/*<<<<<<< Updated upstream
-=======*/
-        //myTurtleHabitat.getChildren().add(pen);
         lastx = turtle.centerX();
         lasty = turtle.centerY();
-//>>>>>>> Stashed changes*/
     }
 
     public void changeSize(double width, double height){
@@ -51,19 +45,16 @@ public class TurtleHabitat {
     }
 
     public void penDraw(Color penColor, double x_coor, double y_coor){
-//<<<<<<< Updated upstream
         Polyline pen  = new Polyline();
         myLines.add(pen);
         myTurtleHabitat.getChildren().add(pen);
-        //Double[] points = new Double[] {turtle.centerX(), turtle.centerY(),
-         //                               x_coor + turtle.getXOffset() + 50/(2), y_coor + turtle.getYOffset() + 25/(2)};
-/*=======*/
+
         double xOffsetCoord = x_coor + turtle.getXOffset() + 50/(2);
         double yOffsetCoord = y_coor + turtle.getYOffset() + 25/(2);
         Double[] points = new Double[] {lastx, lasty, xOffsetCoord, yOffsetCoord};
         lastx = xOffsetCoord;
         lasty = yOffsetCoord;
-//>>>>>>> Stashed changes*/
+
         pen.getPoints().addAll(points);
         pen.setStroke(penColor);
         //p.getStrokeDashArray().addAll(2d, 21d);
@@ -71,7 +62,6 @@ public class TurtleHabitat {
         if(turtle.isCleared()){
             for (Polyline p : myLines) {
                 p.getPoints().clear();
-                //myLines.remove(p);
                 myTurtleHabitat.getChildren().remove(p);
             }
             myLines.clear();
