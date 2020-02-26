@@ -5,7 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
 
 public class UserDefinedListView extends ListView<String> {
-    public UserDefinedListView(int width, int height){
+    public UserDefinedListView(double width, double height){
         super(FXCollections.observableArrayList());
     }
 }

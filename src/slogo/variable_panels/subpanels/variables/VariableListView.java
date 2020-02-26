@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ListView;
 
 public class VariableListView extends ListView<String> {
-    public VariableListView(int width, int height) {
+    public VariableListView(double width, double height) {
         super(FXCollections.observableArrayList());
     }
 }

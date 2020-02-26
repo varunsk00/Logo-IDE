@@ -7,7 +7,7 @@ import javax.swing.text.Element;
 
 
 public class CommandListView extends ListView<String> {
-    public CommandListView(int width, int max_height) {
+    public CommandListView(double width, double height) {
         super(FXCollections.observableArrayList());
     }
 }
