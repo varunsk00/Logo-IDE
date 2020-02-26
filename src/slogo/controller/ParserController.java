@@ -184,8 +184,6 @@ public class ParserController extends Application{
             handleImageFileChooser();
         }
         if (buttons.getHelpStatus()) {
-            myHabitat.getTurtleHabitat().setScaleX(0.5);
-            myHabitat.getTurtleHabitat().setScaleY(0.5);
         }
         if(myTurtle1.isPenDown()){
             for (Point loc: myTurtle1.locationsList()) {
@@ -245,7 +243,11 @@ public class ParserController extends Application{
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
         IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
         LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
+
+        header.getChildren().clear();
+        root.getChildren().remove(header);
         setHeader();
+
         comp.setLanguage(currentLang);
         term_controller.changeLanguage(currentLang);
     }
