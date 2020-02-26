@@ -4,7 +4,7 @@ import java.util.List;
 import slogo.compiler.Command;
 import slogo.compiler.Memory;
 
-public class CommandType extends Command {
+public class CommandType extends TypeCommand {
 
   private String name;
   private List<String> variables;
@@ -16,21 +16,21 @@ public class CommandType extends Command {
       return;
     }
     name = declaration;
-    variables = Memory.getCommandVariables(name);
+    variables = memory.getCommandVariables(name);
   }
 
   @Override
   public double execute() {
-    Memory.pushMemoryStack();
+    memory.pushMemoryStack();
     for (int i = 0; i < variables.size(); i++) {
-      Memory.setVariable(variables.get(i), args.get(i).execute());
+      memory.setVariable(variables.get(i), args.get(i).execute());
       //System.out.println(variables.get(i));
     }
     //recPrint();
-    //Command exe = Memory.getUserDefinedCommand(name);
+    //Command exe = memory.getUserDefinedCommand(name);
     //exe.recPrint();
-    double ret = Memory.getUserDefinedCommand(name).execute();
-    Memory.popMemoryStack();
+    double ret = memory.getUserDefinedCommand(name).execute();
+    memory.popMemoryStack();
     return ret;
   }
 

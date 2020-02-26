@@ -8,6 +8,7 @@ public abstract class Command {
 
   protected static final String INITIALIZATION = "this is an initialization string that should never happen";
 
+  protected Memory memory;
   protected ArrayList<Command> args;
 
   public Command(String declaration) {
@@ -35,6 +36,13 @@ public abstract class Command {
       CommandFactory.registerCommand(className, obj);
     } else {
       throw new RuntimeException("bad class name");
+    }
+  }
+
+  public void setMemory(Memory mem) {
+    memory = mem;
+    for (Command c: args) {
+      c.setMemory(mem);
     }
   }
 

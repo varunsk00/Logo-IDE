@@ -28,6 +28,9 @@ public class ButtonController {
 
     private HBox myButtons;
 
+    //TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
+    //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
+    //TODO(FUN): RESIZE TURTLE SLIDER
 
     /**
      * Basic constructor for a header Sets its ResourceBundle to the one specified by the given

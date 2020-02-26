@@ -14,7 +14,7 @@ public abstract class TurtleCommand extends Command {
 
   @Override
   public double execute() {
-    turtle = Memory.getCurrentTurtle();
+    turtle = memory.getCurrentTurtle();
     return executeTurtle();
   }
 

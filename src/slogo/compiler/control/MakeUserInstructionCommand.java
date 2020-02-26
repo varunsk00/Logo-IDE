@@ -24,8 +24,8 @@ public class MakeUserInstructionCommand extends Command {
         }
       }
       String commName = ((CommandType) args.get(0)).getName();
-      Memory.setUserDefinedCommand(commName, args.get(2));
-      Memory.setUserDefinedCommandVariables(commName, vars);
+      memory.setUserDefinedCommand(commName, args.get(2));
+      memory.setUserDefinedCommandVariables(commName, vars);
     } catch (CompilerException e) {
       return 0;
     }

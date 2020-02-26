@@ -30,5 +30,21 @@ public class TurtleView extends Rectangle {
         setY(turtle.getYLocation()+ Y_OFFSET);
         setVisible(turtle.isShowTurtle());
     }
+
+    public double centerX(){
+        return getX() + getWidth()/2;
+    }
+
+    public double centerY(){
+        return getY() + getHeight()/2;
+    }
+
+    public double getXOffset(){
+        return X_OFFSET;
+    }
+
+    public double getYOffset(){
+        return Y_OFFSET;
+    }
 }
 
