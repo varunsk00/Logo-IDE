@@ -56,7 +56,7 @@ public class ParserController extends Application{
 
     private double SCENE_WIDTH = 1280;
     private double SCENE_HEIGHT = 720;
-    private double HEADER_HEIGHT = 45;
+    private double HEADER_HEIGHT = 80;
 
     private double HABITAT_WIDTH = SCENE_WIDTH/2;
     private double HABITAT_HEIGHT = SCENE_HEIGHT;
@@ -122,6 +122,10 @@ public class ParserController extends Application{
      */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SLogo");
+
+        primaryStage.setMaximized(true);
+        changeScreenSizetoMax();
+
         startAnimationLoop();
         startCompiler();
         setBorderPane();
@@ -172,7 +176,7 @@ public class ParserController extends Application{
     }
 
     private void setTerminalView() {
-        term = new TerminalView( (int) SCENE_WIDTH/2, (int) SCENE_HEIGHT);
+        term = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
         term_controller = new TerminalController(term);
         term_controller.setExternals(comp);
         status = false;
@@ -236,7 +240,7 @@ public class ParserController extends Application{
         myHabitat.setBackground(backgroundColor);
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
 
-        root.setCenter(myHabitat.getTurtleHabitat());
+        //root.setCenter(myHabitat.getTurtleHabitat());
         updateTabPanes();
     }
 

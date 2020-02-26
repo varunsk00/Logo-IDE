@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -70,23 +69,19 @@ public class Compiler {
   }
 
   public String execute(String input) {
-    //System.out.println(input);
     String[] lines = input.split(getNewline());
-    ArrayList<String> noComment = new ArrayList<>();
-    noComment.add("[");
+    StringBuilder noComment = new StringBuilder();
     for (String line : lines) {
       try {
         if (!getSymbol(line, myTypes).equals("Comment")) {
-          noComment.add(line);
+          noComment.append(line);
         }
       } catch (InvalidSyntaxException e) {
-        noComment.add(line); //If it throws an exception, it's not a comment.
+        noComment.append(line); //If it throws an exception, it's not a comment.
         //Later code will handle the syntax checking
       }
     }
-    noComment.add("]");
-    input = String.join(" ", noComment);
-    //System.out.println(input);
+    input = "[ " + noComment.toString() + " ]";
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
@@ -154,7 +149,7 @@ public class Compiler {
       }
       if (stack.size() >= MAX_RECURSION_DEPTH) {
         throw new StackOverflowException(
-            "Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
+                "Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
       }
     }
     return stack.getLast();
@@ -168,7 +163,7 @@ public class Compiler {
           return arg;
         }
         throw new InvalidSyntaxException(
-            "Ran out of commands to parse before finishing given commands.");
+                "Ran out of commands to parse before finishing given commands.");
       }
       stack.peek().addArg(arg);
     }
@@ -204,7 +199,11 @@ public class Compiler {
         String commType = getSymbol(str, myCommands);
         ret = CommandFactory.createCommand(commType, str);
       } catch (InvalidSyntaxException e) {
-        ret = TypeFactory.createCommand("Command", str); //FIXME magic val
+        if (memory.getUserDefinedCommand(str)!= null) {
+          ret = TypeFactory.createCommand("Command", str); //FIXME magic val
+        } else {
+          throw e;
+        }
       }
     }
     ret.setMemory(memory);
@@ -219,8 +218,8 @@ public class Compiler {
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
       list.add(new SimpleEntry<>(key,
-          // THIS IS THE IMPORTANT LINE
-          Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+              // THIS IS THE IMPORTANT LINE
+              Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
     }
   }
 
@@ -247,16 +246,16 @@ public class Compiler {
     memory.addTurtle(id, t);
   }
 
-  public Map<String, Double> getVariableMapCopy() {
-    return memory.getVariableMapCopy();
+  public Collection<String> getAllVariableNames() {
+    return memory.getAllVariableNames();
   }
 
-  public Map<String, List<String>> getUserCommandMapCopy() {
-    return memory.getUserCommandMapCopy();
+  public Collection<String> getAllUserDefinedCommands() {
+    return memory.getAllUserDefinedCommands();
   }
 
-  public Map<String, Turtle> getTurtleMapCopy() {
-    return memory.getTurtleMapCopy();
+  public Collection<String> getAllTurtleIDs() {
+    return memory.getAllTurtleIDs();
   }
 
   public Turtle getTurtleByID(String id) {
@@ -267,7 +266,7 @@ public class Compiler {
     return memory.getVariable(name);
   }
 
-  public List<String> getCommandVariables(String name) {
+  public List<String> getCommandVariables(String name){
     return memory.getCommandVariables(name);
   }
 
