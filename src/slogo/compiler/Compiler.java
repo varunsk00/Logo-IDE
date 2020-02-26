@@ -25,7 +25,7 @@ import slogo.turtle.Turtle;
 public class Compiler {
 
   public static final int MAX_RECURSION_DEPTH = 1000;
-  private static final String LANGUAGES_PACKAGE_EXTENSION = "slogo.resources.languages.";
+  private static final String LANGUAGES_PACKAGE_EXTENSION = "slogo.resources.languages.syntax.";
   private static final String RESOURCES_PACKAGE = LANGUAGES_PACKAGE_EXTENSION;
   private static final String DEFAULT_LANGUAGE = "English";
   private static final String SYNTAX_FILE = "Syntax";

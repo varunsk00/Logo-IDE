@@ -47,7 +47,7 @@ public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
     private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
     private static final String LOGO_DIRECTORY = "data/examples";
-    private static final String RESOURCES_PACKAGE = "slogo.resources.languages.";
+    private static final String RESOURCES_PACKAGE = "slogo.resources.languages.gui.";
     private static String GUI_LANGUAGE = "English_GUI";
     private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + GUI_LANGUAGE);
 
