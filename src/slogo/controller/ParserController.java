@@ -163,6 +163,7 @@ public class ParserController extends Application{
         root.setRight(myHabitat.getTurtleHabitat());
     }
 
+    //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
     private void handleLanguage(String lang){
         switch(lang){
             case "\u6c49\u8bed\u62fc\u97f3":
