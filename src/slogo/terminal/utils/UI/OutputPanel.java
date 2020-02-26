@@ -22,7 +22,7 @@ public class OutputPanel extends ListView<String> {
         //setMouseTransparent(true);
         setFocusTraversable(false);
 
-        setMinWidth(width); setMaxWidth(width);
+        setMinWidth(width); setMaxWidth(width); setPrefWidth(width);
         setPrefHeight(max_height);
         setMaxHeight(max_height); // grows with the list
 

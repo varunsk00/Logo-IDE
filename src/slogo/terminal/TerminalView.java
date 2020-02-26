@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-//TODO: Caret Control, Auto-Scroll (Scroll-bar set to max)
+//TODO: Caret Control (move to next line instead of resizing the screen)
 
 /**
  * terminalView generates the visualization of the terminal console.
  */
 public class TerminalView extends ScrollPane {
     final static int INPUT_PANEL_HEIGHT = 40; //TODO: Empirical adjustment, needs calculation of the font size
-    final static int HEADER_HEIGHT = 50;
+    final static int HEADER_HEIGHT = 30;
     final static String BANNER_FILEPATH = "src/slogo/resources/banners/";
     final static String WELCOME_BANNER = "welcome_small.txt";
 
@@ -115,6 +115,7 @@ public class TerminalView extends ScrollPane {
         outputPanel = new OutputPanel(width, height-INPUT_PANEL_HEIGHT-HEADER_HEIGHT);
         inputPanel = new InputPanel(width, INPUT_PANEL_HEIGHT);
         VBox box = new VBox(outputPanel, inputPanel); //TODO: do we really need this box;
+        //VBox box = new VBox(outputPanel);
         //getChildren().add(box);
         setContent(box);
         //getChildren().addAll(outputPanel, inputPanel);

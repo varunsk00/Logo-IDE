@@ -1,5 +1,7 @@
 package slogo.controller;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Screen;
 import slogo.compiler.Compiler;
 import slogo.turtle.Turtle;
 import slogo.turtle.TurtleHabitat;
@@ -41,11 +43,16 @@ public class ParserController extends Application{
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private static final double SCENE_WIDTH = 1280;
-    private static final double SCENE_HEIGHT = 720;
+    private final static double HEADER_HEIGHT = 40;
 
-    private static final double HABITAT_WIDTH = SCENE_WIDTH/2;
-    private static final double HABITAT_HEIGHT = SCENE_HEIGHT;
+    private double SCENE_WIDTH = 1280;
+    private double SCENE_HEIGHT = 720;
+
+    private double HABITAT_WIDTH = SCENE_WIDTH/2;
+    private double HABITAT_HEIGHT = SCENE_HEIGHT;
+
+    private double TERMINAL_WIDTH = SCENE_WIDTH/2;
+    private double TERMINAL_HEIGHT = SCENE_HEIGHT;
 
     private static final Color ALL_COLOR = Color.ALICEBLUE;
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
@@ -93,12 +100,17 @@ public class ParserController extends Application{
      */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SLogo");
+        primaryStage.setMaximized(true);
+        changeScreenSizetoMax();
+
         startAnimationLoop();
         startCompiler();
         setBorderPane();
+
         setTurtleHabitat();
         setTerminalView();
         setHeader();
+
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets().add(STYLESHEET);
         myStage = primaryStage;
@@ -107,11 +119,25 @@ public class ParserController extends Application{
         myStage.show();
     }
 
+    private void changeScreenSizetoMax(){
+
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+        SCENE_WIDTH = screenBounds.getMaxX();
+        SCENE_HEIGHT = screenBounds.getMaxY();;
+
+        HABITAT_WIDTH = SCENE_WIDTH/2;
+        HABITAT_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT;
+
+        TERMINAL_WIDTH = SCENE_WIDTH/2;
+        TERMINAL_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT;
+    }
+
     private void setBorderPane() {
         root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
         root.setMaxWidth(SCENE_WIDTH);
-        root.setMaxHeight(SCENE_WIDTH);
+        root.setMaxHeight(SCENE_HEIGHT);
     }
 
     private void setHeader() {
@@ -120,7 +146,7 @@ public class ParserController extends Application{
     }
 
     private void setTerminalView() {
-        term = new TerminalView( (int) SCENE_WIDTH/2, (int) SCENE_HEIGHT);
+        term = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
         term_controller = new TerminalController(term);
         term_controller.setCompiler(comp);
         root.setLeft(term);
@@ -129,7 +155,7 @@ public class ParserController extends Application{
     private void setTurtleHabitat() {
         myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
         myHabitat.getTurtleHabitat().getStyleClass().add("habitat");
-        root.setRight(myHabitat.getTurtleHabitat());
+        //root.setCenter(myHabitat.getTurtleHabitat());
     }
 
     private void startCompiler(){
@@ -162,7 +188,7 @@ public class ParserController extends Application{
         }
         myHabitat.setBackground(backgroundColor);
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
-        root.setRight(myHabitat.getTurtleHabitat());
+        root.setCenter(myHabitat.getTurtleHabitat());
         term_controller.changeLanguage(header.getLanguageStatus());
     }
 
