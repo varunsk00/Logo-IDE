@@ -10,6 +10,7 @@ public class TurtleView extends Rectangle {
     private static final double Y_OFFSET = 360;
     private String image_filepath = "slogo/resources/images/turtle_green.png";
     private Image img;
+    private boolean cleared;
     public TurtleView(int width, int height){
         super(width, height);
         img = new Image(image_filepath);
@@ -27,8 +28,12 @@ public class TurtleView extends Rectangle {
     public void updateTurtleView(Turtle turtle) {
         setRotate(turtle.getHeading());
         setX(turtle.getXLocation() + X_OFFSET);
-        setY(turtle.getYLocation()+ Y_OFFSET);
+        setY(turtle.getYLocation() + Y_OFFSET);
         setVisible(turtle.isShowTurtle());
+        cleared = turtle.isCleared();
+        if (cleared) {
+            resetTurtleView(turtle);
+        }
     }
 
     public double centerX(){
@@ -45,6 +50,21 @@ public class TurtleView extends Rectangle {
 
     public double getYOffset(){
         return Y_OFFSET;
+    }
+
+    public boolean isCleared(){
+        return cleared;
+    }
+
+    public void setCleared(Boolean x){
+        cleared = x;
+    }
+
+    private void resetTurtleView(Turtle turtle){
+        turtle.setXLocation(0);
+        turtle.setYLocation(0);
+        turtle.setHeading(0);
+        turtle.setCleared(false);
     }
 }
 

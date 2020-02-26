@@ -45,7 +45,7 @@ public class TestLine extends ListCell<String> {
 
     @Override
     protected void updateItem(String str, boolean empty){
-        //System.out.println("updating a new item "+str);
+        System.out.println("updating a new item "+str);
         super.updateItem(str, empty);
         if (!checkEmpty(str)){
             //System.out.println(str+" is not empty");
@@ -144,7 +144,7 @@ public class TestLine extends ListCell<String> {
     private Text createSpacer(){return new Text(SEPARATOR);}
 
     private boolean checkEmpty(String str){
-        return str==null || str.equals(""); //|| !isEmpty();
+        return str==null || str.equals(""); //||str.matches("\\s*"); //!isEmpty();
     }
 
     private String getTextStrType(String str){

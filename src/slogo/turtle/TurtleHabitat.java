@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 public class TurtleHabitat {
     private Pane myTurtleHabitat;
     private TurtleView turtle;
+    private Polyline pen  = new Polyline();
 
     public TurtleHabitat(double width, double height){
         turtle = new TurtleView(50, 25);
@@ -16,6 +17,7 @@ public class TurtleHabitat {
         turtle.setY(height/2);
         myTurtleHabitat = new Pane(turtle);
         changeSize(width, height);
+        myTurtleHabitat.getChildren().add(pen);
     }
 
     public void changeSize(double width, double height){
@@ -37,11 +39,12 @@ public class TurtleHabitat {
     public void penDraw(Color penColor, double x_coor, double y_coor){
         Double[] points = new Double[] {turtle.centerX(), turtle.centerY(),
                                         x_coor + turtle.getXOffset() + 50/(2), y_coor + turtle.getYOffset() + 25/(2)};
-        Polyline p  = new Polyline();
-        p.getPoints().addAll(points);
+        pen.getPoints().addAll(points);
         //p.getStrokeDashArray().addAll(2d, 21d);
-        p.setStroke(penColor);
-        p.setStrokeWidth(2.0);
-        myTurtleHabitat.getChildren().add(p);
+        pen.setStroke(penColor);
+        pen.setStrokeWidth(2.0);
+        if(turtle.isCleared()){
+            pen.getPoints().clear();
+        }
     }
 }

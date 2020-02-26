@@ -1,5 +1,4 @@
 package slogo.controller;
-import javafx.scene.shape.Rectangle;
 import slogo.compiler.Compiler;
 import slogo.turtle.Turtle;
 import slogo.turtle.TurtleHabitat;
@@ -7,7 +6,6 @@ import slogo.terminal.TerminalView;
 import slogo.terminal.TerminalController;
 
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.FileChooser;
 import javafx.animation.KeyFrame;
@@ -23,7 +21,6 @@ import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
 
 //TODO(REQUIRED): SYSTEM-WIDE LANGUAGE SWITCHING
@@ -35,7 +32,7 @@ public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
     private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
     private static final String RESOURCES_PACKAGE = "slogo.resources.languages.";
-    private static final String GUI_LANGUAGE = "English_GUI";
+    private static String GUI_LANGUAGE = "English_GUI";
     private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + GUI_LANGUAGE);
 
     private static double FRAMES_PER_SECOND = 30;
@@ -50,7 +47,7 @@ public class ParserController extends Application{
     private static final Color ALL_COLOR = Color.ALICEBLUE;
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
 
-    public static final FileChooser FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
+    public FileChooser FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
     private BorderPane root;
     private ButtonController header;
     private Stage myStage;
@@ -146,6 +143,7 @@ public class ParserController extends Application{
     }
 
     private void step() {
+        handleLanguage(header.getLanguageStatus());
         if(header.getPenColorStatus()){
             launchPenColorChooser();
         }
@@ -163,7 +161,56 @@ public class ParserController extends Application{
         myHabitat.setBackground(backgroundColor);
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
         root.setRight(myHabitat.getTurtleHabitat());
-        term_controller.changeLanguage(header.getLanguageStatus());
+    }
+
+    private void handleLanguage(String lang){
+        switch(lang){
+            case "\u6c49\u8bed\u62fc\u97f3":
+                GUI_LANGUAGE = "Chinese_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "français":
+                GUI_LANGUAGE = "French_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "Deutsch":
+                GUI_LANGUAGE = "German_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "italiano":
+                GUI_LANGUAGE = "Italian_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "português":
+                GUI_LANGUAGE = "Portuguese_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "\u0070\u0443\u0441\u0441\u043a\u0438\u0439":
+                GUI_LANGUAGE = "Russian_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "español":
+                GUI_LANGUAGE = "Spanish_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "\u0939\u093f\u0902\u0926\u0940/\u0627\u0631\u062f\u0648":
+                GUI_LANGUAGE = "Urdu_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "English":
+                GUI_LANGUAGE = "English_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+        }
+    }
+
+    private void updateLanguage(String language){
+        String currentLang = language.substring(0, language.indexOf("_"));
+        myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
+        FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
+        setHeader();
+        comp.setLanguage(currentLang);
+        term_controller.changeLanguage(currentLang);
     }
 
     private void launchPenColorChooser() {
