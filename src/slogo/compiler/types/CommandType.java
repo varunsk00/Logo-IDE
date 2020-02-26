@@ -2,7 +2,6 @@ package slogo.compiler.types;
 
 import java.util.List;
 import slogo.compiler.Command;
-import slogo.compiler.Memory;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 
 public class CommandType extends TypeCommand {
@@ -32,7 +31,7 @@ public class CommandType extends TypeCommand {
     double ret = 0.0;
     try {
       ret = memory.getUserDefinedCommand(name).execute();
-    } catch (NullPointerException e){
+    } catch (NullPointerException e) {
       memory.popMemoryStack();
       throw new InvalidSyntaxException("User command (" + name + ") not defined.");
     }

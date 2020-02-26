@@ -266,7 +266,7 @@ public class Compiler {
     return memory.getVariable(name);
   }
 
-  public List<String> getCommandVariables(String name){
+  public List<String> getCommandVariables(String name) {
     return memory.getCommandVariables(name);
   }
 
