@@ -1,7 +1,6 @@
 package slogo.compiler.turtle;
 
 import slogo.compiler.Command;
-import slogo.compiler.Memory;
 import slogo.turtle.Turtle;
 
 public abstract class TurtleCommand extends Command {

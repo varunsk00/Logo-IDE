@@ -14,6 +14,7 @@ public class HomeCommand extends TurtleCommand {
     double x = turtle.getXLocation();
     double y = turtle.getYLocation();
     turtle.goHome();
+    turtle.setHeading(0);
     return Math.pow(x * x + y * y, 0.5);
   }
 

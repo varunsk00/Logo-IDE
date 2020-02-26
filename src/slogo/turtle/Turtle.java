@@ -1,5 +1,11 @@
 package slogo.turtle;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import slogo.compiler.math.PiCommand;
+
 public class Turtle {
     public static final double CENTER_X = 0.0;
     public static final double CENTER_Y = 0.0;
@@ -12,6 +18,9 @@ public class Turtle {
     private boolean penDown;
     private boolean showTurtle;
     private boolean clearScreen;
+    private boolean oldPenDown;
+
+    private List<Point> locations;
 
     public Turtle(){
         xLocation = CENTER_X;
@@ -19,11 +28,19 @@ public class Turtle {
         heading = NORTH;
         penDown = true;
         showTurtle = true;
+        locations = new ArrayList<>();
     }
 
     public void move(double pixel){
         xLocation = Math.sin(Math.toRadians(heading))*pixel + xLocation;
         yLocation = -Math.cos(Math.toRadians(heading))*pixel + yLocation;
+        locations.add(new Point(xLocation,yLocation));
+    }
+
+    public List<Point> locationsList() {
+        List<Point> ret = new ArrayList<>(locations);
+        locations.clear();
+        return ret;
     }
 
     public void rotate(double degree){
@@ -45,6 +62,7 @@ public class Turtle {
     public void goHome(){
         xLocation = CENTER_X;
         yLocation = CENTER_Y;
+        locations.add(new Point(xLocation,yLocation));
     }
 
     public void setXLocation(double xLocation) {
@@ -85,5 +103,15 @@ public class Turtle {
 
     public void setCleared(boolean clear) {
         clearScreen = clear;
+        if (clear) {
+            oldPenDown = penDown;
+            setPenDown(false);
+            locations.add(new Point(xLocation,yLocation));
+
+        }
+    }
+
+    public void handleClear() {
+        setPenDown(oldPenDown);
     }
 }
