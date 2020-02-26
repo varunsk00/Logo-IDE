@@ -45,7 +45,7 @@ public class TestLine extends ListCell<String> {
 
     @Override
     protected void updateItem(String str, boolean empty){
-        System.out.println("updating a new item "+str);
+       // System.out.println("updating a new item "+str);
         super.updateItem(str, empty);
         if (!checkEmpty(str)){
             //System.out.println(str+" is not empty");
