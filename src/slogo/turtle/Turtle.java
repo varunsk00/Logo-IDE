@@ -34,7 +34,9 @@ public class Turtle {
     public void move(double pixel){
         xLocation = Math.sin(Math.toRadians(heading))*pixel + xLocation;
         yLocation = -Math.cos(Math.toRadians(heading))*pixel + yLocation;
-        locations.add(new Point(xLocation,yLocation));
+        Point p = new Point(xLocation, yLocation);
+        p.setDrawn(penDown);
+        locations.add(p);
     }
 
     public List<Point> locationsList() {

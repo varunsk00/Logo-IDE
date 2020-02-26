@@ -7,6 +7,7 @@ public class Point {
 
   private double x;
   private double y;
+  private boolean drawn;
 
   public Point(double x, double y) {
     this.x = x;
@@ -19,6 +20,14 @@ public class Point {
 
   public double getY() {
     return y;
+  }
+
+  public void setDrawn(boolean d) {
+    drawn = d;
+  }
+
+  public boolean getDrawn() {
+    return drawn;
   }
 
 }

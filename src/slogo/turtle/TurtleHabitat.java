@@ -46,7 +46,9 @@ public class TurtleHabitat {
         myTurtleHabitat.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
-    public void penDraw(Color penColor, double x_coor, double y_coor){
+    public void penDraw(Color penColor, Point loc){
+        double x_coor = loc.getX();
+        double y_coor = loc.getY();
         Polyline pen  = new Polyline();
         myLines.add(pen);
         myTurtleHabitat.getChildren().add(pen);
@@ -57,7 +59,9 @@ public class TurtleHabitat {
         lastx = xOffsetCoord;
         lasty = yOffsetCoord;
 
-        pen.getPoints().addAll(points);
+        if (loc.getDrawn()) {
+            pen.getPoints().addAll(points);
+        }
         pen.setStroke(penColor);
         //p.getStrokeDashArray().addAll(2d, 21d);
         pen.setStrokeWidth(2.0);

@@ -234,7 +234,7 @@ public class ParserController extends Application{
         }
         if(myTurtle1.isPenDown()){
             for (Point loc: myTurtle1.locationsList()) {
-                myHabitat.penDraw(penColor, loc.getX(), loc.getY());
+                myHabitat.penDraw(penColor, loc);
             }
         }
         myHabitat.setBackground(backgroundColor);
