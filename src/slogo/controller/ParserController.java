@@ -117,7 +117,7 @@ public class ParserController extends Application{
      *
      * @param primaryStage is the stage to display the Application
      */
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException {
         primaryStage.setTitle("SLogo");
         primaryStage.setMaximized(true);
         changeScreenSizetoMax();
@@ -156,7 +156,7 @@ public class ParserController extends Application{
         root.setMaxHeight(SCENE_HEIGHT);
     }
 
-    private void setHeader() {
+    private void setHeader() throws FileNotFoundException {
         buttons = new ButtonController(RESOURCES_PACKAGE + GUI_LANGUAGE);
         sliders = new SliderController(RESOURCES_PACKAGE + GUI_LANGUAGE);
         sliders.getVBox().getStyleClass().add("slider-box");
@@ -243,7 +243,7 @@ public class ParserController extends Application{
     }
 
     //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
-    private void handleLanguage(String lang){
+    private void handleLanguage(String lang) throws FileNotFoundException {
         switch(lang){
             case "\u6c49\u8bed\u62fc\u97f3":
                 GUI_LANGUAGE = "Chinese_GUI";
@@ -284,7 +284,7 @@ public class ParserController extends Application{
         }
     }
 
-    private void updateLanguage(String language){
+    private void updateLanguage(String language) throws FileNotFoundException {
         String currentLang = language.substring(0, language.indexOf("_"));
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
         IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
