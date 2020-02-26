@@ -68,14 +68,18 @@ public class Memory {
 
   public Command getUserDefinedCommand(String name) {
     Command ret = userDefinedCommandMap.getOrDefault(name, null);
-    if (ret == null) {
+    /*if (ret == null) {
       throw new InvalidSyntaxException("Identifier (" + name + ") not recognized.");
-    }
+    }*/
     return ret;
   }
 
   public List<String> getCommandVariables(String name) {
-    return new ArrayList<>(userDefinedCommandVariablesMap.getOrDefault(name, new ArrayList<>()));
+    List<String> oldList = userDefinedCommandVariablesMap.getOrDefault(name, new ArrayList<>());
+    if (oldList == null) {
+      return null;
+    }
+    return new ArrayList<>(oldList);
   }
 
   public void setUserDefinedCommandVariables(String name, List<String> list) {
