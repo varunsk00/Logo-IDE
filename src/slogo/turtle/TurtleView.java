@@ -6,19 +6,20 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
 
 public class TurtleView extends Rectangle {
-    private static double turtleViewWidth;
-    private static double turtleViewHeight;
-    private static final int HEADER_HEIGHT = 45;
-    private static final double X_OFFSET = 320 - turtleViewWidth/2;
-    private static final double Y_OFFSET = 360 - turtleViewHeight/2 - HEADER_HEIGHT;
+    private double habHeight;
+    private double habWidth;
+    private double xOffset;
+    private double yOffset;
     private String image_filepath = "slogo/resources/images/turtle_green.png";
     private Image img;
     private boolean cleared;
-    public TurtleView(double width, double height){
+    public TurtleView(double width, double height, double habitatHeight, double habitatWidth){
         super(width, height);
-        turtleViewWidth = width;
-        turtleViewHeight = height;
-        img = new Image(image_filepath);
+        this.habHeight = habitatHeight;
+        this.habWidth = habitatWidth;
+        this.xOffset = habWidth/2 - getWidth()/2 - getWidth()/5;
+        this.yOffset = habHeight/2 - getHeight()/2;
+        this.img = new Image(image_filepath);
     }
 
     public ImagePattern getImage(){
@@ -29,11 +30,10 @@ public class TurtleView extends Rectangle {
         image_filepath = filepath;
     }
 
-    //FIXME: CENTER RECTANGLE BECAUSE COORDINATES ARE IN THE TOP LEFT
     public void updateTurtleView(Turtle turtle) {
         setRotate(turtle.getHeading());
-        setX(turtle.getXLocation() + X_OFFSET - getWidth()/2);
-        setY(turtle.getYLocation() + Y_OFFSET - getHeight()/2);
+        setX(turtle.getXLocation() + xOffset);
+        setY(turtle.getYLocation() + yOffset);
         setVisible(turtle.isShowTurtle());
         cleared = turtle.isCleared();
         if (cleared) {
@@ -43,11 +43,11 @@ public class TurtleView extends Rectangle {
     }
 
     public double getXOffset(){
-        return X_OFFSET;
+        return xOffset;
     }
 
     public double getYOffset(){
-        return Y_OFFSET;
+        return yOffset;
     }
 
     public boolean isCleared(){
