@@ -9,18 +9,6 @@ import javafx.scene.paint.Color;
 
 import java.util.ResourceBundle;
 
-/**
- * SliderControls class serves as a controller unit, allowing the user to input two variables:
- * simulation speed and number of frames to skip. SliderControls works in conjunction with
- * ButtonControls via the CAController class. Once a value for Frames to Skip has been set in the
- * SliderControls through a Slider, the CAController has an encapsulated ButtonControls class with a
- * Button to press to add the effect of the value into the simulation. Display is dynamic and
- * shrinks/grows to increases/decreases in the width of the Window Every simulation needs a
- * SliderControls, which should be instantiated in the start() method in Main and added to the
- * bottom of the BorderPane
- *
- * @author Eric Doppelt
- */
 public class SliderController {
 
     private ResourceBundle myResources;

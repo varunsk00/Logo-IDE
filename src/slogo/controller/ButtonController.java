@@ -5,18 +5,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 import java.util.*;
-
-/**
- * Header Class serves as a controller unit, taking in input from the user to pause/play the game,
- * skip ahead, clear the simulations, or load a file. It is displayed at the top of the BorderPane
- * in CAController and has a HBox with Buttons that affect the game Display is dynamic and
- * grows/shrinks to increasing/decreasing the width of the window Works in conjunction with the
- * Footer class, since the Footer class determines the number of frames to jump Every simulation
- * needs a header, which should be instantiated in CAController and added to the top of the
- * BorderPane
- *
- * @author Eric Doppelt
- */
 public class ButtonController {
 
     private ResourceBundle myResources;
