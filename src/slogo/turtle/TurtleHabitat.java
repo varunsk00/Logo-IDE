@@ -13,7 +13,7 @@ public class TurtleHabitat {
     private TurtleView turtle;
 //<<<<<<< Updated upstream
     private List<Polyline> myLines;
-    private Polyline pen;
+    //private Polyline pen;
     private double lastx;
     private double lasty;
 //>>>>>>> Stashed changes*/
@@ -24,7 +24,7 @@ public class TurtleHabitat {
         turtle.setX(width/2);
         turtle.setY(height/2);
         myTurtleHabitat = new Pane(turtle);
-        myLines = new ArrayList<Polyline>();
+        myLines = new ArrayList<>();
         changeSize(width, height);
 /*<<<<<<< Updated upstream
 =======*/
@@ -52,8 +52,9 @@ public class TurtleHabitat {
 
     public void penDraw(Color penColor, double x_coor, double y_coor){
 //<<<<<<< Updated upstream
-        pen  = new Polyline();
+        Polyline pen  = new Polyline();
         myLines.add(pen);
+        myTurtleHabitat.getChildren().add(pen);
         //Double[] points = new Double[] {turtle.centerX(), turtle.centerY(),
          //                               x_coor + turtle.getXOffset() + 50/(2), y_coor + turtle.getYOffset() + 25/(2)};
 /*=======*/
@@ -68,11 +69,12 @@ public class TurtleHabitat {
         //p.getStrokeDashArray().addAll(2d, 21d);
         pen.setStrokeWidth(2.0);
         if(turtle.isCleared()){
-            pen.getPoints().clear();
             for (Polyline p : myLines) {
                 p.getPoints().clear();
+                //myLines.remove(p);
+                myTurtleHabitat.getChildren().remove(p);
             }
+            myLines.clear();
         }
-        myTurtleHabitat.getChildren().add(pen);
     }
 }
