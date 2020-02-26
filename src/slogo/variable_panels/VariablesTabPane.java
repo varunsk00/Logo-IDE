@@ -12,7 +12,6 @@ public class VariablesTabPane extends TabPane {
 
     private void initializeTabPane(){
         for (String tabName: tabNames){
-            Tab p
         }
     }
 }
