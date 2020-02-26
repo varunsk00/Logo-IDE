@@ -12,20 +12,22 @@ public class TurtleHabitat {
     private Pane myTurtleHabitat;
     private TurtleView turtle;
     private List<Polyline> myLines;
+    private static double DEFAULT_TURTLE_WIDTH = 50.0;
+    private static double DEFAULT_TURTLE_HEIGHT = 25.0;
 
     private double lastx;
     private double lasty;
 
-    public TurtleHabitat(double width, double height){
-        turtle = new TurtleView(50, 25);
+    public TurtleHabitat(double width, double height, double headerHeight){
+        turtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT);
         turtle.setFill(turtle.getImage());
         turtle.setX(width/2);
         turtle.setY(height/2);
         myTurtleHabitat = new Pane(turtle);
         myLines = new ArrayList<>();
         changeSize(width, height);
-        lastx = turtle.centerX();
-        lasty = turtle.centerY();
+        lastx = turtle.getX();
+        lasty = turtle.getY() - headerHeight;
     }
 
     public void changeSize(double width, double height){
@@ -49,8 +51,8 @@ public class TurtleHabitat {
         myLines.add(pen);
         myTurtleHabitat.getChildren().add(pen);
 
-        double xOffsetCoord = x_coor + turtle.getXOffset() + 50/(2);
-        double yOffsetCoord = y_coor + turtle.getYOffset() + 25/(2);
+        double xOffsetCoord = x_coor + turtle.getXOffset();
+        double yOffsetCoord = y_coor + turtle.getYOffset();
         Double[] points = new Double[] {lastx, lasty, xOffsetCoord, yOffsetCoord};
         lastx = xOffsetCoord;
         lasty = yOffsetCoord;
