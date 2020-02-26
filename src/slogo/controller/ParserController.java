@@ -1,7 +1,4 @@
 package slogo.controller;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Screen;
 import slogo.compiler.Compiler;
 import slogo.turtle.Turtle;
 import slogo.turtle.TurtleHabitat;
@@ -9,7 +6,6 @@ import slogo.terminal.TerminalView;
 import slogo.terminal.TerminalController;
 
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.FileChooser;
 import javafx.animation.KeyFrame;
@@ -25,7 +21,6 @@ import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ResourceBundle;
 
 //TODO(REQUIRED): SYSTEM-WIDE LANGUAGE SWITCHING
@@ -37,27 +32,22 @@ public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
     private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
     private static final String RESOURCES_PACKAGE = "slogo.resources.languages.";
-    private static final String GUI_LANGUAGE = "English_GUI";
+    private static String GUI_LANGUAGE = "English_GUI";
     private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + GUI_LANGUAGE);
 
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private final static double HEADER_HEIGHT = 40;
+    private static final double SCENE_WIDTH = 1280;
+    private static final double SCENE_HEIGHT = 720;
 
-    private double SCENE_WIDTH = 1280;
-    private double SCENE_HEIGHT = 720;
-
-    private double HABITAT_WIDTH = SCENE_WIDTH/2;
-    private double HABITAT_HEIGHT = SCENE_HEIGHT;
-
-    private double TERMINAL_WIDTH = SCENE_WIDTH/2;
-    private double TERMINAL_HEIGHT = SCENE_HEIGHT;
+    private static final double HABITAT_WIDTH = SCENE_WIDTH/2;
+    private static final double HABITAT_HEIGHT = SCENE_HEIGHT;
 
     private static final Color ALL_COLOR = Color.ALICEBLUE;
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
 
-    public static final FileChooser FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
+    public FileChooser FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
     private BorderPane root;
     private ButtonController header;
     private Stage myStage;
@@ -100,17 +90,12 @@ public class ParserController extends Application{
      */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("SLogo");
-        primaryStage.setMaximized(true);
-        changeScreenSizetoMax();
-
         startAnimationLoop();
         startCompiler();
         setBorderPane();
-
         setTurtleHabitat();
         setTerminalView();
         setHeader();
-
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets().add(STYLESHEET);
         myStage = primaryStage;
@@ -119,25 +104,11 @@ public class ParserController extends Application{
         myStage.show();
     }
 
-    private void changeScreenSizetoMax(){
-
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
-        SCENE_WIDTH = screenBounds.getMaxX();
-        SCENE_HEIGHT = screenBounds.getMaxY();;
-
-        HABITAT_WIDTH = SCENE_WIDTH/2;
-        HABITAT_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT;
-
-        TERMINAL_WIDTH = SCENE_WIDTH/2;
-        TERMINAL_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT;
-    }
-
     private void setBorderPane() {
         root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
         root.setMaxWidth(SCENE_WIDTH);
-        root.setMaxHeight(SCENE_HEIGHT);
+        root.setMaxHeight(SCENE_WIDTH);
     }
 
     private void setHeader() {
@@ -146,7 +117,7 @@ public class ParserController extends Application{
     }
 
     private void setTerminalView() {
-        term = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
+        term = new TerminalView( (int) SCENE_WIDTH/2, (int) SCENE_HEIGHT);
         term_controller = new TerminalController(term);
         term_controller.setCompiler(comp);
         root.setLeft(term);
@@ -155,7 +126,7 @@ public class ParserController extends Application{
     private void setTurtleHabitat() {
         myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
         myHabitat.getTurtleHabitat().getStyleClass().add("habitat");
-        //root.setCenter(myHabitat.getTurtleHabitat());
+        root.setRight(myHabitat.getTurtleHabitat());
     }
 
     private void startCompiler(){
@@ -172,6 +143,7 @@ public class ParserController extends Application{
     }
 
     private void step() {
+        handleLanguage(header.getLanguageStatus());
         if(header.getPenColorStatus()){
             launchPenColorChooser();
         }
@@ -188,8 +160,57 @@ public class ParserController extends Application{
         }
         myHabitat.setBackground(backgroundColor);
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
-        root.setCenter(myHabitat.getTurtleHabitat());
-        term_controller.changeLanguage(header.getLanguageStatus());
+        root.setRight(myHabitat.getTurtleHabitat());
+    }
+
+    private void handleLanguage(String lang){
+        switch(lang){
+            case "\u6c49\u8bed\u62fc\u97f3":
+                GUI_LANGUAGE = "Chinese_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "français":
+                GUI_LANGUAGE = "French_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "Deutsch":
+                GUI_LANGUAGE = "German_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "italiano":
+                GUI_LANGUAGE = "Italian_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "português":
+                GUI_LANGUAGE = "Portuguese_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "\u0070\u0443\u0441\u0441\u043a\u0438\u0439":
+                GUI_LANGUAGE = "Russian_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "español":
+                GUI_LANGUAGE = "Spanish_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "\u0939\u093f\u0902\u0926\u0940/\u0627\u0631\u062f\u0648":
+                GUI_LANGUAGE = "Urdu_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+            case "English":
+                GUI_LANGUAGE = "English_GUI";
+                updateLanguage(GUI_LANGUAGE);
+                break;
+        }
+    }
+
+    private void updateLanguage(String language){
+        String currentLang = language.substring(0, language.indexOf("_"));
+        myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
+        FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
+        setHeader();
+        comp.setLanguage(currentLang);
+        term_controller.changeLanguage(currentLang);
     }
 
     private void launchPenColorChooser() {
