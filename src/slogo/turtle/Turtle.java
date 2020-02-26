@@ -103,7 +103,7 @@ public class Turtle {
 
     public void setCleared(boolean clear) {
         clearScreen = clear;
-        if (clear == true) {
+        if (clear) {
             oldPenDown = penDown;
             setPenDown(false);
             locations.add(new Point(xLocation,yLocation));

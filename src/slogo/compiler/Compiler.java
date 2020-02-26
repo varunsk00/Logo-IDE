@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -69,19 +70,23 @@ public class Compiler {
   }
 
   public String execute(String input) {
+    //System.out.println(input);
     String[] lines = input.split(getNewline());
-    StringBuilder noComment = new StringBuilder();
+    ArrayList<String> noComment = new ArrayList<>();
+    noComment.add("[");
     for (String line : lines) {
       try {
         if (!getSymbol(line, myTypes).equals("Comment")) {
-          noComment.append(line);
+          noComment.add(line);
         }
       } catch (InvalidSyntaxException e) {
-        noComment.append(line); //If it throws an exception, it's not a comment.
+        noComment.add(line); //If it throws an exception, it's not a comment.
         //Later code will handle the syntax checking
       }
     }
-    input = "[ " + noComment.toString() + " ]";
+    noComment.add("]");
+    input = String.join(" ", noComment);
+    //System.out.println(input);
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
@@ -242,16 +247,16 @@ public class Compiler {
     memory.addTurtle(id, t);
   }
 
-  public Collection<String> getAllVariableNames() {
-    return memory.getAllVariableNames();
+  public Map<String, Double> getVariableMapCopy() {
+    return memory.getVariableMapCopy();
   }
 
-  public Collection<String> getAllUserDefinedCommands() {
-    return memory.getAllUserDefinedCommands();
+  public Map<String, List<String>> getUserCommandMapCopy() {
+    return memory.getUserCommandMapCopy();
   }
 
-  public Collection<String> getAllTurtleIDs() {
-    return memory.getAllTurtleIDs();
+  public Map<String, Turtle> getTurtleMapCopy() {
+    return memory.getTurtleMapCopy();
   }
 
   public Turtle getTurtleByID(String id) {
@@ -262,7 +267,7 @@ public class Compiler {
     return memory.getVariable(name);
   }
 
-  public List<String> getCommandVariables(String name){
+  public List<String> getCommandVariables(String name) {
     return memory.getCommandVariables(name);
   }
 
