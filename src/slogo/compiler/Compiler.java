@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -246,16 +247,16 @@ public class Compiler {
     memory.addTurtle(id, t);
   }
 
-  public Collection<String> getAllVariableNames() {
-    return memory.getAllVariableNames();
+  public Map<String, Double> getVariableMapCopy() {
+    return memory.getVariableMapCopy();
   }
 
-  public Collection<String> getAllUserDefinedCommands() {
-    return memory.getAllUserDefinedCommands();
+  public Map<String, List<String>> getUserCommandMapCopy() {
+    return memory.getUserCommandMapCopy();
   }
 
-  public Collection<String> getAllTurtleIDs() {
-    return memory.getAllTurtleIDs();
+  public Map<String, Turtle> getTurtleMapCopy() {
+    return memory.getTurtleMapCopy();
   }
 
   public Turtle getTurtleByID(String id) {
