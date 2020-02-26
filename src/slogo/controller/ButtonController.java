@@ -166,7 +166,7 @@ public class ButtonController {
     private ComboBox makeDropDown(String key){
         ComboBox tempMenu = new ComboBox();
         tempMenu.getItems().addAll(languages);
-        tempMenu.setValue(myResources.getString("LanguageButton"));
+        tempMenu.setValue(myResources.getString(key));
         tempMenu.setOnAction(event -> languagePressed = (String) tempMenu.getValue());
         return tempMenu;
     }
