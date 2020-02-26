@@ -61,7 +61,7 @@ public class ButtonController {
         this.backgroundColorPressed = false;
         this.helpPressed = false;
         this.languagePressed = myResources.getString("LanguageButton");
-        renderHeader();
+        renderButtons();
     }
 
     /**
@@ -70,7 +70,7 @@ public class ButtonController {
      * @return myHeader which is the HBox private instance variable representing the header (with
      * functional buttons)
      */
-    public HBox getHeader() {
+    public HBox getHBox() {
         return myButtons;
     }
 
@@ -149,7 +149,7 @@ public class ButtonController {
     }
 
 
-    private void renderHeader() {
+    private void renderButtons() {
         myButtons = new HBox();
         Button loadButton = makeButton("LoadButton", event -> loadFilePressed = true);
         Button imageButton = makeButton("ImageButton", event -> turtleImagePressed = true);
