@@ -32,7 +32,7 @@ public class TurtleView extends Rectangle {
         setVisible(turtle.isShowTurtle());
         cleared = turtle.isCleared();
         if (cleared) {
-            resetTurtleView(turtle);
+            turtle.setCleared(false);
         }
     }
 
@@ -54,17 +54,6 @@ public class TurtleView extends Rectangle {
 
     public boolean isCleared(){
         return cleared;
-    }
-
-    public void setCleared(Boolean x){
-        cleared = x;
-    }
-
-    private void resetTurtleView(Turtle turtle){
-        turtle.setXLocation(0);
-        turtle.setYLocation(0);
-        turtle.setHeading(0);
-        turtle.setCleared(false);
     }
 }
 
