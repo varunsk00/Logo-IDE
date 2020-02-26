@@ -43,6 +43,8 @@ public class ParserController extends Application{
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
+    private final static double HEADER_HEIGHT = 40;
+
     private double SCENE_WIDTH = 1280;
     private double SCENE_HEIGHT = 720;
 
@@ -125,10 +127,10 @@ public class ParserController extends Application{
         SCENE_HEIGHT = screenBounds.getMaxY();;
 
         HABITAT_WIDTH = SCENE_WIDTH/2;
-        HABITAT_HEIGHT = SCENE_HEIGHT;
+        HABITAT_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT;
 
         TERMINAL_WIDTH = SCENE_WIDTH/2;
-        TERMINAL_HEIGHT = SCENE_HEIGHT;
+        TERMINAL_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT;
     }
 
     private void setBorderPane() {
@@ -144,7 +146,7 @@ public class ParserController extends Application{
     }
 
     private void setTerminalView() {
-        term = new TerminalView( (int) SCENE_WIDTH/2, (int) SCENE_HEIGHT);
+        term = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
         term_controller = new TerminalController(term);
         term_controller.setCompiler(comp);
         root.setLeft(term);
