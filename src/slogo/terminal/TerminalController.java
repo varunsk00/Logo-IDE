@@ -7,6 +7,11 @@ import slogo.compiler.Compiler;
 import slogo.terminal.utils.history.HistoryBuffer;
 import slogo.terminal.utils.textLines.TestLine;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 /**
  * TerminalController manages the communication between a TerminalView object and the compiler
  */
@@ -15,10 +20,8 @@ public class TerminalController {
     private HistoryBuffer history;
     private Compiler compiler;
 
-
-    /* TODO:
-        1. where is the compiler
-    * */
+    private List<String> commands;
+    private List<String> messages;
 
     /**
      * Constructor
@@ -27,6 +30,8 @@ public class TerminalController {
     public TerminalController(TerminalView view){
         this.terminalView = view;
         Clipboard clipboard = Clipboard.getSystemClipboard();
+        commands = new ArrayList<>();
+        messages = new ArrayList<>();
         this.history = new HistoryBuffer();
         keyBinding();
     }
@@ -40,6 +45,10 @@ public class TerminalController {
     }
 
     public void setCompiler(Compiler c) {this.compiler = c;}
+
+    public Collection<String> getAllCommands(){return commands;}
+
+    public Collection<String> getAllMessages(){return messages;}
 
     private void keyBinding(){
         //set the focus to the scroll bar
@@ -107,7 +116,10 @@ public class TerminalController {
 
     private String sendCurrentInput(){
         String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
-        return compiler.execute(userInput);
+        String systemMessage = compiler.execute(userInput);
+        commands.add(userInput);
+        messages.add(systemMessage);
+        return systemMessage;
         //System.out.println(userInput);
         //System.out.println("Unlinked to the compiler right now");
         //return null;

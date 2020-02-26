@@ -11,7 +11,7 @@ public class testVariablePanel extends Application {
         stage.setTitle("Test");
 
         VariablesTabPaneView view = new VariablesTabPaneView(1000, 400);
-        VariablesTabPaneController controller = new VariablesTabPaneController(view);
+        //VariablesTabPaneController controller = new VariablesTabPaneController(view);
 
         Scene sceneVis = new Scene(view);
 

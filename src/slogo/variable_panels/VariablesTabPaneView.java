@@ -23,8 +23,8 @@ public class VariablesTabPaneView extends TabPane {
         initializeTabPane();
     }
 
-    public void addEntry(String type, TableEntry entry){
-        tableDict.get(type).addEntry(entry);
+    public void addEntry(String type, String key, String value){
+        tableDict.get(type).addEntry(key, value);
     }
 
     public void setSize(double width, double height){

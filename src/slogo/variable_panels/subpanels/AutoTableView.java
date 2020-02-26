@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import slogo.compiler.Command;
-import slogo.variable_panels.util_classes.Commands;
-import slogo.variable_panels.util_classes.Defined;
-import slogo.variable_panels.util_classes.Variable;
+import slogo.variable_panels.util_classes.TableEntry;
 
 import java.util.*;
 
@@ -29,7 +26,7 @@ public class AutoTableView extends TableView {
     private double height;
 
     private String currentResourcePath;
-    private ObservableList data;
+    private ObservableList<TableEntry> data;
     private String type;
 
     public AutoTableView(double width, double height, String type) {
@@ -50,29 +47,32 @@ public class AutoTableView extends TableView {
         setItems(data);
     }
 
-    public void addEntry(slogo.variable_panels.util_classes.TableEntry entry){
-        if (entry instanceof Variable && type.equals(VAR_TYPE) || entry instanceof Defined && type.equals(DEFINED_TYPE) || entry instanceof Commands && type.equals(COMMAND_TYPE))
-            data.add(entry);
-        else
-            System.out.println("DataType unimplemented in panel");
+    public void addEntry(String key, String value){
+        if (!hasEntryKey(key)) {
+            data.add(new TableEntry(key, value));
+        }
+        else{
+            for (TableEntry entry:data){
+                if (key.equals(entry.getKey())){
+                    entry.setValue(value);
+                }
+            }
+        }
+    }
+
+    private boolean hasEntryKey(String key){
+        for (TableEntry entry:data){
+            if (key.equals(entry.getKey())){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void initializeCol(String colTitle, String cellFactory){
         TableColumn col  = new TableColumn(colTitle);
         setColSize(col, getColWidth());
-        if (type.equals(COMMAND_TYPE)){
-            col.setCellValueFactory(new PropertyValueFactory<Commands, String>(cellFactory));
-        }
-        else if (type.equals(VAR_TYPE)){
-            col.setCellValueFactory(new PropertyValueFactory<Variable, String>(cellFactory));
-        }
-        else if (type.equals(DEFINED_TYPE)){
-            col.setCellValueFactory(new PropertyValueFactory<Defined, String>(cellFactory));
-        }
-        else {
-            System.out.println("unimplemented type in variable panel, default to commands");
-            col.setCellValueFactory(new PropertyValueFactory<Commands, String>(cellFactory));
-        }
+        col.setCellValueFactory(new PropertyValueFactory<TableEntry, String>(cellFactory));
         getColumns().add(col);
     }
 

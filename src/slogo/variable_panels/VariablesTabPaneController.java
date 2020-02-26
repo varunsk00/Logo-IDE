@@ -1,11 +1,52 @@
 package slogo.variable_panels;
 
-public class VariablesTabPaneController {
-    private VariablesTabPaneView variablesTabPaneView;
+import slogo.compiler.Compiler;
+import slogo.terminal.TerminalController;
 
-    public VariablesTabPaneController(VariablesTabPaneView view){
+import java.util.Iterator;
+import java.util.List;
+
+public class VariablesTabPaneController {
+    private final static String COMMAND_TYPE = "COMMAND";
+    private final static String DEFINED_TYPE = "DEFINED";
+    private final static String VAR_TYPE = "VAR";
+
+    private final static String DEFINED_VALUE_PLACEHOLDER = "";
+
+    private VariablesTabPaneView variablesTabPaneView;
+    private Compiler compiler;
+    private TerminalController terminal;
+
+    public VariablesTabPaneController(VariablesTabPaneView view, Compiler c, TerminalController t){
         this.variablesTabPaneView = view;
+        this.compiler = c;
+        this.terminal = t;
     }
+
+    public void updateVariableTable(){
+        List<String> varList = (List<String>) compiler.getAllVariableNames();
+        for (String var:varList){
+            variablesTabPaneView.addEntry(VAR_TYPE, var, Double.toString(compiler.getVariable(var)));
+        }
+    }
+
+    public void addDefinedMethod(){
+        List<String> methodList = (List<String>) compiler.getAllUserDefinedCommands();
+        for (String method:methodList){
+            variablesTabPaneView.addEntry(DEFINED_TYPE, method, DEFINED_VALUE_PLACEHOLDER);
+        }
+    }
+
+    public void addCommand(){
+        List<String> commandList = (List<String>) terminal.getAllCommands();
+        Iterator<String> commandIterator = commandList.iterator();
+        List<String> messageList = (List<String>) terminal.getAllMessages();
+        Iterator<String> messageIterator = messageList.iterator();
+        while(commandIterator.hasNext() && messageIterator.hasNext()){
+            variablesTabPaneView.addEntry(COMMAND_TYPE, commandIterator.next(), messageIterator.next());
+        }
+    }
+
 
 
 }
