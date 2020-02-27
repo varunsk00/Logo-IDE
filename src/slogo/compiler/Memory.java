@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import slogo.compiler.exceptions.InvalidTurtleException;
 import slogo.compiler.exceptions.StackOverflowException;
 import slogo.compiler.exceptions.StackUnderflowException;
@@ -22,20 +23,25 @@ public class Memory {
   private Map<String, List<String>> userDefinedCommandVariablesMap = new HashMap<>();
   private Map<String, Turtle> turtleMap = new HashMap<>();
   private String currentTurtleID;
+  private ResourceBundle errorMsgs;
 
   public Memory() {
     variableStack.push(new HashMap<>());
   }
 
+  public void setErrorMsgs(ResourceBundle msgs) {
+    errorMsgs = msgs;
+  }
+
   public double getVariable(String name) {
     Double ret = variableStack.peek().getOrDefault(name, null);
     if (ret == null) {
-      throw new UnknownVariableException("The variable " + name + " has not yet been defined.");
+      throw new UnknownVariableException(String.format(errorMsgs.getString("UnknownVariable"),name));
     }
     return ret;
   }
 
-  public HashMap<String, Double> getVariableMapCopy() {
+  public Map<String, Double> getVariableMapCopy() {
     return new HashMap<>(variableStack.peek());
   }
 
@@ -50,15 +56,14 @@ public class Memory {
       while (variableStack.size() > 1) {
         variableStack.pop();
       }
-      throw new StackOverflowException(
-          "Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
+      throw new StackOverflowException(String.format(errorMsgs.getString("StackOverflow"),MAX_RECURSION_DEPTH));
     }
   }
 
   public void popMemoryStack() {
     variableStack.pop();
     if (variableStack.isEmpty()) {
-      throw new StackUnderflowException("Attempted to pop global memory on stack");
+      throw new StackUnderflowException(errorMsgs.getString("StackUnderflow"));
     }
   }
 
@@ -98,7 +103,7 @@ public class Memory {
   public Turtle getTurtleByID(String id) {
     Turtle ret = turtleMap.getOrDefault(id, null);
     if (ret == null) {
-      throw new InvalidTurtleException("Turtle (" + id + ") does not exist.");
+      throw new InvalidTurtleException(String.format(errorMsgs.getString("UnknownTurtle"),id));
     }
     return ret;
   }

@@ -2,11 +2,13 @@ package slogo.compiler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 
 public class CommandFactory {
 
   private static Map<String, Command> registeredCommands = new HashMap<>();
+  private static ResourceBundle errorMsgs;
 
   private CommandFactory() {
     //do nothing
@@ -20,7 +22,11 @@ public class CommandFactory {
     try {
       return registeredCommands.get(name).createCommand(declaration);
     } catch (NullPointerException e) {
-      throw new InvalidSyntaxException("Command (" + name + ") recognized but not parsed.");
+      throw new InvalidSyntaxException(String.format(errorMsgs.getString("SeenNotParsed"),name));
     }
+  }
+
+  public static void setErrorMsgs(ResourceBundle msgs) {
+    errorMsgs = msgs;
   }
 }
