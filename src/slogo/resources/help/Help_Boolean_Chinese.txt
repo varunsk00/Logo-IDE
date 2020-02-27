@@ -1,0 +1,22 @@
+布尔操作
+
+小于：如果expr1的值严格小于expr2的值，则返回1，否则返回0
+         命令语法：XIOYU？ expr1 expr2
+                         XIAOYUP expr1 expr2
+
+大于：如果expr1的值严格大于expr2的值，则返回1，否则返回0
+         命令语法：DAYU？ expr1 expr2
+                         DAYUP expr1 expr2
+
+相等：如果expr1的值和expr2的值相等，则返回1，否则返回0
+         命令语法：DENGYU？ expr1 expr2
+                         DENGYUPexpr1 expr2
+
+不等式：如果expr1的值和expr2的值不相等，则返回1，否则返回0
+         命令语法：BUDENGYU？ expr1 expr2
+                         BUGENYUP expr1 expr2
+
+非零比较：输入非零属性的比较
+         命令语法：HE test1 test2->RUGUOtest1HEtest2非零，则返回1，否则返回0
+                         HUOtest1 test2->RUGUOtest1HUOtest2非零，则返回1，否则返回0
+                         BU test->RUGUOtest为0，则返回1，RUGUOtest为非零，则返回0
