@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,20 +19,27 @@ public class TurtleHabitat {
     private double lastx;
     private double lasty;
 
-    public TurtleHabitat(double width, double height, double headerHeight){
-        turtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT);
-        turtle.setFill(turtle.getImage());
-        turtle.setX(width/2);
-        turtle.setY(height/2);
+    public TurtleHabitat(double width, double height){
+        turtle = initializeTurtleView(width, height);
         myTurtleHabitat = new Pane(turtle);
         myLines = new ArrayList<>();
         changeSize(width, height);
-        lastx = turtle.getX();
-        lasty = turtle.getY() - headerHeight;
+        lastx = turtle.getX() + turtle.getWidth()/2;
+        lasty = turtle.getY() + turtle.getHeight()/2;
     }
 
-    public void changeSize(double width, double height){
-        myTurtleHabitat.setPrefSize(width, height);
+    private TurtleView initializeTurtleView(double habitatWidth, double habitatHeight){
+        TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
+                                                habitatWidth, habitatHeight);
+        tempTurtle.setFill(tempTurtle.getImage());
+        tempTurtle.setX(tempTurtle.getXOffset());
+        tempTurtle.setY(tempTurtle.getYOffset());
+        return tempTurtle;
+    }
+
+    private void changeSize(double width, double height){
+        myTurtleHabitat.setPrefWidth(width);
+        myTurtleHabitat.setPrefHeight(height);
     }
 
     public Pane getTurtleHabitat(){
@@ -53,8 +61,8 @@ public class TurtleHabitat {
         myLines.add(pen);
         myTurtleHabitat.getChildren().add(pen);
 
-        double xOffsetCoord = x_coor + turtle.getXOffset();
-        double yOffsetCoord = y_coor + turtle.getYOffset();
+        double xOffsetCoord = x_coor + turtle.getXOffset() + turtle.getWidth()/2;
+        double yOffsetCoord = y_coor + turtle.getYOffset() + turtle.getHeight()/2;
         Double[] points = new Double[] {lastx, lasty, xOffsetCoord, yOffsetCoord};
         lastx = xOffsetCoord;
         lasty = yOffsetCoord;

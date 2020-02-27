@@ -1,47 +1,43 @@
 package slogo.controller;
-import javafx.geometry.Rectangle2D;
-import javafx.stage.Screen;
-import slogo.compiler.Compiler;
-import slogo.turtle.Point;
-import slogo.turtle.Turtle;
-import slogo.turtle.TurtleHabitat;
-import slogo.terminal.TerminalView;
-import slogo.terminal.TerminalController;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.ImagePattern;
-import javafx.stage.FileChooser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.stage.FileChooser;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import slogo.compiler.Compiler;
+import slogo.terminal.TerminalController;
+import slogo.terminal.TerminalView;
+import slogo.turtle.Point;
+import slogo.turtle.Turtle;
+import slogo.turtle.TurtleHabitat;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Files;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 //FIXME: replace JAVA FILENOTFOUND EXCEPTION WITH comp.executeFile()
 //FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
 
 //TODO(REQUIRED): HELP MENU IN DIFF LANGUAGES
 
-//TODO(FUN): Slider labels in diff languages
 //TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
 //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
-//TODO(FUN): ADD REGEX FOR ZOOM AND SIZE IN OTHER LANGUAGES
 
 public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
@@ -54,8 +50,8 @@ public class ParserController extends Application{
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private double SCENE_WIDTH = 1280;
-    private double SCENE_HEIGHT = 720;
+    private double SCENE_WIDTH;
+    private double SCENE_HEIGHT;
     private double HEADER_HEIGHT = 80;
 
     private double HABITAT_WIDTH = SCENE_WIDTH/2;
@@ -74,10 +70,13 @@ public class ParserController extends Application{
 
     public FileChooser IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
     public FileChooser LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
+
     private BorderPane root;
+
     private VBox header = new VBox();
     private ButtonController buttons;
     private SliderController sliders;
+
     private Stage myStage;
     private Timeline animation;
     private Color backgroundColor = Color.WHITE;
@@ -104,8 +103,9 @@ public class ParserController extends Application{
 
     /**
      * Constructor used in Main to begin the program Begins our JavaFX application Starts the
-     * Animation Loop and sets the Border Pane, filling it with a ButtonControls, SliderControls, and
-     * SimulationViews Sets the stage and scene and shows it
+     * Animation Loop and sets the Border Pane, filling it with a ButtonController, SliderController, and
+     * TurtleHabitat, TerminalView, and VariablesTabPaneView
+     * Sets the stage and scene and shows it
      *
      * @param args is the String[] passed in by main
      */
@@ -114,18 +114,13 @@ public class ParserController extends Application{
     }
 
     /**
-     * Start method for the Application Sets the BorderPane and fills it with ButtonControls (in the
-     * header) and SliderControls (in the Footer) Sets the Center with SimulationView objects to
-     * represent the Simulation Initializes in nested methods
      *
      * @param primaryStage is the stage to display the Application
      */
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException {
         primaryStage.setTitle("SLogo");
-
         primaryStage.setMaximized(true);
         changeScreenSizetoMax();
-
         startAnimationLoop();
         startCompiler();
         setBorderPane();
@@ -141,20 +136,14 @@ public class ParserController extends Application{
         myStage.show();
     }
 
-
     private void changeScreenSizetoMax(){
-
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
         SCENE_WIDTH = screenBounds.getMaxX();
         SCENE_HEIGHT = screenBounds.getMaxY();
-
         TABPANE_WIDTH = SCENE_WIDTH;
         TABPANE_HEIGHT = 150;
-
         HABITAT_WIDTH = SCENE_WIDTH/2;
         HABITAT_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
-
         TERMINAL_WIDTH = SCENE_WIDTH/2;
         TERMINAL_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
 
@@ -164,10 +153,10 @@ public class ParserController extends Application{
         root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
         root.setMaxWidth(SCENE_WIDTH);
-        root.setMaxHeight(SCENE_WIDTH);
+        root.setMaxHeight(SCENE_HEIGHT);
     }
 
-    private void setHeader() {
+    private void setHeader() throws FileNotFoundException {
         buttons = new ButtonController(RESOURCES_PACKAGE + GUI_LANGUAGE);
         sliders = new SliderController(RESOURCES_PACKAGE + GUI_LANGUAGE);
         sliders.getVBox().getStyleClass().add("slider-box");
@@ -190,8 +179,7 @@ public class ParserController extends Application{
     }
 
     private void setTurtleHabitat() {
-        myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT, HEADER_HEIGHT);
-        myHabitat.getTurtleHabitat().getStyleClass().add("habitat");
+        myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
         root.setRight(myHabitat.getTurtleHabitat());
     }
 
@@ -215,6 +203,7 @@ public class ParserController extends Application{
     }
 
     private void step() throws FileNotFoundException {
+        myHabitat.getTurtle().updateTurtleView(myTurtle1);
         handleLanguage(buttons.getLanguageStatus());
         updateZoom();
         updateImageSize();
@@ -230,17 +219,12 @@ public class ParserController extends Application{
         if(buttons.getImageStatus()){
             handleImageFileChooser();
         }
-        if (buttons.getHelpStatus()) {
-        }
         if(myTurtle1.isPenDown()){
             for (Point loc: myTurtle1.locationsList()) {
                 myHabitat.penDraw(penColor, loc);
             }
         }
-        myHabitat.setBackground(backgroundColor);
-        myHabitat.getTurtle().updateTurtleView(myTurtle1);
-
-        //root.setCenter(myHabitat.getTurtleHabitat());
+        setGlobalBackground(backgroundColor);
         updateTabPanes();
     }
 
@@ -248,12 +232,16 @@ public class ParserController extends Application{
         if (status != term_controller.getStatus()) {
             status = term_controller.getStatus();
             tabPaneController.updateAllTables();
-            System.out.println("change");
         }
     }
 
+    private void setGlobalBackground(Color c){
+        root.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
+        myHabitat.setBackground(backgroundColor);
+    }
+
     //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
-    private void handleLanguage(String lang){
+    private void handleLanguage(String lang) throws FileNotFoundException {
         switch(lang){
             case "\u6c49\u8bed\u62fc\u97f3":
                 GUI_LANGUAGE = "Chinese_GUI";
@@ -294,16 +282,14 @@ public class ParserController extends Application{
         }
     }
 
-    private void updateLanguage(String language){
+    private void updateLanguage(String language) throws FileNotFoundException {
         String currentLang = language.substring(0, language.indexOf("_"));
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
         IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
         LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
-
         header.getChildren().clear();
         root.getChildren().remove(header);
         setHeader();
-
         comp.setLanguage(currentLang);
         term_controller.changeLanguage(currentLang);
     }
@@ -315,12 +301,10 @@ public class ParserController extends Application{
         s.setTitle(myResources.getString("ColorWindow"));
         TilePane r = new TilePane();
         ColorPicker cp = new ColorPicker();
-        // create a event handler
         EventHandler<ActionEvent> event = e -> {
             penColor = cp.getValue();
             s.close();
         };
-        // set listener
         cp.setValue(penColor);
         cp.setOnAction(event);
         r.getChildren().add(cp);
@@ -335,13 +319,10 @@ public class ParserController extends Application{
         s.setTitle(myResources.getString("ColorWindow"));
         TilePane r = new TilePane();
         ColorPicker cp = new ColorPicker();
-        // create a event handler
         EventHandler<ActionEvent> event = e -> {
-            // color
             backgroundColor = cp.getValue();
             s.close();
         };
-        // set listener
         cp.setValue(backgroundColor);
         cp.setOnAction(event);
         r.getChildren().add(cp);
@@ -354,7 +335,6 @@ public class ParserController extends Application{
         String[] extensions = extensionsAccepted.split(",");
         FileChooser result = new FileChooser();
         result.setTitle(myResources.getString("OpenFile"));
-        // pick Image Directory to start searching for files
         result.setInitialDirectory(new File(System.getProperty("user.dir"),directory));
         result.getExtensionFilters()
                 .setAll(new FileChooser.ExtensionFilter(myResources.getString("ImageFile"), extensions));

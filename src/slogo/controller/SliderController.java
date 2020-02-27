@@ -1,26 +1,14 @@
 package slogo.controller;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.util.ResourceBundle;
 
-/**
- * SliderControls class serves as a controller unit, allowing the user to input two variables:
- * simulation speed and number of frames to skip. SliderControls works in conjunction with
- * ButtonControls via the CAController class. Once a value for Frames to Skip has been set in the
- * SliderControls through a Slider, the CAController has an encapsulated ButtonControls class with a
- * Button to press to add the effect of the value into the simulation. Display is dynamic and
- * shrinks/grows to increases/decreases in the width of the Window Every simulation needs a
- * SliderControls, which should be instantiated in the start() method in Main and added to the
- * bottom of the BorderPane
- *
- * @author Eric Doppelt
- */
 public class SliderController {
 
     private ResourceBundle myResources;
@@ -36,7 +24,7 @@ public class SliderController {
     private static final int DEFAULT_SIZE = 3;
     private static final int MAX_SIZE = 5;
 
-    private VBox footer;
+    private VBox sliders;
 
     public SliderController(String language) {
         this.myResources = ResourceBundle.getBundle(language);
@@ -52,11 +40,11 @@ public class SliderController {
     }
 
     public VBox getVBox() {
-        return footer;
+        return sliders;
     }
 
     private void renderSliders() {
-        footer = new VBox();
+        sliders = new VBox();
 
         HBox allLabels = new HBox();
         addLabel("SizeSlider", allLabels);
@@ -64,12 +52,13 @@ public class SliderController {
 
         //addReturnSlider() adds the Sliders to the frame and then returns them as instance variables for later access
         HBox allSliders = new HBox();
+        //allSliders.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         imagesize = addAndReturnSlider(MIN_SIZE, MAX_SIZE, DEFAULT_SIZE, allSliders);
         zoom = addAndReturnSlider(MIN_ZOOM, MAX_ZOOM, DEFAULT_ZOOM,
                 allSliders);
 
-        footer.getChildren().add(allLabels);
-        footer.getChildren().add(allSliders);
+        sliders.getChildren().add(allLabels);
+        sliders.getChildren().add(allSliders);
     }
 
     private void addLabel(String key, HBox text) {
