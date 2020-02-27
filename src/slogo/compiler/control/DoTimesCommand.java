@@ -15,8 +15,7 @@ public class DoTimesCommand extends LoopCommand {
     double val = args.get(0).getArgs().get(1).execute(); //FIXME magic val
     String varName = ((VariableType) args.get(0).getArgs().get(0))
         .getName(); //FIXME bad bad bad maybe do a tostring?
-    double ret = executeLoop(varName,1, val,1);
-    return ret;
+    return executeLoop(varName, 1, val, 1);
   }
 
   @Override

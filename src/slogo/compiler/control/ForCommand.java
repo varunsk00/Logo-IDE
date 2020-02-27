@@ -17,8 +17,7 @@ public class ForCommand extends LoopCommand {
     double start = args.get(0).getArgs().get(1).execute();
     double end = args.get(0).getArgs().get(2).execute();
     double inc = args.get(0).getArgs().get(3).execute();
-    double ret = executeLoop(varName, start, end, inc);
-    return ret;
+    return executeLoop(varName, start, end, inc);
   }
 
   @Override
