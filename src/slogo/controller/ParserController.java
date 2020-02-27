@@ -9,10 +9,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -28,11 +30,15 @@ import slogo.variable_panels.VariablesTabPaneView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
 //FIXME: replace JAVA FILENOTFOUND EXCEPTION WITH comp.executeFile()
 //FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
+//FIXME: BREAK UP CLASS....REFACTOR ALMOST EVERYTHING LOL
 
 //TODO(REQUIRED): HELP MENU IN DIFF LANGUAGES
 
@@ -42,8 +48,9 @@ import java.util.Scanner;
 public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
     private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
+    private static final String HELP_DIRECTORY = "src/slogo/resources/help/Help_";
     private static final String LOGO_DIRECTORY = "data/examples";
-    private static final String RESOURCES_PACKAGE = "slogo.resources.languages.";
+    private static final String RESOURCES_PACKAGE = "slogo.resources.languages.GUI.";
     private static String GUI_LANGUAGE = "English_GUI";
     private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + GUI_LANGUAGE);
 
@@ -138,8 +145,8 @@ public class ParserController extends Application{
 
     private void changeScreenSizetoMax(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        SCENE_WIDTH = screenBounds.getMaxX();
-        SCENE_HEIGHT = screenBounds.getMaxY();
+        SCENE_WIDTH = 1280;
+        SCENE_HEIGHT = 720;
         TABPANE_WIDTH = SCENE_WIDTH;
         TABPANE_HEIGHT = 150;
         HABITAT_WIDTH = SCENE_WIDTH/2;
@@ -192,7 +199,7 @@ public class ParserController extends Application{
         KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
             try {
                 step();
-            } catch (FileNotFoundException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
@@ -202,11 +209,16 @@ public class ParserController extends Application{
         animation.play();
     }
 
-    private void step() throws FileNotFoundException {
+    private void step() throws IOException {
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
         handleLanguage(buttons.getLanguageStatus());
+        System.out.println(buttons.getHelpStatus());
         updateZoom();
         updateImageSize();
+        if(!buttons.getHelpStatus().equals(myResources.getString("HelpButton"))){
+            handleHelp(buttons.getHelpStatus(), GUI_LANGUAGE);
+            //launchHelpWindow(buttons.getHelpStatus(), buttons.getLanguageStatus());
+        }
         if(buttons.getFileStatus()){
             handleLogoFileChooser();
         }
@@ -282,6 +294,24 @@ public class ParserController extends Application{
         }
     }
 
+    //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
+    private void handleHelp(String prompt, String lang) throws IOException {
+        switch(prompt){
+            case "Turtle Commands":
+                launchHelpWindow("Turtle", lang);
+                break;
+            case "Math Commands":
+                launchHelpWindow("Math", lang);
+                break;
+            case "Boolean Operations":
+                launchHelpWindow("Boolean", lang);
+                break;
+            case "Variables, Control Structures, and User-Defined Commands":
+                launchHelpWindow("Variables", lang);
+                break;
+        }
+    }
+
     private void updateLanguage(String language) throws FileNotFoundException {
         String currentLang = language.substring(0, language.indexOf("_"));
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
@@ -292,6 +322,18 @@ public class ParserController extends Application{
         setHeader();
         comp.setLanguage(currentLang);
         term_controller.changeLanguage(currentLang);
+    }
+
+    private void launchHelpWindow(String prompt, String language) throws IOException {
+        String currentLang = language.substring(0, language.indexOf("_"));
+        buttons.setHelpStatus(myResources.getString("HelpButton"));
+        Stage s = new Stage();
+        s.setTitle(myResources.getString(prompt));
+        Text text = new Text(new String(Files.readAllBytes(Paths.get(HELP_DIRECTORY + prompt + "_" + currentLang + ".txt"))));
+        ScrollPane root = new ScrollPane(text);
+        Scene sc = new Scene(root, 400, 400);
+        s.setScene(sc);
+        s.show();
     }
 
     //FIXME: Refactor following two methods

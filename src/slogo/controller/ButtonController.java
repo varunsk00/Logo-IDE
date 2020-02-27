@@ -21,6 +21,7 @@ public class ButtonController {
     private boolean turtleImagePressed;
     private boolean penColorPressed;
     private boolean backgroundColorPressed;
+    private boolean helpPress;
     private String languagePressed;
     private String helpPressed;
 
@@ -38,6 +39,7 @@ public class ButtonController {
         this.turtleImagePressed = false;
         this.penColorPressed = false;
         this.backgroundColorPressed = false;
+        this.helpPress = false;
         this.helpPressed = myResources.getString("HelpButton");
         this.languagePressed = myResources.getString("LanguageButton");
         renderButtons();
@@ -67,8 +69,20 @@ public class ButtonController {
         return helpPressed;
     }
 
+    public void setHelpStatus(String help) {
+        this.helpPressed = help;
+    }
+
+    public Boolean getHelp() {
+        return helpPress;
+    }
+
     public String getLanguageStatus() {
         return languagePressed;
+    }
+
+    public void setHelpOff() {
+        helpPress = false;
     }
 
     public void setImageOff() {
@@ -93,8 +107,12 @@ public class ButtonController {
         Button imageButton = makeButton("ImageButton", event -> turtleImagePressed = true);
         Button penButton = makeButton("PenButton", event -> penColorPressed = true);
         Button backgroundButton = makeButton("BackgroundButton", event -> backgroundColorPressed = true);
-        ComboBox helpMenu = makeDropDown("HelpButton", helpPrompts);
         ComboBox langMenu = makeDropDown("LanguageButton", languages);
+
+        ComboBox helpMenu = new ComboBox();
+        helpMenu.setValue(helpPressed);
+        helpMenu.getItems().addAll(helpPrompts);
+        helpMenu.setOnAction(event -> this.helpPressed = (String) helpMenu.getValue());
 
         myButtons.getChildren().addAll(loadButton, imageButton, penButton, backgroundButton, helpMenu, langMenu);
 
@@ -121,7 +139,8 @@ public class ButtonController {
             tempMenu.setOnAction(event -> languagePressed = (String) tempMenu.getValue());
         }
         else if (key.equals("HelpButton")){
-            tempMenu.setOnAction(event -> helpPressed = (String) tempMenu.getValue());
+            tempMenu.setOnAction(event -> this.helpPressed = (String) tempMenu.getValue());
+            tempMenu.setOnAction(event -> helpPress = true);
         }
         return tempMenu;
     }
