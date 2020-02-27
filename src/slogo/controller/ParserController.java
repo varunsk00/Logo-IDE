@@ -126,7 +126,7 @@ public class ParserController extends Application{
      */
     public void start(Stage primaryStage) throws FileNotFoundException {
         primaryStage.setTitle("SLogo");
-        primaryStage.setMaximized(true);
+        //primaryStage.setMaximized(true);
         changeScreenSizetoMax();
         startAnimationLoop();
         startCompiler();
@@ -212,7 +212,6 @@ public class ParserController extends Application{
     private void step() throws IOException {
         myHabitat.getTurtle().updateTurtleView(myTurtle1);
         handleLanguage(buttons.getLanguageStatus());
-        System.out.println(buttons.getHelpStatus());
         updateZoom();
         updateImageSize();
         if(!buttons.getHelpStatus().equals(myResources.getString("HelpButton"))){
