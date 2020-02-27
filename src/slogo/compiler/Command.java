@@ -2,6 +2,7 @@ package slogo.compiler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import slogo.compiler.control.MakeUserInstructionCommand;
 
 public abstract class Command {
@@ -10,6 +11,7 @@ public abstract class Command {
 
   protected Memory memory;
   protected ArrayList<Command> args;
+  protected ResourceBundle errorMsgs;
 
   public Command(String declaration) {
     args = new ArrayList<>();
@@ -44,6 +46,10 @@ public abstract class Command {
     for (Command c : args) {
       c.setMemory(mem);
     }
+  }
+
+  public void setErrorMsgs(ResourceBundle msgs) {
+    errorMsgs = msgs;
   }
 
   public abstract boolean isCompleteSub();

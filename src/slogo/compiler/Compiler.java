@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.Set;
@@ -25,19 +26,21 @@ import slogo.turtle.Turtle;
 public class Compiler {
 
   public static final int MAX_RECURSION_DEPTH = 1000;
-  private static final String LANGUAGES_PACKAGE_EXTENSION = "slogo.resources.languages.syntax.";
-  private static final String RESOURCES_PACKAGE = LANGUAGES_PACKAGE_EXTENSION;
+  private static final String LANGUAGES_PACKAGE_EXTENSION = "slogo.resources.languages.";
+  private static final String RESOURCES_PACKAGE = LANGUAGES_PACKAGE_EXTENSION + "syntax.";
+  private static final String ERROR_MESSAGES_PACKAGE = LANGUAGES_PACKAGE_EXTENSION + "exceptions.";
   private static final String DEFAULT_LANGUAGE = "English";
   private static final String SYNTAX_FILE = "Syntax";
   private List<Entry<String, Pattern>> myTypes;
   private List<Entry<String, Pattern>> myCommands;
   private Memory memory;
+  private ResourceBundle errorMsgs;
 
   public Compiler() {
     myTypes = new ArrayList<>();
     myCommands = new ArrayList<>();
     memory = new Memory();
-    addPatterns(DEFAULT_LANGUAGE, myCommands); //FIXME add support for multiple languages
+    setLanguage(DEFAULT_LANGUAGE);
     addPatterns(SYNTAX_FILE, myTypes);
     //FIXME add resource file validator
     //FIXME add error msg strings
@@ -66,6 +69,12 @@ public class Compiler {
   public void setLanguage(String lang) {
     myCommands.clear();
     addPatterns(lang, myCommands);
+    try {
+      errorMsgs = ResourceBundle.getBundle(ERROR_MESSAGES_PACKAGE + lang + "_error");
+    } catch (MissingResourceException e) {
+      errorMsgs = ResourceBundle.getBundle(ERROR_MESSAGES_PACKAGE + DEFAULT_LANGUAGE + "_error");
+    }
+    memory.setErrorMsgs(errorMsgs);
   }
 
   public String execute(String input) {
@@ -85,7 +94,7 @@ public class Compiler {
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
-        throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
+        throw new InvalidSyntaxException(String.format(errorMsgs.getString("IncompleteCommand"),input));
       }
       if (comm.containsDefinition()) {
         comm = rerunParsing(comm, input);
@@ -105,7 +114,7 @@ public class Compiler {
     comm = parse(input);
     if (!comm.isComplete()) {
       //comm.recPrint(); //fixme
-      throw new InvalidSyntaxException("Input (" + input + ") not a complete command.");
+      throw new InvalidSyntaxException(String.format(errorMsgs.getString("IncompleteCommand"),input));
     }
     return comm;
   }
@@ -136,7 +145,8 @@ public class Compiler {
           //FIXME you're a bad person and you should feel bad
           defineFlag = false;
         } else {
-          throw new InvalidSyntaxException("Cannot redefine builtin function '" + word + "'");
+          throw new InvalidSyntaxException(
+              String.format(errorMsgs.getString("RedefineBuiltin"), word));
         }
       }
       if (comm instanceof MakeUserInstructionCommand) {
@@ -149,7 +159,7 @@ public class Compiler {
       }
       if (stack.size() >= MAX_RECURSION_DEPTH) {
         throw new StackOverflowException(
-            "Max recursion depth: (" + MAX_RECURSION_DEPTH + ") exceeded.");
+            String.format(errorMsgs.getString("StackOverflow"), MAX_RECURSION_DEPTH));
       }
     }
     return stack.getLast();
@@ -162,8 +172,7 @@ public class Compiler {
         if (arg.isComplete()) {
           return arg;
         }
-        throw new InvalidSyntaxException(
-            "Ran out of commands to parse before finishing given commands.");
+        throw new InvalidSyntaxException(errorMsgs.getString("OutOfCommands"));
       }
       stack.peek().addArg(arg);
     }
@@ -176,7 +185,7 @@ public class Compiler {
         return e.getValue().toString();
       }
     }
-    throw new CompilerException("Invalid Syntax resource file - whitespace not found.");
+    throw new CompilerException(errorMsgs.getString("WhitespaceNotFound"));
   }
 
   private String getNewline() {
@@ -185,7 +194,7 @@ public class Compiler {
         return e.getValue().toString();
       }
     }
-    throw new CompilerException("Invalid Syntax resource file - whitespace not found.");
+    throw new CompilerException(errorMsgs.getString("NewlineNotFound"));
   }
 
   private Command getCommandFromString(String str) {
@@ -203,6 +212,7 @@ public class Compiler {
       }
     }
     ret.setMemory(memory);
+    ret.setErrorMsgs(errorMsgs);
     return ret;
   }
 
@@ -228,7 +238,7 @@ public class Compiler {
         return e.getKey();
       }
     }
-    throw new InvalidSyntaxException("Identifier (" + text + ") not recognized.");
+    throw new InvalidSyntaxException(String.format(errorMsgs.getString("IdentifierNotRecognized"),text));
   }
 
 
