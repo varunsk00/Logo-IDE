@@ -97,7 +97,7 @@ public class Compiler {
         throw new InvalidSyntaxException(
             String.format(errorMsgs.getString("IncompleteCommand"), input));
       }
-      if (comm.containsDefinition()) {
+      if (comm.containsDefinition()){
         comm = rerunParsing(comm, input);
       }
       return "" + comm.execute();
@@ -109,8 +109,9 @@ public class Compiler {
 
   private Command rerunParsing(Command comm, String input) {
     Command def = comm.findFirstDef();
-    if (def != null) {
+    while (def != null) {
       def.execute(); //FIXME
+      def = comm.findFirstDef();
     }
     comm = parse(input);
     if (!comm.isComplete()) {
