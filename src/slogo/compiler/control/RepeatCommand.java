@@ -12,8 +12,7 @@ public class RepeatCommand extends LoopCommand {
   @Override
   public double execute() {
     double val = args.get(0).execute();
-    double ret = executeLoop(":repcount",1, val, 1);
-    return ret;
+    return executeLoop(":repcount", 1, val, 1);
   }
 
   @Override

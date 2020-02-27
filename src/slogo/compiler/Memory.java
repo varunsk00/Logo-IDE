@@ -13,7 +13,6 @@ import slogo.compiler.exceptions.InvalidTurtleException;
 import slogo.compiler.exceptions.StackOverflowException;
 import slogo.compiler.exceptions.StackUnderflowException;
 import slogo.compiler.exceptions.UnknownVariableException;
-import slogo.compiler.types.ListStartType;
 import slogo.turtle.Turtle;
 
 public class Memory {
@@ -36,7 +35,8 @@ public class Memory {
   public double getVariable(String name) {
     Double ret = variableStack.peek().getOrDefault(name, null);
     if (ret == null) {
-      throw new UnknownVariableException(String.format(errorMsgs.getString("UnknownVariable"),name));
+      throw new UnknownVariableException(
+          String.format(errorMsgs.getString("UnknownVariable"), name));
     }
     return ret;
   }
@@ -56,7 +56,8 @@ public class Memory {
       while (variableStack.size() > 1) {
         variableStack.pop();
       }
-      throw new StackOverflowException(String.format(errorMsgs.getString("StackOverflow"),MAX_RECURSION_DEPTH));
+      throw new StackOverflowException(
+          String.format(errorMsgs.getString("StackOverflow"), MAX_RECURSION_DEPTH));
     }
   }
 
@@ -103,7 +104,7 @@ public class Memory {
   public Turtle getTurtleByID(String id) {
     Turtle ret = turtleMap.getOrDefault(id, null);
     if (ret == null) {
-      throw new InvalidTurtleException(String.format(errorMsgs.getString("UnknownTurtle"),id));
+      throw new InvalidTurtleException(String.format(errorMsgs.getString("UnknownTurtle"), id));
     }
     return ret;
   }

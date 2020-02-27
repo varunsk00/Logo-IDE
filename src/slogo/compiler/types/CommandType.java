@@ -33,7 +33,8 @@ public class CommandType extends TypeCommand {
       ret = memory.getUserDefinedCommand(name).execute();
     } catch (NullPointerException e) {
       memory.popMemoryStack();
-      throw new InvalidSyntaxException(String.format(errorMsgs.getString("UserCommandNotFound"),name));
+      throw new InvalidSyntaxException(
+          String.format(errorMsgs.getString("UserCommandNotFound"), name));
     }
     memory.popMemoryStack();
     return ret;
