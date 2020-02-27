@@ -6,14 +6,21 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
 
 public class TurtleView extends Rectangle {
-    private static final double X_OFFSET = 320;
-    private static final double Y_OFFSET = 360;
+    private double habHeight;
+    private double habWidth;
+    private double xOffset;
+    private double yOffset;
     private String image_filepath = "slogo/resources/images/turtle_green.png";
     private Image img;
     private boolean cleared;
-    public TurtleView(int width, int height){
+    public TurtleView(double width, double height, double habitatHeight, double habitatWidth){
         super(width, height);
-        img = new Image(image_filepath);
+        this.habHeight = habitatHeight;
+        this.habWidth = habitatWidth;
+        System.out.println(habitatHeight);
+        this.xOffset = habitatWidth/2 + getWidth();
+        this.yOffset = habitatHeight/2 - habitatHeight/8;
+        this.img = new Image(image_filepath);
     }
 
     public ImagePattern getImage(){
@@ -24,47 +31,28 @@ public class TurtleView extends Rectangle {
         image_filepath = filepath;
     }
 
-    //FIXME: CENTER RECTANGLE BECAUSE COORDINATES ARE IN THE TOP LEFT
     public void updateTurtleView(Turtle turtle) {
         setRotate(turtle.getHeading());
-        setX(turtle.getXLocation() + X_OFFSET);
-        setY(turtle.getYLocation() + Y_OFFSET);
+        setX(turtle.getXLocation() + xOffset);
+        setY(turtle.getYLocation() + yOffset);
         setVisible(turtle.isShowTurtle());
         cleared = turtle.isCleared();
         if (cleared) {
-            resetTurtleView(turtle);
+            turtle.setCleared(false);
+            turtle.handleClear();
         }
     }
 
-    public double centerX(){
-        return getX() + getWidth()/2;
-    }
-
-    public double centerY(){
-        return getY() + getHeight()/2;
-    }
-
     public double getXOffset(){
-        return X_OFFSET;
+        return xOffset;
     }
 
     public double getYOffset(){
-        return Y_OFFSET;
+        return yOffset;
     }
 
     public boolean isCleared(){
         return cleared;
-    }
-
-    public void setCleared(Boolean x){
-        cleared = x;
-    }
-
-    private void resetTurtleView(Turtle turtle){
-        turtle.setXLocation(0);
-        turtle.setYLocation(0);
-        turtle.setHeading(0);
-        turtle.setCleared(false);
     }
 }
 

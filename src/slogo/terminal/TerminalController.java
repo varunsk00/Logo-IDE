@@ -7,6 +7,8 @@ import slogo.compiler.Compiler;
 import slogo.terminal.utils.history.HistoryBuffer;
 import slogo.terminal.utils.textLines.TestLine;
 
+import java.util.*;
+
 /**
  * TerminalController manages the communication between a TerminalView object and the compiler
  */
@@ -14,11 +16,11 @@ public class TerminalController {
     private TerminalView terminalView;
     private HistoryBuffer history;
     private Compiler compiler;
+    private boolean status;
 
-
-    /* TODO:
-        1. where is the compiler
-    * */
+    private List<String> commands;
+    private List<String> messages;
+    private static int cnt;
 
     /**
      * Constructor
@@ -27,7 +29,11 @@ public class TerminalController {
     public TerminalController(TerminalView view){
         this.terminalView = view;
         Clipboard clipboard = Clipboard.getSystemClipboard();
+        commands = new ArrayList<>();
+        messages = new ArrayList<>();
         this.history = new HistoryBuffer();
+        status = false;
+        cnt = 0;
         keyBinding();
     }
 
@@ -39,7 +45,13 @@ public class TerminalController {
         TestLine.changeLanguage(newLanguage);
     }
 
-    public void setCompiler(Compiler c) {this.compiler = c;}
+    public void setExternals(Compiler c) {this.compiler = c;}
+
+    public List<String> getAllCommands(){System.out.println("???");return commands;}
+
+    public List<String> getAllMessages(){return messages;}
+
+    public boolean getStatus(){return status;}
 
     private void keyBinding(){
         //set the focus to the scroll bar
@@ -107,7 +119,13 @@ public class TerminalController {
 
     private String sendCurrentInput(){
         String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
-        return compiler.execute(userInput);
+        String systemMessage = compiler.execute(userInput);
+        commands.add(String.format("%d: %s", cnt++, userInput));
+        //System.out.println(commands.size());
+        messages.add(systemMessage);
+        //System.out.println(messages.size());
+        status = !status;
+        return systemMessage;
         //System.out.println(userInput);
         //System.out.println("Unlinked to the compiler right now");
         //return null;

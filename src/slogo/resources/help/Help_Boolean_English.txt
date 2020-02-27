@@ -1,0 +1,22 @@
+BOOLEAN OPERATIONS
+
+Less Than: returns 1 if the value of expr1 is strictly less than the value of expr2, otherwise 0
+         command syntax: LESS? expr1 expr2
+                         LESSP expr1 expr2
+
+Greater Than: returns 1 if the value of expr1 is strictly greater than the value of expr2, otherwise 0
+         command syntax: GREATER? expr1 expr2
+                         GREATERP expr1 expr2
+
+Equality: returns 1 if the value of expr1 and the value of expr2 are equal, otherwise 0
+         command syntax: EQUAL? expr1 expr2
+                         EQUALP expr1 expr2
+
+Inequality: returns 1 if the value of expr1 and the value of expr2 are not equal, otherwise 0
+         command syntax: NOTEQUAL? expr1 expr2
+                         NOTEQUALP expr1 expr2
+
+Non-Zero Comparison: comparisons on the non-zero properties of inputs
+         command syntax: AND test1 test2 -> returns 1 if test1 and test2 are non-zero, otherwise 0
+                         OR test1 test2 -> returns 1 if test1 or test2 are non-zero, otherwise 0
+                         NOT test -> returns 1 if test is 0 and 0 if test is non-zero

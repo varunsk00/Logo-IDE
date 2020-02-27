@@ -2,6 +2,7 @@ package slogo.compiler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import slogo.compiler.control.MakeUserInstructionCommand;
 
 public abstract class Command {
@@ -10,6 +11,7 @@ public abstract class Command {
 
   protected Memory memory;
   protected ArrayList<Command> args;
+  protected ResourceBundle errorMsgs;
 
   public Command(String declaration) {
     args = new ArrayList<>();
@@ -22,28 +24,32 @@ public abstract class Command {
   public abstract double execute();
 
   public void register() {
-    Command obj = this.createCommand(INITIALIZATION);
+    String className = findClass();
+    factoryRegister(className);
+  }
+
+  private String findClass() {
     String className = this.getClass().getName();
     String[] classNameArr = className.split("\\.");
     className = classNameArr[classNameArr.length - 1];
-    String classType = className.substring(className.length() - 4);
-    if (classType.equals("Type")) {
-      className = className.substring(0, className.length() - 4);
-      TypeFactory.registerCommand(className, obj);
+    return className;
+  }
 
-    } else if (classType.equals("mand")) {
-      className = className.substring(0, className.length() - 7);
-      CommandFactory.registerCommand(className, obj);
-    } else {
-      throw new RuntimeException("bad class name");
-    }
+  protected void factoryRegister(String className) {
+    Command obj = this.createCommand(INITIALIZATION);
+    className = className.substring(0, className.length() - 7);
+    CommandFactory.registerCommand(className, obj);
   }
 
   public void setMemory(Memory mem) {
     memory = mem;
-    for (Command c: args) {
+    for (Command c : args) {
       c.setMemory(mem);
     }
+  }
+
+  public void setErrorMsgs(ResourceBundle msgs) {
+    errorMsgs = msgs;
   }
 
   public abstract boolean isCompleteSub();

@@ -2,7 +2,6 @@ package slogo.compiler.control;
 
 import java.util.ArrayList;
 import slogo.compiler.Command;
-import slogo.compiler.Memory;
 import slogo.compiler.exceptions.CompilerException;
 import slogo.compiler.types.CommandType;
 import slogo.compiler.types.ListStartType;

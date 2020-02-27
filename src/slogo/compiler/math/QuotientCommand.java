@@ -13,7 +13,7 @@ public class QuotientCommand extends Command {
   public double execute() {
     double denom = args.get(1).execute();
     if (denom == 0) {
-      throw new InvalidArithmeticException("Attempted to divide by 0");
+      throw new InvalidArithmeticException(errorMsgs.getString("DivideByZero"));
     }
     return args.get(0).execute() / args.get(1).execute();
   }

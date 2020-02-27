@@ -1,7 +1,6 @@
 package slogo.compiler.types;
 
 import slogo.compiler.Command;
-import slogo.compiler.Memory;
 
 public class VariableType extends TypeCommand {
 

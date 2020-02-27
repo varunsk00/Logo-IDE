@@ -1,0 +1,19 @@
+VARIABLES, CONTROL STRUCTURES, AND USER-DEFINED COMMANDS
+
+Create and Assign variables: assigns the value of expr to variable, creating the variable if necessary
+         command syntax: MAKE variable expr
+                         SET variable expr
+
+Loops: Allows for the repetition of commands
+         command syntax: REPEAT expr [ command(s) ] -> runs command(s) given in the list the value of expr number of times
+                         DOTIMES [variable limit] [ command(s) ] -> runs command(s) for each value specified in the range, i.e., from (1 - limit) inclusive
+                         FOR [variable start end increment] [ command(s) ] -> runs command(s) for each value specified in the range, i.e., from (start - end), going by increment
+
+Conditionals: Allow for execution of commands based on certain logic
+         command syntax: IF expr [ command(s) ] -> if expr is not 0, runs the command(s) given in the list
+                         IFELSE expr [ trueCommand(s) ] [ falseCommand(s) ] -> if expr is not 0, runs the trueCommands given in the first list, otherwise runs the falseCommands given in the second list
+
+User Defined command: assigns command(s) given in the second list to commandName using parameters given in first list as variables
+                    : when commandName is used later in a program, any given values are assigned to variables that can be accessed when the command list is run and the value of the final command executed is returned (or 0 if no commands are executed)
+                    : returns 1 if command is successfully defined, otherwise 0
+        command syntax: TO commandName [ variable(s) ] [ command(s) ]

@@ -2,7 +2,7 @@ package slogo.compiler.types;
 
 import java.util.List;
 import slogo.compiler.Command;
-import slogo.compiler.Memory;
+import slogo.compiler.exceptions.InvalidSyntaxException;
 
 public class CommandType extends TypeCommand {
 
@@ -16,7 +16,6 @@ public class CommandType extends TypeCommand {
       return;
     }
     name = declaration;
-    variables = memory.getCommandVariables(name);
   }
 
   @Override
@@ -29,14 +28,21 @@ public class CommandType extends TypeCommand {
     //recPrint();
     //Command exe = memory.getUserDefinedCommand(name);
     //exe.recPrint();
-    double ret = memory.getUserDefinedCommand(name).execute();
+    double ret = 0.0;
+    try {
+      ret = memory.getUserDefinedCommand(name).execute();
+    } catch (NullPointerException e) {
+      memory.popMemoryStack();
+      throw new InvalidSyntaxException(String.format(errorMsgs.getString("UserCommandNotFound"),name));
+    }
     memory.popMemoryStack();
     return ret;
   }
 
   @Override
   public boolean isCompleteSub() {
-    return beingDefined || args.size() == variables.size();
+    variables = memory.getCommandVariables(name);
+    return beingDefined || (args.size() == variables.size());
   }
 
   @Override

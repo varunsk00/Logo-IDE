@@ -4,30 +4,26 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
-
-/**
- * Header Class serves as a controller unit, taking in input from the user to pause/play the game,
- * skip ahead, clear the simulations, or load a file. It is displayed at the top of the BorderPane
- * in CAController and has a HBox with Buttons that affect the game Display is dynamic and
- * grows/shrinks to increasing/decreasing the width of the window Works in conjunction with the
- * Footer class, since the Footer class determines the number of frames to jump Every simulation
- * needs a header, which should be instantiated in CAController and added to the top of the
- * BorderPane
- *
- * @author Eric Doppelt
- */
 public class ButtonController {
 
     private ResourceBundle myResources;
 
     private List<String> languages;
+    private static final String SUPPORTED_LANGUAGES = "src/slogo/resources/languages/LanguageList.txt";
 
+    private List<String> helpPrompts;
+    private static final String PROMPTS = "src/slogo/resources/languages/HelpPrompts.txt";
+
+    private boolean loadFilePressed;
     private boolean turtleImagePressed;
     private boolean penColorPressed;
     private boolean backgroundColorPressed;
-    private boolean helpPressed;
+    private boolean helpPress;
     private String languagePressed;
+    private String helpPressed;
 
     private HBox myButtons;
 
@@ -35,124 +31,96 @@ public class ButtonController {
     //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
     //TODO(FUN): RESIZE TURTLE SLIDER
 
-    /**
-     * Basic constructor for a header Sets its ResourceBundle to the one specified by the given
-     * language Sets all instance variables to false, indicating that no buttons have been pressed
-     * Calls renderHeader() which creates the HBox with Buttons Assumes that language exists in
-     * Resources folder, otherwise throws an InvocationTargetException error
-     *
-     * @param language is the language of the ResourceBundle
-     */
-    public ButtonController(String language) {
+    public ButtonController(String language) throws FileNotFoundException {
         myResources = ResourceBundle.getBundle(language);
-        this.languages = new ArrayList<>(Arrays.asList(myResources.getString("English"),
-                                                        myResources.getString("Chinese"),
-                                                        myResources.getString("French"),
-                                                        myResources.getString("German"),
-                                                        myResources.getString("Italian"),
-                                                        myResources.getString("Portuguese"),
-                                                        myResources.getString("Russian"),
-                                                        myResources.getString("Spanish"),
-                                                        myResources.getString("Urdu")));
+        this.languages = text2Regex(new File(SUPPORTED_LANGUAGES));
+        this.helpPrompts = text2Regex(new File(PROMPTS));
+        this.loadFilePressed = false;
         this.turtleImagePressed = false;
         this.penColorPressed = false;
         this.backgroundColorPressed = false;
-        this.helpPressed = false;
+        this.helpPress = false;
+        this.helpPressed = myResources.getString("HelpButton");
         this.languagePressed = myResources.getString("LanguageButton");
-        renderHeader();
+        renderButtons();
     }
 
-    /**
-     * Basic getter method for the header used in Main
-     *
-     * @return myHeader which is the HBox private instance variable representing the header (with
-     * functional buttons)
-     */
-    public HBox getHeader() {
+    public HBox getHBox() {
         return myButtons;
     }
 
-    /**
-     * Basic getter method returning whether or not to play the simulation This triggers the
-     * updateStatus() method in main if playPressed is true
-     *
-     * @return the boolean private instance variable playPressed
-     */
     public boolean getImageStatus() {
         return turtleImagePressed;
     }
 
-    /**
-     * Basic getter method returning whether or not to load a file This triggers the handleXML() in
-     * CAController
-     *
-     * @return the boolean private instance variable loadPressed
-     */
+    public boolean getFileStatus() {
+        return loadFilePressed;
+    }
+
     public boolean getPenColorStatus() {
         return penColorPressed;
     }
 
-    /**
-     * Basic getter method returning whether or not to skip ahead in the game This triggers the
-     * skipAhead() method in CAController
-     *
-     * @return the boolean private instance variable skipPressed
-     */
     public boolean getBackgroundColorStatus() {
         return backgroundColorPressed;
     }
 
-    public boolean getHelpStatus() {
+    public String getHelpStatus() {
         return helpPressed;
+    }
+
+    public void setHelpStatus(String help) {
+        this.helpPressed = help;
+    }
+
+    public Boolean getHelp() {
+        return helpPress;
     }
 
     public String getLanguageStatus() {
         return languagePressed;
     }
 
-    /**
-     * Basic setter method that sets the loadPressed variable to false Called in handleXML() method to
-     * stop the load screen from rerendering
-     */
+    public void setHelpOff() {
+        helpPress = false;
+    }
+
     public void setImageOff() {
         turtleImagePressed = false;
     }
 
-    /**
-     * Basic setter method that sets the skipPressed variable to false Called in skipAhead() method to
-     * only skip once
-     */
+    public void setLoadFilePressedOff() {
+        loadFilePressed = false;
+    }
+
     public void setPenColorOff() {
         penColorPressed = false;
     }
 
-    /**
-     * Basic setter method to set the value of clearPressed to false Called after the Grids have
-     * already been cleared in CAController
-     */
     public void setBackgroundColorOff() {
         backgroundColorPressed = false;
     }
 
-    public void setHelpOff() {
-        helpPressed = false;
-    }
-
-
-    private void renderHeader() {
+    private void renderButtons() {
         myButtons = new HBox();
+        Button loadButton = makeButton("LoadButton", event -> loadFilePressed = true);
         Button imageButton = makeButton("ImageButton", event -> turtleImagePressed = true);
         Button penButton = makeButton("PenButton", event -> penColorPressed = true);
         Button backgroundButton = makeButton("BackgroundButton", event -> backgroundColorPressed = true);
-        Button helpButton = makeButton("HelpButton", event -> helpPressed = true);
-        ComboBox langMenu = makeDropDown("LanguageButton");
+        ComboBox langMenu = makeDropDown("LanguageButton", languages);
 
-        myButtons.getChildren().addAll(imageButton, penButton, backgroundButton, helpButton, langMenu);
+        ComboBox helpMenu = new ComboBox();
+        helpMenu.setValue(helpPressed);
+        helpMenu.getItems().addAll(helpPrompts);
+        helpMenu.setOnAction(event -> this.helpPressed = (String) helpMenu.getValue());
 
+        myButtons.getChildren().addAll(loadButton, imageButton, penButton, backgroundButton, helpMenu, langMenu);
+
+        formatButton(loadButton);
         formatButton(imageButton);
         formatButton(penButton);
         formatButton(backgroundButton);
-        formatButton(helpButton);
+        formatBox(helpMenu);
         formatBox(langMenu);
     }
 
@@ -163,11 +131,17 @@ public class ButtonController {
         return tempButton;
     }
 
-    private ComboBox makeDropDown(String key){
+    private ComboBox makeDropDown(String key, List<String> options){
         ComboBox tempMenu = new ComboBox();
-        tempMenu.getItems().addAll(languages);
-        tempMenu.setValue(myResources.getString("LanguageButton"));
-        tempMenu.setOnAction(event -> languagePressed = (String) tempMenu.getValue());
+        tempMenu.getItems().addAll(options);
+        tempMenu.setValue(myResources.getString(key));
+        if(key.equals("LanguageButton")){
+            tempMenu.setOnAction(event -> languagePressed = (String) tempMenu.getValue());
+        }
+        else if (key.equals("HelpButton")){
+            tempMenu.setOnAction(event -> this.helpPressed = (String) tempMenu.getValue());
+            tempMenu.setOnAction(event -> helpPress = true);
+        }
         return tempMenu;
     }
 
@@ -177,5 +151,14 @@ public class ButtonController {
 
     private void formatBox(ComboBox tempMenu) {
         myButtons.setHgrow(tempMenu, Priority.ALWAYS);
+    }
+
+    private List<String> text2Regex(File dataFile) throws FileNotFoundException {
+        List<String> ret = new ArrayList<>();
+        Scanner scanner = new Scanner(dataFile);
+        while(scanner.hasNextLine()){
+            ret.add(myResources.getString(scanner.nextLine()));
+        }
+        return ret;
     }
 }

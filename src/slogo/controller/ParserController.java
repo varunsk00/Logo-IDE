@@ -1,55 +1,89 @@
 package slogo.controller;
-import slogo.compiler.Compiler;
-import slogo.turtle.Turtle;
-import slogo.turtle.TurtleHabitat;
-import slogo.terminal.TerminalView;
-import slogo.terminal.TerminalController;
 
-import javafx.scene.image.Image;
-import javafx.scene.paint.ImagePattern;
-import javafx.stage.FileChooser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import java.io.File;
-import java.util.ResourceBundle;
+import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import slogo.compiler.Compiler;
+import slogo.terminal.TerminalController;
+import slogo.terminal.TerminalView;
+import slogo.turtle.Point;
+import slogo.turtle.Turtle;
+import slogo.turtle.TurtleHabitat;
+import slogo.variable_panels.VariablesTabPaneController;
+import slogo.variable_panels.VariablesTabPaneView;
 
-//TODO(REQUIRED): SYSTEM-WIDE LANGUAGE SWITCHING
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ResourceBundle;
+import java.util.Scanner;
+
+//FIXME: replace JAVA FILENOTFOUND EXCEPTION WITH comp.executeFile()
+//FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
+//FIXME: BREAK UP CLASS....REFACTOR ALMOST EVERYTHING LOL
+
+//TODO(REQUIRED): HELP MENU IN DIFF LANGUAGES
+
 //TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
 //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
-//TODO(FUN): RESIZE TURTLE SLIDER
 
 public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
     private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
-    private static final String RESOURCES_PACKAGE = "slogo.resources.languages.";
+    private static final String HELP_DIRECTORY = "src/slogo/resources/help/Help_";
+    private static final String LOGO_DIRECTORY = "data/examples";
+    private static final String RESOURCES_PACKAGE = "slogo.resources.languages.GUI.";
     private static String GUI_LANGUAGE = "English_GUI";
     private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + GUI_LANGUAGE);
 
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private static final double SCENE_WIDTH = 1280;
-    private static final double SCENE_HEIGHT = 720;
+    private double SCENE_WIDTH;
+    private double SCENE_HEIGHT;
+    private double HEADER_HEIGHT = 80;
 
-    private static final double HABITAT_WIDTH = SCENE_WIDTH/2;
-    private static final double HABITAT_HEIGHT = SCENE_HEIGHT;
+    private double HABITAT_WIDTH = SCENE_WIDTH/2;
+    private double HABITAT_HEIGHT = SCENE_HEIGHT;
 
-    private static final Color ALL_COLOR = Color.ALICEBLUE;
+    private double TERMINAL_WIDTH = SCENE_WIDTH/2;
+    private double TERMINAL_HEIGHT = SCENE_HEIGHT;
+
+    private double TABPANE_WIDTH = SCENE_WIDTH;
+    private double TABPANE_HEIGHT = 150;
+
+    private static final Color ALL_COLOR = Color.WHITE;
+
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
+    private static final String LOGO_FILE_EXTENSIONS = "*.logo";
 
-    public FileChooser FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
+    public FileChooser IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
+    public FileChooser LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
+
     private BorderPane root;
-    private ButtonController header;
+
+    private VBox header = new VBox();
+    private ButtonController buttons;
+    private SliderController sliders;
+
     private Stage myStage;
     private Timeline animation;
     private Color backgroundColor = Color.WHITE;
@@ -57,6 +91,10 @@ public class ParserController extends Application{
 
     private TerminalView term;
     private TerminalController term_controller;
+    private boolean status;
+
+    private VariablesTabPaneView tabPaneView;
+    private VariablesTabPaneController tabPaneController;
 
     private TurtleHabitat myHabitat;
     private Turtle myTurtle1 = new Turtle();
@@ -72,8 +110,9 @@ public class ParserController extends Application{
 
     /**
      * Constructor used in Main to begin the program Begins our JavaFX application Starts the
-     * Animation Loop and sets the Border Pane, filling it with a ButtonControls, SliderControls, and
-     * SimulationViews Sets the stage and scene and shows it
+     * Animation Loop and sets the Border Pane, filling it with a ButtonController, SliderController, and
+     * TurtleHabitat, TerminalView, and VariablesTabPaneView
+     * Sets the stage and scene and shows it
      *
      * @param args is the String[] passed in by main
      */
@@ -82,19 +121,19 @@ public class ParserController extends Application{
     }
 
     /**
-     * Start method for the Application Sets the BorderPane and fills it with ButtonControls (in the
-     * header) and SliderControls (in the Footer) Sets the Center with SimulationView objects to
-     * represent the Simulation Initializes in nested methods
      *
      * @param primaryStage is the stage to display the Application
      */
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException {
         primaryStage.setTitle("SLogo");
+        //primaryStage.setMaximized(true);
+        changeScreenSizetoMax();
         startAnimationLoop();
         startCompiler();
         setBorderPane();
         setTurtleHabitat();
         setTerminalView();
+        setTabPaneView();
         setHeader();
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets().add(STYLESHEET);
@@ -104,28 +143,50 @@ public class ParserController extends Application{
         myStage.show();
     }
 
+    private void changeScreenSizetoMax(){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        SCENE_WIDTH = 1280;
+        SCENE_HEIGHT = 720;
+        TABPANE_WIDTH = SCENE_WIDTH;
+        TABPANE_HEIGHT = 150;
+        HABITAT_WIDTH = SCENE_WIDTH/2;
+        HABITAT_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
+        TERMINAL_WIDTH = SCENE_WIDTH/2;
+        TERMINAL_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
+
+    }
+
     private void setBorderPane() {
         root = new BorderPane();
         root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
         root.setMaxWidth(SCENE_WIDTH);
-        root.setMaxHeight(SCENE_WIDTH);
+        root.setMaxHeight(SCENE_HEIGHT);
     }
 
-    private void setHeader() {
-        header = new ButtonController(RESOURCES_PACKAGE + GUI_LANGUAGE);
-        root.setTop(header.getHeader());
+    private void setHeader() throws FileNotFoundException {
+        buttons = new ButtonController(RESOURCES_PACKAGE + GUI_LANGUAGE);
+        sliders = new SliderController(RESOURCES_PACKAGE + GUI_LANGUAGE);
+        sliders.getVBox().getStyleClass().add("slider-box");
+        header.getChildren().addAll(buttons.getHBox(), sliders.getVBox());
+        root.setTop(header);
     }
 
     private void setTerminalView() {
-        term = new TerminalView( (int) SCENE_WIDTH/2, (int) SCENE_HEIGHT);
+        term = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
         term_controller = new TerminalController(term);
-        term_controller.setCompiler(comp);
+        term_controller.setExternals(comp);
+        status = false;
         root.setLeft(term);
+    }
+
+    private void setTabPaneView() {
+        tabPaneView = new VariablesTabPaneView(TABPANE_WIDTH, TABPANE_HEIGHT);
+        tabPaneController = new VariablesTabPaneController(tabPaneView, comp, term_controller);
+        root.setBottom(tabPaneView);
     }
 
     private void setTurtleHabitat() {
         myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
-        myHabitat.getTurtleHabitat().getStyleClass().add("habitat");
         root.setRight(myHabitat.getTurtleHabitat());
     }
 
@@ -135,35 +196,63 @@ public class ParserController extends Application{
     }
 
     private void startAnimationLoop() {
-        KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step());
+        KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
+            try {
+                step();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();
     }
 
-    private void step() {
-        handleLanguage(header.getLanguageStatus());
-        if(header.getPenColorStatus()){
+    private void step() throws IOException {
+        myHabitat.getTurtle().updateTurtleView(myTurtle1);
+        handleLanguage(buttons.getLanguageStatus());
+        updateZoom();
+        updateImageSize();
+        if(!buttons.getHelpStatus().equals(myResources.getString("HelpButton"))){
+            handleHelp(buttons.getHelpStatus(), GUI_LANGUAGE);
+            //launchHelpWindow(buttons.getHelpStatus(), buttons.getLanguageStatus());
+        }
+        if(buttons.getFileStatus()){
+            handleLogoFileChooser();
+        }
+        if(buttons.getPenColorStatus()){
             launchPenColorChooser();
         }
-        if(header.getBackgroundColorStatus()){
+        if(buttons.getBackgroundColorStatus()){
             launchBackgroundColorChooser();
         }
-        if(header.getImageStatus()){
-            handleFileChooser();
-        }
-        if (header.getHelpStatus()) {
+        if(buttons.getImageStatus()){
+            handleImageFileChooser();
         }
         if(myTurtle1.isPenDown()){
-            myHabitat.penDraw(penColor, myTurtle1.getXLocation(), myTurtle1.getYLocation());
+            for (Point loc: myTurtle1.locationsList()) {
+                myHabitat.penDraw(penColor, loc);
+            }
         }
-        myHabitat.setBackground(backgroundColor);
-        myHabitat.getTurtle().updateTurtleView(myTurtle1);
-        root.setRight(myHabitat.getTurtleHabitat());
+        setGlobalBackground(backgroundColor);
+        updateTabPanes();
     }
 
-    private void handleLanguage(String lang){
+    private void updateTabPanes() {
+        if (status != term_controller.getStatus()) {
+            status = term_controller.getStatus();
+            tabPaneController.updateAllTables();
+        }
+    }
+
+    private void setGlobalBackground(Color c){
+        root.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
+        myHabitat.setBackground(backgroundColor);
+    }
+
+    //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
+    private void handleLanguage(String lang) throws FileNotFoundException {
         switch(lang){
             case "\u6c49\u8bed\u62fc\u97f3":
                 GUI_LANGUAGE = "Chinese_GUI";
@@ -204,27 +293,59 @@ public class ParserController extends Application{
         }
     }
 
-    private void updateLanguage(String language){
+    //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
+    private void handleHelp(String prompt, String lang) throws IOException {
+        switch(prompt){
+            case "Turtle Commands":
+                launchHelpWindow("Turtle", lang);
+                break;
+            case "Math Commands":
+                launchHelpWindow("Math", lang);
+                break;
+            case "Boolean Operations":
+                launchHelpWindow("Boolean", lang);
+                break;
+            case "Variables, Control Structures, and User-Defined Commands":
+                launchHelpWindow("Variables", lang);
+                break;
+        }
+    }
+
+    private void updateLanguage(String language) throws FileNotFoundException {
         String currentLang = language.substring(0, language.indexOf("_"));
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
-        FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS);
+        IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
+        LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
+        header.getChildren().clear();
+        root.getChildren().remove(header);
         setHeader();
         comp.setLanguage(currentLang);
         term_controller.changeLanguage(currentLang);
     }
 
+    private void launchHelpWindow(String prompt, String language) throws IOException {
+        String currentLang = language.substring(0, language.indexOf("_"));
+        buttons.setHelpStatus(myResources.getString("HelpButton"));
+        Stage s = new Stage();
+        s.setTitle(myResources.getString(prompt));
+        Text text = new Text(new String(Files.readAllBytes(Paths.get(HELP_DIRECTORY + prompt + "_" + currentLang + ".txt"))));
+        ScrollPane root = new ScrollPane(text);
+        Scene sc = new Scene(root, 400, 400);
+        s.setScene(sc);
+        s.show();
+    }
+
+    //FIXME: Refactor following two methods
     private void launchPenColorChooser() {
-        header.setPenColorOff();
+        buttons.setPenColorOff();
         Stage s = new Stage();
         s.setTitle(myResources.getString("ColorWindow"));
         TilePane r = new TilePane();
         ColorPicker cp = new ColorPicker();
-        // create a event handler
         EventHandler<ActionEvent> event = e -> {
             penColor = cp.getValue();
             s.close();
         };
-        // set listener
         cp.setValue(penColor);
         cp.setOnAction(event);
         r.getChildren().add(cp);
@@ -234,18 +355,15 @@ public class ParserController extends Application{
     }
 
     private void launchBackgroundColorChooser() {
-        header.setBackgroundColorOff();
+        buttons.setBackgroundColorOff();
         Stage s = new Stage();
         s.setTitle(myResources.getString("ColorWindow"));
         TilePane r = new TilePane();
         ColorPicker cp = new ColorPicker();
-        // create a event handler
         EventHandler<ActionEvent> event = e -> {
-            // color
             backgroundColor = cp.getValue();
             s.close();
         };
-        // set listener
         cp.setValue(backgroundColor);
         cp.setOnAction(event);
         r.getChildren().add(cp);
@@ -254,43 +372,53 @@ public class ParserController extends Application{
         s.show();
     }
 
-//    private void createColorPicker(Color variable){
-//        Stage s = new Stage();
-//        s.setTitle(myResources.getString("ColorWindow"));
-//        TilePane r = new TilePane();
-//        ColorPicker cp = new ColorPicker();
-//        // create a event handler
-//        EventHandler<ActionEvent> event = e -> {
-//            variable = cp.getValue();
-//            s.close();
-//        };
-//        // set listener
-//        cp.setValue(variable);
-//        cp.setOnAction(event);
-//        r.getChildren().add(cp);
-//        Scene sc = new Scene(r, 200, 200);
-//        s.setScene(sc);
-//        s.show();
-//    }
-
-    private static FileChooser makeChooser(String extensionsAccepted) {
+    private static FileChooser makeChooser(String extensionsAccepted, String directory) {
         String[] extensions = extensionsAccepted.split(",");
         FileChooser result = new FileChooser();
         result.setTitle(myResources.getString("OpenFile"));
-        // pick Image Directory to start searching for files
-        result.setInitialDirectory(new File(System.getProperty("user.dir"),IMAGE_DIRECTORY));
+        result.setInitialDirectory(new File(System.getProperty("user.dir"),directory));
         result.getExtensionFilters()
-                .setAll(new FileChooser.ExtensionFilter(myResources.getString("ImageFile"), extensions[0], extensions[1]));
+                .setAll(new FileChooser.ExtensionFilter(myResources.getString("ImageFile"), extensions));
         return result;
     }
 
-    private void handleFileChooser(){
-        File dataFile = FILE_CHOOSER.showOpenDialog(myStage);
+    private void handleImageFileChooser(){
+        File dataFile = IMAGE_FILE_CHOOSER.showOpenDialog(myStage);
         if(dataFile == null){
-            header.setImageOff();
+            buttons.setImageOff();
             return;
         }
-        header.setImageOff();
+        buttons.setImageOff();
         myHabitat.getTurtle().setFill(new ImagePattern(new Image("file:" + dataFile.getPath())));
+    }
+
+    //FIXME: directly call comp.executeFile, and run in the terminal (maybe add method to TerminalView)
+    private void handleLogoFileChooser() throws FileNotFoundException {
+        File dataFile = LOGO_FILE_CHOOSER.showOpenDialog(myStage);
+        String input = "";
+        if(dataFile == null){
+            buttons.setLoadFilePressedOff();
+            return;
+        }
+        buttons.setLoadFilePressedOff();
+        Scanner scanner = new Scanner(dataFile);
+        while (scanner.hasNext()){
+            String line = scanner.nextLine();
+            if(line.startsWith("#")) {
+                continue;
+            }
+            input += line + " ";
+        }
+        term.setCurrentInput(input);
+    }
+
+    private void updateZoom(){
+        myHabitat.getTurtleHabitat().setScaleX(sliders.getZoom()/3.0);
+        myHabitat.getTurtleHabitat().setScaleY(sliders.getZoom()/3.0);
+    }
+
+    private void updateImageSize(){
+        myHabitat.getTurtle().setScaleX(sliders.getSizeValue()/3.0);
+        myHabitat.getTurtle().setScaleY(sliders.getSizeValue()/3.0);
     }
 }

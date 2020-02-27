@@ -1,11 +1,10 @@
 package slogo.compiler.control;
 
 import slogo.compiler.Command;
-import slogo.compiler.Memory;
 import slogo.compiler.types.ListStartType;
 import slogo.compiler.types.VariableType;
 
-public class ForCommand extends Command {
+public class ForCommand extends LoopCommand {
 
   public ForCommand(String declaration) {
     super(declaration);
@@ -13,16 +12,12 @@ public class ForCommand extends Command {
 
   @Override
   public double execute() {
-    double ret = 0;
     String varName = ((VariableType) args.get(0).getArgs().get(0))
         .getName(); //FIXME bad bad bad maybe do a tostring?
     double start = args.get(0).getArgs().get(1).execute();
-    double end = args.get(0).getArgs().get(2).execute() + .000000001; //FIXME magic val
+    double end = args.get(0).getArgs().get(2).execute();
     double inc = args.get(0).getArgs().get(3).execute();
-    for (double i = start; i <= end; i += inc) {
-      memory.setVariable(varName, i);
-      ret = args.get(1).execute();
-    }
+    double ret = executeLoop(varName, start, end, inc);
     return ret;
   }
 

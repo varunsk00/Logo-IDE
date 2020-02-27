@@ -5,23 +5,41 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.List;
+
 public class TurtleHabitat {
     private Pane myTurtleHabitat;
     private TurtleView turtle;
-    private Polyline pen  = new Polyline();
+    private List<Polyline> myLines;
+    private static double DEFAULT_TURTLE_WIDTH = 50.0;
+    private static double DEFAULT_TURTLE_HEIGHT = 25.0;
+
+    private double lastx;
+    private double lasty;
 
     public TurtleHabitat(double width, double height){
-        turtle = new TurtleView(50, 25);
-        turtle.setFill(turtle.getImage());
-        turtle.setX(width/2);
-        turtle.setY(height/2);
+        turtle = initializeTurtleView(width, height);
         myTurtleHabitat = new Pane(turtle);
+        myLines = new ArrayList<>();
         changeSize(width, height);
-        myTurtleHabitat.getChildren().add(pen);
+        lastx = turtle.getX() + turtle.getWidth()/2;
+        lasty = turtle.getY() + turtle.getHeight()/2;
     }
 
-    public void changeSize(double width, double height){
-        myTurtleHabitat.setPrefSize(width, height);
+    private TurtleView initializeTurtleView(double habitatWidth, double habitatHeight){
+        TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
+                                                habitatWidth, habitatHeight);
+        tempTurtle.setFill(tempTurtle.getImage());
+        tempTurtle.setX(tempTurtle.getXOffset());
+        tempTurtle.setY(tempTurtle.getYOffset());
+        return tempTurtle;
+    }
+
+    private void changeSize(double width, double height){
+        myTurtleHabitat.setPrefWidth(width);
+        myTurtleHabitat.setPrefHeight(height);
     }
 
     public Pane getTurtleHabitat(){
@@ -36,15 +54,31 @@ public class TurtleHabitat {
         myTurtleHabitat.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
-    public void penDraw(Color penColor, double x_coor, double y_coor){
-        Double[] points = new Double[] {turtle.centerX(), turtle.centerY(),
-                                        x_coor + turtle.getXOffset() + 50/(2), y_coor + turtle.getYOffset() + 25/(2)};
-        pen.getPoints().addAll(points);
-        //p.getStrokeDashArray().addAll(2d, 21d);
+    public void penDraw(Color penColor, Point loc){
+        double x_coor = loc.getX();
+        double y_coor = loc.getY();
+        Polyline pen  = new Polyline();
+        myLines.add(pen);
+        myTurtleHabitat.getChildren().add(pen);
+
+        double xOffsetCoord = x_coor + turtle.getXOffset() + turtle.getWidth()/2;
+        double yOffsetCoord = y_coor + turtle.getYOffset() + turtle.getHeight()/2;
+        Double[] points = new Double[] {lastx, lasty, xOffsetCoord, yOffsetCoord};
+        lastx = xOffsetCoord;
+        lasty = yOffsetCoord;
+
+        if (loc.getDrawn()) {
+            pen.getPoints().addAll(points);
+        }
         pen.setStroke(penColor);
+        //p.getStrokeDashArray().addAll(2d, 21d);
         pen.setStrokeWidth(2.0);
         if(turtle.isCleared()){
-            pen.getPoints().clear();
+            for (Polyline p : myLines) {
+                p.getPoints().clear();
+                myTurtleHabitat.getChildren().remove(p);
+            }
+            myLines.clear();
         }
     }
 }
