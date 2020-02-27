@@ -219,8 +219,6 @@ public class ParserController extends Application{
         if(buttons.getImageStatus()){
             handleImageFileChooser();
         }
-        if (buttons.getHelpStatus()) {
-        }
         if(myTurtle1.isPenDown()){
             for (Point loc: myTurtle1.locationsList()) {
                 myHabitat.penDraw(penColor, loc);

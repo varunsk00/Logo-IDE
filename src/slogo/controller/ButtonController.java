@@ -14,12 +14,15 @@ public class ButtonController {
     private List<String> languages;
     private static final String SUPPORTED_LANGUAGES = "src/slogo/resources/languages/LanguageList.txt";
 
+    private List<String> helpPrompts;
+    private static final String PROMPTS = "src/slogo/resources/languages/HelpPrompts.txt";
+
     private boolean loadFilePressed;
     private boolean turtleImagePressed;
     private boolean penColorPressed;
     private boolean backgroundColorPressed;
-    private boolean helpPressed;
     private String languagePressed;
+    private String helpPressed;
 
     private HBox myButtons;
 
@@ -30,11 +33,12 @@ public class ButtonController {
     public ButtonController(String language) throws FileNotFoundException {
         myResources = ResourceBundle.getBundle(language);
         this.languages = text2Regex(new File(SUPPORTED_LANGUAGES));
+        this.helpPrompts = text2Regex(new File(PROMPTS));
         this.loadFilePressed = false;
         this.turtleImagePressed = false;
         this.penColorPressed = false;
         this.backgroundColorPressed = false;
-        this.helpPressed = false;
+        this.helpPressed = myResources.getString("HelpButton");
         this.languagePressed = myResources.getString("LanguageButton");
         renderButtons();
     }
@@ -59,7 +63,7 @@ public class ButtonController {
         return backgroundColorPressed;
     }
 
-    public boolean getHelpStatus() {
+    public String getHelpStatus() {
         return helpPressed;
     }
 
@@ -83,26 +87,22 @@ public class ButtonController {
         backgroundColorPressed = false;
     }
 
-    public void setHelpOff() {
-        helpPressed = false;
-    }
-
     private void renderButtons() {
         myButtons = new HBox();
         Button loadButton = makeButton("LoadButton", event -> loadFilePressed = true);
         Button imageButton = makeButton("ImageButton", event -> turtleImagePressed = true);
         Button penButton = makeButton("PenButton", event -> penColorPressed = true);
         Button backgroundButton = makeButton("BackgroundButton", event -> backgroundColorPressed = true);
-        Button helpButton = makeButton("HelpButton", event -> helpPressed = true);
-        ComboBox langMenu = makeDropDown("LanguageButton");
+        ComboBox helpMenu = makeDropDown("HelpButton", helpPrompts);
+        ComboBox langMenu = makeDropDown("LanguageButton", languages);
 
-        myButtons.getChildren().addAll(loadButton, imageButton, penButton, backgroundButton, helpButton, langMenu);
+        myButtons.getChildren().addAll(loadButton, imageButton, penButton, backgroundButton, helpMenu, langMenu);
 
         formatButton(loadButton);
         formatButton(imageButton);
         formatButton(penButton);
         formatButton(backgroundButton);
-        formatButton(helpButton);
+        formatBox(helpMenu);
         formatBox(langMenu);
     }
 
@@ -113,11 +113,16 @@ public class ButtonController {
         return tempButton;
     }
 
-    private ComboBox makeDropDown(String key){
+    private ComboBox makeDropDown(String key, List<String> options){
         ComboBox tempMenu = new ComboBox();
-        tempMenu.getItems().addAll(languages);
+        tempMenu.getItems().addAll(options);
         tempMenu.setValue(myResources.getString(key));
-        tempMenu.setOnAction(event -> languagePressed = (String) tempMenu.getValue());
+        if(key.equals("LanguageButton")){
+            tempMenu.setOnAction(event -> languagePressed = (String) tempMenu.getValue());
+        }
+        else if (key.equals("HelpButton")){
+            tempMenu.setOnAction(event -> helpPressed = (String) tempMenu.getValue());
+        }
         return tempMenu;
     }
 
