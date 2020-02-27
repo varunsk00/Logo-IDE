@@ -1,0 +1,43 @@
+MATHEMATICAL OPERATIONS
+
+Addition : returns sum of the values of expr1 and expr2
+         command syntax: SUM expr1 expr2
+                         + expr1 expr2
+
+Subtraction : returns difference of the values of expr1 and expr2
+         command syntax: DIFFERENCE expr1 expr2
+                         - expr1 expr2
+
+Multiplication: returns product of the values of expr1 and expr2
+         command syntax: PRODUCT expr1 expr2
+                         * expr1 expr2
+
+Quotient: returns quotient of the values of expr1 and expr2
+         command syntax: QUOTIENT expr1 expr2
+                         / expr1 expr2
+
+Remainder: returns remainder on dividing the values of expr1 by expr2
+         command syntax: REMAINDER expr1 expr2
+                         % expr1 expr2
+
+Negation: returns negative of the values of expr
+         command syntax: MINUS expr
+                         ~ expr
+
+Random number generation: returns random non-negative number strictly less than max
+         command syntax: RANDOM max
+
+Trigonometric functions: Compute trigonometric calculations on a input degrees
+         command syntax: SIN degrees -> returns sine of degrees
+                         COS degrees -> return cosine of degrees
+                         TAN degrees -> returns tangent of degrees
+                         ATAN degrees -> returns arctangent of degrees
+
+Natural logarithm: returns natural log of expr
+         command syntax: LOG expr
+
+Exponential: returns base raised to the power of the exponent
+         command syntax: POW base exponent
+
+PI: Reports the number Pi
+    command syntax: PI

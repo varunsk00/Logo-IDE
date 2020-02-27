@@ -1,0 +1,29 @@
+TURTLE COMMANDS
+
+Location: Commands specific to the changing and retrieving of the turtle's location
+         command syntax: setxy x y OR goto x y -> move the turtle to a specific point (x,y)
+                         forward pixels  OR  fd pixels -> moves the turtle forward by a number of pixels in its current heading
+                         back pixels OR bk pixels -> moves the turtle backward by a number of pixels in its current heading
+                         home -> moves turtle to the center of the screen defined as (0,0)
+                         clearscreen OR cs -> erases turtle's trails and sends it to the home position defined as (0,0)
+                         xcor -> returns the turtle's X coordinate from the center of the screen
+                         ycor -> returns the turtle's Y coordinate from the center of the screen
+
+Rotation: Commands specific to the rotation of the turtle
+         command syntax: right degrees  OR rt degrees  -> clockwise rotation
+                         left degrees OR lt degrees -> counterclockwise rotation
+
+Heading: Commands specific to the direction in which the turtle is facing
+         command syntax: heading -> returns current heading of turtle
+                         setheading degrees OR seth degrees -> change current heading
+                         towards x y -> turns the turtle to face a specific point (x,y)
+
+Hide/Show trail: Commands specific to the drawing created by turtle movement
+         command syntax: pendown OR pd  -> draw trail when turtle moves
+                         penup OR pu -> turtle does not leave a trail
+                         pendown? OR pendownp -> returns 1 when pen is up, 0 otherwise
+
+Hide/Show turtle: Commands specific to turtle visibility on the screen
+         command syntax: showturtle OR st -> makes turtle visible
+                         hideturtle OR ht -> makes turtle invisible
+                         showing? OR showingp -> returns 1 if turtle is showing, 0 if it is hiding
