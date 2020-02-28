@@ -22,7 +22,7 @@ public class TypeFactory {
     try {
       return registeredCommands.get(name).createCommand(declaration);
     } catch (NullPointerException e) {
-      throw new InvalidSyntaxException(String.format(errorMsgs.getString("SeenNotParsed"),name));
+      throw new InvalidSyntaxException(String.format(errorMsgs.getString("SeenNotParsed"), name));
     }
   }
 

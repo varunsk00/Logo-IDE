@@ -94,9 +94,10 @@ public class Compiler {
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
-        throw new InvalidSyntaxException(String.format(errorMsgs.getString("IncompleteCommand"),input));
+        throw new InvalidSyntaxException(
+            String.format(errorMsgs.getString("IncompleteCommand"), input));
       }
-      if (comm.containsDefinition()) {
+      if (comm.containsDefinition()){
         comm = rerunParsing(comm, input);
       }
       return "" + comm.execute();
@@ -108,13 +109,15 @@ public class Compiler {
 
   private Command rerunParsing(Command comm, String input) {
     Command def = comm.findFirstDef();
-    if (def != null) {
+    while (def != null) {
       def.execute(); //FIXME
+      def = comm.findFirstDef();
     }
     comm = parse(input);
     if (!comm.isComplete()) {
       //comm.recPrint(); //fixme
-      throw new InvalidSyntaxException(String.format(errorMsgs.getString("IncompleteCommand"),input));
+      throw new InvalidSyntaxException(
+          String.format(errorMsgs.getString("IncompleteCommand"), input));
     }
     return comm;
   }
@@ -238,7 +241,8 @@ public class Compiler {
         return e.getKey();
       }
     }
-    throw new InvalidSyntaxException(String.format(errorMsgs.getString("IdentifierNotRecognized"),text));
+    throw new InvalidSyntaxException(
+        String.format(errorMsgs.getString("IdentifierNotRecognized"), text));
   }
 
 

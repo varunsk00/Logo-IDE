@@ -195,6 +195,7 @@ public class ParserController extends Application{
         comp.addTurtle("Turtle 1", myTurtle1);
     }
 
+    //FIXME: BIG NO NO!! REMOVE PRINTSTACKTRACE IMMEDIATELY
     private void startAnimationLoop() {
         KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
             try {

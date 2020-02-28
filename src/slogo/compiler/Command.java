@@ -12,6 +12,7 @@ public abstract class Command {
   protected Memory memory;
   protected ArrayList<Command> args;
   protected ResourceBundle errorMsgs;
+  protected boolean executed = false; //FIXME only used by makeuserinstruction, can't be trusted
 
   public Command(String declaration) {
     args = new ArrayList<>();
@@ -113,13 +114,24 @@ public abstract class Command {
     return false;
   }
 
-  public Command findFirstDef() {
+  public int countDefinitions() {
+    int ret = 0;
     if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
+      ret++;
+    }
+    for (Command c: args) {
+      ret += c.countDefinitions();
+    }
+    return ret;
+  }
+
+  public Command findFirstDef() {
+    if (this instanceof MakeUserInstructionCommand && !executed) { //fixme bad bad bad
       return this;
     }
     for (Command c : args) {
       Command ret = c.findFirstDef();
-      if (ret != null) {
+      if (ret != null && !ret.executed) {
         return ret;
       }
     }

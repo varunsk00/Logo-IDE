@@ -29,7 +29,6 @@ public class ButtonController {
 
     //TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
     //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
-    //TODO(FUN): RESIZE TURTLE SLIDER
 
     public ButtonController(String language) throws FileNotFoundException {
         myResources = ResourceBundle.getBundle(language);

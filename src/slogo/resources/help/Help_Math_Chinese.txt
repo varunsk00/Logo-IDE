@@ -1,0 +1,43 @@
+数学运算
+
+加法：返回expr1和expr2的值之和
+         命令语法：JIA expr1 expr2
+                         + expr1 expr2
+
+减法：返回expr1和expr2的值之差
+         命令语法：FU expr1 expr2
+                         -expr1 expr2
+
+乘法：返回expr1和expr2的值的乘积
+         命令语法：CHENG expr1 expr2
+                         * expr1 expr2
+
+商：返回expr1和expr2的值的商
+         命令语法：CHU expr1 expr2
+                         / expr1 expr2
+
+余数：将expr1的值除以expr2会返回余数
+         命令语法：YUSHU expr1 expr2
+                         ％expr1 expr2
+
+负数：返回expr的负数
+         命令语法：FU expr
+                         〜expr
+
+随机数生成：返回严格小于max的随机非负数
+         命令语法：最大SUIJI
+
+三角函数：根据输入度计算三角计算
+         命令语法：ZHENGXIAN度->返回度的正弦
+                         YUXIAN度->返回余弦度
+                         ZHENGQIE度->返回度正切
+                         NIZHENGQIE度->返回度的反正切
+
+自然对数：返回expr的自然对数
+         命令语法：ZIRANDUISHU expr
+
+指数：返回以指数为底的幂
+         命令语法：MI基本指数
+
+PI：报告编号Pi
+    命令语法：PI
