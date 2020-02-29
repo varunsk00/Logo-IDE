@@ -18,6 +18,7 @@ public class InputArea extends TextArea {
         super();
         this.width = width;
         this.height = height;
+        setPrefSize(width, height);
         // font can only be set inline
         setStyle("-fx-font-family: \"Consolas\";");
     }
