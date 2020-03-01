@@ -9,7 +9,7 @@ import slogo.terminal.utils.textLines.TestLine;
  */
 public class OutputPanel extends ListView<String> {
     private final static String CSS_FILEPATH = "slogo/resources/styleSheets/output_panel.css";
-    private final static double DISPLAY_MARGIN = 5;
+    private final static double DISPLAY_MARGIN = 15;
 
     /**
      * Constructor
