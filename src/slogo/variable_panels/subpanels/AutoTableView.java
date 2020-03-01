@@ -11,6 +11,7 @@ import java.util.*;
 
 public class AutoTableView extends TableView {
     private final static String LOCAL_RESOURCE_PATH = "slogo.variable_panels.local_resources.";
+    private final static String CSS_FILEPATH = "slogo/resources/styleSheets/table_list_view.css";
     private final static double COLUMN_WIDTH = 200;
 
     private final static String COMMAND_PATH = "command_col_titles";
@@ -46,6 +47,8 @@ public class AutoTableView extends TableView {
         }
         data = FXCollections.observableArrayList();
         setItems(data);
+        getStylesheets().add(CSS_FILEPATH);
+        setStyle("-fx-font-family: \"Consolas\";");
     }
 
     public void addEntry(String key, String value){

@@ -12,6 +12,7 @@ import java.util.*;
 
 public class VariablesTabPaneView extends TabPane {
     private final static String LOCAL_RESOURCE_TAB_NAMES = String.format("slogo.variable_panels.local_resources.tab_titles", TestLine.class.getPackageName());
+    private final static String CSS_FILEPATH = "slogo/resources/styleSheets/variable_table.css";
 
     private double width;
     private double height;
@@ -41,6 +42,8 @@ public class VariablesTabPaneView extends TabPane {
             initializeTab(tab.getValue(), newTable);
             tableDict.put(tab.getKey(), newTable);
         }
+        getStylesheets().add(CSS_FILEPATH);
+        setStyle("-fx-font-family: \"Consolas\";");
     }
 
     private void initializeTab(String tabTitle, Node tabContent){
