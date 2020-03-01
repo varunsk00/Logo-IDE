@@ -105,8 +105,8 @@ public class AutoTableView extends TableView {
     }
 
     private void factoryType(){
-        System.out.println(type);
-        System.out.println(COMMAND_TYPE);
+        //System.out.println(type);
+        //System.out.println(COMMAND_TYPE);
         switch (type){
             case COMMAND_TYPE:
                 currentResourcePath = String.format("%s%s", LOCAL_RESOURCE_PATH, COMMAND_PATH);

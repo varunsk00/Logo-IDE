@@ -3,8 +3,6 @@ package slogo.variable_panels;
 import slogo.compiler.Compiler;
 import slogo.terminal.TerminalController;
 
-import java.sql.Struct;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;

@@ -5,7 +5,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import slogo.terminal.utils.textLines.TestLine;
 import slogo.variable_panels.subpanels.AutoTableView;
-import slogo.variable_panels.util_classes.TableEntry;
 
 import java.util.*;
 
