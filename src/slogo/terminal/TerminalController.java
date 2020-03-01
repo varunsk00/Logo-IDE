@@ -77,7 +77,7 @@ public class TerminalController {
         // Control+C: copy the selected text
         KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
         // Control+V: paste the selected text
-        KeyCombination CtrlP = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
+        KeyCombination CtrlV = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
 
         terminalView.getInputArea().setOnKeyPressed(keyEvent -> {
 
@@ -113,11 +113,23 @@ public class TerminalController {
                     clipboard.setContent(clipboardContent);
                 }
             }
-            else if (CtrlP.match(keyEvent)) {
-                displayTextTerminalInput(clipboard.getString());
+            */
+            else if (CtrlV.match(keyEvent)) {
+                //displayTextTerminalInput(clipboard.getString());
+                terminalView.getInputPanel().setPositionCaretAtEnding();
             }
-             */
+
+            Node nodeHorizontal = terminalView.getInputPanel().lookup(".scroll-bar:horizontal");
+            if (nodeHorizontal instanceof ScrollBar){
+                //System.out.println("scrollbar found");
+                final ScrollBar bar = (ScrollBar) nodeHorizontal;
+                bar.setValue(bar.getMax());
+                //bar.setVisible(false);
+                //bar.setVisible(false);
+            }
         });
+
+        //terminalView.getInputArea().scro
     }
 
     private void displayTextTerminalInput(String str){terminalView.setCurrentInput(str);}

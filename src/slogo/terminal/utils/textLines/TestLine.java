@@ -26,7 +26,8 @@ public class TestLine extends ListCell<String> {
     private final static String OTHER_COMMAND_CODE = "OTHER_COMMAND";
 
 
-    private final static String SEPARATOR = " ";
+    private final static String SEPARATOR = "\\s+";
+    private final static String SPACER = " ";
     private final static String LOCAL_RESOURCE_MATCH_DICT = String.format("%s.regex_type", TestLine.class.getPackageName());
     private final static String RESERVE_WORD_DICT_PATH = "slogo/resources/languages/syntax/";
     private final static String regexDigits = "-?[0-9]+(?:\\.[0-9]+)?";
@@ -141,7 +142,7 @@ public class TestLine extends ListCell<String> {
         return input.substring(INPUT_PROMPT.length()+USER_CODE.length());
     }
 
-    private Text createSpacer(){return new Text(SEPARATOR);}
+    private Text createSpacer(){return new Text(SPACER);}
 
     private boolean checkEmpty(String str){
         return str==null || str.equals(""); //||str.matches("\\s*"); //!isEmpty();

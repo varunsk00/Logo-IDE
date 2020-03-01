@@ -25,6 +25,7 @@ public class InputArea extends TextArea {
         //ScrollBar scrollBarv = (ScrollBar)lookup(".scroll-bar:vertical");
         //scrollBarv.setDisable(true);
         setStyle("-fx-font-family: \"Consolas\";");
+        //scrollTo(getItems().size());
     }
 
     /**
@@ -32,7 +33,7 @@ public class InputArea extends TextArea {
      * @return text string
      */
     public String getInputText() {
-        return getText().replace("\n", "");
+        return getText().replace("\n", " ");
     }
 
     /**
