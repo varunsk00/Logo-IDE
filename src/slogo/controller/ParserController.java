@@ -322,6 +322,7 @@ public class ParserController extends Application{
         setHeader();
         comp.setLanguage(currentLang);
         term_controller.changeLanguage(currentLang);
+        tabPaneController.changeLanguage(currentLang);
     }
 
     private void launchHelpWindow(String prompt, String language) throws IOException {

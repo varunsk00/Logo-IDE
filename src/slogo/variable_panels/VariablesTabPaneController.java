@@ -30,6 +30,10 @@ public class VariablesTabPaneController {
         updateCommand();
     }
 
+    public void changeLanguage(String language){
+        variablesTabPaneView.changeLanguageTo(language);
+    }
+
     private void updateVariableTable(){
         Set<String> varList = (Set<String>) compiler.getAllVariableNames();
         for (String var:varList){
