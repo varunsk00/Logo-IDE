@@ -3,9 +3,13 @@ package slogo.variable_panels.subpanels;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
+import slogo.variable_panels.util_classes.EditingCell;
 import slogo.variable_panels.util_classes.TableEntry;
 
 import java.util.*;
@@ -22,6 +26,8 @@ public class AutoTableView extends TableView {
     private final static String COMMAND_TYPE = "COMMAND";
     private final static String DEFINED_TYPE = "DEFINED";
     private final static String VAR_TYPE = "VAR";
+
+    private final static String KEY_MATCH_TERM = "key";
 
     private final static int colNum = 2;
 
@@ -48,11 +54,11 @@ public class AutoTableView extends TableView {
     }
 
     private void initializeTable(){
-        setEditable(false);
+        setEditable(true);
         List<Map.Entry<String, String>> colDict = loadDict();
 
         for (Map.Entry<String, String> col: colDict){
-            initializeCol(col.getValue(), col.getKey(), col.getKey());
+            initializeCol(col.getValue(), col.getKey(), col.getKey().equals(KEY_MATCH_TERM));
         }
         data = FXCollections.observableArrayList();
         setItems(data);
@@ -72,17 +78,36 @@ public class AutoTableView extends TableView {
         }
     }
 
-    public void addEntry(String key, String value){
-        if (!hasEntryKey(key)) {
+    public void addEntry(String key, String value, boolean isKey){ // variable false (key being edited)
+        if (isKey && !hasEntryKey(key) ) {
             data.add(new TableEntry(key, value));
         }
-        else{
-            for (TableEntry entry:data){
+        else if (isKey && hasEntryKey(key)){
+            Iterator<TableEntry> iterator = data.iterator();
+            while(iterator.hasNext()){
+                TableEntry entry = iterator.next();
                 if (key.equals(entry.getKey())){
-                    entry.setValue(value);
+                    iterator.remove();
                 }
             }
+            data.add(new TableEntry(key, value));
         }
+
+        if (!isKey && !hasEntryValue(value) ) {
+            data.add(new TableEntry(key, value));
+        }
+        else if (!isKey && hasEntryValue(value)){
+            System.out.println(key+" "+value);
+            Iterator<TableEntry> iterator = data.iterator();
+            while(iterator.hasNext()){
+                TableEntry entry = iterator.next();
+                if (value.equals(entry.getValue())){
+                    iterator.remove();
+                }
+            }
+            data.add(new TableEntry(key, value));
+        }
+
     }
 
     private String searchMapList(String key, List<Map.Entry<String, String>> dict){
@@ -101,10 +126,24 @@ public class AutoTableView extends TableView {
         return false;
     }
 
-    private void initializeCol(String colTitle, String colId, String cellFactory){
+    private boolean hasEntryValue(String val){
+        for (TableEntry entry:data){
+            if (val.equals(entry.getValue())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void initializeCol(String colTitle, String colId, boolean editable){
         TableColumn col  = new TableColumn(colTitle);
+        //col.setEditable(true);
         setColSize(col, getColWidth());
-        col.setCellValueFactory(new PropertyValueFactory<TableEntry, String>(cellFactory));
+        col.setCellValueFactory(new PropertyValueFactory<TableEntry, String>(colId));
+        if (editable) {
+            //col.setCellFactory(p -> new EditingCell());
+            col.setCellFactory(TextFieldTableCell.forTableColumn());
+        }
         col.setId(colId);
         getColumns().add(col);
     }

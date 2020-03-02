@@ -17,8 +17,10 @@ public class TestLine extends ListCell<String> {
     private final static String OTHER_TYPE_CODE = "OTHER_TYPE";
     private final static String ERROR_MSG_CODE = "ERROR_MSG";
     private final static String USER_INPUT_CODE = "USER_INPUT";
-    private final static String USER_CODE = "U@@U";
-    private final static String INPUT_PROMPT = ">>>";
+    private final static String TERMINAL_USER_CODE = "U@@U";
+    private final static String NON_TERMINAL_USER_CODE ="U--U";
+    private final static String TERMINAL_INPUT_PROMPT = ">>>";
+    private final static String NON_TERMINAL_INPUT_PROMPT = "<<<";
 
     private final static String RESERVED_COMMAND_CODE = "RESERVED_COMMAND";
     private final static String DIGITS_CODE = "DIGITS";
@@ -94,18 +96,23 @@ public class TestLine extends ListCell<String> {
 
     private Node createUserInputFlow(String textLine){
         //System.out.println(textLine+" this is a user input");
-        textLine = String.format("%s%s",INPUT_PROMPT, textLine);
-        String[] textsStr = stripInputText(textLine).split(SEPARATOR);
+
+        //textLine = addPromptHeader(textLine);
+        //System.out.println(textLine+" this is a user input");
+
         TextFlow flow = new TextFlow();
+        flow.getChildren().addAll(new ColorText(getPrompt(textLine), getTextStrType(getPrompt(textLine))),
+                createSpacer(), createSpacer(), createSpacer());
+        //flow.getChildren().addAll(new ColorText(stripInputText(textLine), OTHER_TYPE_CODE));
+
+        String[] textsStr = stripInputText(textLine).split(SEPARATOR);
 
         //adding initial prompt
-        flow.getChildren().addAll(new ColorText(INPUT_PROMPT, getTextStrType(INPUT_PROMPT)),
-                                  createSpacer(), createSpacer(), createSpacer());
+
 
         boolean commentFlag = isComment(stripInputText(textLine));
 
         for (String textStr: textsStr){
-            //System.out.println(textStr+" "+getTextStrType(textStr));
             ColorText text;
             if (commentFlag){
                 text = new ColorText(textStr, COMMENT_CODE);
@@ -127,25 +134,17 @@ public class TestLine extends ListCell<String> {
 
         flow.getChildren().add(text);
 
-        /*
-        String[] textsStr = textLine.split(SEPARATOR);
-        for (String textStr: textsStr){
-            ColorText text = new ColorText(textStr, OTHER_TYPE_CODE);
-            flow.getChildren().addAll(text, createSpacer());
-        }*/
-
         return flow;
     }
 
     private String stripInputText(String input){
-        //System.out.println(input);
-        return input.substring(INPUT_PROMPT.length()+USER_CODE.length());
+        return input.substring(TERMINAL_USER_CODE.length());
     }
 
     private Text createSpacer(){return new Text(SPACER);}
 
     private boolean checkEmpty(String str){
-        return str==null || str.equals(""); //||str.matches("\\s*"); //!isEmpty();
+        return str==null || str.equals("");
     }
 
     private String getTextStrType(String str){
@@ -159,15 +158,13 @@ public class TestLine extends ListCell<String> {
     }
 
     private boolean isComment(String str) {
-        //System.out.println(str);
-        //System.out.println(match(str, Pattern.compile(regexComment, Pattern.CASE_INSENSITIVE)));
         return match(str, Pattern.compile(regexComment, Pattern.CASE_INSENSITIVE));}
 
     private boolean isReservedWord(String str){
         List<Map.Entry<String, Pattern>> reserveWordDictionary = initializeDictionary(String.format("%s%s",RESERVE_WORD_DICT_PATH, currentLanguage));
 
         for (Map.Entry<String, Pattern> e: reserveWordDictionary){
-            //System.out.println(str+" "+e.getValue());
+
             if (match(str.toLowerCase(), e.getValue()) || match(str.toUpperCase(), e.getValue())) {
                 return true;
             }
@@ -180,7 +177,6 @@ public class TestLine extends ListCell<String> {
         List<Map.Entry<String, Pattern>> dict = new ArrayList<>();
         for (String key: Collections.list(resources.getKeys())){
             String regex = resources.getString(key);
-            //System.out.println(key+","+regex);
             dict.add(new AbstractMap.SimpleEntry<>(key,
                     Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
         }
@@ -194,6 +190,17 @@ public class TestLine extends ListCell<String> {
             }
         }
         return OTHER_TYPE_CODE;
+    }
+
+    private String getPrompt(String textLine){
+        if (isTerminalInput(textLine))
+            return TERMINAL_INPUT_PROMPT;
+        else
+            return NON_TERMINAL_INPUT_PROMPT;
+    }
+
+    private boolean isTerminalInput(String text){
+        return find(text, Pattern.compile(TERMINAL_USER_CODE, Pattern.CASE_INSENSITIVE));
     }
 
     private boolean find (String text, Pattern regex){

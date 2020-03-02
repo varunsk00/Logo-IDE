@@ -3,7 +3,6 @@ package slogo.variable_panels;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import slogo.terminal.utils.textLines.TestLine;
 import slogo.variable_panels.subpanels.AutoTableView;
 
 import java.util.*;
@@ -19,15 +18,15 @@ public class VariablesTabPaneView extends TabPane {
 
     private String currentLanguage;
 
-    private Map<String, AutoTableView> tableDict;
+    private List<Map.Entry<String, AutoTableView>> tableDict;
 
     public VariablesTabPaneView(double width, double height){
         setSize(width, height);
         initializeTabPane();
     }
 
-    public void addEntry(String type, String key, String value){
-        tableDict.get(type).addEntry(key, value);
+    public void addEntry(String type, String key, String value, Boolean isKey){
+        getEntry(tableDict, type).addEntry(key, value, isKey);
     }
 
     public void setSize(double width, double height){
@@ -42,6 +41,10 @@ public class VariablesTabPaneView extends TabPane {
         updateTabs();
     }
 
+    public List<Map.Entry<String, AutoTableView>> getTableDict(){
+        return tableDict;
+    }
+
     private void updateTabs(){
         for (Tab tab: getTabs()){
             if (tab.getContent() instanceof AutoTableView){
@@ -53,12 +56,12 @@ public class VariablesTabPaneView extends TabPane {
 
     private void initializeTabPane(){
         currentLanguage = "English";
-        tableDict = new HashMap<>();
+        tableDict = new ArrayList<>();
         List<Map.Entry<String, String>> tabDict = loadTabNameDict();
         for (Map.Entry<String, String> tab: tabDict){
             AutoTableView newTable = new AutoTableView(getTabWidth(), getTabHeight(), tab.getKey());
             initializeTab(tab.getValue(), tab.getKey(), newTable);
-            tableDict.put(tab.getKey(), newTable);
+            tableDict.add(new AbstractMap.SimpleEntry<>(tab.getKey(), newTable));
         }
         getStylesheets().add(CSS_FILEPATH);
         setStyle("-fx-font-family: \"Consolas\";");
@@ -98,6 +101,15 @@ public class VariablesTabPaneView extends TabPane {
     private String getResourceAddress(){
         System.out.println(String.format("%s%s%s", LOCAL_RESOURCE_PATH, currentLanguage, TAB_NAMES));
         return String.format("%s%s%s", LOCAL_RESOURCE_PATH, currentLanguage, TAB_NAMES);
+    }
+
+    private AutoTableView getEntry(List<Map.Entry<String, AutoTableView>> dict, String key){
+        for (Map.Entry<String, AutoTableView> item: dict){
+            if (item.getKey().equals(key)){
+                return item.getValue();
+            }
+        }
+        return null;
     }
 
     //TODO: what is the size of tabs?

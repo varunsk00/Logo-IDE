@@ -74,6 +74,7 @@ public class HistoryBuffer{
     public void addEntry(String entry, int num){
         updateCurrentSize(num);
         buffer[updateStorageIndex(num)] = stripInputText(entry);
+        resetIndex(); // Credit to Maverick
     }
 
     /**

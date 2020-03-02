@@ -67,6 +67,8 @@ public class TerminalView extends ScrollPane {
         return inputPanel.getText();
     }
 
+    public String formatInput(String str) {return inputPanel.formatText(str);}
+
     /**
      * Sets the current input to a given text string
      * @param str text string
@@ -80,7 +82,7 @@ public class TerminalView extends ScrollPane {
      * @return code string
      */
     public String getUSER_INPUT_CODE(){
-        return inputPanel.getUSER_INPUT_CODE();
+        return inputPanel.getTERMINAL_USER_INPUT_CODE();
     }
 
     /**

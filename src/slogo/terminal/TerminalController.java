@@ -16,7 +16,7 @@ public class TerminalController {
     private TerminalView terminalView;
     private HistoryBuffer history;
     private Compiler compiler;
-    private boolean status;
+    private int status;
 
     private List<String> commands;
     private List<String> messages;
@@ -32,7 +32,7 @@ public class TerminalController {
         commands = new ArrayList<>();
         messages = new ArrayList<>();
         this.history = new HistoryBuffer();
-        status = false;
+        status = 0;
         cnt = 0;
         keyBinding();
     }
@@ -51,27 +51,16 @@ public class TerminalController {
 
     public List<String> getAllMessages(){return messages;}
 
-    public boolean getStatus(){return status;}
+    public int getStatus(){return status;}
 
     private void keyBinding(){
         //set the focus to the scroll bar
         terminalView.getOutputPanel().addEventHandler(MouseEvent.ANY, e-> {
             Node nodeVertical = terminalView.getOutputPanel().lookup(".scroll-bar:vertical");
            if (nodeVertical instanceof ScrollBar){
-               //System.out.println("scrollbar found");
                final ScrollBar bar = (ScrollBar) nodeVertical;
                bar.requestFocus();
-               //bar.setDisable(true);
-               //bar.setVisible(false);
            }
-
-            Node nodeHorizontal = terminalView.getOutputPanel().lookup(".scroll-bar:horizontal");
-            if (nodeHorizontal instanceof ScrollBar){
-                //System.out.println("scrollbar found");
-                final ScrollBar bar = (ScrollBar) nodeHorizontal;
-                //bar.setVisible(false);
-                //bar.setVisible(false);
-            }
         });
 
         // Control+C: copy the selected text
@@ -83,14 +72,12 @@ public class TerminalController {
 
             // Up | PageUp: get previous entry
             if (keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.PAGE_UP) {
-                //System.out.println("page up");
                 terminalView.resetInputPanel();
                 displayTextTerminalInput(getPrevBufferEntry());
                 terminalView.getInputPanel().setPositionCaretAtEnding();
             }
             // Down | PageDown: get next entry
             else if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.PAGE_DOWN) {
-                //System.out.println("page down");
                 terminalView.resetInputPanel();
                 displayTextTerminalInput(getNextBufferEntry());
                 terminalView.getInputPanel().setPositionCaretAtEnding();
@@ -98,11 +85,13 @@ public class TerminalController {
             // Enter : send the input to compiler
             else if (keyEvent.getCode() == KeyCode.ENTER) {
                 terminalView.getInputPanel().setPositionCaretAtEnding();
+
                 appendToOutput(terminalView.getCurrentInput());
-                history.addEntry(terminalView.getCurrentInput(), 1);
-                history.resetIndex(); //Added by Maverick
+                history.addEntry(terminalView.getCurrentInput(), 1); // add method now automatically resets the index
                 appendToOutput(sendCurrentInput());
+
                 terminalView.resetInputPanel();
+
             }
             /*
             else if (CtrlC.match(keyEvent)) {
@@ -115,42 +104,50 @@ public class TerminalController {
             }
             */
             else if (CtrlV.match(keyEvent)) {
-                //displayTextTerminalInput(clipboard.getString());
                 terminalView.getInputPanel().setPositionCaretAtEnding();
             }
 
             Node nodeHorizontal = terminalView.getInputPanel().lookup(".scroll-bar:horizontal");
             if (nodeHorizontal instanceof ScrollBar){
-                //System.out.println("scrollbar found");
                 final ScrollBar bar = (ScrollBar) nodeHorizontal;
                 bar.setValue(bar.getMax());
-                //bar.setVisible(false);
-                //bar.setVisible(false);
             }
         });
-
-        //terminalView.getInputArea().scro
     }
 
     private void displayTextTerminalInput(String str){terminalView.setCurrentInput(str);}
 
     private void appendToOutput(String str){
-        //System.out.println(String.format("Displayed to output panel: %s",str));
         terminalView.displayTextstoOutput(str);
     }
 
     private String sendCurrentInput(){
         String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
+        //System.out.println("### "+userInput);
         String systemMessage = compiler.execute(userInput);
+
+        //update local memory
         commands.add(String.format("%d: %s", cnt++, userInput));
-        //System.out.println(commands.size());
         messages.add(systemMessage);
-        //System.out.println(messages.size());
-        status = !status;
+
+        status ++;
         return systemMessage;
-        //System.out.println(userInput);
-        //System.out.println("Unlinked to the compiler right now");
-        //return null;
+    }
+
+    public void sendInput(String command){
+        appendToOutput(terminalView.formatInput(command));
+        //System.out.println(terminalView.formatInput(command));
+
+        String systemMessage = compiler.execute(command);
+
+        //update local memory
+        commands.add(String.format("%d: %s", cnt++, command));
+        messages.add(systemMessage);
+
+        status ++;
+
+        history.addEntry(command, 1); // add method now automatically resets the index
+        appendToOutput(sendCurrentInput());
     }
 
     private String getPrevBufferEntry(){

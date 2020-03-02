@@ -3,6 +3,12 @@
     src: url("/slogo/resources/font/consola.ttf");
 }
 
+.text-field{
+    -fx-text-fill: white;
+    -fx-highlight-fill: white;
+    -fx-highlight-text-fill: black;
+}
+
 .table-view{
     -fx-background-color: black;
     -fx-border-color: black;
