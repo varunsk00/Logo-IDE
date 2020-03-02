@@ -74,55 +74,69 @@ public class VariablesTabPaneController {
         }
     }
 
-    /*
-    var - variable :change compiler value (auto generate command and send to terminal)
-    defined - auto generate command (put into numbers)
-    history commands - directly execute
-    */
-
     private void tablesEventBinding(List<Map.Entry<String, AutoTableView>> tableDict) {
         for (Map.Entry<String, AutoTableView> entry : tableDict) {
-            if (entry.getKey().equals(VAR_TYPE)){
-                varTableBinding(entry.getValue());
+
+            for (Object item: entry.getValue().getColumns()){
+                TableColumn col;
+                if (item instanceof TableColumn){
+                    col = (TableColumn) item;}
+                else{
+                    System.out.println("Error: unimplemented type of table column");
+                    break;
+                }
+
+                if (col.getId().equals(EDITABLE_MATCH_KEYWORD) && entry.getKey().equals(VAR_TYPE)){
+                    varTableBinding(col);
+                }
+                else if (col.getId().equals(EDITABLE_MATCH_KEYWORD) && entry.getKey().equals(DEFINED_TYPE)){
+                    definedTableBinding(col);
+                }
+                else if (col.getId().equals(EDITABLE_MATCH_KEYWORD) && entry.getKey().equals(COMMAND_TYPE)){
+                    commandTableBinding(col);
+                }
+                else {
+                    System.out.println("Error: unimplemented variable explore panel");
+                }
             }
-            else if (entry.getKey().equals(DEFINED_TYPE)){
-                definedTableBinding(entry.getValue());
-            }
-            else if (entry.getKey().equals(COMMAND_TYPE)){
-                commandTableBinding(entry.getValue());
-            }
-            else {
-                System.out.println("Error: unimplemented variable explore panel");
-            }
+
         }
     }
 
     // var
-    private void varTableBinding(AutoTableView tableDict){
-        for (Object item:tableDict.getColumns()){
-            if (item instanceof TableColumn){
-                TableColumn col = (TableColumn) item;
-                if (col.getId().equals(EDITABLE_MATCH_KEYWORD)){
-                    col.setOnEditCommit(
-                            (EventHandler<TableColumn.CellEditEvent<TableEntry, String>>) cellEditEvent -> {
-                                int cellPos = cellEditEvent.getTablePosition().getRow();
-                                TableEntry edited = cellEditEvent.getTableView().getItems().get(cellPos);
-                                terminal.sendInput(generateSetCommand(edited.getValue(), cellEditEvent.getNewValue()));//not sure if this works
-                                (cellEditEvent.getTableView().getItems().get(cellPos)).setKey(cellEditEvent.getOldValue());
-                            });
-                }
-            }
-            else{
-                System.out.println("Error: unimplemented type of table column");
-            }
-        }
+    private void varTableBinding(TableColumn col){
+
+        col.setOnEditCommit((EventHandler<TableColumn.CellEditEvent<TableEntry, String>>)
+                cellEditEvent -> {
+                    int cellPos = cellEditEvent.getTablePosition().getRow();
+                    TableEntry edited = cellEditEvent.getTableView().getItems().get(cellPos);
+                    terminal.sendInput(generateSetCommand(edited.getValue(), cellEditEvent.getNewValue()));
+                    (cellEditEvent.getTableView().getItems().get(cellPos)).setKey(cellEditEvent.getOldValue());
+        });
     }
 
+
+
     // defined
-    private void definedTableBinding(AutoTableView tableDict){}
+    private void definedTableBinding(TableColumn col){
+        col.setOnEditCommit((EventHandler<TableColumn.CellEditEvent<TableEntry, String>>)
+                cellEditEvent -> {
+                    int cellPos = cellEditEvent.getTablePosition().getRow();
+                    TableEntry edited = cellEditEvent.getTableView().getItems().get(cellPos);
+                    terminal.sendInput(generateDefinedCommand(edited.getValue(), cellEditEvent.getNewValue()));
+                    (cellEditEvent.getTableView().getItems().get(cellPos)).setKey(DEFINED_VALUE_PLACEHOLDER);
+                });
+    }
 
     //history
-    private void commandTableBinding(AutoTableView tableDict){}
+    private void commandTableBinding(TableColumn col){
+        col.setOnEditCommit((EventHandler<TableColumn.CellEditEvent<TableEntry, String>>)
+                cellEditEvent -> {
+                    int cellPos = cellEditEvent.getTablePosition().getRow();
+                    terminal.sendInput(generateHistoryCommand(cellEditEvent.getNewValue()));
+                    (cellEditEvent.getTableView().getItems().get(cellPos)).setKey(cellEditEvent.getOldValue());
+                });
+    }
 
     private String generateSetCommand(String var, String val){
         return String.format("set :%s %s", var, val);

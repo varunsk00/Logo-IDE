@@ -103,7 +103,7 @@ public class HistoryBuffer{
         index += inc;
         if (index >= currentSize) index-= currentSize;
         if (index < 0) index += currentSize;
-        System.out.println(index);
+        //System.out.println(index);
         return index;
     }
 

@@ -2,14 +2,10 @@ package slogo.variable_panels.subpanels;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
-import slogo.variable_panels.util_classes.EditingCell;
 import slogo.variable_panels.util_classes.TableEntry;
 
 import java.util.*;
@@ -78,18 +74,12 @@ public class AutoTableView extends TableView {
         }
     }
 
-    public void addEntry(String key, String value, boolean isKey){ // variable false (key being edited)
+    public void addEntry(String key, String value, boolean isKey){
         if (isKey && !hasEntryKey(key) ) {
             data.add(new TableEntry(key, value));
         }
         else if (isKey && hasEntryKey(key)){
-            Iterator<TableEntry> iterator = data.iterator();
-            while(iterator.hasNext()){
-                TableEntry entry = iterator.next();
-                if (key.equals(entry.getKey())){
-                    iterator.remove();
-                }
-            }
+            data.removeIf(entry -> key.equals(entry.getKey()));
             data.add(new TableEntry(key, value));
         }
 
@@ -97,14 +87,7 @@ public class AutoTableView extends TableView {
             data.add(new TableEntry(key, value));
         }
         else if (!isKey && hasEntryValue(value)){
-            System.out.println(key+" "+value);
-            Iterator<TableEntry> iterator = data.iterator();
-            while(iterator.hasNext()){
-                TableEntry entry = iterator.next();
-                if (value.equals(entry.getValue())){
-                    iterator.remove();
-                }
-            }
+            data.removeIf(entry -> value.equals(entry.getValue()));
             data.add(new TableEntry(key, value));
         }
 
@@ -137,7 +120,6 @@ public class AutoTableView extends TableView {
 
     private void initializeCol(String colTitle, String colId, boolean editable){
         TableColumn col  = new TableColumn(colTitle);
-        //col.setEditable(true);
         setColSize(col, getColWidth());
         col.setCellValueFactory(new PropertyValueFactory<TableEntry, String>(colId));
         if (editable) {
@@ -163,7 +145,6 @@ public class AutoTableView extends TableView {
     }
 
     private List<Map.Entry<String, String>> loadDict(){
-        System.out.println(currentResourcePath);
         ResourceBundle resources = ResourceBundle.getBundle(currentResourcePath);
         List<Map.Entry<String, String>> dict = new ArrayList<>();
         for (String tabType: Collections.list(resources.getKeys())){
@@ -174,8 +155,7 @@ public class AutoTableView extends TableView {
     }
 
     private void factoryType(){
-        //System.out.println(type);
-        //System.out.println(COMMAND_TYPE);
+
         switch (type){
             case COMMAND_TYPE:
                 currentResourcePath = String.format("%s%s%s", LOCAL_RESOURCE_PATH, currentLanguage, COMMAND_PATH);

@@ -123,6 +123,7 @@ public class TerminalController {
 
     private String sendCurrentInput(){
         String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
+        if (userInput.equals("")) return null;
         //System.out.println("### "+userInput);
         String systemMessage = compiler.execute(userInput);
 
@@ -135,8 +136,10 @@ public class TerminalController {
     }
 
     public void sendInput(String command){
+        if (command.equals("")) return;
         appendToOutput(terminalView.formatInput(command));
         //System.out.println(terminalView.formatInput(command));
+        //System.out.println(command);
 
         String systemMessage = compiler.execute(command);
 
@@ -146,8 +149,9 @@ public class TerminalController {
 
         status ++;
 
+        System.out.println(command);
         history.addEntry(command, 1); // add method now automatically resets the index
-        appendToOutput(sendCurrentInput());
+        appendToOutput(systemMessage);
     }
 
     private String getPrevBufferEntry(){
