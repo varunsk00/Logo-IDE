@@ -7,17 +7,13 @@ public class PenUpCommand extends TurtleCommand {
 
   public PenUpCommand(String declaration) {
     super(declaration);
+    desiredArgs = 0;
   }
 
   @Override
   public double executeTurtle() {
     turtle.setPenDown(false);
     return 0;
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return true;
   }
 
   @Override

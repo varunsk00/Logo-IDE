@@ -7,17 +7,13 @@ public class ShowTurtleCommand extends TurtleCommand {
 
   public ShowTurtleCommand(String declaration) {
     super(declaration);
+    desiredArgs = 0;
   }
 
   @Override
   public double executeTurtle() {
     turtle.showTurtle(true);
     return 1;
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return true;
   }
 
   @Override

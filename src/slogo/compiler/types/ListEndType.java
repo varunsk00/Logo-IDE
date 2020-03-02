@@ -6,6 +6,7 @@ public class ListEndType extends TypeCommand {
 
   public ListEndType(String declaration) {
     super(declaration);
+    desiredArgs = 0;
   }
 
   @Override

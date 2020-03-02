@@ -6,6 +6,7 @@ public class AndCommand extends Command {
 
   public AndCommand(String declaration) {
     super(declaration);
+    desiredArgs = 2;
   }
 
   @Override
@@ -15,11 +16,6 @@ public class AndCommand extends Command {
       return 1;
     }
     return 0;
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return args.size() == 2;
   }
 
   @Override

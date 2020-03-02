@@ -7,17 +7,13 @@ public class RandomCommand extends Command {
 
   public RandomCommand(String declaration) {
     super(declaration);
+    desiredArgs = 1;
   }
 
   @Override
   public double execute() {
     Random rand = new Random();
     return rand.nextDouble() * args.get(0).execute();
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return args.size() == 1;
   }
 
   @Override

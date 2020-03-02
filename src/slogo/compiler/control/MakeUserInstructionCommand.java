@@ -11,6 +11,7 @@ public class MakeUserInstructionCommand extends Command {
 
   public MakeUserInstructionCommand(String declaration) {
     super(declaration);
+    desiredArgs = 3;
   }
 
   @Override
@@ -34,7 +35,7 @@ public class MakeUserInstructionCommand extends Command {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == 3 &&
+    return args.size() == desiredArgs &&
         args.get(0) instanceof CommandType &&
         args.get(1) instanceof ListStartType &&
         args.get(2) instanceof ListStartType;

@@ -7,16 +7,12 @@ public class XCoordinateCommand extends TurtleCommand {
 
   public XCoordinateCommand(String declaration) {
     super(declaration);
+    desiredArgs = 0;
   }
 
   @Override
   public double executeTurtle() {
     return turtle.getXLocation();
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return true;
   }
 
   @Override

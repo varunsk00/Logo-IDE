@@ -6,6 +6,7 @@ public class NotCommand extends Command {
 
   public NotCommand(String declaration) {
     super(declaration);
+    desiredArgs = 1;
   }
 
   @Override
@@ -17,10 +18,6 @@ public class NotCommand extends Command {
     return 0;
   }
 
-  @Override
-  public boolean isCompleteSub() {
-    return args.size() == 1;
-  }
 
   @Override
   public Command createCommand(String declaration) {

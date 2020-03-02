@@ -19,5 +19,4 @@ public abstract class TurtleCommand extends Command {
 
   public abstract double executeTurtle();
 
-  //FIXME register might do a bad thing by registering the abstract TurtleCommand class?
 }

@@ -8,6 +8,7 @@ public class ConstantType extends TypeCommand {
 
   public ConstantType(String val) {
     super(val);
+    desiredArgs = 0;
     if (val.equals(Command.INITIALIZATION)) {
       return;
     }

@@ -6,16 +6,12 @@ public class SineCommand extends Command {
 
   public SineCommand(String declaration) {
     super(declaration);
+    desiredArgs = 1;
   }
 
   @Override
   public double execute() {
     return Math.sin(Math.toRadians(args.get(0).execute()));
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return args.size() == 1;
   }
 
   @Override

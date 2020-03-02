@@ -9,6 +9,7 @@ public class VariableType extends TypeCommand {
   public VariableType(String nm) {
     super(nm);
     name = nm;
+    desiredArgs = 0;
   }
 
   @Override

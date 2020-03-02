@@ -43,7 +43,8 @@ public class CommandType extends TypeCommand {
   @Override
   public boolean isCompleteSub() {
     variables = memory.getCommandVariables(name);
-    return beingDefined || (args.size() == variables.size());
+    desiredArgs = variables.size();
+    return beingDefined || (args.size() == desiredArgs);
   }
 
   @Override

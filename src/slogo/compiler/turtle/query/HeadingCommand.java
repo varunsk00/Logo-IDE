@@ -7,16 +7,12 @@ public class HeadingCommand extends TurtleCommand {
 
   public HeadingCommand(String declaration) {
     super(declaration);
+    desiredArgs = 0;
   }
 
   @Override
   public double executeTurtle() {
     return turtle.getHeading();
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return true;
   }
 
   @Override

@@ -7,6 +7,7 @@ public class RightCommand extends TurtleCommand {
 
   public RightCommand(String declaration) {
     super(declaration);
+    desiredArgs = 1;
   }
 
   @Override
@@ -14,11 +15,6 @@ public class RightCommand extends TurtleCommand {
     double val = args.get(0).execute();
     turtle.rotate(val);
     return val;
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return args.size() == 1;
   }
 
   @Override

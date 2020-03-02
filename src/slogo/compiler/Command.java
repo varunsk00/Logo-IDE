@@ -13,6 +13,7 @@ public abstract class Command {
   protected ArrayList<Command> args;
   protected ResourceBundle errorMsgs;
   protected boolean executed = false; //FIXME only used by makeuserinstruction, can't be trusted
+  protected int desiredArgs;
 
   public Command(String declaration) {
     args = new ArrayList<>();
@@ -53,7 +54,9 @@ public abstract class Command {
     errorMsgs = msgs;
   }
 
-  public abstract boolean isCompleteSub();
+  public boolean isCompleteSub(){
+    return args.size()==desiredArgs;
+  }
 
   public abstract Command createCommand(String declaration);
 

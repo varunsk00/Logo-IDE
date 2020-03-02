@@ -8,6 +8,7 @@ public class ForCommand extends LoopCommand {
 
   public ForCommand(String declaration) {
     super(declaration);
+    desiredArgs = 2;
   }
 
   @Override
@@ -22,12 +23,11 @@ public class ForCommand extends LoopCommand {
 
   @Override
   public boolean isCompleteSub() { //FIXME instanceofs everywhere
-    if (!(args.size() == 2 && args.get(0) instanceof ListStartType && args
-        .get(1) instanceof ListStartType)) {
-      return false; //has 2 args, both lists
-    }
-    return args.get(0).getArgs().size() == 5 && args.get(0).getArgs()
-        .get(0) instanceof VariableType; //list has 4 args, 1st is variable
+    return args.size() == 2 &&
+        args.get(0) instanceof ListStartType &&
+        args.get(1) instanceof ListStartType &&
+        args.get(0).getArgs().size() == 5 &&
+        args.get(0).getArgs().get(0) instanceof VariableType; //list has 4 args, 1st is variable
   }
 
   @Override

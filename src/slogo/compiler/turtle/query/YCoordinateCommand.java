@@ -7,16 +7,12 @@ public class YCoordinateCommand extends TurtleCommand {
 
   public YCoordinateCommand(String declaration) {
     super(declaration);
+    desiredArgs = 0;
   }
 
   @Override
   public double executeTurtle() {
     return turtle.getYLocation();
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return true;
   }
 
   @Override

@@ -7,6 +7,7 @@ public class RepeatCommand extends LoopCommand {
 
   public RepeatCommand(String declaration) {
     super(declaration);
+    desiredArgs = 2;
   }
 
   @Override
@@ -17,7 +18,7 @@ public class RepeatCommand extends LoopCommand {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == 2 && args.get(1) instanceof ListStartType; //FIXME instanceof
+    return args.size() == desiredArgs && args.get(1) instanceof ListStartType; //FIXME instanceof
   }
 
   @Override

@@ -7,6 +7,7 @@ public class PenDownCommand extends TurtleCommand {
 
   public PenDownCommand(String declaration) {
     super(declaration);
+    desiredArgs = 1;
   }
 
   @Override
@@ -15,10 +16,6 @@ public class PenDownCommand extends TurtleCommand {
     return 1;
   }
 
-  @Override
-  public boolean isCompleteSub() {
-    return true;
-  }
 
   @Override
   public Command createCommand(String declaration) {

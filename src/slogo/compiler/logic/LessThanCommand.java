@@ -6,6 +6,7 @@ public class LessThanCommand extends Command {
 
   public LessThanCommand(String declaration) {
     super(declaration);
+    desiredArgs = 2;
   }
 
   @Override
@@ -18,12 +19,8 @@ public class LessThanCommand extends Command {
   }
 
   @Override
-  public boolean isCompleteSub() {
-    return args.size() == 2;
-  }
-
-  @Override
   public Command createCommand(String declaration) {
     return new LessThanCommand(declaration);
   }
+
 }
