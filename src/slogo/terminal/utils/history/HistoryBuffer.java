@@ -13,6 +13,7 @@ public class HistoryBuffer{
     private int currentSize;
     private int index;
     private int storage_index;
+    private boolean initialized;
 
     /**
      * Constructor
@@ -26,6 +27,7 @@ public class HistoryBuffer{
      */
     public void initializeBuffer(){
         buffer = new String[BUFFER_LIMIT];
+        initialized = false;
         currentSize = 0;
         storage_index = -1;
         index = 0;
@@ -37,6 +39,10 @@ public class HistoryBuffer{
      * @return command string
      */
     public String getPrevEntry(){
+        if (!initialized){
+            index = currentSize;
+            initialized = true;
+        }
         if (isEmpty()){
            return handleEmptyBuffer();
         }
@@ -49,6 +55,10 @@ public class HistoryBuffer{
      * @return command string
      */
     public String getNextEntry(){
+        if (!initialized){
+            index = currentSize;
+            initialized = true;
+        }
         if (isEmpty()){
             return handleEmptyBuffer();
         }
@@ -64,6 +74,7 @@ public class HistoryBuffer{
     public void addEntry(String entry, int num){
         updateCurrentSize(num);
         buffer[updateStorageIndex(num)] = stripInputText(entry);
+        resetIndex(); // Credit to Maverick
     }
 
     /**
@@ -92,7 +103,7 @@ public class HistoryBuffer{
         index += inc;
         if (index >= currentSize) index-= currentSize;
         if (index < 0) index += currentSize;
-        System.out.println(index);
+        //System.out.println(index);
         return index;
     }
 

@@ -39,3 +39,13 @@ TextFlow{
     -fx-font-size: 16;
     -fx-font-weight: bold;
 }
+
+.list-view .scroll-bar:vertical {
+    -fx-background-color: black;
+    -fx-opacity: 0;
+}
+
+.list-view .scroll-bar:horizontal {
+     -fx-background-color: black;
+     -fx-opacity: 0;
+ }

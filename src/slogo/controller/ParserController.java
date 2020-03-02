@@ -91,7 +91,7 @@ public class ParserController extends Application{
 
     private TerminalView term;
     private TerminalController term_controller;
-    private boolean status;
+    private int status;
 
     private VariablesTabPaneView tabPaneView;
     private VariablesTabPaneController tabPaneController;
@@ -175,7 +175,7 @@ public class ParserController extends Application{
         term = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
         term_controller = new TerminalController(term);
         term_controller.setExternals(comp);
-        status = false;
+        status = -1;
         root.setLeft(term);
     }
 
@@ -241,6 +241,8 @@ public class ParserController extends Application{
     }
 
     private void updateTabPanes() {
+        //System.out.println(status);
+        //System.out.println(term_controller.getStatus());
         if (status != term_controller.getStatus()) {
             status = term_controller.getStatus();
             tabPaneController.updateAllTables();
@@ -322,6 +324,7 @@ public class ParserController extends Application{
         setHeader();
         comp.setLanguage(currentLang);
         term_controller.changeLanguage(currentLang);
+        tabPaneController.changeLanguage(currentLang);
     }
 
     private void launchHelpWindow(String prompt, String language) throws IOException {

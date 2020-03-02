@@ -10,7 +10,8 @@ import javafx.scene.layout.Priority;
  * InputPanel assembles InputArea and the PromptArea to build the input panel at the bottom of the terminal
  */
 public class InputPanel extends HBox {
-    private final String USER_INPUT_CODE = "U@@U";
+    private final String TERMINAL_USER_INPUT_CODE = "U@@U";
+    private final String NON_TERMINAL_USER_INPUT_CODE = "U--U";
     private final String CSS_FILEPATH = "slogo/resources/styleSheets/input_panel.css";
     private int width;
     private int height;
@@ -80,8 +81,10 @@ public class InputPanel extends HBox {
      * @return text string
      */
     public String getText(){
-        return String.format("%s%s", USER_INPUT_CODE, inputArea.getInputText());
+        return String.format("%s%s", TERMINAL_USER_INPUT_CODE, inputArea.getInputText());
     }
+
+    public String formatText(String str) {return String.format("%s%s", NON_TERMINAL_USER_INPUT_CODE, str);}
 
     /**
      * [unimplemented]
@@ -96,7 +99,7 @@ public class InputPanel extends HBox {
      * Returns the user input code
      * @return string
      */
-    public String getUSER_INPUT_CODE(){ return USER_INPUT_CODE; }
+    public String getTERMINAL_USER_INPUT_CODE(){ return TERMINAL_USER_INPUT_CODE; }
 
     private void initializeInputPanel(){
         promptArea = new PromptArea(height);

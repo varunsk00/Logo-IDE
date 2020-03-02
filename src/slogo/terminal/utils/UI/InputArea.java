@@ -1,5 +1,6 @@
 package slogo.terminal.utils.UI;
 
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 
 /**
@@ -18,8 +19,13 @@ public class InputArea extends TextArea {
         super();
         this.width = width;
         this.height = height;
+        setPrefSize(width, height);
         // font can only be set inline
+        setWrapText(true);
+        //ScrollBar scrollBarv = (ScrollBar)lookup(".scroll-bar:vertical");
+        //scrollBarv.setDisable(true);
         setStyle("-fx-font-family: \"Consolas\";");
+        //scrollTo(getItems().size());
     }
 
     /**
@@ -27,7 +33,7 @@ public class InputArea extends TextArea {
      * @return text string
      */
     public String getInputText() {
-        return getText().replace("\n", "");
+        return getText().replace("\n", " ");
     }
 
     /**

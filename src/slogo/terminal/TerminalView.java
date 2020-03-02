@@ -17,7 +17,7 @@ import java.nio.file.Paths;
  */
 public class TerminalView extends ScrollPane {
     final static int INPUT_PANEL_HEIGHT = 40; //TODO: Empirical adjustment, needs calculation of the font size
-    final static int HEADER_HEIGHT = 45;
+    final static int HEADER_HEIGHT = 8;
     final static String BANNER_FILEPATH = "src/slogo/resources/banners/";
     final static String WELCOME_BANNER = "welcome_small.txt";
 
@@ -67,6 +67,8 @@ public class TerminalView extends ScrollPane {
         return inputPanel.getText();
     }
 
+    public String formatInput(String str) {return inputPanel.formatText(str);}
+
     /**
      * Sets the current input to a given text string
      * @param str text string
@@ -80,7 +82,7 @@ public class TerminalView extends ScrollPane {
      * @return code string
      */
     public String getUSER_INPUT_CODE(){
-        return inputPanel.getUSER_INPUT_CODE();
+        return inputPanel.getTERMINAL_USER_INPUT_CODE();
     }
 
     /**

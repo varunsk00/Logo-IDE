@@ -9,6 +9,7 @@ import slogo.terminal.utils.textLines.TestLine;
  */
 public class OutputPanel extends ListView<String> {
     private final static String CSS_FILEPATH = "slogo/resources/styleSheets/output_panel.css";
+    private final static double DISPLAY_MARGIN = 15;
 
     /**
      * Constructor
@@ -28,7 +29,7 @@ public class OutputPanel extends ListView<String> {
 
         getStylesheets().add(CSS_FILEPATH);
 
-        setCellFactory(listView -> new TestLine(width));
+        setCellFactory(listView -> new TestLine(width-DISPLAY_MARGIN));
     }
 
     /**
