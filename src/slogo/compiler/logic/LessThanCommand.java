@@ -1,6 +1,6 @@
 package slogo.compiler.logic;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 
 public class LessThanCommand extends Command {
 

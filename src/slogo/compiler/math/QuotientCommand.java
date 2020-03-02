@@ -1,6 +1,6 @@
 package slogo.compiler.math;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 import slogo.compiler.exceptions.InvalidArithmeticException;
 
 public class QuotientCommand extends Command {

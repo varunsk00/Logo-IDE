@@ -1,4 +1,4 @@
-package slogo.compiler;
+package slogo.compiler.parser;
 
 import java.util.HashMap;
 import java.util.Map;

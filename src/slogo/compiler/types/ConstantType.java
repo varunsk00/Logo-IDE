@@ -1,6 +1,6 @@
 package slogo.compiler.types;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 
 public class ConstantType extends TypeCommand {
 

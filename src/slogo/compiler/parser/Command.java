@@ -1,9 +1,10 @@
-package slogo.compiler;
+package slogo.compiler.parser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import slogo.compiler.control.MakeUserInstructionCommand;
+import slogo.compiler.parser.memory.Memory;
 
 public abstract class Command {
 

@@ -1,4 +1,4 @@
-package slogo.compiler;
+package slogo.compiler.parser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +20,7 @@ import slogo.compiler.control.MakeUserInstructionCommand;
 import slogo.compiler.exceptions.CompilerException;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.StackOverflowException;
+import slogo.compiler.parser.memory.Memory;
 import slogo.compiler.types.CommandType;
 import slogo.turtle.Turtle;
 

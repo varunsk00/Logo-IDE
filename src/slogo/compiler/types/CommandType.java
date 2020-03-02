@@ -1,7 +1,7 @@
 package slogo.compiler.types;
 
 import java.util.List;
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 
 public class CommandType extends TypeCommand {

@@ -1,6 +1,6 @@
 package slogo.compiler.turtle.query;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 import slogo.compiler.turtle.TurtleCommand;
 
 public class HeadingCommand extends TurtleCommand {

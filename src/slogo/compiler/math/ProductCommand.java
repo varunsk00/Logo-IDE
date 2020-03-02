@@ -1,6 +1,6 @@
 package slogo.compiler.math;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 
 public class ProductCommand extends Command {
 
