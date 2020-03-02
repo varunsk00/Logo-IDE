@@ -27,6 +27,22 @@
     -fx-border-width: 0px;
 }
 
+.table-row-cell:selected{
+    -fx-text-fill: white;
+    -fx-background-color: black;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+    -fx-border-width: 0px;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: black;
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+    -fx-border-width: 0px;
+}
+
 .table-cell:selected{
     -fx-text-fill: white;
     -fx-background-color: black;
