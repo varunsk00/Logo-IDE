@@ -81,11 +81,11 @@ public class Memory {
     return commMemory.getUserCommandMapCopy();
   }
 
-  public void addTurtle(String id, Turtle t) {
+  public void addTurtle(int id, Turtle t) {
     turtleMemory.addTurtle(id, t);
   }
 
-  public Turtle getTurtleByID(String id) {
+  public Turtle getTurtleByID(int id) {
     return turtleMemory.getTurtleByID(id);
   }
 
@@ -94,11 +94,11 @@ public class Memory {
   }
 
 
-  public Collection<String> getAllTurtleIDs() {
+  public Collection<Integer> getAllTurtleIDs() {
     return turtleMemory.getAllTurtleIDs();
   }
 
-  public Map<String, Turtle> getTurtleMapCopy() {
+  public Map<Integer, Turtle> getTurtleMapCopy() {
     return turtleMemory.getTurtleMapCopy();
   }
 }

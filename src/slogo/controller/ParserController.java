@@ -192,7 +192,6 @@ public class ParserController extends Application{
 
     private void startCompiler(){
         comp = new Compiler();
-        comp.addTurtle("Turtle 1", myTurtle1);
     }
 
     //FIXME: BIG NO NO!! REMOVE PRINTSTACKTRACE IMMEDIATELY

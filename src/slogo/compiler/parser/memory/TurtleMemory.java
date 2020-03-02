@@ -13,9 +13,9 @@ import slogo.turtle.Turtle;
 public class TurtleMemory {
 
   private ResourceBundle errorMsgs;
-  private Map<String, Turtle> turtleMap = new HashMap<>();
+  private Map<Integer, Turtle> turtleMap = new HashMap<>();
   private ArrayDeque<List<Integer>> turtleIDStack = new ArrayDeque<>();
-  private String currentTurtleID;
+  private int currentTurtleID;
 
   public TurtleMemory() {
     List<Integer> startIDs = new ArrayList<>();
@@ -27,12 +27,12 @@ public class TurtleMemory {
     errorMsgs = msgs;
   }
 
-  public void addTurtle(String id, Turtle t) {
+  public void addTurtle(int id, Turtle t) {
     turtleMap.put(id, t);
     currentTurtleID = id;
   }
 
-  public Turtle getTurtleByID(String id) {
+  public Turtle getTurtleByID(int id) {
     Turtle ret = turtleMap.getOrDefault(id, null);
     if (ret == null) {
       throw new InvalidTurtleException(String.format(errorMsgs.getString("UnknownTurtle"), id));
@@ -45,12 +45,12 @@ public class TurtleMemory {
   }
 
 
-  public Collection<String> getAllTurtleIDs() {
+  public Collection<Integer> getAllTurtleIDs() {
     return turtleMap.keySet();
   }
 
   //FIXME does this do a copy? should it?
-  public Map<String, Turtle> getTurtleMapCopy() {
+  public Map<Integer, Turtle> getTurtleMapCopy() {
     return new HashMap<>(turtleMap);
   }
 
