@@ -20,10 +20,17 @@ public class Memory {
     turtleMemory = new TurtleMemory();
   }
 
+  public Memory(Memory other) {
+    this();
+    commMemory = other.commMemory;
+    varMemory = other.varMemory;
+  }
+
   public void setErrorMsgs(ResourceBundle msgs) {
     errorMsgs = msgs;
     varMemory.setErrorMsgs(errorMsgs);
     commMemory.setErrorMsgs(errorMsgs);
+    turtleMemory.setErrorMsgs(errorMsgs);
   }
 
   public double getVariable(String name) {

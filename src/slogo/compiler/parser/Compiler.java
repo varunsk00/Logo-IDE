@@ -44,8 +44,12 @@ public class Compiler {
     setLanguage(DEFAULT_LANGUAGE);
     addPatterns(SYNTAX_FILE, myTypes);
     //FIXME add resource file validator
-    //FIXME add error msg strings
     initAllCommands();
+  }
+
+  public Compiler (Compiler other) {
+    this();
+    memory = new Memory(other.memory);
   }
 
   private void initAllCommands() { //uses the reflections library
