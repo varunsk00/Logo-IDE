@@ -1,10 +1,17 @@
 package slogo.turtle;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
+import javafx.scene.control.*;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +25,7 @@ public class TurtleHabitat {
 
     private double lastx;
     private double lasty;
+    private Button viewTurtle;
 
     public TurtleHabitat(double width, double height){
         turtle = initializeTurtleView(width, height);
@@ -26,6 +34,19 @@ public class TurtleHabitat {
         changeSize(width, height);
         lastx = turtle.getX() + turtle.getWidth()/2;
         lasty = turtle.getY() + turtle.getHeight()/2;
+
+        viewTurtle = createViewButton();
+        myTurtleHabitat.getChildren().add(viewTurtle);
+    }
+
+    private Button createViewButton (){
+        Button button = new Button("viewTurtle");
+        Stage s = new Stage();
+        TilePane root = new TilePane();
+        Scene sc = new Scene(root, 400, 400);
+        s.setScene(sc);
+        button.setOnAction(event -> s.show());
+        return button;
     }
 
     private TurtleView initializeTurtleView(double habitatWidth, double habitatHeight){
