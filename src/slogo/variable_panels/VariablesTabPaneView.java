@@ -29,6 +29,10 @@ public class VariablesTabPaneView extends TabPane {
         getEntry(tableDict, type).addEntry(key, value, isKey);
     }
 
+    public void clearAll(String type){
+        getEntry(tableDict, type).clearAll();
+    }
+
     public void setSize(double width, double height){
         this.width = width;
         this.height = height;

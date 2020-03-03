@@ -93,6 +93,10 @@ public class AutoTableView extends TableView {
 
     }
 
+    public void clearAll(){
+        data.clear();
+    }
+
     private String searchMapList(String key, List<Map.Entry<String, String>> dict){
         for(Map.Entry<String, String> entry: dict){
             if (key.equals(entry.getKey())) return entry.getValue();

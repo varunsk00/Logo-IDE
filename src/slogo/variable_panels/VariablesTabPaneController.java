@@ -1,7 +1,6 @@
 package slogo.variable_panels;
 
 import javafx.event.EventHandler;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import slogo.compiler.Compiler;
 import slogo.terminal.TerminalController;
@@ -68,7 +67,7 @@ public class VariablesTabPaneController {
         List<String> messageList = terminal.getAllMessages();
         Iterator<String> messageIterator = messageList.iterator();
 
-
+        variablesTabPaneView.clearAll(COMMAND_TYPE);
         while (commandIterator.hasNext() && messageIterator.hasNext()) {
             variablesTabPaneView.addEntry(COMMAND_TYPE, commandIterator.next(), messageIterator.next(), true);
         }

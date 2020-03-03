@@ -47,7 +47,7 @@ public class TerminalController {
 
     public void setExternals(Compiler c) {this.compiler = c;}
 
-    public List<String> getAllCommands(){System.out.println("???");return commands;}
+    public List<String> getAllCommands(){return commands;}
 
     public List<String> getAllMessages(){return messages;}
 
@@ -67,6 +67,8 @@ public class TerminalController {
         KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
         // Control+V: paste the selected text
         KeyCombination CtrlV = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
+        // Control+Z: undo
+        KeyCombination CtrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
 
         terminalView.getInputArea().setOnKeyPressed(keyEvent -> {
 
@@ -106,6 +108,10 @@ public class TerminalController {
             else if (CtrlV.match(keyEvent)) {
                 terminalView.getInputPanel().setPositionCaretAtEnding();
             }
+            else if (CtrlZ.match(keyEvent)){
+                terminalView.getOutputPanel().undoEntry();
+                clearLocalHistoryEntry();
+            }
 
             Node nodeHorizontal = terminalView.getInputPanel().lookup(".scroll-bar:horizontal");
             if (nodeHorizontal instanceof ScrollBar){
@@ -117,6 +123,12 @@ public class TerminalController {
 
     private void displayTextTerminalInput(String str){terminalView.setCurrentInput(str);}
 
+    private void clearLocalHistoryEntry(){
+        if (!messages.isEmpty()) messages.remove(messages.size()-1);
+        if (!commands.isEmpty()) commands.remove(commands.size()-1);
+        status++; //to trigger the update of variable explore
+    }
+
     private void appendToOutput(String str){
         terminalView.displayTextstoOutput(str);
     }
@@ -124,7 +136,7 @@ public class TerminalController {
     private String sendCurrentInput(){
         String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
         if (userInput.equals("")) return null;
-        //System.out.println("### "+userInput);
+
         String systemMessage = compiler.execute(userInput);
 
         //update local memory
@@ -138,8 +150,6 @@ public class TerminalController {
     public void sendInput(String command){
         if (command.equals("")) return;
         appendToOutput(terminalView.formatInput(command));
-        //System.out.println(terminalView.formatInput(command));
-        //System.out.println(command);
 
         String systemMessage = compiler.execute(command);
 
@@ -149,7 +159,7 @@ public class TerminalController {
 
         status ++;
 
-        System.out.println(command);
+        //System.out.println(command);
         history.addEntry(command, 1); // add method now automatically resets the index
         appendToOutput(systemMessage);
     }

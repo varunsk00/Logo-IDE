@@ -106,7 +106,7 @@ public class TerminalView extends ScrollPane {
      * Gets the output panel
      * @return the OutputPanel object
      */
-    public Node getOutputPanel(){ return outputPanel;}
+    public OutputPanel getOutputPanel(){ return outputPanel;}
 
     private void clearTerminal(){
         inputPanel.clearInput();
