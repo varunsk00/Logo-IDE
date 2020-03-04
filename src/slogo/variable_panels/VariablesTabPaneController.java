@@ -1,7 +1,6 @@
 package slogo.variable_panels;
 
 import javafx.event.EventHandler;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import slogo.compiler.Compiler;
 import slogo.terminal.TerminalController;
@@ -15,13 +14,15 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * the Controller object that manages the tap pane (includes variable explore, history commands, and user-defined methods)
+ */
 public class VariablesTabPaneController {
     private final static String COMMAND_TYPE = "COMMAND";
     private final static String DEFINED_TYPE = "DEFINED";
     private final static String VAR_TYPE = "VAR";
 
     private final static String DEFINED_VALUE_PLACEHOLDER = "";
-
     private final static String COMMAND_DISPLAY_PATTERN = "[0-9]+:\\s?(.*)";
     private final static String EDITABLE_MATCH_KEYWORD = "key";
 
@@ -29,6 +30,12 @@ public class VariablesTabPaneController {
     private Compiler compiler;
     private TerminalController terminal;
 
+    /**
+     * Constructor
+     * @param view the view object
+     * @param c the compiler
+     * @param t the terminal controller
+     */
     public VariablesTabPaneController(VariablesTabPaneView view, Compiler c, TerminalController t){
         this.variablesTabPaneView = view;
         this.compiler = c;
@@ -36,12 +43,19 @@ public class VariablesTabPaneController {
         tablesEventBinding(view.getTableDict());
     }
 
+    /**
+     * Updates all tables in the TabPane
+     */
     public void updateAllTables(){
         updateVariableTable();
         updateDefinedMethod();
         updateCommand();
     }
 
+    /**
+     * Changes language
+     * @param language language
+     */
     public void changeLanguage(String language){
         variablesTabPaneView.changeLanguageTo(language);
     }
@@ -68,7 +82,7 @@ public class VariablesTabPaneController {
         List<String> messageList = terminal.getAllMessages();
         Iterator<String> messageIterator = messageList.iterator();
 
-
+        variablesTabPaneView.clearAll(COMMAND_TYPE);
         while (commandIterator.hasNext() && messageIterator.hasNext()) {
             variablesTabPaneView.addEntry(COMMAND_TYPE, commandIterator.next(), messageIterator.next(), true);
         }
@@ -95,7 +109,7 @@ public class VariablesTabPaneController {
                 else if (col.getId().equals(EDITABLE_MATCH_KEYWORD) && entry.getKey().equals(COMMAND_TYPE)){
                     commandTableBinding(col);
                 }
-                else {
+                else if (col.getId().equals(EDITABLE_MATCH_KEYWORD)){
                     System.out.println("Error: unimplemented variable explore panel");
                 }
             }
@@ -103,7 +117,6 @@ public class VariablesTabPaneController {
         }
     }
 
-    // var
     private void varTableBinding(TableColumn col){
 
         col.setOnEditCommit((EventHandler<TableColumn.CellEditEvent<TableEntry, String>>)
@@ -115,9 +128,6 @@ public class VariablesTabPaneController {
         });
     }
 
-
-
-    // defined
     private void definedTableBinding(TableColumn col){
         col.setOnEditCommit((EventHandler<TableColumn.CellEditEvent<TableEntry, String>>)
                 cellEditEvent -> {
@@ -128,7 +138,6 @@ public class VariablesTabPaneController {
                 });
     }
 
-    //history
     private void commandTableBinding(TableColumn col){
         col.setOnEditCommit((EventHandler<TableColumn.CellEditEvent<TableEntry, String>>)
                 cellEditEvent -> {
