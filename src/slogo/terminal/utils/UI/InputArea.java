@@ -1,14 +1,11 @@
 package slogo.terminal.utils.UI;
 
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 
 /**
  * InputArea generates the textarea that user could put in commands
  */
 public class InputArea extends TextArea {
-    private double height;
-    private double width;
 
     /**
      * Constructor
@@ -17,15 +14,9 @@ public class InputArea extends TextArea {
      */
     public InputArea(double width, double height){
         super();
-        this.width = width;
-        this.height = height;
         setPrefSize(width, height);
-        // font can only be set inline
         setWrapText(true);
-        //ScrollBar scrollBarv = (ScrollBar)lookup(".scroll-bar:vertical");
-        //scrollBarv.setDisable(true);
-        setStyle("-fx-font-family: \"Consolas\";");
-        //scrollTo(getItems().size());
+        setStyle("-fx-font-family: \"Consolas\";");  // font can only be set inline
     }
 
     /**
@@ -50,9 +41,5 @@ public class InputArea extends TextArea {
         setText("");
     }
 
-    private void changeSize(){
-        setPrefHeight(height);
-        setPrefWidth(width);
-    }
 
 }

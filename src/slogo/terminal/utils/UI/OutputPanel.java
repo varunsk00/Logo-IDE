@@ -33,8 +33,10 @@ public class OutputPanel extends ListView<String> {
         setCellFactory(listView -> new TestLine(width-DISPLAY_MARGIN));
     }
 
+    /**
+     * Deletes the last entry (compiler message and user input) from terminal display
+     */
     public void undoEntry(){
-
         int num = UNDO_ENTRY_NUM;
         while(!getItems().isEmpty() && num!=0){
             num--;
@@ -46,7 +48,6 @@ public class OutputPanel extends ListView<String> {
      * @param str text string
      */
     public void addTexts(String str){
-        //System.out.println("added text "+str);
         getItems().add(str);
         scrollTo(getItems().size());
     }

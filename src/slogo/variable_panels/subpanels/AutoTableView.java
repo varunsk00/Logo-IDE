@@ -10,6 +10,10 @@ import slogo.variable_panels.util_classes.TableEntry;
 
 import java.util.*;
 
+/**
+ * Generates the TableView object that automatically generates the content dependent on the table type
+ * (command history, defined methods, variable).
+ */
 public class AutoTableView extends TableView {
     private final static String LOCAL_RESOURCE_PATH = "slogo.variable_panels.local_resources.";
     private final static String CSS_FILEPATH = "slogo/resources/styleSheets/table_list_view.css";
@@ -25,8 +29,6 @@ public class AutoTableView extends TableView {
 
     private final static String KEY_MATCH_TERM = "key";
 
-    private final static int colNum = 2;
-
     private double width;
     private double height;
 
@@ -35,6 +37,12 @@ public class AutoTableView extends TableView {
     private String type;
     private String currentLanguage;
 
+    /**
+     * Constructor
+     * @param width width
+     * @param height height
+     * @param type table type ("COMMAND", "DEFINED", "VAR" from resource file)
+     */
     public AutoTableView(double width, double height, String type) {
         super();
         this.type = type;
@@ -44,25 +52,18 @@ public class AutoTableView extends TableView {
         setSize(width, height);
     }
 
+    /**
+     * Changes to new language
+     * @param newLanguage language string
+     */
     public void changeLanguageTo(String newLanguage){
         currentLanguage = newLanguage;
         updateTable();
     }
 
-    private void initializeTable(){
-        setEditable(true);
-        List<Map.Entry<String, String>> colDict = loadDict();
-
-        for (Map.Entry<String, String> col: colDict){
-            initializeCol(col.getValue(), col.getKey(), col.getKey().equals(KEY_MATCH_TERM));
-        }
-        data = FXCollections.observableArrayList();
-        setItems(data);
-
-        getStylesheets().add(CSS_FILEPATH);
-        setStyle("-fx-font-family: \"Consolas\";");
-    }
-
+    /**
+     * Updates the text strings in table
+     */
     public void updateTable(){
         factoryType();
         List<Map.Entry<String, String>> newDict = loadDict();
@@ -74,6 +75,12 @@ public class AutoTableView extends TableView {
         }
     }
 
+    /**
+     * Adds one entry to the data list
+     * @param key key string
+     * @param value value string
+     * @param isKey whether the key axis is the input area
+     */
     public void addEntry(String key, String value, boolean isKey){
         if (isKey && !hasEntryKey(key) ) {
             data.add(new TableEntry(key, value));
@@ -93,8 +100,25 @@ public class AutoTableView extends TableView {
 
     }
 
+    /**
+     * Clear all entries in the data list
+     */
     public void clearAll(){
         data.clear();
+    }
+
+    private void initializeTable(){
+        setEditable(true);
+        List<Map.Entry<String, String>> colDict = loadDict();
+
+        for (Map.Entry<String, String> col: colDict){
+            initializeCol(col.getValue(), col.getKey(), col.getKey().equals(KEY_MATCH_TERM));
+        }
+        data = FXCollections.observableArrayList();
+        setItems(data);
+
+        getStylesheets().add(CSS_FILEPATH);
+        setStyle("-fx-font-family: \"Consolas\";");
     }
 
     private String searchMapList(String key, List<Map.Entry<String, String>> dict){
@@ -124,7 +148,7 @@ public class AutoTableView extends TableView {
 
     private void initializeCol(String colTitle, String colId, boolean editable){
         TableColumn col  = new TableColumn(colTitle);
-        setColSize(col, getColWidth());
+        setColSize(col);
         col.setCellValueFactory(new PropertyValueFactory<TableEntry, String>(colId));
         if (editable) {
             //col.setCellFactory(p -> new EditingCell());
@@ -134,13 +158,8 @@ public class AutoTableView extends TableView {
         getColumns().add(col);
     }
 
-    private void setColSize(TableColumn col, double width){
-        //col.setMinWidth(width);
+    private void setColSize(TableColumn col){
         col.setPrefWidth(COLUMN_WIDTH);
-    }
-
-    private double getColWidth(){
-        return width/colNum;
     }
 
     private void setSize(double width, double height){

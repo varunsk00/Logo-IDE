@@ -28,7 +28,6 @@ public class TerminalController {
      */
     public TerminalController(TerminalView view){
         this.terminalView = view;
-        Clipboard clipboard = Clipboard.getSystemClipboard();
         commands = new ArrayList<>();
         messages = new ArrayList<>();
         this.history = new HistoryBuffer();
@@ -43,6 +42,26 @@ public class TerminalController {
      */
     public void changeLanguage(String newLanguage){
         TestLine.changeLanguage(newLanguage);
+    }
+
+    /**
+     * Processes the input string that comes outside from the terminal (variable explore)
+     * @param command input command
+     */
+    public void sendInput(String command){
+        if (command.equals("")) return;
+        appendToOutput(terminalView.formatInput(command));
+
+        String systemMessage = compiler.execute(command);
+
+        //update local memory
+        commands.add(String.format("%d: %s", cnt++, command));
+        messages.add(systemMessage);
+
+        status ++; // trigger the update of variable explore
+
+        history.addEntry(command, 1); // add method now automatically resets the index
+        appendToOutput(systemMessage);
     }
 
     public void setExternals(Compiler c) {this.compiler = c;}
@@ -64,7 +83,7 @@ public class TerminalController {
         });
 
         // Control+C: copy the selected text
-        KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
+        //KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
         // Control+V: paste the selected text
         KeyCombination CtrlV = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
         // Control+Z: undo
@@ -145,23 +164,6 @@ public class TerminalController {
 
         status ++;
         return systemMessage;
-    }
-
-    public void sendInput(String command){
-        if (command.equals("")) return;
-        appendToOutput(terminalView.formatInput(command));
-
-        String systemMessage = compiler.execute(command);
-
-        //update local memory
-        commands.add(String.format("%d: %s", cnt++, command));
-        messages.add(systemMessage);
-
-        status ++;
-
-        //System.out.println(command);
-        history.addEntry(command, 1); // add method now automatically resets the index
-        appendToOutput(systemMessage);
     }
 
     private String getPrevBufferEntry(){

@@ -4,8 +4,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
-//TODO ignore input
-
 /**
  * InputPanel assembles InputArea and the PromptArea to build the input panel at the bottom of the terminal
  */
@@ -85,15 +83,6 @@ public class InputPanel extends HBox {
     }
 
     public String formatText(String str) {return String.format("%s%s", NON_TERMINAL_USER_INPUT_CODE, str);}
-
-    /**
-     * [unimplemented]
-     * Returns the selected highlight text
-     * @return text string
-     */
-    public String getSelectedText(){
-        return inputArea.getSelectedText();
-    }
 
     /**
      * Returns the user input code
