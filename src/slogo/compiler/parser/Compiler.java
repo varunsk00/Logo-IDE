@@ -86,19 +86,7 @@ public class Compiler {
   }
 
   public String execute(String input) {
-    String[] lines = input.split(getNewline());
-    StringBuilder noComment = new StringBuilder();
-    for (String line : lines) {
-      try {
-        if (!getSymbol(line, myTypes).equals("Comment")) {
-          noComment.append(line);
-        }
-      } catch (InvalidSyntaxException e) {
-        noComment.append(line); //If it throws an exception, it's not a comment.
-        //Later code will handle the syntax checking
-      }
-    }
-    input = "[ " + noComment.toString() + " ]";
+    input = spliceInput(input);
     try {
       Command comm = parse(input);
       if (!comm.isComplete()) {
@@ -113,6 +101,25 @@ public class Compiler {
       //throw e;
       return e.toString();
     }
+  }
+
+  private String spliceInput(String input) {
+    String[] lines = input.split(getNewline());
+    StringBuilder noComment = new StringBuilder();
+    for (String line : lines) {
+      try {
+        if (!getSymbol(line, myTypes).equals("Comment")) {
+          noComment.append(line);
+        }
+      } catch (InvalidSyntaxException e) {
+        noComment.append(line); //If it throws an exception, it's not a comment.
+        //Later code will handle the syntax checking
+      }
+    }
+    String ret = noComment.toString();
+    ret = ret.replaceAll("\\[", " [ ");
+    ret = ret.replaceAll("]", " ] ");
+    return "[ " + ret + " ]";
   }
 
   private Command rerunParsing(Command comm, String input) {
