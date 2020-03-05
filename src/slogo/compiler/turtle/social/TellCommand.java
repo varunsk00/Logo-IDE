@@ -1,9 +1,6 @@
 package slogo.compiler.turtle.social;
 
-import java.util.ArrayList;
 import java.util.List;
-import slogo.compiler.parser.Command;
-import slogo.compiler.turtle.query.TurtleQuery;
 import slogo.compiler.types.ListStartType;
 
 public class TellCommand extends TurtleCreationCommand {
@@ -20,7 +17,7 @@ public class TellCommand extends TurtleCreationCommand {
     if (actives.isEmpty()) {
       return 0;
     }
-    return actives.get(actives.size()-1);
+    return actives.get(actives.size() - 1);
   }
 
   @Override

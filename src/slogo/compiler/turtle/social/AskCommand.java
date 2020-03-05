@@ -1,9 +1,6 @@
 package slogo.compiler.turtle.social;
 
-import java.util.ArrayList;
 import java.util.List;
-import slogo.compiler.parser.Command;
-import slogo.compiler.turtle.query.TurtleQuery;
 import slogo.compiler.types.ListStartType;
 
 public class AskCommand extends TurtleCreationCommand {

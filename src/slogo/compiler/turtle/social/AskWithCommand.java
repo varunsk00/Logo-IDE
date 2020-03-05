@@ -13,10 +13,10 @@ public class AskWithCommand extends AskCommand {
   @Override
   protected List<Integer> parseIDs(Command c) {
     ArrayList<Integer> actives = new ArrayList<>();
-    for (int i: memory.getAllTurtleIDs()) {
+    for (int i : memory.getAllTurtleIDs()) {
       memory.setCurrentTurtle(i);
-      int ret = (int)c.execute();
-      if (ret!=0) {
+      int ret = (int) c.execute();
+      if (ret != 0) {
         actives.add(i);
       }
     }
