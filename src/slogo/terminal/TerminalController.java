@@ -3,7 +3,7 @@ package slogo.terminal;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.input.*;
-import slogo.compiler.Compiler;
+import slogo.compiler.parser.Compiler;
 import slogo.terminal.utils.history.HistoryBuffer;
 import slogo.terminal.utils.textLines.TestLine;
 

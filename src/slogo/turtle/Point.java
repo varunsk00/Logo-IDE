@@ -2,6 +2,8 @@ package slogo.turtle;
 
 /**
  * @author Maverick Chung mc608
+ *
+ * Just a simple class to hold a 2-dimensional point. Used for drawing purposes
  */
 public class Point {
 

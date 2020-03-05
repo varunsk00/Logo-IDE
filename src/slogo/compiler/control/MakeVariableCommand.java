@@ -1,12 +1,13 @@
 package slogo.compiler.control;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 import slogo.compiler.types.VariableType;
 
 public class MakeVariableCommand extends Command {
 
   public MakeVariableCommand(String declaration) {
     super(declaration);
+    desiredArgs = 2;
   }
 
   @Override
@@ -19,12 +20,7 @@ public class MakeVariableCommand extends Command {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == 2 && args
+    return args.size() == desiredArgs && args
         .get(0) instanceof VariableType; //FIXME refactor args to remove instanceof?
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new MakeVariableCommand(declaration);
   }
 }

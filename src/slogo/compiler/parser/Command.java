@@ -1,9 +1,11 @@
-package slogo.compiler;
+package slogo.compiler.parser;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import slogo.compiler.control.MakeUserInstructionCommand;
+import slogo.compiler.parser.memory.Memory;
 
 public abstract class Command {
 
@@ -13,6 +15,7 @@ public abstract class Command {
   protected ArrayList<Command> args;
   protected ResourceBundle errorMsgs;
   protected boolean executed = false; //FIXME only used by makeuserinstruction, can't be trusted
+  protected int desiredArgs;
 
   public Command(String declaration) {
     args = new ArrayList<>();
@@ -53,9 +56,20 @@ public abstract class Command {
     errorMsgs = msgs;
   }
 
-  public abstract boolean isCompleteSub();
+  public boolean isCompleteSub() {
+    return args.size() == desiredArgs;
+  }
 
-  public abstract Command createCommand(String declaration);
+  public Command createCommand(String declaration) {
+    try {
+      return this.getClass().getConstructor(String.class).newInstance(declaration);
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+      //do nothing
+      //should never happen
+      System.out.println("error in creating command " + getClass());
+    }
+    return null;
+  }
 
   public boolean isComplete() {
     for (Command c : args) {
@@ -119,7 +133,7 @@ public abstract class Command {
     if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
       ret++;
     }
-    for (Command c: args) {
+    for (Command c : args) {
       ret += c.countDefinitions();
     }
     return ret;

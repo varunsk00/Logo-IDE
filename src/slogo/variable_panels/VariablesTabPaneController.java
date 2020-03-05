@@ -1,8 +1,8 @@
 package slogo.variable_panels;
 
+import slogo.compiler.parser.Compiler;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
-import slogo.compiler.Compiler;
 import slogo.terminal.TerminalController;
 import slogo.variable_panels.subpanels.AutoTableView;
 import slogo.variable_panels.util_classes.TableEntry;

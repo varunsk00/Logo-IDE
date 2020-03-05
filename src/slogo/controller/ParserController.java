@@ -21,7 +21,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import slogo.compiler.Compiler;
+import slogo.compiler.parser.Compiler;
 import slogo.terminal.TerminalController;
 import slogo.terminal.TerminalView;
 import slogo.turtle.Point;

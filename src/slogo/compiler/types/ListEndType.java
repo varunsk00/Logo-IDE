@@ -1,11 +1,10 @@
 package slogo.compiler.types;
 
-import slogo.compiler.Command;
-
 public class ListEndType extends TypeCommand {
 
   public ListEndType(String declaration) {
     super(declaration);
+    desiredArgs = 0;
   }
 
   @Override
@@ -17,10 +16,5 @@ public class ListEndType extends TypeCommand {
   @Override
   public boolean isCompleteSub() {
     return true;
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new ListEndType(declaration);
   }
 }

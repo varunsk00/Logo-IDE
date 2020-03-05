@@ -1,11 +1,12 @@
 package slogo.compiler.logic;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 
 public class AndCommand extends Command {
 
   public AndCommand(String declaration) {
     super(declaration);
+    desiredArgs = 2;
   }
 
   @Override
@@ -15,15 +16,5 @@ public class AndCommand extends Command {
       return 1;
     }
     return 0;
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return args.size() == 2;
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new AndCommand(declaration);
   }
 }
