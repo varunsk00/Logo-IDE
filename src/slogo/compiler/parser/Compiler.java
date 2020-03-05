@@ -289,6 +289,10 @@ public class Compiler {
     return memory.getVariable(name);
   }
 
+  public void setVariable(String name, double val) {
+    memory.setVariable(name, val);
+  }
+
   public List<String> getCommandVariables(String name) {
     return memory.getCommandVariables(name);
   }
