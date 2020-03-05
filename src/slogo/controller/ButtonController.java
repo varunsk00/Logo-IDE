@@ -110,9 +110,9 @@ public class ButtonController {
         myButtons = new HBox();
         Button loadButton = makeButton("LoadButton", event -> loadFilePressed = true);
         Button imageButton = makeButton("ImageButton", event -> turtleImagePressed = true);
+        Button viewAllTurtlesButton = makeButton("ViewTurtle", event -> viewAllTurtles = true);
         Button penButton = makeButton("PenButton", event -> penColorPressed = true);
         Button backgroundButton = makeButton("BackgroundButton", event -> backgroundColorPressed = true);
-        Button viewAllTurtlesButton = makeButton("ViewTurtle", event -> viewAllTurtles = true);
         ComboBox langMenu = makeDropDown("LanguageButton", languages);
 
         ComboBox helpMenu = new ComboBox();
@@ -120,7 +120,7 @@ public class ButtonController {
         helpMenu.getItems().addAll(helpPrompts);
         helpMenu.setOnAction(event -> this.helpPressed = (String) helpMenu.getValue());
 
-        myButtons.getChildren().addAll(loadButton, imageButton, penButton, backgroundButton, helpMenu, langMenu, viewAllTurtlesButton);
+        myButtons.getChildren().addAll(loadButton, imageButton, viewAllTurtlesButton, penButton, backgroundButton, helpMenu, langMenu);
 
         formatButton(loadButton);
         formatButton(imageButton);
