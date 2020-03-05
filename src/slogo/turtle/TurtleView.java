@@ -19,7 +19,6 @@ public class TurtleView extends Rectangle {
         super(width, height);
         this.habHeight = habitatHeight;
         this.habWidth = habitatWidth;
-        System.out.println(habitatHeight);
         this.xOffset = habitatWidth/2 + getWidth();
         this.yOffset = habitatHeight/2 - habitatHeight/8;
         this.img = new Image(image_filepath);
