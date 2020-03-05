@@ -8,7 +8,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -219,10 +221,10 @@ public class ParserController extends Application{
                     myHabitat.penDraw(penColor, loc, turtleId);
                 }
             }
+            updateImageSize(turtleId);
         }
         handleLanguage(buttons.getLanguageStatus());
         updateZoom();
-        updateImageSize();
         if(!buttons.getHelpStatus().equals(myResources.getString("HelpButton"))){
             handleHelp(buttons.getHelpStatus(), GUI_LANGUAGE);
             //launchHelpWindow(buttons.getHelpStatus(), buttons.getLanguageStatus());
@@ -396,7 +398,22 @@ public class ParserController extends Application{
             return;
         }
         buttons.setImageOff();
-        myHabitat.getTurtle().setFill(new ImagePattern(new Image("file:" + dataFile.getPath())));
+        imageChooserPane(dataFile);
+    }
+
+    private void imageChooserPane(File dataFile){
+        Stage s = new Stage();
+        Pane root = new Pane();
+        Scene sc = new Scene(root, 200, 200);
+        ListView<Button> turtleOptions = new ListView<>();
+        for (String turtleID: comp.getAllTurtleIDs()){
+            Button button = new Button(turtleID);
+            button.setOnAction(event -> myHabitat.getTurtle(turtleID).setFill(new ImagePattern(new Image("file:" + dataFile.getPath()))));
+            turtleOptions.getItems().addAll(button);
+        }
+        root.getChildren().addAll(turtleOptions);
+        s.setScene(sc);
+        s.show();
     }
 
     //FIXME: directly call comp.executeFile, and run in the terminal (maybe add method to TerminalView)
@@ -424,8 +441,8 @@ public class ParserController extends Application{
         myHabitat.getTurtleHabitat().setScaleY(sliders.getZoom()/3.0);
     }
 
-    private void updateImageSize(){
-        myHabitat.getTurtle().setScaleX(sliders.getSizeValue()/3.0);
-        myHabitat.getTurtle().setScaleY(sliders.getSizeValue()/3.0);
+    private void updateImageSize(String turtleId){
+        myHabitat.getTurtle(turtleId).setScaleX(sliders.getSizeValue()/3.0);
+        myHabitat.getTurtle(turtleId).setScaleY(sliders.getSizeValue()/3.0);
     }
 }

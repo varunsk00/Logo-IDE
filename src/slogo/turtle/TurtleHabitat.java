@@ -60,14 +60,6 @@ public class TurtleHabitat {
         return button;
     }
 
-    private void displayInformation(String id, Pane p){
-        Rectangle rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
-        rec.setLayoutX(200);
-        rec.setLayoutY(50);
-        rec.setFill(allTurtles.get(id).getFill());
-        p.getChildren().addAll(rec);
-    }
-
     private void viewTurtleInformation(){
         Stage s = new Stage();
         Pane root = new Pane();
@@ -82,6 +74,14 @@ public class TurtleHabitat {
         root.getChildren().addAll(turtleView);
         s.setScene(sc);
         s.show();
+    }
+
+    private void displayInformation(String id, Pane p){
+        Rectangle rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
+        rec.setLayoutX(200);
+        rec.setLayoutY(50);
+        rec.setFill(allTurtles.get(id).getFill());
+        p.getChildren().addAll(rec);
     }
 
     public void updateHabitat(String id, Turtle turtle){
@@ -108,8 +108,8 @@ public class TurtleHabitat {
         return myTurtleHabitat;
     }
 
-    public TurtleView getTurtle(){
-        return turtle;
+    public TurtleView getTurtle(String turtleID){
+        return allTurtles.get(turtleID);
     }
 
     public void setBackground(Color c){
