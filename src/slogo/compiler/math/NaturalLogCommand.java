@@ -10,7 +10,7 @@ public class NaturalLogCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return Math.log(args.get(0).execute());
   }
 }

@@ -1,7 +1,6 @@
 package slogo.compiler.control;
 
 import slogo.compiler.parser.Command;
-import slogo.compiler.types.VariableType;
 
 public class MakeVariableCommand extends Command {
 
@@ -11,16 +10,14 @@ public class MakeVariableCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     double value = args.get(1).execute();
-    memory.setVariable(((VariableType) args.get(0)).getName(),
-        value); //FIXME refactor args to remove instanceof?
+    memory.setVariable(args.get(0).getName(), value);
     return value;
   }
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == desiredArgs && args
-        .get(0) instanceof VariableType; //FIXME refactor args to remove instanceof?
+    return args.size() == desiredArgs && args.get(0).typeEquals("variabletype");
   }
 }

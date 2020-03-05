@@ -10,7 +10,7 @@ public class TangentCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return Math.tan(Math.toRadians(args.get(0).execute()));
   }
 }

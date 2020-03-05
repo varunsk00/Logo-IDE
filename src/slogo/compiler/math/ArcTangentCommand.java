@@ -10,7 +10,7 @@ public class ArcTangentCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return Math.toDegrees(Math.atan(args.get(0).execute()));
   }
 }

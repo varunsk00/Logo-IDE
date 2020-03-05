@@ -22,26 +22,19 @@ public class AutoTableView extends TableView {
 
     private final static String KEY_MATCH_TERM = "key";
 
-    private double width;
-    private double height;
-
-    private String currentResourcePath;
     private ObservableList<TableEntry> data;
     private String type;
     private String currentLanguage;
 
     /**
      * Constructor
-     * @param width width
-     * @param height height
      * @param type table type ("COMMAND", "DEFINED", "VAR" from resource file)
      */
-    public AutoTableView(double width, double height, String type) {
+    public AutoTableView(String type) {
         super();
         this.type = type;
         this.currentLanguage = "English";
         initializeTable();
-        setSize(width, height);
     }
 
     /**
@@ -151,11 +144,6 @@ public class AutoTableView extends TableView {
 
     private void setColSize(TableColumn col){
         col.setPrefWidth(COLUMN_WIDTH);
-    }
-
-    private void setSize(double width, double height){
-        this.width = width;
-        this.height = height;
     }
 
     private List<Map.Entry<String, String>> loadDict(String resourcePath){
