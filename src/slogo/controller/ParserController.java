@@ -8,7 +8,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -25,6 +27,7 @@ import slogo.terminal.TerminalView;
 import slogo.turtle.Point;
 import slogo.turtle.Turtle;
 import slogo.turtle.TurtleHabitat;
+import slogo.turtle.TurtleView;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 
@@ -33,6 +36,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -101,6 +106,7 @@ public class ParserController extends Application{
 
     private Compiler comp;
 
+    private ArrayList<Button> selectButtons = new ArrayList<>();
     /**
      * Empty Constructor Needed to run the application due to Application requirements Not called
      * explicitly in code
@@ -210,10 +216,17 @@ public class ParserController extends Application{
     }
 
     private void step() throws IOException {
-        myHabitat.getTurtle().updateTurtleView(myTurtle1);
+        for (int turtleId: comp.getAllTurtleIDs()){
+            myHabitat.updateHabitat(turtleId, comp.getTurtleByID(turtleId));
+            if(comp.getTurtleByID(turtleId).isPenDown()){
+                for (Point loc: comp.getTurtleByID(turtleId).locationsList()) {
+                    myHabitat.penDraw(myHabitat.getTurtle(turtleId).getPenColor(), loc, turtleId);
+                }
+            }
+            updateImageSize(turtleId);
+        }
         handleLanguage(buttons.getLanguageStatus());
         updateZoom();
-        updateImageSize();
         if(!buttons.getHelpStatus().equals(myResources.getString("HelpButton"))){
             handleHelp(buttons.getHelpStatus(), GUI_LANGUAGE);
             //launchHelpWindow(buttons.getHelpStatus(), buttons.getLanguageStatus());
@@ -229,11 +242,6 @@ public class ParserController extends Application{
         }
         if(buttons.getImageStatus()){
             handleImageFileChooser();
-        }
-        if(myTurtle1.isPenDown()){
-            for (Point loc: myTurtle1.locationsList()) {
-                myHabitat.penDraw(penColor, loc);
-            }
         }
         setGlobalBackground(backgroundColor);
         updateTabPanes();
@@ -340,13 +348,19 @@ public class ParserController extends Application{
 
     //FIXME: Refactor following two methods
     private void launchPenColorChooser() {
+        selectButtons.clear();
         buttons.setPenColorOff();
         Stage s = new Stage();
         s.setTitle(myResources.getString("ColorWindow"));
         TilePane r = new TilePane();
         ColorPicker cp = new ColorPicker();
         EventHandler<ActionEvent> event = e -> {
-            penColor = cp.getValue();
+            for (int turtleID: comp.getAllTurtleIDs()){
+                Button button = new Button("Turtle " + turtleID);
+                button.setOnAction(event1 -> myHabitat.getTurtle(turtleID).setPenColor(cp.getValue()));
+                selectButtons.add(button);
+            }
+            chooserPane(selectButtons);
             s.close();
         };
         cp.setValue(penColor);
@@ -386,13 +400,33 @@ public class ParserController extends Application{
     }
 
     private void handleImageFileChooser(){
+        selectButtons.clear();
         File dataFile = IMAGE_FILE_CHOOSER.showOpenDialog(myStage);
         if(dataFile == null){
             buttons.setImageOff();
             return;
         }
         buttons.setImageOff();
-        myHabitat.getTurtle().setFill(new ImagePattern(new Image("file:" + dataFile.getPath())));
+
+        for (int turtleID: comp.getAllTurtleIDs()){
+            Button button = new Button("Turtle " + turtleID);
+            button.setOnAction(event -> myHabitat.getTurtle(turtleID).setFill(new ImagePattern(new Image("file:" + dataFile.getPath()))));
+            selectButtons.add(button);
+        }
+        chooserPane(selectButtons);
+    }
+
+    private void chooserPane(List<Button> turtleButtons){
+        Stage s = new Stage();
+        Pane root = new Pane();
+        Scene sc = new Scene(root, 200, 200);
+        ListView<Button> turtleOptions = new ListView<Button>();
+        for (Button button: turtleButtons){
+            turtleOptions.getItems().addAll(button);
+        }
+        root.getChildren().addAll(turtleOptions);
+        s.setScene(sc);
+        s.show();
     }
 
     //FIXME: directly call comp.executeFile, and run in the terminal (maybe add method to TerminalView)
@@ -420,8 +454,8 @@ public class ParserController extends Application{
         myHabitat.getTurtleHabitat().setScaleY(sliders.getZoom()/3.0);
     }
 
-    private void updateImageSize(){
-        myHabitat.getTurtle().setScaleX(sliders.getSizeValue()/3.0);
-        myHabitat.getTurtle().setScaleY(sliders.getSizeValue()/3.0);
+    private void updateImageSize(int turtleId){
+        myHabitat.getTurtle(turtleId).setScaleX(sliders.getSizeValue()/3.0);
+        myHabitat.getTurtle(turtleId).setScaleY(sliders.getSizeValue()/3.0);
     }
 }
