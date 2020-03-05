@@ -44,8 +44,4 @@ public class CommandType extends TypeCommand {
     desiredArgs = variables.size();
     return args.size() == desiredArgs;
   }
-
-  public String getName() {
-    return name;
-  }
 }

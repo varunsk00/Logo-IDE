@@ -235,7 +235,7 @@ public class Compiler {
   /**
    * Adds the given resource file to this language's recognized types
    */
-  public void addPatterns(String filename, List<Entry<String, Pattern>> list) {
+  private void addPatterns(String filename, List<Entry<String, Pattern>> list) {
     ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + filename);
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
@@ -248,7 +248,7 @@ public class Compiler {
   /**
    * Returns language's type associated with the given text if one exists
    */
-  public String getSymbol(String text, List<Entry<String, Pattern>> list) {
+  private String getSymbol(String text, List<Entry<String, Pattern>> list) {
     for (Entry<String, Pattern> e : list) {
       if (match(text, e.getValue())) {
         return e.getKey();
@@ -263,10 +263,6 @@ public class Compiler {
   private boolean match(String text, Pattern regex) {
     // THIS IS THE IMPORTANT LINE
     return regex.matcher(text).matches();
-  }
-
-  public void addTurtle(int id) {
-    memory.addTurtle(id);
   }
 
   public Collection<String> getAllVariableNames() {

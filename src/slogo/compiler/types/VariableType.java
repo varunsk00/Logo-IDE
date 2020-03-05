@@ -22,8 +22,4 @@ public class VariableType extends TypeCommand {
   public String toString() {
     return "var:" + name;
   }
-
-  public String getName() {
-    return name;
-  }
 }

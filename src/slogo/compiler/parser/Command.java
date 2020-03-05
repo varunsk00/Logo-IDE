@@ -51,6 +51,10 @@ public abstract class Command {
     return executeCommand();
   }
 
+  /**
+   * Runs and executes the commands, returning its double return value
+   * @return the double return value
+   */
   public abstract double executeCommand();
 
   public void register() {
@@ -112,13 +116,6 @@ public abstract class Command {
 
   public void addArg(Command arg) {
     args.add(arg);
-  }
-
-  public void addArg(Command arg, int n) {
-    while (args.size() < n) {
-      args.add(null);
-    }
-    args.set(n, arg);
   }
 
   public List<Command> getArgs() {

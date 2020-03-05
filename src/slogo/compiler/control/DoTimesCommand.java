@@ -7,6 +7,9 @@ public class DoTimesCommand extends LoopCommand {
     desiredArgs = 2;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     double val = args.get(0).getArgs().get(1).execute(); //FIXME magic val

@@ -24,6 +24,6 @@ public abstract class TurtleCommand extends Command {
     return ret;
   }
 
-  public abstract double executeTurtle();
+  protected abstract double executeTurtle();
 
 }
