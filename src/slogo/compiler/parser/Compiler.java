@@ -16,12 +16,10 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.reflections.Reflections;
-import slogo.compiler.control.MakeUserInstructionCommand;
 import slogo.compiler.exceptions.CompilerException;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.StackOverflowException;
 import slogo.compiler.parser.memory.Memory;
-import slogo.compiler.types.CommandType;
 import slogo.turtle.Turtle;
 
 public class Compiler {

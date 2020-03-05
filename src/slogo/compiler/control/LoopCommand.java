@@ -3,6 +3,7 @@ package slogo.compiler.control;
 import slogo.compiler.parser.Command;
 
 public abstract class LoopCommand extends Command {
+
   public static final double DOUBLE_TOLERANCE = .000000001;
 
   public LoopCommand(String declaration) {

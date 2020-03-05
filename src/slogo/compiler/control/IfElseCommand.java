@@ -1,7 +1,6 @@
 package slogo.compiler.control;
 
 import slogo.compiler.parser.Command;
-import slogo.compiler.types.ListStartType;
 
 public class IfElseCommand extends Command {
 

@@ -1,8 +1,5 @@
 package slogo.compiler.control;
 
-import slogo.compiler.types.ListStartType;
-import slogo.compiler.types.VariableType;
-
 public class ForCommand extends LoopCommand {
 
   public ForCommand(String declaration) {

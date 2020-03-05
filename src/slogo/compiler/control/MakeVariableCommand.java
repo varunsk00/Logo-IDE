@@ -1,7 +1,6 @@
 package slogo.compiler.control;
 
 import slogo.compiler.parser.Command;
-import slogo.compiler.types.VariableType;
 
 public class MakeVariableCommand extends Command {
 

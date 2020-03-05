@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import slogo.compiler.control.MakeUserInstructionCommand;
 import slogo.compiler.parser.memory.Memory;
 
 public abstract class Command {
@@ -32,7 +31,7 @@ public abstract class Command {
 
   private void setType() {
     String[] names = getClass().toString().split("\\.");
-    type = names[names.length-1];
+    type = names[names.length - 1];
   }
 
   public boolean typeEquals(String typeCheck) {
@@ -102,7 +101,7 @@ public abstract class Command {
     return isComplete || isCompleteSub();
   }
 
-  public void setIsComplete(boolean comp){
+  public void setIsComplete(boolean comp) {
     isComplete = comp;
   }
 

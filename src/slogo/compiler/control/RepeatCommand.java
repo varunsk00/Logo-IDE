@@ -1,7 +1,5 @@
 package slogo.compiler.control;
 
-import slogo.compiler.types.ListStartType;
-
 public class RepeatCommand extends LoopCommand {
 
   public RepeatCommand(String declaration) {
