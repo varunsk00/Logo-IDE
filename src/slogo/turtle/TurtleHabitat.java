@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.control.*;
 import javafx.scene.shape.Rectangle;
@@ -37,6 +38,7 @@ public class TurtleHabitat {
     private double habitatWidth;
     private double habitatHeight;
     private Button viewTurtles;
+    Rectangle rec;
 
     public TurtleHabitat(double width, double height){
         allTurtles = new HashMap<String, TurtleView>();
@@ -77,11 +79,12 @@ public class TurtleHabitat {
     }
 
     private void displayInformation(String id, Pane p){
-        Rectangle rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
+        p.getChildren().remove(rec);
+        rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
         rec.setLayoutX(200);
         rec.setLayoutY(50);
         rec.setFill(allTurtles.get(id).getFill());
-        p.getChildren().addAll(rec);
+        p.getChildren().add(rec);
     }
 
     public void updateHabitat(String id, Turtle turtle){
