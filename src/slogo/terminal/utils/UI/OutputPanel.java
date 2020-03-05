@@ -10,6 +10,7 @@ import slogo.terminal.utils.textLines.TestLine;
 public class OutputPanel extends ListView<String> {
     private final static String CSS_FILEPATH = "slogo/resources/styleSheets/output_panel.css";
     private final static double DISPLAY_MARGIN = 15;
+    private final static int UNDO_ENTRY_NUM = 2;
 
     /**
      * Constructor
@@ -33,11 +34,20 @@ public class OutputPanel extends ListView<String> {
     }
 
     /**
+     * Deletes the last entry (compiler message and user input) from terminal display
+     */
+    public void undoEntry(){
+        int num = UNDO_ENTRY_NUM;
+        while(!getItems().isEmpty() && num!=0){
+            num--;
+            getItems().remove(getItems().size()-1);
+        }
+    }
+    /**
      * Adds a new line of text
      * @param str text string
      */
     public void addTexts(String str){
-        //System.out.println("added text "+str);
         getItems().add(str);
         scrollTo(getItems().size());
     }

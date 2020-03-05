@@ -1,7 +1,5 @@
 package slogo.compiler.types;
 
-import slogo.compiler.Command;
-
 public class VariableType extends TypeCommand {
 
   private String name;
@@ -9,6 +7,7 @@ public class VariableType extends TypeCommand {
   public VariableType(String nm) {
     super(nm);
     name = nm;
+    desiredArgs = 0;
   }
 
   @Override
@@ -19,11 +18,6 @@ public class VariableType extends TypeCommand {
   @Override
   public boolean isCompleteSub() {
     return true;
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new VariableType(declaration);
   }
 
   @Override

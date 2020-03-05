@@ -1,6 +1,6 @@
 package slogo.compiler.types;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 
 public class ConstantType extends TypeCommand {
 
@@ -8,6 +8,7 @@ public class ConstantType extends TypeCommand {
 
   public ConstantType(String val) {
     super(val);
+    desiredArgs = 0;
     if (val.equals(Command.INITIALIZATION)) {
       return;
     }
@@ -31,10 +32,5 @@ public class ConstantType extends TypeCommand {
   @Override
   public String toString() {
     return "const:" + value;
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new ConstantType(declaration);
   }
 }

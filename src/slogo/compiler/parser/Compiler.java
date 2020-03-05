@@ -1,4 +1,4 @@
-package slogo.compiler;
+package slogo.compiler.parser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +20,7 @@ import slogo.compiler.control.MakeUserInstructionCommand;
 import slogo.compiler.exceptions.CompilerException;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.StackOverflowException;
+import slogo.compiler.parser.memory.Memory;
 import slogo.compiler.types.CommandType;
 import slogo.turtle.Turtle;
 
@@ -43,8 +44,13 @@ public class Compiler {
     setLanguage(DEFAULT_LANGUAGE);
     addPatterns(SYNTAX_FILE, myTypes);
     //FIXME add resource file validator
-    //FIXME add error msg strings
     initAllCommands();
+  }
+
+  public Compiler(Compiler other) {
+    myTypes = new ArrayList<>(other.myTypes);
+    myCommands = new ArrayList<>(other.myCommands);
+    memory = new Memory(other.memory);
   }
 
   private void initAllCommands() { //uses the reflections library
@@ -78,6 +84,24 @@ public class Compiler {
   }
 
   public String execute(String input) {
+    input = spliceInput(input);
+    try {
+      Command comm = parse(input);
+      if (!comm.isComplete()) {
+        throw new InvalidSyntaxException(
+            String.format(errorMsgs.getString("IncompleteCommand"), input));
+      }
+      if (comm.containsDefinition()) {
+        comm = rerunParsing(comm, input);
+      }
+      return "" + comm.execute();
+    } catch (CompilerException e) {
+      //throw e;
+      return e.toString();
+    }
+  }
+
+  private String spliceInput(String input) {
     String[] lines = input.split(getNewline());
     StringBuilder noComment = new StringBuilder();
     for (String line : lines) {
@@ -90,21 +114,10 @@ public class Compiler {
         //Later code will handle the syntax checking
       }
     }
-    input = "[ " + noComment.toString() + " ]";
-    try {
-      Command comm = parse(input);
-      if (!comm.isComplete()) {
-        throw new InvalidSyntaxException(
-            String.format(errorMsgs.getString("IncompleteCommand"), input));
-      }
-      if (comm.containsDefinition()){
-        comm = rerunParsing(comm, input);
-      }
-      return "" + comm.execute();
-    } catch (CompilerException e) {
-      //throw e;
-      return e.toString();
-    }
+    String ret = noComment.toString();
+    ret = ret.replaceAll("\\[", " [ ");
+    ret = ret.replaceAll("]", " ] ");
+    return "[ " + ret + " ]";
   }
 
   private Command rerunParsing(Command comm, String input) {
@@ -252,8 +265,8 @@ public class Compiler {
     return regex.matcher(text).matches();
   }
 
-  public void addTurtle(String id, Turtle t) {
-    memory.addTurtle(id, t);
+  public void addTurtle(int id) {
+    memory.addTurtle(id);
   }
 
   public Collection<String> getAllVariableNames() {
@@ -264,16 +277,20 @@ public class Compiler {
     return memory.getAllUserDefinedCommands();
   }
 
-  public Collection<String> getAllTurtleIDs() {
+  public Collection<Integer> getAllTurtleIDs() {
     return memory.getAllTurtleIDs();
   }
 
-  public Turtle getTurtleByID(String id) {
+  public Turtle getTurtleByID(int id) {
     return memory.getTurtleByID(id);
   }
 
   public double getVariable(String name) {
     return memory.getVariable(name);
+  }
+
+  public void setVariable(String name, double val) {
+    memory.setVariable(name, val);
   }
 
   public List<String> getCommandVariables(String name) {

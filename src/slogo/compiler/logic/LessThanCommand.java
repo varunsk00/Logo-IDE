@@ -1,11 +1,12 @@
 package slogo.compiler.logic;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 
 public class LessThanCommand extends Command {
 
   public LessThanCommand(String declaration) {
     super(declaration);
+    desiredArgs = 2;
   }
 
   @Override
@@ -17,13 +18,4 @@ public class LessThanCommand extends Command {
     return 0;
   }
 
-  @Override
-  public boolean isCompleteSub() {
-    return args.size() == 2;
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new LessThanCommand(declaration);
-  }
 }

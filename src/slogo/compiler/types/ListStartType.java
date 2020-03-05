@@ -1,11 +1,12 @@
 package slogo.compiler.types;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 
 public class ListStartType extends TypeCommand {
 
   public ListStartType(String declaration) {
     super(declaration);
+    desiredArgs = -1; //should never be used
   }
 
   @Override
@@ -21,10 +22,5 @@ public class ListStartType extends TypeCommand {
   @Override
   public boolean isCompleteSub() {
     return args.size() > 0 && args.get(args.size() - 1) instanceof ListEndType; //FIXME instanceof
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new ListStartType(declaration);
   }
 }

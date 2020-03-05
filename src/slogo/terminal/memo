@@ -5,4 +5,6 @@ features:
    - scrollable
 
 to-do lists:
-better documentation
+- better documentation
+- delete one entry of history on the display
+- delete

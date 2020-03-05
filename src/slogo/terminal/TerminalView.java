@@ -10,13 +10,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-//TODO: Caret Control (move to next line instead of resizing the screen)
 
 /**
  * terminalView generates the visualization of the terminal console.
  */
 public class TerminalView extends ScrollPane {
-    final static int INPUT_PANEL_HEIGHT = 40; //TODO: Empirical adjustment, needs calculation of the font size
+    final static int INPUT_PANEL_HEIGHT = 40; // font-size dependent
     final static int HEADER_HEIGHT = 8;
     final static String BANNER_FILEPATH = "src/slogo/resources/banners/";
     final static String WELCOME_BANNER = "welcome_small.txt";
@@ -48,18 +47,6 @@ public class TerminalView extends ScrollPane {
    }
 
     /**
-     * [unimplemented]
-     * @return the text selected by the user
-     */
-    public String getSelectedText(){
-        if (!inputPanel.getSelectedText().equals(""))
-            return inputPanel.getSelectedText();
-        if (!outputPanel.getSelectedText().equals(""))
-            return inputPanel.getSelectedText();
-        return "";
-    }
-
-    /**
      * Returns the current input by the user
      * @return string
      */
@@ -67,6 +54,11 @@ public class TerminalView extends ScrollPane {
         return inputPanel.getText();
     }
 
+    /**
+     * Returns the formatted string of input (adds the input code)
+     * @param str input string
+     * @return formatted string
+     */
     public String formatInput(String str) {return inputPanel.formatText(str);}
 
     /**
@@ -92,7 +84,7 @@ public class TerminalView extends ScrollPane {
 
     /**
      * Gets the input area
-     * @return the InputArea object (TODO: considering to change the generic type
+     * @return the InputArea object
      */
     public Node getInputArea(){return inputPanel.getInputArea();}
 
@@ -106,7 +98,7 @@ public class TerminalView extends ScrollPane {
      * Gets the output panel
      * @return the OutputPanel object
      */
-    public Node getOutputPanel(){ return outputPanel;}
+    public OutputPanel getOutputPanel(){ return outputPanel;}
 
     private void clearTerminal(){
         inputPanel.clearInput();
@@ -116,11 +108,9 @@ public class TerminalView extends ScrollPane {
     private void initializeTerminal(int width, int height){
         outputPanel = new OutputPanel(width, height-INPUT_PANEL_HEIGHT-HEADER_HEIGHT);
         inputPanel = new InputPanel(width, INPUT_PANEL_HEIGHT);
-        VBox box = new VBox(outputPanel, inputPanel); //TODO: do we really need this box;
-        //VBox box = new VBox(outputPanel);
-        //getChildren().add(box);
+        VBox box = new VBox(outputPanel, inputPanel);
         setContent(box);
-        //getChildren().addAll(outputPanel, inputPanel);
+
         printBanner(String.format("%s%s", BANNER_FILEPATH, WELCOME_BANNER));
     }
 

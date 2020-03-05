@@ -1,7 +1,7 @@
 package slogo.compiler.types;
 
-import slogo.compiler.Command;
-import slogo.compiler.TypeFactory;
+import slogo.compiler.parser.Command;
+import slogo.compiler.parser.TypeFactory;
 
 public abstract class TypeCommand extends Command {
 

@@ -1,11 +1,12 @@
 package slogo.compiler.logic;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 
 public class NotCommand extends Command {
 
   public NotCommand(String declaration) {
     super(declaration);
+    desiredArgs = 1;
   }
 
   @Override
@@ -15,15 +16,5 @@ public class NotCommand extends Command {
       return 1;
     }
     return 0;
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return args.size() == 1;
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new NotCommand(declaration);
   }
 }

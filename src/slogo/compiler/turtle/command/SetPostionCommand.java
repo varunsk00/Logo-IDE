@@ -1,12 +1,12 @@
 package slogo.compiler.turtle.command;
 
-import slogo.compiler.Command;
 import slogo.compiler.turtle.TurtleCommand;
 
 public class SetPostionCommand extends TurtleCommand {
 
   public SetPostionCommand(String declaration) {
     super(declaration);
+    desiredArgs = 2;
   }
 
   @Override
@@ -20,15 +20,5 @@ public class SetPostionCommand extends TurtleCommand {
     double dx = x - currx;
     double dy = y - curry;
     return Math.pow(dx * dx + dy * dy, .5);
-  }
-
-  @Override
-  public boolean isCompleteSub() {
-    return args.size() == 2;
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new SetPostionCommand(declaration);
   }
 }

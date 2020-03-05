@@ -1,12 +1,13 @@
 package slogo.compiler.control;
 
-import slogo.compiler.Command;
+import slogo.compiler.parser.Command;
 import slogo.compiler.types.ListStartType;
 
 public class IfCommand extends Command {
 
   public IfCommand(String declaration) {
     super(declaration);
+    desiredArgs = 2;
   }
 
   @Override
@@ -21,11 +22,6 @@ public class IfCommand extends Command {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == 2 && args.get(1) instanceof ListStartType; //FIXME instanceof
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new IfCommand(declaration);
+    return args.size() == desiredArgs && args.get(1) instanceof ListStartType; //FIXME instanceof
   }
 }

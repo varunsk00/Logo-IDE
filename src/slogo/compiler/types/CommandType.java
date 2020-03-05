@@ -1,8 +1,8 @@
 package slogo.compiler.types;
 
 import java.util.List;
-import slogo.compiler.Command;
 import slogo.compiler.exceptions.InvalidSyntaxException;
+import slogo.compiler.parser.Command;
 
 public class CommandType extends TypeCommand {
 
@@ -43,12 +43,8 @@ public class CommandType extends TypeCommand {
   @Override
   public boolean isCompleteSub() {
     variables = memory.getCommandVariables(name);
-    return beingDefined || (args.size() == variables.size());
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new CommandType(declaration);
+    desiredArgs = variables.size();
+    return beingDefined || (args.size() == desiredArgs);
   }
 
   public String getName() {
