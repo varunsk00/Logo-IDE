@@ -13,7 +13,7 @@ public abstract class TurtleCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     List<Integer> actives = memory.getActiveTurtleIDs();
     double ret = 0;
     for (int i : actives) {

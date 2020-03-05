@@ -10,7 +10,7 @@ public class IfCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     double val = args.get(0).execute();
     double ret = 0;
     if (val != 0) {

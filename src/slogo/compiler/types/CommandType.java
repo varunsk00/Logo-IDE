@@ -17,7 +17,7 @@ public class CommandType extends TypeCommand {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     memory.pushMemoryStack();
     for (int i = 0; i < variables.size(); i++) {
       memory.setVariable(variables.get(i), args.get(i).execute());

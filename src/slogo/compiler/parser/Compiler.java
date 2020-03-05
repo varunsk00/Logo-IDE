@@ -94,8 +94,6 @@ public class Compiler {
       }
       return "" + comm.execute();
     } catch (CompilerException e) {
-      //throw e;
-      e.printStackTrace();
       return e.toString();
     }
   }

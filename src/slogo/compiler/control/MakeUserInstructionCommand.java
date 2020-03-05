@@ -12,8 +12,7 @@ public class MakeUserInstructionCommand extends Command {
   }
 
   @Override
-  public double execute() {
-    executed = true;
+  public double executeCommand() {
     try {
       ArrayList<String> vars = new ArrayList<>();
       for (Command var : args.get(1).getArgs()) {

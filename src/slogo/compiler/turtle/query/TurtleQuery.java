@@ -9,7 +9,7 @@ public abstract class TurtleQuery extends TurtleCommand {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     turtle = memory.getCurrentTurtle();
     return executeTurtle();
   }

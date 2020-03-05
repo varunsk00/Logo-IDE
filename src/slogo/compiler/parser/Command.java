@@ -13,7 +13,7 @@ public abstract class Command {
   protected Memory memory;
   protected ArrayList<Command> args;
   protected ResourceBundle errorMsgs;
-  protected boolean executed = false; //FIXME only used by makeuserinstruction, can't be trusted
+  protected boolean executed = false;
   protected int desiredArgs;
   protected String name;
   protected String type;
@@ -46,7 +46,12 @@ public abstract class Command {
     return name;
   }
 
-  public abstract double execute();
+  public double execute(){
+    executed = true;
+    return executeCommand();
+  }
+
+  public abstract double executeCommand();
 
   public void register() {
     String className = findClass();

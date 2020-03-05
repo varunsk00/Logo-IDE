@@ -10,7 +10,7 @@ public class AndCommand extends Command {
   }
 
   @Override
-  public double execute() { //FIXME add double tolerance (e.g. cos 90 != 0)
+  public double executeCommand() { //FIXME add double tolerance (e.g. cos 90 != 0)
     boolean val = args.get(0).execute() != 0 && args.get(1).execute() != 0;
     if (val) {
       return 1;

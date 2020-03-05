@@ -10,7 +10,7 @@ public class NotEqualCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     boolean val = args.get(0).execute() != args.get(1).execute();
     if (val) {
       return 1;
