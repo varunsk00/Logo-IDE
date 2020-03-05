@@ -192,7 +192,7 @@ public class ParserController extends Application{
         String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
         int current = Integer.parseInt(workspaceString.substring(workspaceString.length()-1));
 //        currentWorkspace = turtleWorkspace2;
-        //FIXME: PARSE INT AS INSTANCE VARIABLE DON'T HARDCODEw
+        //FIXME: PARSE INT AS INSTANCE VARIABLE DON'T HARDCODE
         if(current == 1){
             currentWorkspace = turtleWorkspace1;
         }
