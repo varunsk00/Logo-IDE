@@ -27,6 +27,7 @@ import slogo.terminal.TerminalView;
 import slogo.turtle.Point;
 import slogo.turtle.Turtle;
 import slogo.turtle.TurtleHabitat;
+import slogo.turtle.TurtleView;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 
@@ -35,6 +36,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -103,6 +106,7 @@ public class ParserController extends Application{
 
     private Compiler comp;
 
+    private ArrayList<Button> selectButtons = new ArrayList<>();
     /**
      * Empty Constructor Needed to run the application due to Application requirements Not called
      * explicitly in code
@@ -392,23 +396,28 @@ public class ParserController extends Application{
     }
 
     private void handleImageFileChooser(){
+        selectButtons.clear();
         File dataFile = IMAGE_FILE_CHOOSER.showOpenDialog(myStage);
         if(dataFile == null){
             buttons.setImageOff();
             return;
         }
         buttons.setImageOff();
-        imageChooserPane(dataFile);
-    }
 
-    private void imageChooserPane(File dataFile){
-        Stage s = new Stage();
-        Pane root = new Pane();
-        Scene sc = new Scene(root, 200, 200);
-        ListView<Button> turtleOptions = new ListView<>();
         for (String turtleID: comp.getAllTurtleIDs()){
             Button button = new Button(turtleID);
             button.setOnAction(event -> myHabitat.getTurtle(turtleID).setFill(new ImagePattern(new Image("file:" + dataFile.getPath()))));
+            selectButtons.add(button);
+        }
+        chooserPane(selectButtons);
+    }
+
+    private void chooserPane(List<Button> turtleButtons){
+        Stage s = new Stage();
+        Pane root = new Pane();
+        Scene sc = new Scene(root, 200, 200);
+        ListView<Button> turtleOptions = new ListView<Button>();
+        for (Button button: turtleButtons){
             turtleOptions.getItems().addAll(button);
         }
         root.getChildren().addAll(turtleOptions);
