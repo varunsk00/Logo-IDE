@@ -1,8 +1,5 @@
 package slogo.compiler.control;
 
-import slogo.compiler.types.ListStartType;
-import slogo.compiler.types.VariableType;
-
 public class ForCommand extends LoopCommand {
 
   public ForCommand(String declaration) {
@@ -11,7 +8,7 @@ public class ForCommand extends LoopCommand {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     String varName = args.get(0).getArgs().get(0).getName();
     double start = args.get(0).getArgs().get(1).execute();
     double end = args.get(0).getArgs().get(2).execute();

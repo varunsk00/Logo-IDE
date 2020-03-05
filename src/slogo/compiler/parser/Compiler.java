@@ -16,12 +16,10 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.reflections.Reflections;
-import slogo.compiler.control.MakeUserInstructionCommand;
 import slogo.compiler.exceptions.CompilerException;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.exceptions.StackOverflowException;
 import slogo.compiler.parser.memory.Memory;
-import slogo.compiler.types.CommandType;
 import slogo.turtle.Turtle;
 
 public class Compiler {
@@ -96,7 +94,6 @@ public class Compiler {
       }
       return "" + comm.execute();
     } catch (CompilerException e) {
-      //throw e;
       return e.toString();
     }
   }
@@ -124,12 +121,11 @@ public class Compiler {
   private Command rerunParsing(Command comm, String input) {
     Command def = comm.findFirstDef();
     while (def != null) {
-      def.execute(); //FIXME
+      def.execute();
       def = comm.findFirstDef();
     }
     comm = parse(input);
     if (!comm.isComplete()) {
-      //comm.recPrint(); //fixme
       throw new InvalidSyntaxException(
           String.format(errorMsgs.getString("IncompleteCommand"), input));
     }
@@ -156,19 +152,7 @@ public class Compiler {
     ArrayDeque<Command> stack = new ArrayDeque<>();
     for (String word : input.split(getWhitespace())) {
       Command comm = getCommandFromString(word);
-      if (defineFlag) {
-        if (comm instanceof CommandType) {
-          ((CommandType) comm).setBeingDefined(true);
-          //FIXME you're a bad person and you should feel bad
-          defineFlag = false;
-        } else {
-          throw new InvalidSyntaxException(
-              String.format(errorMsgs.getString("RedefineBuiltin"), word));
-        }
-      }
-      if (comm.typeEquals("makeuserinstruction")) {
-        defineFlag = true;
-      }
+      defineFlag = checkRecursion(defineFlag, comm, word);
       stack.push(comm);
       Command ret = collapseStack(stack);
       if (ret != null) {
@@ -180,6 +164,26 @@ public class Compiler {
       }
     }
     return stack.getLast();
+  }
+
+  private boolean checkRecursion(boolean defineFlag, Command comm, String word) {
+    if (defineFlag) {
+      defineFlag = false;
+      markDefinition(comm, word);
+    }
+    if (comm.typeEquals("makeuserinstruction")) {
+      defineFlag = true;
+    }
+    return defineFlag;
+  }
+
+  private void markDefinition(Command comm, String word) {
+    if (comm.typeEquals("commandtype")) {
+      comm.setIsComplete(true);
+    } else {
+      throw new InvalidSyntaxException(
+          String.format(errorMsgs.getString("RedefineBuiltin"), word));
+    }
   }
 
   private Command collapseStack(ArrayDeque<Command> stack) {
@@ -236,7 +240,7 @@ public class Compiler {
   /**
    * Adds the given resource file to this language's recognized types
    */
-  public void addPatterns(String filename, List<Entry<String, Pattern>> list) {
+  private void addPatterns(String filename, List<Entry<String, Pattern>> list) {
     ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + filename);
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
@@ -249,7 +253,7 @@ public class Compiler {
   /**
    * Returns language's type associated with the given text if one exists
    */
-  public String getSymbol(String text, List<Entry<String, Pattern>> list) {
+  private String getSymbol(String text, List<Entry<String, Pattern>> list) {
     for (Entry<String, Pattern> e : list) {
       if (match(text, e.getValue())) {
         return e.getKey();
@@ -264,10 +268,6 @@ public class Compiler {
   private boolean match(String text, Pattern regex) {
     // THIS IS THE IMPORTANT LINE
     return regex.matcher(text).matches();
-  }
-
-  public void addTurtle(int id) {
-    memory.addTurtle(id);
   }
 
   public Collection<String> getAllVariableNames() {

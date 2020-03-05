@@ -1,7 +1,6 @@
 package slogo.compiler.control;
 
 import slogo.compiler.parser.Command;
-import slogo.compiler.types.VariableType;
 
 public class MakeVariableCommand extends Command {
 
@@ -11,7 +10,7 @@ public class MakeVariableCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     double value = args.get(1).execute();
     memory.setVariable(args.get(0).getName(), value);
     return value;

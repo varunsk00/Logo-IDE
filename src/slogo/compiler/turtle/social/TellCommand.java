@@ -1,7 +1,6 @@
 package slogo.compiler.turtle.social;
 
 import java.util.List;
-import slogo.compiler.types.ListStartType;
 
 public class TellCommand extends TurtleCreationCommand {
 

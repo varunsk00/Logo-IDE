@@ -10,7 +10,7 @@ public class PiCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return Math.PI;
   }
 }

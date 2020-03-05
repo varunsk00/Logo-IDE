@@ -9,7 +9,7 @@ public class VariableType extends TypeCommand {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return memory.getVariable(name);
   }
 
@@ -21,9 +21,5 @@ public class VariableType extends TypeCommand {
   @Override
   public String toString() {
     return "var:" + name;
-  }
-
-  public String getName() {
-    return name;
   }
 }
