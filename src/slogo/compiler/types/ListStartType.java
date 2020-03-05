@@ -21,6 +21,6 @@ public class ListStartType extends TypeCommand {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() > 0 && args.get(args.size() - 1) instanceof ListEndType; //FIXME instanceof
+    return args.size() > 0 && args.get(args.size() - 1).typeEquals("listend");
   }
 }

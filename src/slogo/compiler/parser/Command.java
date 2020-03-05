@@ -27,12 +27,15 @@ public abstract class Command {
     register();
     setType();
     setName();
-    System.out.println(type);
   }
 
   private void setType() {
     String[] names = getClass().toString().split("\\.");
     type = names[names.length-1];
+  }
+
+  public boolean typeEquals(String typeCheck) {
+    return type.toLowerCase().contains(typeCheck.toLowerCase());
   }
 
   private void setName() {
@@ -135,7 +138,7 @@ public abstract class Command {
   }
 
   public boolean containsDefinition() {
-    if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
+    if (typeEquals("makeuserinstruction")) { //fixme bad bad bad
       return true;
     }
     for (Command c : args) {
@@ -148,7 +151,7 @@ public abstract class Command {
 
   public int countDefinitions() {
     int ret = 0;
-    if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
+    if (typeEquals("makeuserinstruction")) { //fixme bad bad bad
       ret++;
     }
     for (Command c : args) {
@@ -158,7 +161,7 @@ public abstract class Command {
   }
 
   public Command findFirstDef() {
-    if (this instanceof MakeUserInstructionCommand && !executed) { //fixme bad bad bad
+    if (typeEquals("makeuserinstruction") && !executed) { //fixme bad bad bad
       return this;
     }
     for (Command c : args) {

@@ -20,11 +20,11 @@ public class ForCommand extends LoopCommand {
   }
 
   @Override
-  public boolean isCompleteSub() { //FIXME instanceofs everywhere
+  public boolean isCompleteSub() {
     return args.size() == 2 &&
-        args.get(0) instanceof ListStartType &&
-        args.get(1) instanceof ListStartType &&
+        args.get(0).typeEquals("liststart") &&
+        args.get(1).typeEquals("liststart") &&
         args.get(0).getArgs().size() == 5 &&
-        args.get(0).getArgs().get(0) instanceof VariableType; //list has 4 args, 1st is variable
+        args.get(0).getArgs().get(0).typeEquals("variabletype"); //list has 4 args, 1st is variable
   }
 }

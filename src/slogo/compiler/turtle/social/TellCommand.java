@@ -22,6 +22,6 @@ public class TellCommand extends TurtleCreationCommand {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == desiredArgs && args.get(0) instanceof ListStartType;
+    return args.size() == desiredArgs && args.get(0).typeEquals("liststart");
   }
 }

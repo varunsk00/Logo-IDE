@@ -20,7 +20,7 @@ public class MakeUserInstructionCommand extends Command {
     try {
       ArrayList<String> vars = new ArrayList<>();
       for (Command var : args.get(1).getArgs()) {
-        if (var instanceof VariableType) { //FIXME
+        if (var.typeEquals("variabletype")) {
           vars.add(var.getName());
         }
       }
@@ -36,9 +36,9 @@ public class MakeUserInstructionCommand extends Command {
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs &&
-        args.get(0) instanceof CommandType &&
-        args.get(1) instanceof ListStartType &&
-        args.get(2) instanceof ListStartType;
+        args.get(0).typeEquals("commandtype") &&
+        args.get(1).typeEquals("liststart") &&
+        args.get(2).typeEquals("liststart");
   }
 
   /*@Override

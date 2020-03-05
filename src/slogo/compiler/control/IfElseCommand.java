@@ -25,7 +25,7 @@ public class IfElseCommand extends Command {
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs &&
-        args.get(1) instanceof ListStartType &&
-        args.get(2) instanceof ListStartType; //FIXME instanceof
+        args.get(1).typeEquals("liststart") &&
+        args.get(2).typeEquals("liststart");
   }
 }

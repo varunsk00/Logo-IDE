@@ -19,7 +19,6 @@ public class MakeVariableCommand extends Command {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == desiredArgs && args
-        .get(0) instanceof VariableType; //FIXME refactor args to remove instanceof?
+    return args.size() == desiredArgs && args.get(0).typeEquals("variabletype");
   }
 }

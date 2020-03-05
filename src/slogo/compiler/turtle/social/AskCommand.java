@@ -22,7 +22,7 @@ public class AskCommand extends TurtleCreationCommand {
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs &&
-        args.get(0) instanceof ListStartType &&
-        args.get(1) instanceof ListStartType;
+        args.get(0).typeEquals("liststart") &&
+        args.get(1).typeEquals("liststart");
   }
 }

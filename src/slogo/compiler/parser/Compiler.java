@@ -166,7 +166,7 @@ public class Compiler {
               String.format(errorMsgs.getString("RedefineBuiltin"), word));
         }
       }
-      if (comm instanceof MakeUserInstructionCommand) {
+      if (comm.typeEquals("makeuserinstruction")) {
         defineFlag = true;
       }
       stack.push(comm);

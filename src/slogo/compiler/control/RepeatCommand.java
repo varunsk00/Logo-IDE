@@ -17,6 +17,6 @@ public class RepeatCommand extends LoopCommand {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == desiredArgs && args.get(1) instanceof ListStartType; //FIXME instanceof
+    return args.size() == desiredArgs && args.get(1).typeEquals("liststart");
   }
 }
