@@ -117,6 +117,7 @@ public class Compiler {
     String ret = noComment.toString();
     ret = ret.replaceAll("\\[", " [ ");
     ret = ret.replaceAll("]", " ] ");
+    ret = ret.replaceAll(":", " :");
     return "[ " + ret + " ]";
   }
 
