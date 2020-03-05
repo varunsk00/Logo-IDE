@@ -26,8 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TurtleHabitat {
-    private Pane myTurtleHabitat;
+public class TurtleHabitat extends Pane{
     private TurtleView turtle;
     private List<Polyline> myLines;
     private static double DEFAULT_TURTLE_WIDTH = 50.0;
@@ -45,7 +44,6 @@ public class TurtleHabitat {
         allTurtles = new HashMap<Integer, TurtleView>();
         lastx = new HashMap<Integer, Double>();
         lasty = new HashMap<Integer, Double>();
-        myTurtleHabitat = new Pane();
         habitatWidth = width;
         habitatHeight = height;
         myLines = new ArrayList<>();
@@ -56,7 +54,7 @@ public class TurtleHabitat {
     private void createViewButton (){
         Button button = new Button("View Turtles");
         button.setOnAction(event -> viewTurtleInformation());
-        myTurtleHabitat.getChildren().add(button);
+        getChildren().add(button);
     }
 
     private void viewTurtleInformation(){
@@ -95,18 +93,14 @@ public class TurtleHabitat {
             allTurtles.putIfAbsent(id, tempTurtle);
             lastx.putIfAbsent(id, tempTurtle.getX() + tempTurtle.getWidth()/2);
             lasty.putIfAbsent(id, tempTurtle.getY() + tempTurtle.getHeight()/2);
-            myTurtleHabitat.getChildren().addAll(tempTurtle);
+            getChildren().addAll(tempTurtle);
         }
         allTurtles.get(id).updateTurtleView(turtle);
     }
 
     private void changeSize(double width, double height){
-        myTurtleHabitat.setPrefWidth(width);
-        myTurtleHabitat.setPrefHeight(height);
-    }
-
-    public Pane getTurtleHabitat(){
-        return myTurtleHabitat;
+        setPrefWidth(width);
+        setPrefHeight(height);
     }
 
     public TurtleView getTurtle(int turtleID){
@@ -114,7 +108,7 @@ public class TurtleHabitat {
     }
 
     public void setBackground(Color c){
-        myTurtleHabitat.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+        setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
     public void penDraw(Color penColor, Point loc, int turtleID){
@@ -123,7 +117,7 @@ public class TurtleHabitat {
         double y_coor = loc.getY();
         Polyline pen  = new Polyline();
         myLines.add(pen);
-        myTurtleHabitat.getChildren().add(pen);
+        getChildren().add(pen);
 
         double xOffsetCoord = x_coor + turtle.getXOffset() + turtle.getWidth()/2;
         double yOffsetCoord = y_coor + turtle.getYOffset() + turtle.getHeight()/2;
@@ -140,7 +134,7 @@ public class TurtleHabitat {
         if(turtle.isCleared()){
             for (Polyline p : myLines) {
                 p.getPoints().clear();
-                myTurtleHabitat.getChildren().remove(p);
+                getChildren().remove(p);
             }
             myLines.clear();
         }
