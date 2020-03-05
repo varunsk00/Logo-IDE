@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -15,17 +14,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.reflections.Reflections;
-import slogo.compiler.parser.Compiler;
-import slogo.terminal.TerminalController;
-import slogo.terminal.TerminalView;
 import slogo.turtle.Point;
-import slogo.turtle.Turtle;
-import slogo.turtle.TurtleHabitat;
-import slogo.turtle.TurtleView;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 
@@ -67,6 +58,7 @@ public class ParserController extends Application{
     private double TABPANE_HEIGHT = 150;
 
     private static final Color ALL_COLOR = Color.WHITE;
+    private int currentTab;
 
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
     private static final String LOGO_FILE_EXTENSIONS = "*.logo";
@@ -138,6 +130,7 @@ public class ParserController extends Application{
         turtleWorkspace1 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
         currentWorkspace = turtleWorkspace1;
         workspaceEnvironment = new TabPane();
+        currentTab = 1;
         Tab tab1 = new Tab();
         tab1.setText("Workspace 1");
         tab1.setContent(turtleWorkspace1);
@@ -190,10 +183,12 @@ public class ParserController extends Application{
     private void step() throws IOException {
         String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
         int current = Integer.parseInt(workspaceString.substring(workspaceString.length()-1));
+        System.out.println(current);
 //        currentWorkspace = turtleWorkspace2;
         //FIXME: PARSE INT AS INSTANCE VARIABLE DON'T HARDCODE
         if(current == 1){
             currentWorkspace = turtleWorkspace1;
+            //updateTabPanes();
         }
         else if(current ==2){
             currentWorkspace = turtleWorkspace2;
@@ -225,12 +220,20 @@ public class ParserController extends Application{
         if(buttons.getImageStatus()){
             handleImageFileChooser();
         }
+
+        if (current != currentTab) {
+            currentTab = current;
+            tabPaneController.updateCompiler(currentWorkspace.getCompiler());
+            tabPaneController.updateTerminal(currentWorkspace.getTerminalController());
+            updateTabPanes(true);
+        }
+
         setGlobalBackground(backgroundColor);
-        updateTabPanes();
+        updateTabPanes(false);
     }
 
-    private void updateTabPanes() {
-        if (currentWorkspace.getStatus() != currentWorkspace.getTerminalController().getStatus()) {
+    private void updateTabPanes(boolean isSwitch) {
+        if (currentWorkspace.getStatus() != currentWorkspace.getTerminalController().getStatus() || isSwitch) {
             currentWorkspace.setStatus(currentWorkspace.getTerminalController().getStatus());
             tabPaneController.updateAllTables();
         }
