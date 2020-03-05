@@ -6,25 +6,26 @@ import slogo.compiler.parser.Command;
 import slogo.compiler.turtle.query.TurtleQuery;
 import slogo.compiler.types.ListStartType;
 
-public class TellCommand extends TurtleCreationCommand {
+public class AskCommand extends TurtleCreationCommand {
 
-  public TellCommand(String declaration) {
+  public AskCommand(String declaration) {
     super(declaration);
-    desiredArgs = 1;
+    desiredArgs = 2;
   }
 
   @Override
   public double executeTurtle() {
     List<Integer> actives = parseIDs(args.get(0));
-    memory.tellTurtleStack(actives);
-    if (actives.isEmpty()) {
-      return 0;
-    }
-    return actives.get(actives.size()-1);
+    memory.pushTurtleStack(actives);
+    double ret = args.get(1).execute();
+    memory.popTurtleStack();
+    return ret;
   }
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == desiredArgs && args.get(0) instanceof ListStartType;
+    return args.size() == desiredArgs &&
+        args.get(0) instanceof ListStartType &&
+        args.get(1) instanceof ListStartType;
   }
 }
