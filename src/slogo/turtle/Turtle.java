@@ -1,10 +1,7 @@
 package slogo.turtle;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import slogo.compiler.math.PiCommand;
 
 public class Turtle {
     public static final double CENTER_X = 0.0;
