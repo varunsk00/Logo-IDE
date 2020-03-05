@@ -106,13 +106,13 @@ public class VariablesTabPaneController {
         for (Map.Entry<String, AutoTableView> entry : tableDict) {
 
             for (Object item: entry.getValue().getColumns()){
-                TableColumn col;
-                if (item instanceof TableColumn){
+                TableColumn col = (TableColumn) item;
+                /*if (item instanceof TableColumn){
                     col = (TableColumn) item;}
                 else{
                     System.out.println("Error: unimplemented type of table column");
                     break;
-                }
+                }*/
 
                 if (col.getId().equals(EDITABLE_MATCH_KEYWORD) && entry.getKey().equals(VAR_TYPE)){
                     varTableBinding(col);
