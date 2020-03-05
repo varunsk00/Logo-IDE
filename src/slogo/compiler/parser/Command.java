@@ -18,6 +18,7 @@ public abstract class Command {
   protected int desiredArgs;
   protected String name;
   protected String type;
+  private boolean isComplete;
 
   public Command(String declaration) {
     args = new ArrayList<>();
@@ -98,7 +99,11 @@ public abstract class Command {
         return false;
       }
     }
-    return isCompleteSub();
+    return isComplete || isCompleteSub();
+  }
+
+  public void setIsComplete(boolean comp){
+    isComplete = comp;
   }
 
   public void addArg(Command arg) {

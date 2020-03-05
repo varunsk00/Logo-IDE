@@ -3,9 +3,6 @@ package slogo.compiler.control;
 import java.util.ArrayList;
 import slogo.compiler.exceptions.CompilerException;
 import slogo.compiler.parser.Command;
-import slogo.compiler.types.CommandType;
-import slogo.compiler.types.ListStartType;
-import slogo.compiler.types.VariableType;
 
 public class MakeUserInstructionCommand extends Command {
 
@@ -24,10 +21,11 @@ public class MakeUserInstructionCommand extends Command {
           vars.add(var.getName());
         }
       }
-      String commName = ((CommandType) args.get(0)).getName();
+      String commName = args.get(0).getName();
       memory.setUserDefinedCommand(commName, args.get(2));
       memory.setUserDefinedCommandVariables(commName, vars);
     } catch (CompilerException e) {
+      System.out.println("Compiler Exception in MakeUserCommand:" + e.toString());
       return 0;
     }
     return 1;

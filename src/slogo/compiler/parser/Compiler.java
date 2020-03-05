@@ -97,6 +97,7 @@ public class Compiler {
       return "" + comm.execute();
     } catch (CompilerException e) {
       //throw e;
+      e.printStackTrace();
       return e.toString();
     }
   }
@@ -129,7 +130,6 @@ public class Compiler {
     }
     comm = parse(input);
     if (!comm.isComplete()) {
-      //comm.recPrint(); //fixme
       throw new InvalidSyntaxException(
           String.format(errorMsgs.getString("IncompleteCommand"), input));
     }
@@ -157,14 +157,8 @@ public class Compiler {
     for (String word : input.split(getWhitespace())) {
       Command comm = getCommandFromString(word);
       if (defineFlag) {
-        if (comm instanceof CommandType) {
-          ((CommandType) comm).setBeingDefined(true);
-          //FIXME you're a bad person and you should feel bad
-          defineFlag = false;
-        } else {
-          throw new InvalidSyntaxException(
-              String.format(errorMsgs.getString("RedefineBuiltin"), word));
-        }
+        defineFlag = false;
+        markDefinition(comm, word);
       }
       if (comm.typeEquals("makeuserinstruction")) {
         defineFlag = true;
@@ -180,6 +174,16 @@ public class Compiler {
       }
     }
     return stack.getLast();
+  }
+
+  private void markDefinition(Command comm, String word) {
+    if (comm.typeEquals("commandtype")) {
+      comm.setIsComplete(true);
+      //FIXME you're a bad person and you should feel bad
+    } else {
+      throw new InvalidSyntaxException(
+          String.format(errorMsgs.getString("RedefineBuiltin"), word));
+    }
   }
 
   private Command collapseStack(ArrayDeque<Command> stack) {
