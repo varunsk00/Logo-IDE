@@ -27,8 +27,13 @@ import java.util.List;
 import java.util.Map;
 
 public class TurtleHabitat {
+    public static final int INFO_PANE_SIZE = 400;
+    public static final int TURTLE_LIST_WIDTH = 100;
+    public static final int BUTTON_HEIGHT = 30;
+    public static final int PICTURE_X_LOCATION = 200;
+    public static final int PICTURE_Y_LOCATION = 50;
+    public static final double PEN_WIDTH = 2.0;
     private Pane myTurtleHabitat;
-    private TurtleView turtle;
     private List<Polyline> myLines;
     private static double DEFAULT_TURTLE_WIDTH = 50.0;
     private static double DEFAULT_TURTLE_HEIGHT = 25.0;
@@ -38,7 +43,6 @@ public class TurtleHabitat {
 
     private double habitatWidth;
     private double habitatHeight;
-    private Button viewTurtles;
     Rectangle rec;
 
     public TurtleHabitat(double width, double height){
@@ -50,26 +54,19 @@ public class TurtleHabitat {
         habitatHeight = height;
         myLines = new ArrayList<>();
         changeSize(width, height);
-        createViewButton();
     }
 
-    private void createViewButton (){
-        Button button = new Button("View Turtles");
-        button.setOnAction(event -> viewTurtleInformation());
-        myTurtleHabitat.getChildren().add(button);
-    }
-
-    private void viewTurtleInformation(){
+    public void viewTurtleInformation(){
         Stage s = new Stage();
         Pane root = new Pane();
-        Scene sc = new Scene(root, 400, 400);
+        Scene sc = new Scene(root, INFO_PANE_SIZE, INFO_PANE_SIZE);
         ListView<Button> turtleView = new ListView<>();
         for (int turtleID: allTurtles.keySet()){
             Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event -> displayInformation(turtleID, root));
             turtleView.getItems().addAll(button);
         }
-        turtleView.setPrefSize(100, turtleView.getItems().size()*30);
+        turtleView.setPrefSize(TURTLE_LIST_WIDTH, turtleView.getItems().size()* BUTTON_HEIGHT);
         root.getChildren().addAll(turtleView);
         s.setScene(sc);
         s.show();
@@ -78,8 +75,8 @@ public class TurtleHabitat {
     private void displayInformation(int id, Pane p){
         p.getChildren().remove(rec);
         rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
-        rec.setLayoutX(200);
-        rec.setLayoutY(50);
+        rec.setLayoutX(PICTURE_X_LOCATION);
+        rec.setLayoutY(PICTURE_Y_LOCATION);
         rec.setFill(allTurtles.get(id).getFill());
         Text t = new Text(200, 100, "Position " + allTurtles.get(id));
         p.getChildren().addAll(rec, t);
@@ -136,7 +133,7 @@ public class TurtleHabitat {
         }
         pen.setStroke(penColor);
         //p.getStrokeDashArray().addAll(2d, 21d);
-        pen.setStrokeWidth(2.0);
+        pen.setStrokeWidth(PEN_WIDTH);
         if(turtle.isCleared()){
             for (Polyline p : myLines) {
                 p.getPoints().clear();
