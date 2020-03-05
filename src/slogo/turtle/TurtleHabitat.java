@@ -31,9 +31,9 @@ public class TurtleHabitat {
     private List<Polyline> myLines;
     private static double DEFAULT_TURTLE_WIDTH = 50.0;
     private static double DEFAULT_TURTLE_HEIGHT = 25.0;
-    private Map<String, TurtleView> allTurtles;
-    private Map<String, Double> lastx;
-    private Map<String, Double> lasty;
+    private Map<Integer, TurtleView> allTurtles;
+        private Map<Integer, Double> lastx;
+    private Map<Integer, Double> lasty;
 
     private double habitatWidth;
     private double habitatHeight;
@@ -41,9 +41,9 @@ public class TurtleHabitat {
     Rectangle rec;
 
     public TurtleHabitat(double width, double height){
-        allTurtles = new HashMap<String, TurtleView>();
-        lastx = new HashMap<String, Double>();
-        lasty = new HashMap<String, Double>();
+        allTurtles = new HashMap<Integer, TurtleView>();
+        lastx = new HashMap<Integer, Double>();
+        lasty = new HashMap<Integer, Double>();
         myTurtleHabitat = new Pane();
         habitatWidth = width;
         habitatHeight = height;
@@ -67,8 +67,8 @@ public class TurtleHabitat {
         Pane root = new Pane();
         Scene sc = new Scene(root, 400, 400);
         ListView<Button> turtleView = new ListView<>();
-        for (String turtleID: allTurtles.keySet()){
-            Button button = new Button(turtleID);
+        for (int turtleID: allTurtles.keySet()){
+            Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event -> displayInformation(turtleID, root));
             turtleView.getItems().addAll(button);
         }
@@ -78,7 +78,7 @@ public class TurtleHabitat {
         s.show();
     }
 
-    private void displayInformation(String id, Pane p){
+    private void displayInformation(int id, Pane p){
         p.getChildren().remove(rec);
         rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
         rec.setLayoutX(200);
@@ -87,7 +87,7 @@ public class TurtleHabitat {
         p.getChildren().add(rec);
     }
 
-    public void updateHabitat(String id, Turtle turtle){
+    public void updateHabitat(int id, Turtle turtle){
         TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
                 habitatWidth, habitatHeight);
         tempTurtle.setFill(tempTurtle.getImage());
@@ -111,7 +111,7 @@ public class TurtleHabitat {
         return myTurtleHabitat;
     }
 
-    public TurtleView getTurtle(String turtleID){
+    public TurtleView getTurtle(int turtleID){
         return allTurtles.get(turtleID);
     }
 
@@ -119,7 +119,7 @@ public class TurtleHabitat {
         myTurtleHabitat.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
-    public void penDraw(Color penColor, Point loc, String turtleID){
+    public void penDraw(Color penColor, Point loc, int turtleID){
         TurtleView turtle = allTurtles.get(turtleID);
         double x_coor = loc.getX();
         double y_coor = loc.getY();

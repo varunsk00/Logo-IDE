@@ -198,8 +198,6 @@ public class ParserController extends Application{
 
     private void startCompiler(){
         comp = new Compiler();
-        comp.addTurtle("Turtle 1", myTurtle1);
-        comp.addTurtle("Turtle 2", new Turtle());
     }
 
     //FIXME: BIG NO NO!! REMOVE PRINTSTACKTRACE IMMEDIATELY
@@ -218,7 +216,7 @@ public class ParserController extends Application{
     }
 
     private void step() throws IOException {
-        for (String turtleId: comp.getAllTurtleIDs()){
+        for (int turtleId: comp.getAllTurtleIDs()){
             myHabitat.updateHabitat(turtleId, comp.getTurtleByID(turtleId));
             if(comp.getTurtleByID(turtleId).isPenDown()){
                 for (Point loc: comp.getTurtleByID(turtleId).locationsList()) {
@@ -366,8 +364,8 @@ public class ParserController extends Application{
         Scene sc = new Scene(r, 200, 200);
         s.setScene(sc);
         s.show();
-        for (String turtleID: comp.getAllTurtleIDs()){
-            Button button = new Button(turtleID);
+        for (int turtleID: comp.getAllTurtleIDs()){
+            Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event1 -> myHabitat.getTurtle(turtleID).setPenColor(penColor));
             selectButtons.add(button);
         }
@@ -411,8 +409,8 @@ public class ParserController extends Application{
         }
         buttons.setImageOff();
 
-        for (String turtleID: comp.getAllTurtleIDs()){
-            Button button = new Button(turtleID);
+        for (int turtleID: comp.getAllTurtleIDs()){
+            Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event -> myHabitat.getTurtle(turtleID).setFill(new ImagePattern(new Image("file:" + dataFile.getPath()))));
             selectButtons.add(button);
         }
@@ -457,7 +455,7 @@ public class ParserController extends Application{
         myHabitat.getTurtleHabitat().setScaleY(sliders.getZoom()/3.0);
     }
 
-    private void updateImageSize(String turtleId){
+    private void updateImageSize(int turtleId){
         myHabitat.getTurtle(turtleId).setScaleX(sliders.getSizeValue()/3.0);
         myHabitat.getTurtle(turtleId).setScaleY(sliders.getSizeValue()/3.0);
     }
