@@ -10,11 +10,13 @@ import slogo.terminal.utils.history.HistoryBuffer;
 import slogo.terminal.utils.textLines.TestLine;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * TerminalController manages the communication between a TerminalView object and the compiler
  */
 public class TerminalController {
+    private static int STATUS_MAX = 5000;
     private TerminalView terminalView;
     private HistoryBuffer history;
     private Compiler compiler;
@@ -52,7 +54,7 @@ public class TerminalController {
         //update local memory
         history.addHistory(command, systemMessage);
 
-        status ++; // trigger the update of variable explore
+        updateStatus(); // trigger the update of variable explore
 
         history.addBufferEntry(command, 1); // add method now automatically resets the index
         appendToOutput(systemMessage);
@@ -132,7 +134,7 @@ public class TerminalController {
 
     private void clearLastHistoryEntry(){
         history.removeLastHistory();
-        status++; //to trigger the update of variable explore
+        updateStatus(); //to trigger the update of variable explore
     }
 
     private void appendToOutput(String str){
@@ -148,7 +150,7 @@ public class TerminalController {
         //update local memory
         history.addHistory(userInput, systemMessage);
 
-        status ++;
+        updateStatus();
         return systemMessage;
     }
 
@@ -158,5 +160,10 @@ public class TerminalController {
 
     private String getNextBufferEntry(){
         return history.getNextBufferEntry();
+    }
+
+    private void updateStatus(){
+        Random rand = new Random();
+        status = rand.nextInt(STATUS_MAX);
     }
 }
