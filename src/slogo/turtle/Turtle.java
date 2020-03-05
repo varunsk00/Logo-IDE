@@ -18,6 +18,9 @@ public class Turtle {
     private boolean oldPenDown;
     private boolean isActive;
     private int ID;
+    private int shapeIndex;
+    private int penColorIndex;
+    private double penSize;
 
     private List<Point> locations;
 
@@ -132,5 +135,29 @@ public class Turtle {
 
     public int getID() {
         return ID;
+    }
+
+    public int getShapeIndex() {
+        return shapeIndex;
+    }
+
+    public void setShapeIndex(int shapeIndex) {
+        this.shapeIndex = shapeIndex;
+    }
+
+    public int getPenColorIndex() {
+        return penColorIndex;
+    }
+
+    public void setPenColorIndex(int colorIndex) {
+        this.penColorIndex = colorIndex;
+    }
+
+    public void setPenSize(double psize) {
+        penSize = psize;
+    }
+
+    public double getPenSize() {
+        return penSize;
     }
 }
