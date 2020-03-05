@@ -33,9 +33,4 @@ public class ConstantType extends TypeCommand {
   public String toString() {
     return "const:" + value;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new ConstantType(declaration);
-  }
 }

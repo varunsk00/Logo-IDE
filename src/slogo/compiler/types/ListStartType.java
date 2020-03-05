@@ -23,9 +23,4 @@ public class ListStartType extends TypeCommand {
   public boolean isCompleteSub() {
     return args.size() > 0 && args.get(args.size() - 1) instanceof ListEndType; //FIXME instanceof
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new ListStartType(declaration);
-  }
 }

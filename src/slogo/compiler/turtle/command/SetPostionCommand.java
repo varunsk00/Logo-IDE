@@ -22,9 +22,4 @@ public class SetPostionCommand extends TurtleCommand {
     double dy = y - curry;
     return Math.pow(dx * dx + dy * dy, .5);
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new SetPostionCommand(declaration);
-  }
 }

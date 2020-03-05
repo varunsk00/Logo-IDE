@@ -18,9 +18,4 @@ public class LessThanCommand extends Command {
     return 0;
   }
 
-  @Override
-  public Command createCommand(String declaration) {
-    return new LessThanCommand(declaration);
-  }
-
 }

@@ -29,9 +29,4 @@ public class ForCommand extends LoopCommand {
         args.get(0).getArgs().size() == 5 &&
         args.get(0).getArgs().get(0) instanceof VariableType; //list has 4 args, 1st is variable
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new ForCommand(declaration);
-  }
 }

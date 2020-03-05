@@ -1,9 +1,11 @@
 package slogo.compiler.parser.memory;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import slogo.compiler.exceptions.StackUnderflowException;
 import slogo.compiler.parser.Command;
 import slogo.turtle.Turtle;
 
@@ -89,10 +91,13 @@ public class Memory {
     return turtleMemory.getTurtleByID(id);
   }
 
+  public void setCurrentTurtle(int id) {
+    turtleMemory.setCurrentTurtle(id);
+  }
+
   public Turtle getCurrentTurtle() {
     return turtleMemory.getCurrentTurtle();
   }
-
 
   public Collection<Integer> getAllTurtleIDs() {
     return turtleMemory.getAllTurtleIDs();
@@ -100,5 +105,21 @@ public class Memory {
 
   public Map<Integer, Turtle> getTurtleMapCopy() {
     return turtleMemory.getTurtleMapCopy();
+  }
+
+  public void pushTurtleStack(List<Integer> newActives)  {
+    turtleMemory.pushTurtleStack(newActives);
+  }
+
+  public void popTurtleStack() {
+    turtleMemory.popTurtleStack();
+  }
+
+  public void tellTurtleStack(List<Integer> newActives) {
+    turtleMemory.tellTurtleStack(newActives);
+  }
+
+  public List<Integer> getActiveTurtleIDs(){
+    return turtleMemory.getActiveTurtleIDs();
   }
 }

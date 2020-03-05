@@ -16,9 +16,4 @@ public class BackwardCommand extends TurtleCommand {
     turtle.move(-val);
     return val;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new BackwardCommand(declaration);
-  }
 }

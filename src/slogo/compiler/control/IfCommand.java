@@ -24,9 +24,4 @@ public class IfCommand extends Command {
   public boolean isCompleteSub() {
     return args.size() == desiredArgs && args.get(1) instanceof ListStartType; //FIXME instanceof
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new IfCommand(declaration);
-  }
 }

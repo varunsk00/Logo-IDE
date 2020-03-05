@@ -1,9 +1,8 @@
 package slogo.compiler.turtle.query;
 
 import slogo.compiler.parser.Command;
-import slogo.compiler.turtle.TurtleCommand;
 
-public class HeadingCommand extends TurtleCommand {
+public class HeadingCommand extends TurtleQuery {
 
   public HeadingCommand(String declaration) {
     super(declaration);
@@ -13,10 +12,5 @@ public class HeadingCommand extends TurtleCommand {
   @Override
   public double executeTurtle() {
     return turtle.getHeading();
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new HeadingCommand(declaration);
   }
 }

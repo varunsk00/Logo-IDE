@@ -15,9 +15,4 @@ public class RandomCommand extends Command {
     Random rand = new Random();
     return rand.nextDouble() * args.get(0).execute();
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new RandomCommand(declaration);
-  }
 }

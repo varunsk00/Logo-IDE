@@ -1,5 +1,6 @@
 package slogo.compiler.parser;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -59,7 +60,16 @@ public abstract class Command {
     return args.size()==desiredArgs;
   }
 
-  public abstract Command createCommand(String declaration);
+  public Command createCommand(String declaration){
+    try {
+      return this.getClass().getConstructor(String.class).newInstance(declaration);
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+      //do nothing
+      //should never happen
+      System.out.println("error in creating command "+getClass());
+    }
+    return null;
+  }
 
   public boolean isComplete() {
     for (Command c : args) {

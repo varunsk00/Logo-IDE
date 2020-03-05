@@ -23,11 +23,6 @@ public class VariableType extends TypeCommand {
   }
 
   @Override
-  public Command createCommand(String declaration) {
-    return new VariableType(declaration);
-  }
-
-  @Override
   public String toString() {
     return "var:" + name;
   }

@@ -1,9 +1,8 @@
 package slogo.compiler.turtle.query;
 
 import slogo.compiler.parser.Command;
-import slogo.compiler.turtle.TurtleCommand;
 
-public class IsPenDownCommand extends TurtleCommand {
+public class IsPenDownCommand extends TurtleQuery {
 
   public IsPenDownCommand(String declaration) {
     super(declaration);
@@ -17,10 +16,5 @@ public class IsPenDownCommand extends TurtleCommand {
       return 1;
     }
     return 0;
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new IsPenDownCommand(declaration);
   }
 }

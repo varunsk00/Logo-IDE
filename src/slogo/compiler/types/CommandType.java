@@ -47,11 +47,6 @@ public class CommandType extends TypeCommand {
     return beingDefined || (args.size() == desiredArgs);
   }
 
-  @Override
-  public Command createCommand(String declaration) {
-    return new CommandType(declaration);
-  }
-
   public String getName() {
     return name;
   }

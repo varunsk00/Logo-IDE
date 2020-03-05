@@ -18,9 +18,4 @@ public class SetTowardsCommand extends TurtleCommand {
     turtle.towards(x, y);
     return turtle.getHeading() - currentHead;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new SetTowardsCommand(declaration);
-  }
 }

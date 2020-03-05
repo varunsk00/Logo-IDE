@@ -28,9 +28,4 @@ public class IfElseCommand extends Command {
         args.get(1) instanceof ListStartType &&
         args.get(2) instanceof ListStartType; //FIXME instanceof
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new IfElseCommand(declaration);
-  }
 }

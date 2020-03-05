@@ -13,9 +13,4 @@ public class MinusCommand extends Command {
   public double execute() {
     return -args.get(0).execute();
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new MinusCommand(declaration);
-  }
 }

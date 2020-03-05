@@ -15,9 +15,4 @@ public class HideTurtleCommand extends TurtleCommand {
     turtle.showTurtle(false);
     return 0;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new HideTurtleCommand(declaration);
-  }
 }

@@ -19,9 +19,4 @@ public class ClearScreenCommand extends TurtleCommand {
     turtle.setHeading(0);
     return Math.pow(x * x + y * y, .5);
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new ClearScreenCommand(declaration);
-  }
 }

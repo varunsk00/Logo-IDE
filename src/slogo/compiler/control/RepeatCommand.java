@@ -20,9 +20,4 @@ public class RepeatCommand extends LoopCommand {
   public boolean isCompleteSub() {
     return args.size() == desiredArgs && args.get(1) instanceof ListStartType; //FIXME instanceof
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new RepeatCommand(declaration);
-  }
 }

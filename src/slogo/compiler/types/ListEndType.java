@@ -19,9 +19,4 @@ public class ListEndType extends TypeCommand {
   public boolean isCompleteSub() {
     return true;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new ListEndType(declaration);
-  }
 }

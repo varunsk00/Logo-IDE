@@ -27,9 +27,4 @@ public class DoTimesCommand extends LoopCommand {
         args.get(0).getArgs().size() == 3 &&
         args.get(0).getArgs().get(0) instanceof VariableType; //list has two args, 1st is variable
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new DoTimesCommand(declaration);
-  }
 }

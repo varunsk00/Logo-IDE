@@ -13,9 +13,4 @@ public class ArcTangentCommand extends Command {
   public double execute() {
     return Math.toDegrees(Math.atan(args.get(0).execute()));
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new ArcTangentCommand(declaration);
-  }
 }

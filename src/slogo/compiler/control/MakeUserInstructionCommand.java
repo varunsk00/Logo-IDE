@@ -41,11 +41,6 @@ public class MakeUserInstructionCommand extends Command {
         args.get(2) instanceof ListStartType;
   }
 
-  @Override
-  public Command createCommand(String declaration) {
-    return new MakeUserInstructionCommand(declaration);
-  }
-
   /*@Override
   public void addArg(Command c) {
     super.addArg(c);

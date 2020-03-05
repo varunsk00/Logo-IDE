@@ -15,10 +15,4 @@ public class PenDownCommand extends TurtleCommand {
     turtle.setPenDown(true);
     return 1;
   }
-
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new PenDownCommand(declaration);
-  }
 }

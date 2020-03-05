@@ -16,9 +16,4 @@ public class RightCommand extends TurtleCommand {
     turtle.rotate(val);
     return val;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new RightCommand(declaration);
-  }
 }

@@ -17,9 +17,4 @@ public class SetHeadingCommand extends TurtleCommand {
     turtle.setHeading(val);
     return val - currentHead;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new SetHeadingCommand(declaration);
-  }
 }

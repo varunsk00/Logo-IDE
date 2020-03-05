@@ -17,9 +17,4 @@ public class EqualCommand extends Command {
     }
     return 0;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new EqualCommand(declaration);
-  }
 }

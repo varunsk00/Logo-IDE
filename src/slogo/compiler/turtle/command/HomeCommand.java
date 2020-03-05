@@ -18,9 +18,4 @@ public class HomeCommand extends TurtleCommand {
     turtle.setHeading(0);
     return Math.pow(x * x + y * y, 0.5);
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new HomeCommand(declaration);
-  }
 }

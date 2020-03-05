@@ -15,9 +15,4 @@ public class PenUpCommand extends TurtleCommand {
     turtle.setPenDown(false);
     return 0;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new PenUpCommand(declaration);
-  }
 }

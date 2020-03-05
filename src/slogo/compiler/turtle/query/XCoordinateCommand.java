@@ -1,9 +1,8 @@
 package slogo.compiler.turtle.query;
 
 import slogo.compiler.parser.Command;
-import slogo.compiler.turtle.TurtleCommand;
 
-public class XCoordinateCommand extends TurtleCommand {
+public class XCoordinateCommand extends TurtleQuery {
 
   public XCoordinateCommand(String declaration) {
     super(declaration);
@@ -13,10 +12,5 @@ public class XCoordinateCommand extends TurtleCommand {
   @Override
   public double executeTurtle() {
     return turtle.getXLocation();
-  }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new XCoordinateCommand(declaration);
   }
 }

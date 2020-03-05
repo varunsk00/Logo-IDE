@@ -1,5 +1,6 @@
 package slogo.compiler.turtle;
 
+import java.util.List;
 import slogo.compiler.parser.Command;
 import slogo.turtle.Turtle;
 
@@ -13,8 +14,14 @@ public abstract class TurtleCommand extends Command {
 
   @Override
   public double execute() {
-    turtle = memory.getCurrentTurtle();
-    return executeTurtle();
+    List<Integer> actives = memory.getActiveTurtleIDs();
+    double ret = 0;
+    for (int i : actives) {
+      memory.setCurrentTurtle(i);
+      turtle = memory.getCurrentTurtle();
+      ret = executeTurtle();
+    }
+    return ret;
   }
 
   public abstract double executeTurtle();

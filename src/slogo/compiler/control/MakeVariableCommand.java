@@ -23,9 +23,4 @@ public class MakeVariableCommand extends Command {
     return args.size() == desiredArgs && args
         .get(0) instanceof VariableType; //FIXME refactor args to remove instanceof?
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new MakeVariableCommand(declaration);
-  }
 }

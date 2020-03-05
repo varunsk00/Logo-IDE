@@ -13,9 +13,4 @@ public class PiCommand extends Command {
   public double execute() {
     return Math.PI;
   }
-
-  @Override
-  public Command createCommand(String declaration) {
-    return new PiCommand(declaration);
-  }
 }
