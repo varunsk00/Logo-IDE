@@ -15,9 +15,6 @@ public class VariablesTabPaneView extends TabPane {
     private final static String TAB_NAMES = ".tab_titles";
     private final static String CSS_FILEPATH = "slogo/resources/styleSheets/variable_table.css";
 
-    private double width;
-    private double height;
-
     private String currentLanguage;
     private List<Map.Entry<String, AutoTableView>> tableDict;
 
@@ -39,7 +36,7 @@ public class VariablesTabPaneView extends TabPane {
      * @param isKey whether the key axis is the input area
      */
     public void addEntry(String type, String key, String value, Boolean isKey){
-        getEntry(tableDict, type).addEntry(key, value, isKey);
+        Objects.requireNonNull(getEntry(tableDict, type)).addEntry(key, value, isKey);
     }
 
     /**
@@ -47,7 +44,7 @@ public class VariablesTabPaneView extends TabPane {
      * @param type table type ("DEFINED", "COMMAND", "VAR")
      */
     public void clearAll(String type){
-        getEntry(tableDict, type).clearAll();
+        Objects.requireNonNull(getEntry(tableDict, type)).clearAll();
     }
 
     /**
@@ -56,8 +53,6 @@ public class VariablesTabPaneView extends TabPane {
      * @param height height
      */
     public void setSize(double width, double height){
-        this.width = width;
-        this.height = height;
         setPrefSize(width, height);
     }
 
@@ -93,7 +88,7 @@ public class VariablesTabPaneView extends TabPane {
         tableDict = new ArrayList<>();
         List<Map.Entry<String, String>> tabDict = loadTabNameDict();
         for (Map.Entry<String, String> tab: tabDict){
-            AutoTableView newTable = new AutoTableView(getTabWidth(), getTabHeight(), tab.getKey());
+            AutoTableView newTable = new AutoTableView(tab.getKey());
             initializeTab(tab.getValue(), tab.getKey(), newTable);
             tableDict.add(new AbstractMap.SimpleEntry<>(tab.getKey(), newTable));
         }
@@ -133,7 +128,6 @@ public class VariablesTabPaneView extends TabPane {
     }
 
     private String getResourceAddress(){
-        System.out.println(String.format("%s%s%s", LOCAL_RESOURCE_PATH, currentLanguage, TAB_NAMES));
         return String.format("%s%s%s", LOCAL_RESOURCE_PATH, currentLanguage, TAB_NAMES);
     }
 
@@ -144,14 +138,6 @@ public class VariablesTabPaneView extends TabPane {
             }
         }
         return null;
-    }
-
-    private double getTabWidth(){
-        return width;
-    }
-
-    private double getTabHeight(){
-        return height;
     }
 
 }

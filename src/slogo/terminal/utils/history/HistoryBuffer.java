@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class HistoryBuffer{
     private static int BUFFER_LIMIT = 20;
-    private static String NULL_BUFFER_ENTRY = "";
     private final String USER_INPUT_CODE = "U@@U";
 
     private String[] buffer;
@@ -119,7 +118,7 @@ public class HistoryBuffer{
     }
 
     private String handleEmptyBuffer(){
-        return NULL_BUFFER_ENTRY;
+        return "";
     }
 
     private int moveIndexBy(int inc){
