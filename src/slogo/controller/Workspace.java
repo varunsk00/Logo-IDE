@@ -21,6 +21,7 @@ public class Workspace extends BorderPane {
     private double HEADER_HEIGHT = 80;
     private double TABPANE_HEIGHT = 150;
     private double TABPANE_WIDTH;
+    private double MARGIN = 30;
 
     private Compiler comp;
 
@@ -66,7 +67,7 @@ public class Workspace extends BorderPane {
         HABITAT_WIDTH = scene_width/2;
         HABITAT_HEIGHT = scene_height - HEADER_HEIGHT - TABPANE_HEIGHT;
         TERMINAL_WIDTH = scene_width/2;
-        TERMINAL_HEIGHT = scene_height - HEADER_HEIGHT - TABPANE_HEIGHT;
+        TERMINAL_HEIGHT = scene_height - HEADER_HEIGHT - TABPANE_HEIGHT - MARGIN;
     }
     private void setTerminalView() {
         myTerminalView = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
