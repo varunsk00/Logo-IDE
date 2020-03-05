@@ -1,7 +1,5 @@
 package slogo.compiler.turtle.query;
 
-import slogo.compiler.parser.Command;
-
 public class IsPenDownCommand extends TurtleQuery {
 
   public IsPenDownCommand(String declaration) {

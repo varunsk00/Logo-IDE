@@ -18,7 +18,7 @@ public class TellCommand extends TurtleQuery {
     double ret = 0;
     ArrayList<Integer> actives = new ArrayList<>();
     List<Command> listargs = args.get(0).getArgs();
-    for (int i = 0; i < listargs.size()-1; i++) {
+    for (int i = 0; i < listargs.size() - 1; i++) {
       ret = (int) listargs.get(i).execute();
       actives.add((int) ret);
     }
@@ -27,7 +27,7 @@ public class TellCommand extends TurtleQuery {
   }
 
   @Override
-  public boolean isCompleteSub(){
+  public boolean isCompleteSub() {
     return args.size() == desiredArgs && args.get(0) instanceof ListStartType;
   }
 }

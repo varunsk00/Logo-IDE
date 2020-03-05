@@ -1,7 +1,5 @@
 package slogo.compiler.types;
 
-import slogo.compiler.parser.Command;
-
 public class ListEndType extends TypeCommand {
 
   public ListEndType(String declaration) {

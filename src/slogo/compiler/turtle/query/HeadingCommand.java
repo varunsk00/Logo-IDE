@@ -1,7 +1,5 @@
 package slogo.compiler.turtle.query;
 
-import slogo.compiler.parser.Command;
-
 public class HeadingCommand extends TurtleQuery {
 
   public HeadingCommand(String declaration) {

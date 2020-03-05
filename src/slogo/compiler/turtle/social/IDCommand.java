@@ -1,7 +1,6 @@
 package slogo.compiler.turtle.social;
 
 import slogo.compiler.turtle.query.TurtleQuery;
-import slogo.compiler.types.ListStartType;
 
 public class IDCommand extends TurtleQuery {
 

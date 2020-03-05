@@ -47,7 +47,7 @@ public class Compiler {
     initAllCommands();
   }
 
-  public Compiler (Compiler other) {
+  public Compiler(Compiler other) {
     myTypes = new ArrayList<>(other.myTypes);
     myCommands = new ArrayList<>(other.myCommands);
     memory = new Memory(other.memory);
@@ -91,7 +91,7 @@ public class Compiler {
         throw new InvalidSyntaxException(
             String.format(errorMsgs.getString("IncompleteCommand"), input));
       }
-      if (comm.containsDefinition()){
+      if (comm.containsDefinition()) {
         comm = rerunParsing(comm, input);
       }
       return "" + comm.execute();

@@ -1,6 +1,5 @@
 package slogo.compiler.control;
 
-import slogo.compiler.parser.Command;
 import slogo.compiler.types.ListStartType;
 import slogo.compiler.types.VariableType;
 

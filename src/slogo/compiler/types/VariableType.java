@@ -1,7 +1,5 @@
 package slogo.compiler.types;
 
-import slogo.compiler.parser.Command;
-
 public class VariableType extends TypeCommand {
 
   private String name;

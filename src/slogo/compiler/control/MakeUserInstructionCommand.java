@@ -1,8 +1,8 @@
 package slogo.compiler.control;
 
 import java.util.ArrayList;
-import slogo.compiler.parser.Command;
 import slogo.compiler.exceptions.CompilerException;
+import slogo.compiler.parser.Command;
 import slogo.compiler.types.CommandType;
 import slogo.compiler.types.ListStartType;
 import slogo.compiler.types.VariableType;

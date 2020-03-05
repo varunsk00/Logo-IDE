@@ -56,17 +56,17 @@ public abstract class Command {
     errorMsgs = msgs;
   }
 
-  public boolean isCompleteSub(){
-    return args.size()==desiredArgs;
+  public boolean isCompleteSub() {
+    return args.size() == desiredArgs;
   }
 
-  public Command createCommand(String declaration){
+  public Command createCommand(String declaration) {
     try {
       return this.getClass().getConstructor(String.class).newInstance(declaration);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
       //do nothing
       //should never happen
-      System.out.println("error in creating command "+getClass());
+      System.out.println("error in creating command " + getClass());
     }
     return null;
   }
@@ -133,7 +133,7 @@ public abstract class Command {
     if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
       ret++;
     }
-    for (Command c: args) {
+    for (Command c : args) {
       ret += c.countDefinitions();
     }
     return ret;

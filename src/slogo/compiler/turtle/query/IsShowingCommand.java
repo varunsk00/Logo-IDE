@@ -1,7 +1,5 @@
 package slogo.compiler.turtle.query;
 
-import slogo.compiler.parser.Command;
-
 public class IsShowingCommand extends TurtleQuery {
 
   public IsShowingCommand(String declaration) {

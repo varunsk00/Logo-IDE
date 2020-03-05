@@ -42,7 +42,8 @@ public class TurtleMemory {
   public Turtle getTurtleByID(int id) {
     Turtle ret = turtleMap.getOrDefault(id, null);
     if (ret == null) {
-      throw new InvalidTurtleException(String.format(errorMsgs.getString("UnknownTurtle"), ""+id));
+      throw new InvalidTurtleException(
+          String.format(errorMsgs.getString("UnknownTurtle"), "" + id));
     }
     return ret;
   }
@@ -51,23 +52,23 @@ public class TurtleMemory {
     return getTurtleByID(currentTurtleID);
   }
 
-  public int getCurrentTurtleID() {
-    return currentTurtleID;
-  }
-
   public void setCurrentTurtle(int id) {
     currentTurtleID = id;
+  }
+
+  public int getCurrentTurtleID() {
+    return currentTurtleID;
   }
 
   public Collection<Integer> getAllTurtleIDs() {
     return turtleMap.keySet();
   }
 
-  public List<Integer> getActiveTurtleIDs(){
+  public List<Integer> getActiveTurtleIDs() {
     return new ArrayList<>(turtleIDStack.peek());
   }
 
-  public void pushTurtleStack(List<Integer> newActives)  {
+  public void pushTurtleStack(List<Integer> newActives) {
     turtleIDStack.push(newActives);
     updateTurtleActives();
   }
@@ -85,8 +86,8 @@ public class TurtleMemory {
 
   public void tellTurtleStack(List<Integer> newActives) {
     turtleIDStack.pop();
-    for (int i: newActives) {
-      if (turtleMap.getOrDefault(i, null)==null) {
+    for (int i : newActives) {
+      if (turtleMap.getOrDefault(i, null) == null) {
         addTurtle(i);
       }
       setCurrentTurtle(i);
@@ -96,7 +97,7 @@ public class TurtleMemory {
   }
 
   private void updateTurtleActives() {
-    for(Entry<Integer, Turtle> e: turtleMap.entrySet()){
+    for (Entry<Integer, Turtle> e : turtleMap.entrySet()) {
       e.getValue().setActive(turtleIDStack.peek().contains(e.getKey()));
       //set each turtle's active value to whether or not the top layer of the stack contains its id
     }
