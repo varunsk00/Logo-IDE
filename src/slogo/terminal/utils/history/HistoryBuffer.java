@@ -94,16 +94,13 @@ public class HistoryBuffer{
     }
 
     private String handleEmptyBuffer(){
-        //System.out.println("Out of Bounds in Buffer");
         return NULL_BUFFER_ENTRY;
     }
 
     private int moveIndexBy(int inc){
-        //index = (index+inc)%currentSize;
         index += inc;
         if (index >= currentSize) index-= currentSize;
         if (index < 0) index += currentSize;
-        //System.out.println(index);
         return index;
     }
 
