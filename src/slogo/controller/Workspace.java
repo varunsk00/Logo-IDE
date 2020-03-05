@@ -29,8 +29,8 @@ public class Workspace extends BorderPane {
          startCompiler();
          setPrefWidth(width);
          setPrefHeight(height);
-         setTerminalView();
          setTurtleHabitat();
+         setTerminalView();
     }
 
     public int getStatus(){
