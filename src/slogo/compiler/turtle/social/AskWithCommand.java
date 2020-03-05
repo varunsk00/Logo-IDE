@@ -17,7 +17,7 @@ public class AskWithCommand extends AskCommand {
       memory.setCurrentTurtle(i);
       int ret = (int)c.execute();
       if (ret!=0) {
-        actives.add(ret);
+        actives.add(i);
       }
     }
     return actives;

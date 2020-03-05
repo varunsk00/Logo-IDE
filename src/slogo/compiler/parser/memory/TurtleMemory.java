@@ -69,6 +69,11 @@ public class TurtleMemory {
   }
 
   public void pushTurtleStack(List<Integer> newActives) {
+    for (int i: newActives) {
+      if (!turtleMap.keySet().contains(i)){
+        throw new InvalidTurtleException(String.format(errorMsgs.getString("UnknownTurtle"), "" + i));
+      }
+    }
     turtleIDStack.push(newActives);
     updateTurtleActives();
   }
