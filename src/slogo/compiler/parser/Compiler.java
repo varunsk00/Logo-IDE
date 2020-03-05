@@ -152,13 +152,7 @@ public class Compiler {
     ArrayDeque<Command> stack = new ArrayDeque<>();
     for (String word : input.split(getWhitespace())) {
       Command comm = getCommandFromString(word);
-      if (defineFlag) {
-        defineFlag = false;
-        markDefinition(comm, word);
-      }
-      if (comm.typeEquals("makeuserinstruction")) {
-        defineFlag = true;
-      }
+      defineFlag = checkRecursion(defineFlag, comm, word);
       stack.push(comm);
       Command ret = collapseStack(stack);
       if (ret != null) {
@@ -170,6 +164,17 @@ public class Compiler {
       }
     }
     return stack.getLast();
+  }
+
+  private boolean checkRecursion(boolean defineFlag, Command comm, String word) {
+    if (defineFlag) {
+      defineFlag = false;
+      markDefinition(comm, word);
+    }
+    if (comm.typeEquals("makeuserinstruction")) {
+      defineFlag = true;
+    }
+    return defineFlag;
   }
 
   private void markDefinition(Command comm, String word) {
