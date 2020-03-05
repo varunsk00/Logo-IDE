@@ -6,13 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.scene.web.HTMLEditorSkin;
 import slogo.compiler.parser.Command;
 
 public class CommandMemory {
 
-  private Map<String, Command> userDefinedCommandMap = new HashMap<>();
-  private Map<String, List<String>> userDefinedCommandVariablesMap = new HashMap<>();
+  private Map<String, Command> userDefinedCommandMap;
+  private Map<String, List<String>> userDefinedCommandVariablesMap;
   private ResourceBundle errorMsgs;
+
+  public CommandMemory() {
+    userDefinedCommandMap = new HashMap<>();
+    userDefinedCommandVariablesMap = new HashMap<>();
+  }
 
   public void setErrorMsgs(ResourceBundle msgs) {
     errorMsgs = msgs;

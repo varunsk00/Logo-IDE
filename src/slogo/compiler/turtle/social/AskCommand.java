@@ -1,7 +1,6 @@
 package slogo.compiler.turtle.social;
 
 import java.util.List;
-import slogo.compiler.types.ListStartType;
 
 public class AskCommand extends TurtleCreationCommand {
 
@@ -22,7 +21,7 @@ public class AskCommand extends TurtleCreationCommand {
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs &&
-        args.get(0) instanceof ListStartType &&
-        args.get(1) instanceof ListStartType;
+        args.get(0).typeEquals("liststart") &&
+        args.get(1).typeEquals("liststart");
   }
 }

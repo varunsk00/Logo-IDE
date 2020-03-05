@@ -6,9 +6,7 @@ import slogo.compiler.parser.Command;
 
 public class CommandType extends TypeCommand {
 
-  private String name;
   private List<String> variables;
-  private boolean beingDefined = false; //fixme
 
   public CommandType(String declaration) {
     super(declaration);
@@ -19,7 +17,7 @@ public class CommandType extends TypeCommand {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     memory.pushMemoryStack();
     for (int i = 0; i < variables.size(); i++) {
       memory.setVariable(variables.get(i), args.get(i).execute());
@@ -44,14 +42,6 @@ public class CommandType extends TypeCommand {
   public boolean isCompleteSub() {
     variables = memory.getCommandVariables(name);
     desiredArgs = variables.size();
-    return beingDefined || (args.size() == desiredArgs);
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setBeingDefined(boolean def) {
-    beingDefined = def; //fixme
+    return args.size() == desiredArgs;
   }
 }

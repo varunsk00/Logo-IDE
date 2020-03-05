@@ -11,7 +11,7 @@ public class QuotientCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     double denom = args.get(1).execute();
     if (denom == 0) {
       throw new InvalidArithmeticException(errorMsgs.getString("DivideByZero"));

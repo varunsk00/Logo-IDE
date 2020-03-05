@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import slogo.compiler.control.MakeUserInstructionCommand;
 import slogo.compiler.parser.memory.Memory;
 
 public abstract class Command {
@@ -14,8 +13,11 @@ public abstract class Command {
   protected Memory memory;
   protected ArrayList<Command> args;
   protected ResourceBundle errorMsgs;
-  protected boolean executed = false; //FIXME only used by makeuserinstruction, can't be trusted
+  protected boolean executed = false;
   protected int desiredArgs;
+  protected String name;
+  protected String type;
+  private boolean isComplete;
 
   public Command(String declaration) {
     args = new ArrayList<>();
@@ -23,9 +25,37 @@ public abstract class Command {
       return;
     }
     register();
+    setType();
+    setName();
   }
 
-  public abstract double execute();
+  private void setType() {
+    String[] names = getClass().toString().split("\\.");
+    type = names[names.length - 1];
+  }
+
+  public boolean typeEquals(String typeCheck) {
+    return type.toLowerCase().contains(typeCheck.toLowerCase());
+  }
+
+  private void setName() {
+    name = type;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public double execute(){
+    executed = true;
+    return executeCommand();
+  }
+
+  /**
+   * Runs and executes the commands, returning its double return value
+   * @return the double return value
+   */
+  public abstract double executeCommand();
 
   public void register() {
     String className = findClass();
@@ -77,18 +107,15 @@ public abstract class Command {
         return false;
       }
     }
-    return isCompleteSub();
+    return isComplete || isCompleteSub();
+  }
+
+  public void setIsComplete(boolean comp) {
+    isComplete = comp;
   }
 
   public void addArg(Command arg) {
     args.add(arg);
-  }
-
-  public void addArg(Command arg, int n) {
-    while (args.size() < n) {
-      args.add(null);
-    }
-    args.set(n, arg);
   }
 
   public List<Command> getArgs() {
@@ -117,7 +144,7 @@ public abstract class Command {
   }
 
   public boolean containsDefinition() {
-    if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
+    if (typeEquals("makeuserinstruction")) {
       return true;
     }
     for (Command c : args) {
@@ -128,19 +155,8 @@ public abstract class Command {
     return false;
   }
 
-  public int countDefinitions() {
-    int ret = 0;
-    if (this instanceof MakeUserInstructionCommand) { //fixme bad bad bad
-      ret++;
-    }
-    for (Command c : args) {
-      ret += c.countDefinitions();
-    }
-    return ret;
-  }
-
   public Command findFirstDef() {
-    if (this instanceof MakeUserInstructionCommand && !executed) { //fixme bad bad bad
+    if (typeEquals("makeuserinstruction") && !executed) { //fixme bad bad bad
       return this;
     }
     for (Command c : args) {

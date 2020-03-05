@@ -32,6 +32,7 @@ import slogo.variable_panels.VariablesTabPaneView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -225,6 +226,10 @@ public class ParserController extends Application{
         if(buttons.getImageStatus()){
             handleImageFileChooser();
         }
+        if(buttons.isViewAllTurtles()){
+            currentWorkspace.getHabitat().viewTurtleInformation();
+            buttons.setViewAllTurtlesOff();
+        }
         setGlobalBackground(backgroundColor);
         updateTabPanes();
     }
@@ -387,7 +392,6 @@ public class ParserController extends Application{
             return;
         }
         buttons.setImageOff();
-
         for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
             Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event -> currentWorkspace.getHabitat().getTurtle(turtleID).setFill(new ImagePattern(new Image("file:" + dataFile.getPath()))));

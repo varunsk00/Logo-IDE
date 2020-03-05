@@ -10,7 +10,7 @@ public class SineCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return Math.sin(Math.toRadians(args.get(0).execute()));
   }
 }

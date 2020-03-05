@@ -22,6 +22,7 @@ public class ButtonController {
     private boolean penColorPressed;
     private boolean backgroundColorPressed;
     private boolean helpPress;
+    private boolean viewAllTurtles;
     private String languagePressed;
     private String helpPressed;
 
@@ -39,6 +40,7 @@ public class ButtonController {
         this.penColorPressed = false;
         this.backgroundColorPressed = false;
         this.helpPress = false;
+        this.viewAllTurtles = false;
         this.helpPressed = myResources.getString("HelpButton");
         this.languagePressed = myResources.getString("LanguageButton");
         renderButtons();
@@ -63,6 +65,8 @@ public class ButtonController {
     public boolean getBackgroundColorStatus() {
         return backgroundColorPressed;
     }
+
+    public boolean isViewAllTurtles() {return viewAllTurtles;}
 
     public String getHelpStatus() {
         return helpPressed;
@@ -100,12 +104,15 @@ public class ButtonController {
         backgroundColorPressed = false;
     }
 
+    public void setViewAllTurtlesOff() {viewAllTurtles = false;}
+
     private void renderButtons() {
         myButtons = new HBox();
         Button loadButton = makeButton("LoadButton", event -> loadFilePressed = true);
         Button imageButton = makeButton("ImageButton", event -> turtleImagePressed = true);
         Button penButton = makeButton("PenButton", event -> penColorPressed = true);
         Button backgroundButton = makeButton("BackgroundButton", event -> backgroundColorPressed = true);
+        Button viewAllTurtlesButton = makeButton("ViewTurtle", event -> viewAllTurtles = true);
         ComboBox langMenu = makeDropDown("LanguageButton", languages);
 
         ComboBox helpMenu = new ComboBox();
@@ -113,12 +120,13 @@ public class ButtonController {
         helpMenu.getItems().addAll(helpPrompts);
         helpMenu.setOnAction(event -> this.helpPressed = (String) helpMenu.getValue());
 
-        myButtons.getChildren().addAll(loadButton, imageButton, penButton, backgroundButton, helpMenu, langMenu);
+        myButtons.getChildren().addAll(loadButton, imageButton, penButton, backgroundButton, helpMenu, langMenu, viewAllTurtlesButton);
 
         formatButton(loadButton);
         formatButton(imageButton);
         formatButton(penButton);
         formatButton(backgroundButton);
+        formatButton(viewAllTurtlesButton);
         formatBox(helpMenu);
         formatBox(langMenu);
     }

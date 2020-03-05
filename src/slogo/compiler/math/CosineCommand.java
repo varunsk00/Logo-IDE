@@ -10,7 +10,7 @@ public class CosineCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return Math.cos(Math.toRadians(args.get(0).execute()));
   }
 }
