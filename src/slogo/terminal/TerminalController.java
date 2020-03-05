@@ -1,13 +1,15 @@
 package slogo.terminal;
 
-import javafx.scene.Node;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
 import slogo.compiler.parser.Compiler;
 import slogo.terminal.utils.history.HistoryBuffer;
 import slogo.terminal.utils.textLines.TestLine;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * TerminalController manages the communication between a TerminalView object and the compiler
@@ -16,11 +18,7 @@ public class TerminalController {
     private TerminalView terminalView;
     private HistoryBuffer history;
     private Compiler compiler;
-    private int status;
-
-    private List<String> commands;
-    private List<String> messages;
-    private static int cnt;
+    private static int status;
 
     /**
      * Constructor
@@ -28,11 +26,8 @@ public class TerminalController {
      */
     public TerminalController(TerminalView view){
         this.terminalView = view;
-        commands = new ArrayList<>();
-        messages = new ArrayList<>();
         this.history = new HistoryBuffer();
         status = 0;
-        cnt = 0;
         keyBinding();
     }
 
@@ -55,32 +50,31 @@ public class TerminalController {
         String systemMessage = compiler.execute(command);
 
         //update local memory
-        commands.add(String.format("%d: %s", cnt++, command));
-        messages.add(systemMessage);
+        history.addHistory(command, systemMessage);
 
         status ++; // trigger the update of variable explore
 
-        history.addEntry(command, 1); // add method now automatically resets the index
+        history.addBufferEntry(command, 1); // add method now automatically resets the index
         appendToOutput(systemMessage);
     }
 
     public void setExternals(Compiler c) {this.compiler = c;}
 
-    public List<String> getAllCommands(){return commands;}
+    public List<String> getAllCommands(){return history.getCommands();}
 
-    public List<String> getAllMessages(){return messages;}
+    public List<String> getAllMessages(){return history.getMessages();}
 
     public int getStatus(){return status;}
 
     private void keyBinding(){
         //set the focus to the scroll bar
         terminalView.getOutputPanel().addEventHandler(MouseEvent.ANY, e-> {
-            Node nodeVertical = terminalView.getOutputPanel().lookup(".scroll-bar:vertical");
-           if (nodeVertical instanceof ScrollBar){
-               final ScrollBar bar = (ScrollBar) nodeVertical;
-               bar.requestFocus();
-           }
+            final ScrollBar barVertical = (ScrollBar) terminalView.getOutputPanel().lookup(".scroll-bar:vertical");
+            barVertical.requestFocus();
         });
+
+        //final ScrollBar barHorizontal = (ScrollBar) terminalView.getInputPanel().lookup(".scroll-bar:horizontal");
+        //barHorizontal.setValue(barHorizontal.getMax());
 
         // Control+C: copy the selected text
         //KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
@@ -108,7 +102,7 @@ public class TerminalController {
                 terminalView.getInputPanel().setPositionCaretAtEnding();
 
                 appendToOutput(terminalView.getCurrentInput());
-                history.addEntry(terminalView.getCurrentInput(), 1); // add method now automatically resets the index
+                history.addBufferEntry(terminalView.getCurrentInput(), 1); // add method now automatically resets the index
                 appendToOutput(sendCurrentInput());
 
                 terminalView.resetInputPanel();
@@ -129,22 +123,15 @@ public class TerminalController {
             }
             else if (CtrlZ.match(keyEvent)){
                 terminalView.getOutputPanel().undoEntry();
-                clearLocalHistoryEntry();
-            }
-
-            Node nodeHorizontal = terminalView.getInputPanel().lookup(".scroll-bar:horizontal");
-            if (nodeHorizontal instanceof ScrollBar){
-                final ScrollBar bar = (ScrollBar) nodeHorizontal;
-                bar.setValue(bar.getMax());
+                clearLastHistoryEntry();
             }
         });
     }
 
     private void displayTextTerminalInput(String str){terminalView.setCurrentInput(str);}
 
-    private void clearLocalHistoryEntry(){
-        if (!messages.isEmpty()) messages.remove(messages.size()-1);
-        if (!commands.isEmpty()) commands.remove(commands.size()-1);
+    private void clearLastHistoryEntry(){
+        history.removeLastHistory();
         status++; //to trigger the update of variable explore
     }
 
@@ -159,18 +146,17 @@ public class TerminalController {
         String systemMessage = compiler.execute(userInput);
 
         //update local memory
-        commands.add(String.format("%d: %s", cnt++, userInput));
-        messages.add(systemMessage);
+        history.addHistory(userInput, systemMessage);
 
         status ++;
         return systemMessage;
     }
 
     private String getPrevBufferEntry(){
-        return history.getPrevEntry();
+        return history.getPrevBufferEntry();
     }
 
     private String getNextBufferEntry(){
-        return history.getNextEntry();
+        return history.getNextBufferEntry();
     }
 }
