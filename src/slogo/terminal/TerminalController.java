@@ -20,7 +20,7 @@ public class TerminalController {
     private TerminalView terminalView;
     private HistoryBuffer history;
     private Compiler compiler;
-    private static int status;
+    private int status;
 
     /**
      * Constructor
