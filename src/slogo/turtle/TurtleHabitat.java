@@ -1,4 +1,6 @@
 package slogo.turtle;
+import javafx.beans.Observable;
+import javafx.collections.ObservableMap;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -14,7 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TurtleHabitat {
     private Pane myTurtleHabitat;
@@ -22,40 +26,59 @@ public class TurtleHabitat {
     private List<Polyline> myLines;
     private static double DEFAULT_TURTLE_WIDTH = 50.0;
     private static double DEFAULT_TURTLE_HEIGHT = 25.0;
+    private Map<String, TurtleView> allTurtles;
 
     private double lastx;
     private double lasty;
-    private Button viewTurtle;
+    private double habitatWidth;
+    private double habitatHeight;
+    private Button viewTurtles;
 
     public TurtleHabitat(double width, double height){
-        turtle = initializeTurtleView(width, height);
-        myTurtleHabitat = new Pane(turtle);
+        allTurtles = new HashMap<String, TurtleView>();
+        myTurtleHabitat = new Pane();
+        habitatWidth = width;
+        habitatHeight = height;
         myLines = new ArrayList<>();
         changeSize(width, height);
-        lastx = turtle.getX() + turtle.getWidth()/2;
-        lasty = turtle.getY() + turtle.getHeight()/2;
+        //lastx = turtle.getX() + turtle.getWidth()/2;
+        //lasty = turtle.getY() + turtle.getHeight()/2;
 
-        viewTurtle = createViewButton();
-        myTurtleHabitat.getChildren().add(viewTurtle);
+        viewTurtles = createViewButton();
+        myTurtleHabitat.getChildren().add(viewTurtles);
     }
 
     private Button createViewButton (){
-        Button button = new Button("viewTurtle");
-        Stage s = new Stage();
-        TilePane root = new TilePane();
-        Scene sc = new Scene(root, 400, 400);
-        s.setScene(sc);
-        button.setOnAction(event -> s.show());
+        Button button = new Button("View Turtles");
+        button.setOnAction(event -> viewTurtleInformation());
         return button;
     }
 
-    private TurtleView initializeTurtleView(double habitatWidth, double habitatHeight){
+    private void viewTurtleInformation(){
+        Stage s = new Stage();
+        Pane root = new Pane();
+        Scene sc = new Scene(root, 400, 400);
+        //ListView<TurtleView> turtles = new ListView<>(Compiler.getTurtles);
+        //turtles.setPrefSize(100, turtles.getItems().size()*40);
+        Button btn = new Button("View Information");
+        //btn.setLayoutY((turtles.getItems().size()*30)+10);
+        root.getChildren().addAll(btn);
+        s.setScene(sc);
+        s.show();
+    }
+
+    public void updateHabitat(String id, Turtle turtle){
         TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
-                                                habitatWidth, habitatHeight);
+                habitatWidth, habitatHeight);
         tempTurtle.setFill(tempTurtle.getImage());
         tempTurtle.setX(tempTurtle.getXOffset());
         tempTurtle.setY(tempTurtle.getYOffset());
-        return tempTurtle;
+        if (!allTurtles.containsKey(id)){
+            allTurtles.putIfAbsent(id, tempTurtle);
+            myTurtleHabitat.getChildren().addAll(tempTurtle);
+        }
+        allTurtles.get(id).updateTurtleView(turtle);
+
     }
 
     private void changeSize(double width, double height){

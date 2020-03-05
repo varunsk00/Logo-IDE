@@ -211,7 +211,9 @@ public class ParserController extends Application{
     }
 
     private void step() throws IOException {
-        myHabitat.getTurtle().updateTurtleView(myTurtle1);
+        for (String id: comp.getAllTurtleIDs()){
+            myHabitat.updateHabitat(id, comp.getTurtleByID(id));
+        }
         handleLanguage(buttons.getLanguageStatus());
         updateZoom();
         updateImageSize();
