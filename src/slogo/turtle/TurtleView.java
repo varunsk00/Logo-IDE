@@ -13,11 +13,12 @@ public class TurtleView extends Rectangle {
     private String image_filepath = "slogo/resources/images/turtle_green.png";
     private Image img;
     private boolean cleared;
+    private Color penColor = Color.BLACK;
+
     public TurtleView(double width, double height, double habitatHeight, double habitatWidth){
         super(width, height);
         this.habHeight = habitatHeight;
         this.habWidth = habitatWidth;
-        System.out.println(habitatHeight);
         this.xOffset = habitatWidth/2 + getWidth();
         this.yOffset = habitatHeight/2 - habitatHeight/8;
         this.img = new Image(image_filepath);
@@ -42,6 +43,10 @@ public class TurtleView extends Rectangle {
             turtle.handleClear();
         }
     }
+
+    public Color getPenColor(){return penColor;}
+
+    public void setPenColor(Color inputColor){penColor = inputColor;}
 
     public double getXOffset(){
         return xOffset;

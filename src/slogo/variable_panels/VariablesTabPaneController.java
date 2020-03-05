@@ -60,8 +60,21 @@ public class VariablesTabPaneController {
         variablesTabPaneView.changeLanguageTo(language);
     }
 
+    /**
+     * Updates compiler
+     * @param newCompiler the new compiler object
+     */
+    public void updateCompiler(Compiler newCompiler){ this.compiler = newCompiler;}
+
+    /**
+     * Updates terminal
+     * @param newTerminal the new terminal object
+     */
+    public void updateTerminal(TerminalController newTerminal) {this.terminal = newTerminal;}
+
     private void updateVariableTable(){
         Set<String> varList = (Set<String>) compiler.getAllVariableNames();
+        variablesTabPaneView.clearAll(VAR_TYPE);
         for (String var:varList){
             variablesTabPaneView.addEntry(VAR_TYPE, Double.toString(compiler.getVariable(var)), formatVariable(var), false);
         }
@@ -69,6 +82,7 @@ public class VariablesTabPaneController {
 
     private void updateDefinedMethod(){
         Set<String> methodList = (Set<String>) compiler.getAllUserDefinedCommands();
+        variablesTabPaneView.clearAll(DEFINED_TYPE);
         for (String method:methodList){
             variablesTabPaneView.addEntry(DEFINED_TYPE, DEFINED_VALUE_PLACEHOLDER, method, false);
         }
