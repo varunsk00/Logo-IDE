@@ -2,8 +2,6 @@ package slogo.compiler.types;
 
 public class VariableType extends TypeCommand {
 
-  private String name;
-
   public VariableType(String nm) {
     super(nm);
     name = nm;

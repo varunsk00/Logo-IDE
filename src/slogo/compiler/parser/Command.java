@@ -16,6 +16,8 @@ public abstract class Command {
   protected ResourceBundle errorMsgs;
   protected boolean executed = false; //FIXME only used by makeuserinstruction, can't be trusted
   protected int desiredArgs;
+  protected String name;
+  protected String type;
 
   public Command(String declaration) {
     args = new ArrayList<>();
@@ -23,6 +25,18 @@ public abstract class Command {
       return;
     }
     register();
+    setType();
+    setName();
+    System.out.println(type);
+  }
+
+  private void setType() {
+    String[] names = getClass().toString().split("\\.");
+    type = names[names.length-1];
+  }
+
+  private void setName() {
+    name = type;
   }
 
   public abstract double execute();

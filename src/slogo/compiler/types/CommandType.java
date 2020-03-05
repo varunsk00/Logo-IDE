@@ -5,8 +5,7 @@ import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.parser.Command;
 
 public class CommandType extends TypeCommand {
-
-  private String name;
+  
   private List<String> variables;
   private boolean beingDefined = false; //fixme
 
