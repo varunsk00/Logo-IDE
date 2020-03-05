@@ -1,5 +1,8 @@
 package slogo.terminal.utils.history;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * HistoryBuffer enables the terminal to have an iterateable buffer that stores the previous commands.
  * To-do list: maybe it should extend List<String>?
@@ -15,17 +18,19 @@ public class HistoryBuffer{
     private int storage_index;
     private boolean initialized;
 
+    private List<String> commands;
+    private List<String> messages;
+    private int cnt;
+
     /**
      * Constructor
      */
     public HistoryBuffer(){
         initializeBuffer();
+        initializeHistory();
     }
 
-    /**
-     * Initializes the buffer
-     */
-    public void initializeBuffer(){
+    private void initializeBuffer(){
         buffer = new String[BUFFER_LIMIT];
         initialized = false;
         currentSize = 0;
@@ -33,12 +38,32 @@ public class HistoryBuffer{
         index = 0;
     }
 
+    private void initializeHistory(){
+        commands = new ArrayList<>();
+        messages = new ArrayList<>();
+        cnt = 0;
+    }
+
+    public void addHistory(String command, String systemMessage){
+        commands.add(String.format("%d: %s", cnt++, command));
+        messages.add(systemMessage);
+    }
+
+    public void removeLastHistory(){
+        if (!messages.isEmpty()) messages.remove(messages.size()-1);
+        if (!commands.isEmpty()) commands.remove(commands.size()-1);
+    }
+
+    public List<String> getCommands(){return commands;}
+
+    public List<String> getMessages(){return messages;}
+
     /**
      * Returns the command string prior to the current position of the pointer.
      * also moves the pointer to its previous position (moves to the last if out of bounds)
      * @return command string
      */
-    public String getPrevEntry(){
+    public String getPrevBufferEntry(){
         if (!initialized){
             index = currentSize;
             initialized = true;
@@ -54,7 +79,7 @@ public class HistoryBuffer{
      * also moves the pointer to its next position (moves to the first if out of bounds)
      * @return command string
      */
-    public String getNextEntry(){
+    public String getNextBufferEntry(){
         if (!initialized){
             index = currentSize;
             initialized = true;
@@ -71,7 +96,7 @@ public class HistoryBuffer{
      * @param entry new string command
      * @param num currently default = 1
      */
-    public void addEntry(String entry, int num){
+    public void addBufferEntry(String entry, int num){
         updateCurrentSize(num);
         buffer[updateStorageIndex(num)] = stripInputText(entry);
         resetIndex(); // Credit to Maverick
