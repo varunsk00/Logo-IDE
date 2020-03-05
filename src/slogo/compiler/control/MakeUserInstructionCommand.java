@@ -20,8 +20,8 @@ public class MakeUserInstructionCommand extends Command {
     try {
       ArrayList<String> vars = new ArrayList<>();
       for (Command var : args.get(1).getArgs()) {
-        if (var instanceof VariableType) {
-          vars.add(((VariableType) var).getName()); //FIXME oh my god you monster
+        if (var instanceof VariableType) { //FIXME
+          vars.add(var.getName());
         }
       }
       String commName = ((CommandType) args.get(0)).getName();

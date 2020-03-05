@@ -39,6 +39,10 @@ public abstract class Command {
     name = type;
   }
 
+  public String getName() {
+    return name;
+  }
+
   public abstract double execute();
 
   public void register() {

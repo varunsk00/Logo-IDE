@@ -13,8 +13,7 @@ public class MakeVariableCommand extends Command {
   @Override
   public double execute() {
     double value = args.get(1).execute();
-    memory.setVariable(((VariableType) args.get(0)).getName(),
-        value); //FIXME refactor args to remove instanceof?
+    memory.setVariable(args.get(0).getName(), value);
     return value;
   }
 

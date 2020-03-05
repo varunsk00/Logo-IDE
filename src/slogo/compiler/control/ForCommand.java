@@ -12,8 +12,7 @@ public class ForCommand extends LoopCommand {
 
   @Override
   public double execute() {
-    String varName = ((VariableType) args.get(0).getArgs().get(0))
-        .getName(); //FIXME bad bad bad maybe do a tostring?
+    String varName = args.get(0).getArgs().get(0).getName();
     double start = args.get(0).getArgs().get(1).execute();
     double end = args.get(0).getArgs().get(2).execute();
     double inc = args.get(0).getArgs().get(3).execute();
