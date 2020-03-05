@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -49,15 +50,13 @@ public class TurtleHabitat {
         habitatHeight = height;
         myLines = new ArrayList<>();
         changeSize(width, height);
-
-        viewTurtles = createViewButton();
-        myTurtleHabitat.getChildren().add(viewTurtles);
+        createViewButton();
     }
 
-    private Button createViewButton (){
+    private void createViewButton (){
         Button button = new Button("View Turtles");
         button.setOnAction(event -> viewTurtleInformation());
-        return button;
+        myTurtleHabitat.getChildren().add(button);
     }
 
     private void viewTurtleInformation(){
@@ -82,7 +81,8 @@ public class TurtleHabitat {
         rec.setLayoutX(200);
         rec.setLayoutY(50);
         rec.setFill(allTurtles.get(id).getFill());
-        p.getChildren().add(rec);
+        Text t = new Text(200, 100, "Position " + allTurtles.get(id));
+        p.getChildren().addAll(rec, t);
     }
 
     public void updateHabitat(int id, Turtle turtle){
