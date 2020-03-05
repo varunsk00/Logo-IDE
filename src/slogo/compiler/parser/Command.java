@@ -143,7 +143,7 @@ public abstract class Command {
   }
 
   public boolean containsDefinition() {
-    if (typeEquals("makeuserinstruction")) { //fixme bad bad bad
+    if (typeEquals("makeuserinstruction")) {
       return true;
     }
     for (Command c : args) {
@@ -152,17 +152,6 @@ public abstract class Command {
       }
     }
     return false;
-  }
-
-  public int countDefinitions() {
-    int ret = 0;
-    if (typeEquals("makeuserinstruction")) { //fixme bad bad bad
-      ret++;
-    }
-    for (Command c : args) {
-      ret += c.countDefinitions();
-    }
-    return ret;
   }
 
   public Command findFirstDef() {

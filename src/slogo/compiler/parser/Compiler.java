@@ -125,7 +125,7 @@ public class Compiler {
   private Command rerunParsing(Command comm, String input) {
     Command def = comm.findFirstDef();
     while (def != null) {
-      def.execute(); //FIXME
+      def.execute();
       def = comm.findFirstDef();
     }
     comm = parse(input);
@@ -179,7 +179,6 @@ public class Compiler {
   private void markDefinition(Command comm, String word) {
     if (comm.typeEquals("commandtype")) {
       comm.setIsComplete(true);
-      //FIXME you're a bad person and you should feel bad
     } else {
       throw new InvalidSyntaxException(
           String.format(errorMsgs.getString("RedefineBuiltin"), word));
