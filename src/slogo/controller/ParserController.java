@@ -222,7 +222,7 @@ public class ParserController extends Application{
             myHabitat.updateHabitat(turtleId, comp.getTurtleByID(turtleId));
             if(comp.getTurtleByID(turtleId).isPenDown()){
                 for (Point loc: comp.getTurtleByID(turtleId).locationsList()) {
-                    myHabitat.penDraw(penColor, loc, turtleId);
+                    myHabitat.penDraw(myHabitat.getTurtle(turtleId).getPenColor(), loc, turtleId);
                 }
             }
             updateImageSize(turtleId);
@@ -350,6 +350,7 @@ public class ParserController extends Application{
 
     //FIXME: Refactor following two methods
     private void launchPenColorChooser() {
+        selectButtons.clear();
         buttons.setPenColorOff();
         Stage s = new Stage();
         s.setTitle(myResources.getString("ColorWindow"));
@@ -365,6 +366,12 @@ public class ParserController extends Application{
         Scene sc = new Scene(r, 200, 200);
         s.setScene(sc);
         s.show();
+        for (String turtleID: comp.getAllTurtleIDs()){
+            Button button = new Button(turtleID);
+            button.setOnAction(event1 -> myHabitat.getTurtle(turtleID).setPenColor(penColor));
+            selectButtons.add(button);
+        }
+        chooserPane(selectButtons);
     }
 
     private void launchBackgroundColorChooser() {
