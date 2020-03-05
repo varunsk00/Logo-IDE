@@ -355,7 +355,12 @@ public class ParserController extends Application{
         TilePane r = new TilePane();
         ColorPicker cp = new ColorPicker();
         EventHandler<ActionEvent> event = e -> {
-            penColor = cp.getValue();
+            for (int turtleID: comp.getAllTurtleIDs()){
+                Button button = new Button("Turtle " + turtleID);
+                button.setOnAction(event1 -> myHabitat.getTurtle(turtleID).setPenColor(cp.getValue()));
+                selectButtons.add(button);
+            }
+            chooserPane(selectButtons);
             s.close();
         };
         cp.setValue(penColor);
@@ -364,12 +369,6 @@ public class ParserController extends Application{
         Scene sc = new Scene(r, 200, 200);
         s.setScene(sc);
         s.show();
-        for (int turtleID: comp.getAllTurtleIDs()){
-            Button button = new Button("Turtle " + turtleID);
-            button.setOnAction(event1 -> myHabitat.getTurtle(turtleID).setPenColor(penColor));
-            selectButtons.add(button);
-        }
-        chooserPane(selectButtons);
     }
 
     private void launchBackgroundColorChooser() {

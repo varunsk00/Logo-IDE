@@ -32,7 +32,7 @@ public class TurtleHabitat {
     private static double DEFAULT_TURTLE_WIDTH = 50.0;
     private static double DEFAULT_TURTLE_HEIGHT = 25.0;
     private Map<Integer, TurtleView> allTurtles;
-        private Map<Integer, Double> lastx;
+    private Map<Integer, Double> lastx;
     private Map<Integer, Double> lasty;
 
     private double habitatWidth;
@@ -49,8 +49,6 @@ public class TurtleHabitat {
         habitatHeight = height;
         myLines = new ArrayList<>();
         changeSize(width, height);
-        //lastx = turtle.getX() + turtle.getWidth()/2;
-        //lasty = turtle.getY() + turtle.getHeight()/2;
 
         viewTurtles = createViewButton();
         myTurtleHabitat.getChildren().add(viewTurtles);
