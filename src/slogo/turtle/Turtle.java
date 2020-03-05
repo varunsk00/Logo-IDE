@@ -19,6 +19,8 @@ public class Turtle {
     private boolean showTurtle;
     private boolean clearScreen;
     private boolean oldPenDown;
+    private boolean isActive;
+    private int ID;
 
     private List<Point> locations;
 
@@ -29,6 +31,12 @@ public class Turtle {
         penDown = true;
         showTurtle = true;
         locations = new ArrayList<>();
+        ID = -1;
+    }
+
+    public Turtle(int id) {
+        this();
+        ID = id;
     }
 
     public void move(double pixel){
@@ -115,5 +123,17 @@ public class Turtle {
 
     public void handleClear() {
         setPenDown(oldPenDown);
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean act) {
+        isActive = act;
+    }
+
+    public int getID() {
+        return ID;
     }
 }

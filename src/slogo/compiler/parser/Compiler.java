@@ -45,14 +45,12 @@ public class Compiler {
     addPatterns(SYNTAX_FILE, myTypes);
     //FIXME add resource file validator
     initAllCommands();
-    addTurtle(1, new Turtle());
   }
 
   public Compiler (Compiler other) {
     myTypes = new ArrayList<>(other.myTypes);
     myCommands = new ArrayList<>(other.myCommands);
     memory = new Memory(other.memory);
-    addTurtle(1, new Turtle());
   }
 
   private void initAllCommands() { //uses the reflections library
@@ -267,8 +265,8 @@ public class Compiler {
     return regex.matcher(text).matches();
   }
 
-  public void addTurtle(int id, Turtle t) {
-    memory.addTurtle(id, t);
+  public void addTurtle(int id) {
+    memory.addTurtle(id);
   }
 
   public Collection<String> getAllVariableNames() {

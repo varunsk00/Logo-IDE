@@ -83,8 +83,8 @@ public class Memory {
     return commMemory.getUserCommandMapCopy();
   }
 
-  public void addTurtle(int id, Turtle t) {
-    turtleMemory.addTurtle(id, t);
+  public void addTurtle(int id) {
+    turtleMemory.addTurtle(id);
   }
 
   public Turtle getTurtleByID(int id) {
@@ -121,5 +121,9 @@ public class Memory {
 
   public List<Integer> getActiveTurtleIDs(){
     return turtleMemory.getActiveTurtleIDs();
+  }
+
+  public int getCurrentTurtleID() {
+    return turtleMemory.getCurrentTurtleID();
   }
 }
