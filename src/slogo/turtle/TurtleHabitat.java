@@ -4,14 +4,18 @@ import javafx.collections.ObservableMap;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polyline;
 import javafx.scene.control.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLOutput;
@@ -54,15 +58,26 @@ public class TurtleHabitat {
         return button;
     }
 
+    private void displayInformation(String id, Pane p){
+        Rectangle rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
+        rec.setLayoutX(200);
+        rec.setLayoutY(50);
+        rec.setFill(allTurtles.get(id).getFill());
+        p.getChildren().addAll(rec);
+    }
+
     private void viewTurtleInformation(){
         Stage s = new Stage();
         Pane root = new Pane();
         Scene sc = new Scene(root, 400, 400);
-        //ListView<TurtleView> turtles = new ListView<>(Compiler.getTurtles);
-        //turtles.setPrefSize(100, turtles.getItems().size()*40);
-        Button btn = new Button("View Information");
-        //btn.setLayoutY((turtles.getItems().size()*30)+10);
-        root.getChildren().addAll(btn);
+        ListView<Button> turtleView = new ListView<>();
+        for (String turtleID: allTurtles.keySet()){
+            Button button = new Button(turtleID);
+            button.setOnAction(event -> displayInformation(turtleID, root));
+            turtleView.getItems().addAll(button);
+        }
+        turtleView.setPrefSize(100, turtleView.getItems().size()*30);
+        root.getChildren().addAll(turtleView);
         s.setScene(sc);
         s.show();
     }
@@ -78,7 +93,6 @@ public class TurtleHabitat {
             myTurtleHabitat.getChildren().addAll(tempTurtle);
         }
         allTurtles.get(id).updateTurtleView(turtle);
-
     }
 
     private void changeSize(double width, double height){

@@ -193,6 +193,7 @@ public class ParserController extends Application{
     private void startCompiler(){
         comp = new Compiler();
         comp.addTurtle("Turtle 1", myTurtle1);
+        comp.addTurtle("Turtle 2", new Turtle());
     }
 
     //FIXME: BIG NO NO!! REMOVE PRINTSTACKTRACE IMMEDIATELY
@@ -211,8 +212,8 @@ public class ParserController extends Application{
     }
 
     private void step() throws IOException {
-        for (String id: comp.getAllTurtleIDs()){
-            myHabitat.updateHabitat(id, comp.getTurtleByID(id));
+        for (String turtleId: comp.getAllTurtleIDs()){
+            myHabitat.updateHabitat(turtleId, comp.getTurtleByID(turtleId));
         }
         handleLanguage(buttons.getLanguageStatus());
         updateZoom();
