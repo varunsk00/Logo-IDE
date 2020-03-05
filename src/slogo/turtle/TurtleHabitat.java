@@ -31,15 +31,17 @@ public class TurtleHabitat {
     private static double DEFAULT_TURTLE_WIDTH = 50.0;
     private static double DEFAULT_TURTLE_HEIGHT = 25.0;
     private Map<String, TurtleView> allTurtles;
+    private Map<String, Double> lastx;
+    private Map<String, Double> lasty;
 
-    private double lastx;
-    private double lasty;
     private double habitatWidth;
     private double habitatHeight;
     private Button viewTurtles;
 
     public TurtleHabitat(double width, double height){
         allTurtles = new HashMap<String, TurtleView>();
+        lastx = new HashMap<String, Double>();
+        lasty = new HashMap<String, Double>();
         myTurtleHabitat = new Pane();
         habitatWidth = width;
         habitatHeight = height;
@@ -90,6 +92,8 @@ public class TurtleHabitat {
         tempTurtle.setY(tempTurtle.getYOffset());
         if (!allTurtles.containsKey(id)){
             allTurtles.putIfAbsent(id, tempTurtle);
+            lastx.putIfAbsent(id, tempTurtle.getX() + tempTurtle.getWidth()/2);
+            lasty.putIfAbsent(id, tempTurtle.getY() + tempTurtle.getHeight()/2);
             myTurtleHabitat.getChildren().addAll(tempTurtle);
         }
         allTurtles.get(id).updateTurtleView(turtle);
@@ -112,7 +116,8 @@ public class TurtleHabitat {
         myTurtleHabitat.setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
-    public void penDraw(Color penColor, Point loc){
+    public void penDraw(Color penColor, Point loc, String turtleID){
+        TurtleView turtle = allTurtles.get(turtleID);
         double x_coor = loc.getX();
         double y_coor = loc.getY();
         Polyline pen  = new Polyline();
@@ -121,9 +126,9 @@ public class TurtleHabitat {
 
         double xOffsetCoord = x_coor + turtle.getXOffset() + turtle.getWidth()/2;
         double yOffsetCoord = y_coor + turtle.getYOffset() + turtle.getHeight()/2;
-        Double[] points = new Double[] {lastx, lasty, xOffsetCoord, yOffsetCoord};
-        lastx = xOffsetCoord;
-        lasty = yOffsetCoord;
+        Double[] points = new Double[] {lastx.get(turtleID), lasty.get(turtleID), xOffsetCoord, yOffsetCoord};
+        lastx.put(turtleID, xOffsetCoord);
+        lasty.put(turtleID, yOffsetCoord);
 
         if (loc.getDrawn()) {
             pen.getPoints().addAll(points);

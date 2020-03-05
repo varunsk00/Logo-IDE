@@ -214,6 +214,11 @@ public class ParserController extends Application{
     private void step() throws IOException {
         for (String turtleId: comp.getAllTurtleIDs()){
             myHabitat.updateHabitat(turtleId, comp.getTurtleByID(turtleId));
+            if(comp.getTurtleByID(turtleId).isPenDown()){
+                for (Point loc: comp.getTurtleByID(turtleId).locationsList()) {
+                    myHabitat.penDraw(penColor, loc, turtleId);
+                }
+            }
         }
         handleLanguage(buttons.getLanguageStatus());
         updateZoom();
@@ -233,11 +238,6 @@ public class ParserController extends Application{
         }
         if(buttons.getImageStatus()){
             handleImageFileChooser();
-        }
-        if(myTurtle1.isPenDown()){
-            for (Point loc: myTurtle1.locationsList()) {
-                myHabitat.penDraw(penColor, loc);
-            }
         }
         setGlobalBackground(backgroundColor);
         updateTabPanes();
