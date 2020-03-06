@@ -19,7 +19,11 @@ public class Workspace extends BorderPane {
     private double TERMINAL_HEIGHT;
     private double HABITAT_WIDTH;
     private double HABITAT_HEIGHT;
-
+    
+    private double deltaX;
+    private double deltaY;
+    private double sumX;
+    private double sumY;
     private Compiler comp;
 
     public Workspace(double width, double height){
@@ -78,10 +82,33 @@ public class Workspace extends BorderPane {
 
     private void setTurtleHabitat() {
         myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
+
+        deltaX = 0;
+        deltaY = 0;
+
         myHabitat.setOnMouseDragged(event -> {
-            myHabitat.setTranslateX(event.getX() + event.getSceneX());
-            myHabitat.setTranslateY(event.getY() + event.getSceneY());
+
+            if (deltaX != 0 && deltaY != 0){
+                sumX += event.getSceneX() - deltaX;
+                sumY += event.getSceneY() - deltaY;
+                myHabitat.setTranslateX(sumX);
+                deltaX = event.getSceneX();
+                myHabitat.setTranslateY(sumY);
+                deltaY = event.getSceneY();
+            }
+            else {
+                sumX = 0;
+                sumY = 0;
+                deltaX = event.getSceneX();
+                deltaY = event.getSceneY();
+            }
+
         });
+
+        myHabitat.setOnMouseReleased(event -> {
+            deltaX = 0;
+            deltaY =0;
+                });
         setRight(myHabitat);
     }
 }
