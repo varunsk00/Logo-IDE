@@ -1,4 +1,4 @@
-package slogo.utils;
+package slogo.workspace;
 
 public class LoadDefault {
 

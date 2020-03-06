@@ -1,4 +1,4 @@
-package slogo.controller;
+package slogo.workspace;
 
 import javafx.scene.layout.BorderPane;
 import slogo.compiler.parser.Compiler;
@@ -10,6 +10,7 @@ public class Workspace extends BorderPane {
     private TurtleHabitat myHabitat;
     private TerminalView myTerminalView;
     private TerminalController myTerminalController;
+    private ColorFactory myColorFactory;
     private int status;
     private static final double HEADER_HEIGHT = 80;
     private double VARIABLE_EXPLORER_HEIGHT;
@@ -27,6 +28,7 @@ public class Workspace extends BorderPane {
     private Compiler comp;
 
     public Workspace(double width, double height){
+         myColorFactory = new ColorFactory();
          setSizes(width, height);
          startCompiler();
          setPrefWidth(width);
@@ -59,6 +61,14 @@ public class Workspace extends BorderPane {
         return myTerminalView;
     }
 
+    public int getCurrentWorkspace(String str){
+        int i = str.length();
+        while (i > 0 && Character.isDigit(str.charAt(i - 1))) {
+            i--;
+        }
+        return Integer.parseInt(str.substring(i));
+    }
+
     private void startCompiler(){
         comp = new Compiler();
     }
@@ -66,7 +76,6 @@ public class Workspace extends BorderPane {
     private void setSizes(double scene_width, double scene_height){
         TABPANE_WIDTH = scene_width;
         HABITAT_WIDTH = scene_width/2;
-        System.out.println(HABITAT_WIDTH);
         VARIABLE_EXPLORER_HEIGHT = scene_height/5;
         HABITAT_HEIGHT = scene_height - HEADER_HEIGHT - VARIABLE_EXPLORER_HEIGHT;
         TERMINAL_WIDTH = scene_width/2;
@@ -76,13 +85,13 @@ public class Workspace extends BorderPane {
         myTerminalView = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
         myTerminalController = new TerminalController(myTerminalView);
         myTerminalController.setCompiler(comp);
+        myTerminalController.setHabitat(myHabitat);
         status = -1;
         setLeft(myTerminalView);
     }
 
     private void setTurtleHabitat() {
         myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
-
         deltaX = 0;
         deltaY = 0;
 
