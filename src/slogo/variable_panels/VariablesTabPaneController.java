@@ -55,7 +55,7 @@ public class VariablesTabPaneController {
     /**
      * Changes language
      * @param language language
-     */
+///////////////////     */
     public void changeLanguage(String language){
         variablesTabPaneView.changeLanguageTo(language);
     }

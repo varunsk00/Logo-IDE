@@ -14,7 +14,7 @@ public class testTerminal extends Application {
 
         //InputPanel panel = new InputPanel(20, 25);
 
-        TerminalView terminalView = new TerminalView(1000, 800);
+        TerminalView terminalView = new TerminalView(400, 800);
         TerminalController terminalController = new TerminalController(terminalView);
 
         Scene sceneVis = new Scene(terminalView);

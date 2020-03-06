@@ -28,6 +28,11 @@ public class TerminalView extends ScrollPane {
      */
     public TerminalView(int width, int height){initializeTerminal(width, height);}
 
+    public void setSize(int width, int height){
+        outputPanel.setSize(width, height-INPUT_PANEL_HEIGHT-HEADER_HEIGHT);
+        inputPanel.setSize(width, INPUT_PANEL_HEIGHT);
+    }
+
     /**
      * Sends a text string to the output panel to be displayed
      * @param textLine string
