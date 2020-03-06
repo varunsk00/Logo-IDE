@@ -1,9 +1,6 @@
 package slogo.controller;
 
-import javafx.geometry.Rectangle2D;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Screen;
 import slogo.compiler.parser.Compiler;
 import slogo.terminal.TerminalController;
 import slogo.terminal.TerminalView;
@@ -73,7 +70,7 @@ public class Workspace extends BorderPane {
     private void setTerminalView() {
         myTerminalView = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
         myTerminalController = new TerminalController(myTerminalView);
-        myTerminalController.setExternals(comp);
+        myTerminalController.setCompiler(comp);
         status = -1;
         setLeft(myTerminalView);
     }

@@ -214,6 +214,10 @@ public class ParserController extends Application{
         if(buttons.getImageStatus()){
             handleImageFileChooser();
         }
+        if(buttons.isViewAllTurtles()){
+            currentWorkspace.getHabitat().viewTurtleInformation();
+            buttons.setViewAllTurtlesOff();
+        }
 
         if (current != currentTab) {
             currentTab = current;
