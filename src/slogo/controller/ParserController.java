@@ -25,10 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.sql.SQLOutput;
+import java.util.*;
 
 //FIXME: replace JAVA FILENOTFOUND EXCEPTION WITH comp.executeFile()
 //FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
@@ -74,12 +72,11 @@ public class ParserController extends Application{
 
     private Stage myStage;
     private Timeline animation;
-    private Color backgroundColor = Color.WHITE;
+    private Color backgroundColor = Color.LIGHTSKYBLUE;
     private Color penColor = Color.BLACK;
 
     private Workspace currentWorkspace;
-    private Workspace turtleWorkspace1;
-    private Workspace turtleWorkspace2;
+    private List<Workspace> workspaces;
 
     private TabPane workspaceEnvironment;
 
@@ -126,7 +123,8 @@ public class ParserController extends Application{
     }
 
     private void startWorkspaces(){
-        turtleWorkspace1 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
+        workspaces = new ArrayList<>();
+        Workspace turtleWorkspace1 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
         currentWorkspace = turtleWorkspace1;
         workspaceEnvironment = new TabPane();
         currentTab = 1;
@@ -134,12 +132,18 @@ public class ParserController extends Application{
         tab1.setText("Workspace 1");
         tab1.setContent(turtleWorkspace1);
 
-        turtleWorkspace2 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
+        Workspace turtleWorkspace2 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
         Tab tab2 = new Tab();
         tab2.setText("Workspace 2");
         tab2.setContent(turtleWorkspace2);
 
-        workspaceEnvironment.getTabs().addAll(tab1, tab2);
+        Workspace turtleWorkspace3 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
+        Tab tab3 = new Tab();
+        tab3.setText("Workspace 3");
+        tab3.setContent(turtleWorkspace3);
+
+        workspaces = Arrays.asList(null, turtleWorkspace1, turtleWorkspace2, turtleWorkspace3);
+        workspaceEnvironment.getTabs().addAll(tab1, tab2, tab3);
     }
 
     private void setBorderPane() {
@@ -170,7 +174,7 @@ public class ParserController extends Application{
             try {
                 step();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                System.out.println("Help Text File Not Found.");
             }
         });
         animation = new Timeline();
@@ -182,13 +186,7 @@ public class ParserController extends Application{
     private void step() throws IOException {
         String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
         int current = Integer.parseInt(workspaceString.substring(workspaceString.length()-1));
-        //FIXME: PARSE INT AS INSTANCE VARIABLE DON'T HARDCODE
-        if(current == 1){
-            currentWorkspace = turtleWorkspace1;
-        }
-        else if(current ==2){
-            currentWorkspace = turtleWorkspace2;
-        }
+        currentWorkspace = workspaces.get(current);
         for (int turtleId: currentWorkspace.getCompiler().getAllTurtleIDs()){
             currentWorkspace.getHabitat().updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
             if(currentWorkspace.getCompiler().getTurtleByID(turtleId).isPenDown()){
