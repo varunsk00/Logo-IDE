@@ -109,6 +109,7 @@ public class Workspace extends BorderPane {
             deltaX = 0;
             deltaY =0;
                 });
+
         setRight(myHabitat);
     }
 }

@@ -11,6 +11,7 @@ public class OutputPanel extends ListView<String> {
     private final static String CSS_FILEPATH = "slogo/resources/styleSheets/output_panel.css";
     private final static double DISPLAY_MARGIN = 15;
     private final static int UNDO_ENTRY_NUM = 2;
+    private final static int EMPTY_THRESHOLD = 1;
 
     /**
      * Constructor
@@ -44,7 +45,7 @@ public class OutputPanel extends ListView<String> {
      */
     public void undoEntry(){
         int num = UNDO_ENTRY_NUM;
-        while(!getItems().isEmpty() && num!=0){
+        while(getItems().size()> EMPTY_THRESHOLD && num!=0){
             num--;
             getItems().remove(getItems().size()-1);
         }
