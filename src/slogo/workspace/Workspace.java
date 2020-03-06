@@ -1,6 +1,7 @@
 package slogo.workspace;
 
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import slogo.compiler.parser.Compiler;
 import slogo.terminal.TerminalController;
 import slogo.terminal.TerminalView;
@@ -20,6 +21,9 @@ public class Workspace extends BorderPane {
     private double TERMINAL_HEIGHT;
     private double HABITAT_WIDTH;
     private double HABITAT_HEIGHT;
+
+    private Color defaultBackgroundColor = Color.WHITE;
+    private Color defaultPenColor = Color.BLACK;
     
     private double deltaX;
     private double deltaY;
@@ -48,6 +52,18 @@ public class Workspace extends BorderPane {
     public Compiler getCompiler(){
         return comp;
     }
+
+    public void setDefaultBackgroundColor(Color newColor){
+        defaultBackgroundColor = newColor;
+    }
+
+    public Color getDefaultBackgroundColor(){return defaultBackgroundColor;}
+
+    public void setDefaultPenColorColor(Color newColor){
+        defaultPenColor = newColor;
+    }
+
+    public Color getDefaultPenColor(){return defaultPenColor;}
 
     public TerminalController getTerminalController(){
         return myTerminalController;

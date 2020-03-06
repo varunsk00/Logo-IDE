@@ -1,5 +1,7 @@
 package slogo.workspace;
 
+import javafx.scene.paint.Color;
+
 import java.util.*;
 
 public class PrefProcessor {
@@ -21,9 +23,10 @@ public class PrefProcessor {
     final private static String NA_VAL = "NA";
 
     private Workspace wspace;
+    private ColorFactory colorFactory;
     List<Map.Entry<String, String>> prefDict;
 
-    public PrefProcessor(){prefDict = new LinkedList<>();}
+    public PrefProcessor(){prefDict = new LinkedList<>(); colorFactory = new ColorFactory();}
 
     public void initializeWorkspace(Workspace workspace, String prefKey){
         wspace = workspace;
@@ -74,16 +77,19 @@ public class PrefProcessor {
     private void initializeBackgroundColor(){
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(BACKGROUND_COLOR_KEY)){
-                wspace.getHabitat().setBackground();
+                Color newColor = colorFactory.parseColor(Integer.parseInt(entry.getValue()));
+                wspace.getHabitat().setBackground(newColor);
+                wspace.setDefaultBackgroundColor(newColor);
             }
         }
     }
 
     private void initializePenColor(){
-
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(PEN_COLOR_KEY)){
-                //
+                Color newColor = colorFactory.parseColor(Integer.parseInt(entry.getValue()));
+                wspace.setDefaultPenColorColor(newColor);
+                wspace.getHabitat().setAllTurtlesPenColor(newColor);
             }
         }
     }

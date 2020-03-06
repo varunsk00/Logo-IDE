@@ -106,6 +106,14 @@ public class TurtleHabitat extends Pane{
         return allTurtles.get(turtleID);
     }
 
+    public List<TurtleView> getAllTurtles(){ return new ArrayList<>(allTurtles.values());}
+
+    public void setAllTurtlesPenColor(Color newPenColor){
+        for (TurtleView turtle: new ArrayList<>(allTurtles.values())){
+            turtle.setPenColor(newPenColor);
+        }
+    }
+
     public void setBackground(Color c){
         setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
         backgroundColor = c;

@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.turtle.Point;
+import slogo.turtle.Turtle;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 import slogo.workspace.ColorFactory;
@@ -70,8 +71,6 @@ public class ParserController extends Application{
     private Stage myStage;
     private Timeline animation;
     private int DEFAULT_COLOR_CODE = -1;
-    private Color DefaultColor = Color.SKYBLUE;
-    private Color penColor = Color.BLACK;
 
     private Workspace currentWorkspace;
     private List<Workspace> workspaces;
@@ -166,7 +165,7 @@ public class ParserController extends Application{
 
     private void step() throws IOException {
         currentWorkspace.getTerminalController().setSize((int)myStage.getWidth()/2, (int)(myStage.getHeight()- 2*TABPANE_HEIGHT));
-        updateTerminalBackgroundColor();
+        updateHabitatBackgroundColor();
         updateCurrentWorkspace();
         handleMultipleTurtles();
         updateTabPanes(false);
@@ -207,13 +206,24 @@ public class ParserController extends Application{
         }
     }
 
-    private void updateTerminalBackgroundColor(){
-        Color compilerColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
-        if (!compilerColor.equals(DefaultColor)){
-            setBackground(compilerColor);
+    private void updateHabitatBackgroundColor(){
+        Color compilerBGColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
+        if (!compilerBGColor.equals(currentWorkspace.getDefaultBackgroundColor())){
+            setBackground(compilerBGColor);
             currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
         }
     }
+
+    /*
+    private void updateHabitatPenColor(){
+        Color compilerColor = cf.parseColor(currentWorkspace.getCompiler().);
+        if (!compilerColor.equals(currentWorkspace.getDefaultPenColor())){
+            for (currentWorkspace.getHabitat().
+            currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
+        }
+    }*/
+
+
 
     private void handleMultipleTurtles(){
         for (int turtleId: currentWorkspace.getCompiler().getAllTurtleIDs()){
@@ -325,7 +335,7 @@ public class ParserController extends Application{
     private void launchPenColorChooser() {
         selectButtons.clear();
         header.getButtons().setPenColorOff();
-        ColorController penColorChooser = new ColorController(RESOURCES_PACKAGE + guiLanguage, penColor);
+        ColorController penColorChooser = new ColorController(RESOURCES_PACKAGE + guiLanguage, currentWorkspace.getDefaultPenColor());
         penColorChooser.getColorPicker().setOnAction(e -> {
             for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
                 Button button = new Button("Turtle " + turtleID);
