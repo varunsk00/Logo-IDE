@@ -173,7 +173,7 @@ public class ParserController extends Application{
         handleLanguage(header.getButtons().getLanguageStatus());
         header.getSliders().updateZoom(currentWorkspace);
         if(!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))){
-            handleHelp(header.getButtons().getHelpStatus(), guiLanguage); }
+            launchHelpWindow(myResources.getString(header.getButtons().getHelpStatus()), guiLanguage);}
         if(header.getButtons().getFileStatus()){
             handleLogoFiles(); }
         if(header.getButtons().getPenColorStatus()){
@@ -230,63 +230,10 @@ public class ParserController extends Application{
         currentWorkspace.getHabitat().setBackground(c);
     }
 
-    //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
     private void handleLanguage(String lang) throws FileNotFoundException {
-        switch(lang){
-            case "\u6c49\u8bed\u62fc\u97f3":
-                guiLanguage = "Chinese_GUI";
-                updateLanguage(guiLanguage);
-                break;
-            case "français":
-                guiLanguage = "French_GUI";
-                updateLanguage(guiLanguage);
-                break;
-            case "Deutsch":
-                guiLanguage = "German_GUI";
-                updateLanguage(guiLanguage);
-                break;
-            case "italiano":
-                guiLanguage = "Italian_GUI";
-                updateLanguage(guiLanguage);
-                break;
-            case "português":
-                guiLanguage = "Portuguese_GUI";
-                updateLanguage(guiLanguage);
-                break;
-            case "\u0070\u0443\u0441\u0441\u043a\u0438\u0439":
-                guiLanguage = "Russian_GUI";
-                updateLanguage(guiLanguage);
-                break;
-            case "español":
-                guiLanguage = "Spanish_GUI";
-                updateLanguage(guiLanguage);
-                break;
-            case "\u0939\u093f\u0902\u0926\u0940/\u0627\u0631\u062f\u0648":
-                guiLanguage = "Urdu_GUI";
-                updateLanguage(guiLanguage);
-                break;
-            case "English":
-                guiLanguage = "English_GUI";
-                updateLanguage(guiLanguage);
-                break;
-        }
-    }
-
-    //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
-    private void handleHelp(String prompt, String lang) throws IOException {
-        switch(prompt){
-            case "Turtle Commands":
-                launchHelpWindow("Turtle", lang);
-                break;
-            case "Math Commands":
-                launchHelpWindow("Math", lang);
-                break;
-            case "Boolean Operations":
-                launchHelpWindow("Boolean", lang);
-                break;
-            case "Variables, Control Structures, and User-Defined Commands":
-                launchHelpWindow("Variables", lang);
-                break;
+        guiLanguage = myResources.getString(lang) + "_GUI";
+        if(!guiLanguage.contains(currentLang)){
+            updateLanguage(guiLanguage);
         }
     }
 
