@@ -44,14 +44,14 @@ public class SliderController {
         return sliders;
     }
 
-    public void updateZoom(Workspace wk){
-        wk.getHabitat().setScaleX(getZoom()/3.0);
-        wk.getHabitat().setScaleY(getZoom()/3.0);
+    public void updateZoom(Workspace current){
+        current.getHabitat().setScaleX(getZoom()/3.0);
+        current.getHabitat().setScaleY(getZoom()/3.0);
     }
 
-    public void updateImageSize(Workspace wk, int turtleId){
-        wk.getHabitat().getTurtle(turtleId).setScaleX(getSizeValue()/3.0);
-        wk.getHabitat().getTurtle(turtleId).setScaleY(getSizeValue()/3.0);
+    public void updateImageSize(Workspace current, int turtleId){
+        current.getHabitat().getTurtle(turtleId).setScaleX(getSizeValue()/3.0);
+        current.getHabitat().getTurtle(turtleId).setScaleY(getSizeValue()/3.0);
     }
 
     private void renderSliders() {
@@ -61,9 +61,7 @@ public class SliderController {
         addLabel("SizeSlider", allLabels);
         addLabel("ZoomSlider", allLabels);
 
-        //addReturnSlider() adds the Sliders to the frame and then returns them as instance variables for later access
         HBox allSliders = new HBox();
-        //allSliders.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         imagesize = addAndReturnSlider(MIN_SIZE, MAX_SIZE, DEFAULT_SIZE, allSliders);
         zoom = addAndReturnSlider(MIN_ZOOM, MAX_ZOOM, DEFAULT_ZOOM,
                 allSliders);

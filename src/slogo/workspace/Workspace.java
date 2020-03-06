@@ -16,7 +16,6 @@ public class Workspace extends BorderPane {
     private static final double HEADER_HEIGHT = 80;
     private double VARIABLE_EXPLORER_HEIGHT;
     private static final double TAB_HEIGHT = 30;
-    private double TABPANE_WIDTH;
     private double TERMINAL_WIDTH;
     private double TERMINAL_HEIGHT;
     private double HABITAT_WIDTH;
@@ -90,7 +89,6 @@ public class Workspace extends BorderPane {
     }
 
     private void setSizes(double scene_width, double scene_height){
-        TABPANE_WIDTH = scene_width;
         HABITAT_WIDTH = scene_width/2;
         VARIABLE_EXPLORER_HEIGHT = scene_height/5;
         HABITAT_HEIGHT = scene_height - HEADER_HEIGHT - VARIABLE_EXPLORER_HEIGHT;
