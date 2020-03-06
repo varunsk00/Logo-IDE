@@ -67,7 +67,9 @@ public class Memory {
   }
 
   private void undoSelf() {
-    enteredCommands = enteredStack.pop();
+    if (!enteredCommands.isEmpty()) {
+      enteredCommands = enteredStack.pop();
+    }
   }
 
   public String getEnteredText() {

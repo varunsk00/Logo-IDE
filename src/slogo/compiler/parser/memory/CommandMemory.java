@@ -35,9 +35,11 @@ public class CommandMemory {
   }
 
   public void undo() {
-    CommandMemoryState state = historyStack.pop();
-    userDefinedCommandMap = state.getCommands();
-    userDefinedCommandVariablesMap = state.getVars();
+    if (!historyStack.isEmpty()) {
+      CommandMemoryState state = historyStack.pop();
+      userDefinedCommandMap = state.getCommands();
+      userDefinedCommandVariablesMap = state.getVars();
+    }
   }
 
   public void setErrorMsgs(ResourceBundle msgs) {
