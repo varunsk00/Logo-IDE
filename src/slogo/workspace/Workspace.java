@@ -1,4 +1,4 @@
-package slogo.controller;
+package slogo.workspace;
 
 import javafx.scene.layout.BorderPane;
 import slogo.compiler.parser.Compiler;
