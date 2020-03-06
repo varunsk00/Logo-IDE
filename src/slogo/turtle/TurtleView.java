@@ -15,12 +15,10 @@ public class TurtleView extends Rectangle {
     private boolean cleared;
     private Color penColor = Color.BLACK;
 
-    public TurtleView(double width, double height, double habitatHeight, double habitatWidth){
+    public TurtleView(double width, double height, double habitatWidth, double habitatHeight){
         super(width, height);
-        this.habHeight = habitatHeight;
-        this.habWidth = habitatWidth;
-        this.xOffset = habitatWidth/2 + getWidth();
-        this.yOffset = habitatHeight/2 - habitatHeight/8;
+        this.xOffset = habitatWidth/2 - getWidth()/2;
+        this.yOffset = habitatHeight/2 - getHeight();
         this.img = new Image(image_filepath);
     }
 

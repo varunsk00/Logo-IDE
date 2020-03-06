@@ -84,6 +84,7 @@ public class TurtleHabitat extends Pane{
     public void updateHabitat(int id, Turtle turtle){
         TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
                 habitatWidth, habitatHeight);
+        //System.out.println(habitatHeight);
         tempTurtle.setFill(tempTurtle.getImage());
         tempTurtle.setX(tempTurtle.getXOffset());
         tempTurtle.setY(tempTurtle.getYOffset());
