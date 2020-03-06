@@ -148,6 +148,10 @@ public class Memory {
     return turtleMemory.getTurtleMapCopy();
   }
 
+  public void toggleActiveTurtle(int id) {
+    turtleMemory.toggleActiveTurtle(id);
+  }
+
   public void pushTurtleStack(List<Integer> newActives) {
     turtleMemory.pushTurtleStack(newActives);
   }

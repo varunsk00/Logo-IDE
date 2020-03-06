@@ -90,6 +90,16 @@ public class TurtleMemory {
     return new ArrayList<>(turtleIDStack.peek());
   }
 
+  public void toggleActiveTurtle(int id) {
+    List<Integer> actives = getActiveTurtleIDs();
+    if (actives.contains(id)) {
+      actives.remove(Integer.valueOf(id));
+    } else {
+      actives.add(id);
+    }
+    tellTurtleStack(actives);
+  }
+
   public void pushTurtleStack(List<Integer> newActives) {
     for (int i : newActives) {
       if (!turtleMap.containsKey(i)) {
