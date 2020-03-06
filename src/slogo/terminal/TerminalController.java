@@ -60,7 +60,9 @@ public class TerminalController {
         appendToOutput(systemMessage);
     }
 
-    public void setExternals(Compiler c) {this.compiler = c;}
+    public void setSize(int width, int height){terminalView.setSize(width, height);}
+
+    public void setCompiler(Compiler c) {this.compiler = c;}
 
     public List<String> getAllCommands(){return history.getCommands();}
 
