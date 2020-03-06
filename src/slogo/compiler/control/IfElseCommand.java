@@ -1,7 +1,6 @@
 package slogo.compiler.control;
 
 import slogo.compiler.parser.Command;
-import slogo.compiler.types.ListStartType;
 
 public class IfElseCommand extends Command {
 
@@ -11,7 +10,7 @@ public class IfElseCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     double val = args.get(0).execute();
     double ret = 0;
     if (val != 0) {
@@ -25,7 +24,7 @@ public class IfElseCommand extends Command {
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs &&
-        args.get(1) instanceof ListStartType &&
-        args.get(2) instanceof ListStartType; //FIXME instanceof
+        args.get(1).typeEquals("liststart") &&
+        args.get(2).typeEquals("liststart");
   }
 }

@@ -1,7 +1,5 @@
 package slogo.compiler.control;
 
-import slogo.compiler.types.ListStartType;
-
 public class RepeatCommand extends LoopCommand {
 
   public RepeatCommand(String declaration) {
@@ -10,13 +8,13 @@ public class RepeatCommand extends LoopCommand {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     double val = args.get(0).execute();
     return executeLoop(":repcount", 1, val, 1);
   }
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() == desiredArgs && args.get(1) instanceof ListStartType; //FIXME instanceof
+    return args.size() == desiredArgs && args.get(1).typeEquals("liststart");
   }
 }

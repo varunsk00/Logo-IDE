@@ -8,7 +8,7 @@ public class ListEndType extends TypeCommand {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     System.out.println("A list end was just executed, and that's bad.");
     return 0; //should never happen
   }

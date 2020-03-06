@@ -10,7 +10,7 @@ public class PowerCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return Math.pow(args.get(0).execute(), args.get(1).execute());
   }
 }

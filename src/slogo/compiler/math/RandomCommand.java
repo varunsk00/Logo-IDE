@@ -11,7 +11,7 @@ public class RandomCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     Random rand = new Random();
     return rand.nextDouble() * args.get(0).execute();
   }

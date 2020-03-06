@@ -10,7 +10,7 @@ public abstract class TypeCommand extends Command {
   }
 
   @Override
-  public void factoryRegister(String className) {
+  protected void factoryRegister(String className) {
     Command obj = this.createCommand(INITIALIZATION);
     className = className.substring(0, className.length() - 4);
     TypeFactory.registerCommand(className, obj);

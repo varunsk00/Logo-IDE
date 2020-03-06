@@ -10,7 +10,7 @@ public class ListStartType extends TypeCommand {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     double ret = 0;
     for (int i = 0; i < args.size() - 1; i++) {
       Command c = args.get(i);
@@ -21,6 +21,6 @@ public class ListStartType extends TypeCommand {
 
   @Override
   public boolean isCompleteSub() {
-    return args.size() > 0 && args.get(args.size() - 1) instanceof ListEndType; //FIXME instanceof
+    return args.size() > 0 && args.get(args.size() - 1).typeEquals("listend");
   }
 }
