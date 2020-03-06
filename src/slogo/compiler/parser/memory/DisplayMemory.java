@@ -30,9 +30,11 @@ public class DisplayMemory {
   }
 
   public void undo() {
-    DisplayMemoryState state = historyStack.pop();
-    palette = state.getPal();
-    backgroundColor = state.getBackground();
+    if (!historyStack.isEmpty()) {
+      DisplayMemoryState state = historyStack.pop();
+      palette = state.getPal();
+      backgroundColor = state.getBackground();
+    }
   }
 
   public int getBackgroundColor() {

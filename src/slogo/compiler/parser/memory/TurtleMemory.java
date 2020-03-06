@@ -40,10 +40,12 @@ public class TurtleMemory {
   }
 
   public void undo() {
-    TurtleMemoryState state = historyStack.pop();
-    turtleMap = state.getTurtleMap();
-    turtleIDStack.removeLast();
-    turtleIDStack.addLast(state.getIDs());
+    if (!historyStack.isEmpty()) {
+      TurtleMemoryState state = historyStack.pop();
+      turtleMap = state.getTurtleMap();
+      turtleIDStack.removeLast();
+      turtleIDStack.addLast(state.getIDs());
+    }
   }
 
   public void setErrorMsgs(ResourceBundle msgs) {
