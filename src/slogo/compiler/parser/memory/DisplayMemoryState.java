@@ -3,6 +3,7 @@ package slogo.compiler.parser.memory;
 import java.util.Map;
 
 public class DisplayMemoryState {
+
   private int background;
   private Map<Integer, int[]> pal;
 

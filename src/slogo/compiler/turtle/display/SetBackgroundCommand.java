@@ -11,7 +11,7 @@ public class SetBackgroundCommand extends Command {
 
   @Override
   public double executeCommand() {
-    int ret = (int)args.get(0).execute();
+    int ret = (int) args.get(0).execute();
     memory.setBackgroundColor(ret);
     return ret;
   }

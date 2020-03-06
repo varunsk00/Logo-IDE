@@ -41,7 +41,7 @@ public class Memory {
     turtleMemory.setErrorMsgs(errorMsgs);
   }
 
-  public void save(String input){
+  public void save(String input) {
     saveSelf();
     varMemory.save();
     commMemory.save();

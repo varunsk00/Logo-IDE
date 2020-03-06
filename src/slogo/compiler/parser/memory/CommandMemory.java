@@ -25,10 +25,10 @@ public class CommandMemory {
   public void save() {
     Map<String, Command> c = new HashMap<>();
     Map<String, List<String>> v = new HashMap<>();
-    for (Entry<String, List<String>> e: userDefinedCommandVariablesMap.entrySet()) {
+    for (Entry<String, List<String>> e : userDefinedCommandVariablesMap.entrySet()) {
       v.put(e.getKey(), new ArrayList<>(e.getValue()));
     }
-    historyStack.push(new CommandMemoryState(c,v));
+    historyStack.push(new CommandMemoryState(c, v));
     while (historyStack.size() > Memory.MAX_HISTORY_STORED) {
       historyStack.removeLast();
     }

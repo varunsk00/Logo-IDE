@@ -323,7 +323,7 @@ public class Compiler {
   private void save(String input) {
     memory.save(input);
   }
-  
+
   public String getEnteredText() {
     return memory.getEnteredText();
   }

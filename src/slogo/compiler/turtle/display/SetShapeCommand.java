@@ -11,7 +11,7 @@ public class SetShapeCommand extends TurtleCommand {
 
   @Override
   public double executeTurtle() {
-    int ret = (int)args.get(0).execute();
+    int ret = (int) args.get(0).execute();
     turtle.setShapeIndex(ret);
     return ret;
   }
