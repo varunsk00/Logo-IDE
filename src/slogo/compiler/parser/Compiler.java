@@ -83,6 +83,7 @@ public class Compiler {
   }
 
   public String execute(String input) {
+    save();
     input = spliceInput(input);
     try {
       Command comm = parse(input);
@@ -313,6 +314,14 @@ public class Compiler {
 
   public Map<Integer, int[]> getPaletteColors() {
     return memory.getPaletteColors();
+  }
+
+  public void undo() {
+    memory.undo();
+  }
+
+  private void save() {
+    memory.save();
   }
 
 }

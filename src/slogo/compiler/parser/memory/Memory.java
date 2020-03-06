@@ -9,6 +9,8 @@ import slogo.turtle.Turtle;
 
 public class Memory {
 
+  public static final int MAX_HISTORY_STORED = 100;
+
   private ResourceBundle errorMsgs;
   private VariableMemory varMemory;
   private CommandMemory commMemory;
@@ -33,6 +35,20 @@ public class Memory {
     varMemory.setErrorMsgs(errorMsgs);
     commMemory.setErrorMsgs(errorMsgs);
     turtleMemory.setErrorMsgs(errorMsgs);
+  }
+
+  public void save(){
+    varMemory.save();
+    commMemory.save();
+    turtleMemory.save();
+    displayMemory.save();
+  }
+
+  public void undo() {
+    varMemory.undo();
+    commMemory.undo();
+    turtleMemory.undo();
+    displayMemory.undo();
   }
 
   public double getVariable(String name) {

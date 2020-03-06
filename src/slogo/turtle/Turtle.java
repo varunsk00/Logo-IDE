@@ -2,6 +2,7 @@ package slogo.turtle;
 
 import java.util.ArrayList;
 import java.util.List;
+import slogo.compiler.parser.memory.TurtleMemory;
 
 public class Turtle {
     public static final double CENTER_X = 0.0;
@@ -34,6 +35,26 @@ public class Turtle {
         ID = -1;
         shapeIndex = 1;
         penColorIndex = 1;
+    }
+
+    public Turtle(Turtle other) {
+        xLocation = other.xLocation;
+        yLocation = other.yLocation;
+        heading = other.heading;
+        penDown = other.penDown;
+        showTurtle = other.showTurtle;
+        ID = other.ID;
+        shapeIndex = other.shapeIndex;
+        penColorIndex = other.penColorIndex;
+        isActive = other.isActive;
+        oldPenDown = other.oldPenDown;
+        clearScreen = other.clearScreen;
+        penSize = other.penSize;
+
+        locations = new ArrayList<>();
+        for (Point p: other.locations) {
+            locations.add(new Point(p));
+        }
     }
 
     public Turtle(int id) {

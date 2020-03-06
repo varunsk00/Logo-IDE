@@ -14,6 +14,7 @@ import slogo.compiler.exceptions.UnknownVariableException;
 public class VariableMemory {
 
   private ArrayDeque<Map<String, Double>> variableStack = new ArrayDeque<>();
+  private ArrayDeque<Map<String, Double>> historyStack = new ArrayDeque<>();
   private ResourceBundle errorMsgs;
 
   public VariableMemory() {
@@ -22,6 +23,19 @@ public class VariableMemory {
 
   public void setErrorMsgs(ResourceBundle msgs) {
     errorMsgs = msgs;
+  }
+
+  public void save() {
+    Map<String, Double> newMap = new HashMap<>(variableStack.getLast());
+    historyStack.push(newMap);
+    while (historyStack.size() > Memory.MAX_HISTORY_STORED) {
+      historyStack.removeLast();
+    }
+  }
+
+  public void undo() {
+    variableStack.removeLast();
+    variableStack.addLast(historyStack.pop());
   }
 
   public double getVariable(String name) {
