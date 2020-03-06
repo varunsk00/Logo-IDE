@@ -33,6 +33,12 @@ public class OutputPanel extends ListView<String> {
         setCellFactory(listView -> new TestLine(width-DISPLAY_MARGIN));
     }
 
+    public void setSize(int width, int height){
+        setMinWidth(width); setMaxWidth(width); setPrefWidth(width);
+        setPrefHeight(height);
+        setMaxHeight(height);
+    }
+
     /**
      * Deletes the last entry (compiler message and user input) from terminal display
      */

@@ -6,25 +6,17 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import slogo.compiler.parser.Compiler;
-import slogo.terminal.TerminalController;
-import slogo.terminal.TerminalView;
 import slogo.turtle.Point;
-import slogo.turtle.Turtle;
-import slogo.turtle.TurtleHabitat;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 
@@ -33,8 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.sql.SQLOutput;
+import java.util.*;
 
 //FIXME: replace JAVA FILENOTFOUND EXCEPTION WITH comp.executeFile()
 //FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
@@ -57,20 +49,14 @@ public class ParserController extends Application{
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private double SCENE_WIDTH;
-    private double SCENE_HEIGHT;
-    private double HEADER_HEIGHT = 80;
-
-    private double HABITAT_WIDTH = SCENE_WIDTH/2;
-    private double HABITAT_HEIGHT = SCENE_HEIGHT;
-
-    private double TERMINAL_WIDTH = SCENE_WIDTH/2;
-    private double TERMINAL_HEIGHT = SCENE_HEIGHT;
+    private double SCENE_WIDTH = 1280;
+    private double SCENE_HEIGHT = 720;
 
     private double TABPANE_WIDTH = SCENE_WIDTH;
-    private double TABPANE_HEIGHT = 150;
+    private double TABPANE_HEIGHT = SCENE_HEIGHT/5;
 
     private static final Color ALL_COLOR = Color.WHITE;
+    private int currentTab;
 
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
     private static final String LOGO_FILE_EXTENSIONS = "*.logo";
@@ -86,21 +72,18 @@ public class ParserController extends Application{
 
     private Stage myStage;
     private Timeline animation;
-    private Color backgroundColor = Color.WHITE;
+    private Color backgroundColor = Color.LIGHTSKYBLUE;
     private Color penColor = Color.BLACK;
 
-    private TerminalView term;
-    private TerminalController term_controller;
-    private int status;
+    private Workspace currentWorkspace;
+    private List<Workspace> workspaces;
+
+    private TabPane workspaceEnvironment;
 
     private VariablesTabPaneView tabPaneView;
     private VariablesTabPaneController tabPaneController;
 
-    private TurtleHabitat myHabitat;
-    private Turtle myTurtle1 = new Turtle();
-
-    private Compiler comp;
-
+    private ArrayList<Button> selectButtons = new ArrayList<>();
     /**
      * Empty Constructor Needed to run the application due to Application requirements Not called
      * explicitly in code
@@ -126,34 +109,41 @@ public class ParserController extends Application{
      */
     public void start(Stage primaryStage) throws FileNotFoundException {
         primaryStage.setTitle("SLogo");
-        //primaryStage.setMaximized(true);
-        changeScreenSizetoMax();
+        startWorkspaces();
         startAnimationLoop();
-        startCompiler();
         setBorderPane();
-        setTurtleHabitat();
-        setTerminalView();
         setTabPaneView();
         setHeader();
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets().add(STYLESHEET);
         myStage = primaryStage;
         myStage.setScene(scene);
-        myStage.setResizable(false);
+        //myStage.setResizable(false);
         myStage.show();
     }
 
-    private void changeScreenSizetoMax(){
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        SCENE_WIDTH = 1280;
-        SCENE_HEIGHT = 720;
-        TABPANE_WIDTH = SCENE_WIDTH;
-        TABPANE_HEIGHT = 150;
-        HABITAT_WIDTH = SCENE_WIDTH/2;
-        HABITAT_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
-        TERMINAL_WIDTH = SCENE_WIDTH/2;
-        TERMINAL_HEIGHT = SCENE_HEIGHT - HEADER_HEIGHT - TABPANE_HEIGHT;
+    private void startWorkspaces(){
+        workspaces = new ArrayList<>();
+        Workspace turtleWorkspace1 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
+        currentWorkspace = turtleWorkspace1;
+        workspaceEnvironment = new TabPane();
+        currentTab = 1;
+        Tab tab1 = new Tab();
+        tab1.setText("Workspace 1");
+        tab1.setContent(turtleWorkspace1);
 
+        Workspace turtleWorkspace2 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
+        Tab tab2 = new Tab();
+        tab2.setText("Workspace 2");
+        tab2.setContent(turtleWorkspace2);
+
+        Workspace turtleWorkspace3 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
+        Tab tab3 = new Tab();
+        tab3.setText("Workspace 3");
+        tab3.setContent(turtleWorkspace3);
+
+        workspaces = Arrays.asList(null, turtleWorkspace1, turtleWorkspace2, turtleWorkspace3);
+        workspaceEnvironment.getTabs().addAll(tab1, tab2, tab3);
     }
 
     private void setBorderPane() {
@@ -161,6 +151,7 @@ public class ParserController extends Application{
         root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
         root.setMaxWidth(SCENE_WIDTH);
         root.setMaxHeight(SCENE_HEIGHT);
+        root.setCenter(workspaceEnvironment);
     }
 
     private void setHeader() throws FileNotFoundException {
@@ -171,27 +162,10 @@ public class ParserController extends Application{
         root.setTop(header);
     }
 
-    private void setTerminalView() {
-        term = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
-        term_controller = new TerminalController(term);
-        term_controller.setExternals(comp);
-        status = -1;
-        root.setLeft(term);
-    }
-
     private void setTabPaneView() {
         tabPaneView = new VariablesTabPaneView(TABPANE_WIDTH, TABPANE_HEIGHT);
-        tabPaneController = new VariablesTabPaneController(tabPaneView, comp, term_controller);
+        tabPaneController = new VariablesTabPaneController(tabPaneView, currentWorkspace.getCompiler(), currentWorkspace.getTerminalController());
         root.setBottom(tabPaneView);
-    }
-
-    private void setTurtleHabitat() {
-        myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
-        root.setRight(myHabitat.getTurtleHabitat());
-    }
-
-    private void startCompiler(){
-        comp = new Compiler();
     }
 
     //FIXME: BIG NO NO!! REMOVE PRINTSTACKTRACE IMMEDIATELY
@@ -200,7 +174,7 @@ public class ParserController extends Application{
             try {
                 step();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                System.out.println("Help Text File Not Found.");
             }
         });
         animation = new Timeline();
@@ -210,16 +184,26 @@ public class ParserController extends Application{
     }
 
     private void step() throws IOException {
-        myHabitat.getTurtle().updateTurtleView(myTurtle1);
+        String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
+        int current = Integer.parseInt(workspaceString.substring(workspaceString.length()-1));
+        currentWorkspace = workspaces.get(current);
+        for (int turtleId: currentWorkspace.getCompiler().getAllTurtleIDs()){
+            currentWorkspace.getHabitat().updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
+            if(currentWorkspace.getCompiler().getTurtleByID(turtleId).isPenDown()){
+                for (Point loc: currentWorkspace.getCompiler().getTurtleByID(turtleId).locationsList()) {
+                    currentWorkspace.getHabitat().penDraw(currentWorkspace.getHabitat().getTurtle(turtleId).getPenColor(), loc, turtleId);
+                }
+            }
+            updateImageSize(turtleId);
+        }
         handleLanguage(buttons.getLanguageStatus());
         updateZoom();
-        updateImageSize();
         if(!buttons.getHelpStatus().equals(myResources.getString("HelpButton"))){
             handleHelp(buttons.getHelpStatus(), GUI_LANGUAGE);
             //launchHelpWindow(buttons.getHelpStatus(), buttons.getLanguageStatus());
         }
         if(buttons.getFileStatus()){
-            handleLogoFileChooser();
+            handleLogoFiles();
         }
         if(buttons.getPenColorStatus()){
             launchPenColorChooser();
@@ -230,27 +214,28 @@ public class ParserController extends Application{
         if(buttons.getImageStatus()){
             handleImageFileChooser();
         }
-        if(myTurtle1.isPenDown()){
-            for (Point loc: myTurtle1.locationsList()) {
-                myHabitat.penDraw(penColor, loc);
-            }
+
+        if (current != currentTab) {
+            currentTab = current;
+            tabPaneController.updateCompiler(currentWorkspace.getCompiler());
+            tabPaneController.updateTerminal(currentWorkspace.getTerminalController());
+            updateTabPanes(true);
         }
+
         setGlobalBackground(backgroundColor);
-        updateTabPanes();
+        updateTabPanes(false);
     }
 
-    private void updateTabPanes() {
-        //System.out.println(status);
-        //System.out.println(term_controller.getStatus());
-        if (status != term_controller.getStatus()) {
-            status = term_controller.getStatus();
+    private void updateTabPanes(boolean isSwitch) {
+        if (currentWorkspace.getStatus() != currentWorkspace.getTerminalController().getStatus() || isSwitch) {
+            currentWorkspace.setStatus(currentWorkspace.getTerminalController().getStatus());
             tabPaneController.updateAllTables();
         }
     }
 
     private void setGlobalBackground(Color c){
         root.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
-        myHabitat.setBackground(backgroundColor);
+        currentWorkspace.getHabitat().setBackground(backgroundColor);
     }
 
     //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
@@ -321,8 +306,8 @@ public class ParserController extends Application{
         header.getChildren().clear();
         root.getChildren().remove(header);
         setHeader();
-        comp.setLanguage(currentLang);
-        term_controller.changeLanguage(currentLang);
+        currentWorkspace.getCompiler().setLanguage(currentLang);
+        currentWorkspace.getTerminalController().changeLanguage(currentLang);
         tabPaneController.changeLanguage(currentLang);
     }
 
@@ -340,13 +325,19 @@ public class ParserController extends Application{
 
     //FIXME: Refactor following two methods
     private void launchPenColorChooser() {
+        selectButtons.clear();
         buttons.setPenColorOff();
         Stage s = new Stage();
         s.setTitle(myResources.getString("ColorWindow"));
         TilePane r = new TilePane();
         ColorPicker cp = new ColorPicker();
         EventHandler<ActionEvent> event = e -> {
-            penColor = cp.getValue();
+            for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
+                Button button = new Button("Turtle " + turtleID);
+                button.setOnAction(event1 -> currentWorkspace.getHabitat().getTurtle(turtleID).setPenColor(cp.getValue()));
+                selectButtons.add(button);
+            }
+            chooserPane(selectButtons);
             s.close();
         };
         cp.setValue(penColor);
@@ -386,17 +377,37 @@ public class ParserController extends Application{
     }
 
     private void handleImageFileChooser(){
+        selectButtons.clear();
         File dataFile = IMAGE_FILE_CHOOSER.showOpenDialog(myStage);
         if(dataFile == null){
             buttons.setImageOff();
             return;
         }
         buttons.setImageOff();
-        myHabitat.getTurtle().setFill(new ImagePattern(new Image("file:" + dataFile.getPath())));
+
+        for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
+            Button button = new Button("Turtle " + turtleID);
+            button.setOnAction(event -> currentWorkspace.getHabitat().getTurtle(turtleID).setFill(new ImagePattern(new Image("file:" + dataFile.getPath()))));
+            selectButtons.add(button);
+        }
+        chooserPane(selectButtons);
+    }
+
+    private void chooserPane(List<Button> turtleButtons){
+        Stage s = new Stage();
+        Pane root = new Pane();
+        Scene sc = new Scene(root, 200, 200);
+        ListView<Button> turtleOptions = new ListView<Button>();
+        for (Button button: turtleButtons){
+            turtleOptions.getItems().addAll(button);
+        }
+        root.getChildren().addAll(turtleOptions);
+        s.setScene(sc);
+        s.show();
     }
 
     //FIXME: directly call comp.executeFile, and run in the terminal (maybe add method to TerminalView)
-    private void handleLogoFileChooser() throws FileNotFoundException {
+    private void handleLogoFiles() throws FileNotFoundException {
         File dataFile = LOGO_FILE_CHOOSER.showOpenDialog(myStage);
         String input = "";
         if(dataFile == null){
@@ -412,16 +423,16 @@ public class ParserController extends Application{
             }
             input += line + " ";
         }
-        term.setCurrentInput(input);
+        currentWorkspace.getTerminal().setCurrentInput(input);
     }
 
     private void updateZoom(){
-        myHabitat.getTurtleHabitat().setScaleX(sliders.getZoom()/3.0);
-        myHabitat.getTurtleHabitat().setScaleY(sliders.getZoom()/3.0);
+        currentWorkspace.getHabitat().setScaleX(sliders.getZoom()/3.0);
+        currentWorkspace.getHabitat().setScaleY(sliders.getZoom()/3.0);
     }
 
-    private void updateImageSize(){
-        myHabitat.getTurtle().setScaleX(sliders.getSizeValue()/3.0);
-        myHabitat.getTurtle().setScaleY(sliders.getSizeValue()/3.0);
+    private void updateImageSize(int turtleId){
+        currentWorkspace.getHabitat().getTurtle(turtleId).setScaleX(sliders.getSizeValue()/3.0);
+        currentWorkspace.getHabitat().getTurtle(turtleId).setScaleY(sliders.getSizeValue()/3.0);
     }
 }

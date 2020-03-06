@@ -10,7 +10,7 @@ public class RemainderCommand extends Command {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return args.get(0).execute() % args.get(1).execute();
   }
 }

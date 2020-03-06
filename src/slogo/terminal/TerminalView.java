@@ -28,14 +28,9 @@ public class TerminalView extends ScrollPane {
      */
     public TerminalView(int width, int height){initializeTerminal(width, height);}
 
-    /**
-     * Resizes of the terminal
-     * @param width width
-     * @param height height
-     **/
-    public void setTerminalSize(double width, double height){
-        super.setMaxSize(width, height);
-        super.setPrefSize(width, height);
+    public void setSize(int width, int height){
+        outputPanel.setSize(width, height-INPUT_PANEL_HEIGHT-HEADER_HEIGHT);
+        inputPanel.setSize(width, INPUT_PANEL_HEIGHT);
     }
 
     /**

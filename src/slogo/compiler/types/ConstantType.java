@@ -20,7 +20,7 @@ public class ConstantType extends TypeCommand {
   }
 
   @Override
-  public double execute() {
+  public double executeCommand() {
     return value;
   }
 

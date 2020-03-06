@@ -55,13 +55,26 @@ public class VariablesTabPaneController {
     /**
      * Changes language
      * @param language language
-     */
+///////////////////     */
     public void changeLanguage(String language){
         variablesTabPaneView.changeLanguageTo(language);
     }
 
+    /**
+     * Updates compiler
+     * @param newCompiler the new compiler object
+     */
+    public void updateCompiler(Compiler newCompiler){ this.compiler = newCompiler;}
+
+    /**
+     * Updates terminal
+     * @param newTerminal the new terminal object
+     */
+    public void updateTerminal(TerminalController newTerminal) {this.terminal = newTerminal;}
+
     private void updateVariableTable(){
         Set<String> varList = (Set<String>) compiler.getAllVariableNames();
+        variablesTabPaneView.clearAll(VAR_TYPE);
         for (String var:varList){
             variablesTabPaneView.addEntry(VAR_TYPE, Double.toString(compiler.getVariable(var)), formatVariable(var), false);
         }
@@ -69,6 +82,7 @@ public class VariablesTabPaneController {
 
     private void updateDefinedMethod(){
         Set<String> methodList = (Set<String>) compiler.getAllUserDefinedCommands();
+        variablesTabPaneView.clearAll(DEFINED_TYPE);
         for (String method:methodList){
             variablesTabPaneView.addEntry(DEFINED_TYPE, DEFINED_VALUE_PLACEHOLDER, method, false);
         }
@@ -92,13 +106,13 @@ public class VariablesTabPaneController {
         for (Map.Entry<String, AutoTableView> entry : tableDict) {
 
             for (Object item: entry.getValue().getColumns()){
-                TableColumn col;
-                if (item instanceof TableColumn){
+                TableColumn col = (TableColumn) item;
+                /*if (item instanceof TableColumn){
                     col = (TableColumn) item;}
                 else{
                     System.out.println("Error: unimplemented type of table column");
                     break;
-                }
+                }*/
 
                 if (col.getId().equals(EDITABLE_MATCH_KEYWORD) && entry.getKey().equals(VAR_TYPE)){
                     varTableBinding(col);
