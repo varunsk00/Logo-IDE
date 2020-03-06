@@ -9,8 +9,11 @@ import slogo.compiler.parser.Compiler;
 import slogo.terminal.utils.history.HistoryBuffer;
 import slogo.terminal.utils.textLines.TestLine;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * TerminalController manages the communication between a TerminalView object and the compiler
@@ -58,6 +61,10 @@ public class TerminalController {
 
         history.addBufferEntry(command, 1); // add method now automatically resets the index
         appendToOutput(systemMessage);
+    }
+
+    public void sendFileInput(File file) throws FileNotFoundException {
+        sendInput(readFromFile(file));
     }
 
     public void setSize(int width, int height){terminalView.setSize(width, height);}
@@ -127,6 +134,7 @@ public class TerminalController {
             }
             else if (CtrlZ.match(keyEvent)){
                 terminalView.getOutputPanel().undoEntry();
+                compiler.undo();
                 clearLastHistoryEntry();
             }
         });
@@ -167,5 +175,18 @@ public class TerminalController {
     private void updateStatus(){
         Random rand = new Random();
         status = rand.nextInt(STATUS_MAX);
+    }
+
+    private String readFromFile(File dataFile) throws FileNotFoundException {
+        String input = "";
+        Scanner scanner = new Scanner(dataFile);
+        while (scanner.hasNext()){
+            String line = scanner.nextLine();
+            if(line.startsWith("#")) {
+                continue;
+            }
+            input += line + " ";
+        }
+        return input;
     }
 }

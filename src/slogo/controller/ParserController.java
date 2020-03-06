@@ -421,7 +421,7 @@ public class ParserController extends Application{
             return;
         }
         buttons.setLoadFilePressedOff();
-        Scanner scanner = new Scanner(dataFile);
+        /*Scanner scanner = new Scanner(dataFile);
         while (scanner.hasNext()){
             String line = scanner.nextLine();
             if(line.startsWith("#")) {
@@ -429,7 +429,8 @@ public class ParserController extends Application{
             }
             input += line + " ";
         }
-        currentWorkspace.getTerminal().setCurrentInput(input);
+        currentWorkspace.getTerminal().setCurrentInput(input);*/
+        currentWorkspace.getTerminalController().sendFileInput(dataFile);
     }
 
     private void updateZoom(){
