@@ -21,22 +21,22 @@ import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 
 public class TurtleHabitat extends Pane{
-    public static final int INFO_PANE_SIZE = 400;
-    public static final int TURTLE_LIST_WIDTH = 100;
-    public static final int BUTTON_HEIGHT = 30;
-    public static final int PICTURE_X_LOCATION = 200;
-    public static final int PICTURE_Y_LOCATION = 50;
-    public static final double PEN_WIDTH = 2.0;
+    private static final int INFO_PANE_SIZE = 400;
+    private static final int TURTLE_LIST_WIDTH = 100;
+    private static final int BUTTON_HEIGHT = 30;
+    private static final int PICTURE_X_LOCATION = 200;
+    private static final int PICTURE_Y_LOCATION = 50;
+    private static final double PEN_WIDTH = 2.0;
+    private Stack<List<Polyline>> polylineStack = new Stack<>();
     private List<Polyline> myLines;
     private static double DEFAULT_TURTLE_WIDTH = 50.0;
     private static double DEFAULT_TURTLE_HEIGHT = 25.0;
+    private static Color backgroundColor;
     private Map<Integer, TurtleView> allTurtles;
     private Map<Integer, Double> lastx;
     private Map<Integer, Double> lasty;
@@ -108,6 +108,37 @@ public class TurtleHabitat extends Pane{
 
     public void setBackground(Color c){
         setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+        backgroundColor = c;
+    }
+
+    public Color getBackgroundColor(){
+        return backgroundColor;
+    }
+
+    public void undoPen() {
+        if (!polylineStack.isEmpty()) {
+            List<Polyline> toRemove = polylineStack.pop();
+            for (Polyline p : myLines) {
+                p.getPoints().clear();
+                getChildren().remove(p);
+            }
+            myLines.clear();
+            myLines = toRemove;
+            for (Polyline p: myLines) {
+                getChildren().add(p);
+            }
+        }
+    }
+// add current list to a stack
+
+    public void saveToStack() {
+        List<Polyline> temp = new ArrayList<>();
+        for (Polyline p: myLines){
+            Polyline tempP = new Polyline();
+            tempP.getPoints().addAll(p.getPoints());
+            temp.add(tempP);
+        }
+        polylineStack.add(temp);
     }
 
     public void penDraw(Color penColor, Point loc, int turtleID){
@@ -117,7 +148,6 @@ public class TurtleHabitat extends Pane{
         Polyline pen  = new Polyline();
         myLines.add(pen);
         getChildren().add(pen);
-
         double xOffsetCoord = x_coor + turtle.getXOffset() + turtle.getWidth()/2;
         double yOffsetCoord = y_coor + turtle.getYOffset() + turtle.getHeight()/2;
         Double[] points = new Double[] {lastx.get(turtleID), lasty.get(turtleID), xOffsetCoord, yOffsetCoord};
