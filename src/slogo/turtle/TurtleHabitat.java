@@ -1,26 +1,15 @@
 package slogo.turtle;
-import javafx.beans.Observable;
-import javafx.collections.ObservableMap;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.control.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.List;
 
@@ -37,16 +26,20 @@ public class TurtleHabitat extends Pane{
     private static double DEFAULT_TURTLE_WIDTH = 50.0;
     private static double DEFAULT_TURTLE_HEIGHT = 25.0;
     private static Color backgroundColor;
-    private Map<Integer, TurtleView> allTurtles;
+    private Map<Integer, TurtleView> allTurtleViews;
+    private Map<Integer, Turtle> allTurtles;
     private Map<Integer, Double> lastx;
     private Map<Integer, Double> lasty;
 
     private double habitatWidth;
     private double habitatHeight;
     Rectangle rec;
+    Rectangle clrBox;
+    Text information;
 
     public TurtleHabitat(double width, double height){
-        allTurtles = new HashMap<Integer, TurtleView>();
+        allTurtleViews = new HashMap<Integer, TurtleView>();
+        allTurtles = new HashMap<Integer, Turtle>();
         lastx = new HashMap<Integer, Double>();
         lasty = new HashMap<Integer, Double>();
         habitatWidth = width;
@@ -60,7 +53,7 @@ public class TurtleHabitat extends Pane{
         Pane root = new Pane();
         Scene sc = new Scene(root, INFO_PANE_SIZE, INFO_PANE_SIZE);
         ListView<Button> turtleView = new ListView<>();
-        for (int turtleID: allTurtles.keySet()){
+        for (int turtleID: allTurtleViews.keySet()){
             Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event -> displayInformation(turtleID, root));
             turtleView.getItems().addAll(button);
@@ -72,13 +65,20 @@ public class TurtleHabitat extends Pane{
     }
 
     private void displayInformation(int id, Pane p){
-        p.getChildren().remove(rec);
+        p.getChildren().removeAll(rec, information, clrBox);
         rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
         rec.setLayoutX(PICTURE_X_LOCATION);
         rec.setLayoutY(PICTURE_Y_LOCATION);
-        rec.setFill(allTurtles.get(id).getFill());
-        Text t = new Text(200, 100, "Position " + allTurtles.get(id));
-        p.getChildren().addAll(rec, t);
+        rec.setFill(allTurtleViews.get(id).getFill());
+        information = new Text(200, 100, "Position: (" + allTurtles.get(id).getXLocation() + " , "+ allTurtles.get(id).getYLocation()+")\n"+
+                "Heading: " + allTurtles.get(id).getHeading()+"\n"+
+                "PenDown: " + allTurtles.get(id).isPenDown()+"\n"+
+                "PenColor: ");
+        clrBox = new Rectangle(10,10);
+        clrBox.setLayoutX(260);
+        clrBox.setLayoutY(140);
+        clrBox.setFill(allTurtleViews.get(id).getPenColor());
+        p.getChildren().addAll(rec, information, clrBox);
     }
 
     public void updateHabitat(int id, Turtle turtle){
@@ -88,13 +88,14 @@ public class TurtleHabitat extends Pane{
         tempTurtle.setFill(tempTurtle.getImage());
         tempTurtle.setX(tempTurtle.getXOffset());
         tempTurtle.setY(tempTurtle.getYOffset());
-        if (!allTurtles.containsKey(id)){
-            allTurtles.putIfAbsent(id, tempTurtle);
+        if (!allTurtleViews.containsKey(id)){
+            allTurtleViews.putIfAbsent(id, tempTurtle);
             lastx.putIfAbsent(id, tempTurtle.getX() + tempTurtle.getWidth()/2);
             lasty.putIfAbsent(id, tempTurtle.getY() + tempTurtle.getHeight()/2);
             getChildren().addAll(tempTurtle);
         }
-        allTurtles.get(id).updateTurtleView(turtle);
+        allTurtles.put(id, turtle);
+        allTurtleViews.get(id).updateTurtleView(turtle);
     }
 
     private void changeSize(double width, double height){
@@ -103,7 +104,7 @@ public class TurtleHabitat extends Pane{
     }
 
     public TurtleView getTurtle(int turtleID){
-        return allTurtles.get(turtleID);
+        return allTurtleViews.get(turtleID);
     }
 
     public void setBackground(Color c){
@@ -142,7 +143,7 @@ public class TurtleHabitat extends Pane{
     }
 
     public void penDraw(Color penColor, Point loc, int turtleID){
-        TurtleView turtle = allTurtles.get(turtleID);
+        TurtleView turtle = allTurtleViews.get(turtleID);
         double x_coor = loc.getX();
         double y_coor = loc.getY();
         Polyline pen  = new Polyline();

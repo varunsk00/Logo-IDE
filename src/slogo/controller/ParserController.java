@@ -313,7 +313,6 @@ public class ParserController extends Application{
         for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
             Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event -> currentWorkspace.getHabitat().getTurtle(turtleID).setImage("file:" + dataFile.getPath()));
-
             selectButtons.add(button);
         }
         header.getButtons().chooserPane(selectButtons);
