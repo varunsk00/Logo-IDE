@@ -17,6 +17,7 @@ public class TurtleMemory {
   private ResourceBundle errorMsgs;
   private Map<Integer, Turtle> turtleMap = new HashMap<>();
   private ArrayDeque<List<Integer>> turtleIDStack = new ArrayDeque<>();
+  private ArrayDeque<TurtleMemoryState> historyStack = new ArrayDeque<>();
   private int currentTurtleID;
 
   public TurtleMemory() {
@@ -24,6 +25,25 @@ public class TurtleMemory {
     startIDs.add(1);
     turtleIDStack.push(startIDs);
     addTurtle(1);
+  }
+
+  public void save() {
+    Map<Integer, Turtle> tur = new HashMap<>();
+    for (Entry<Integer, Turtle> e : turtleMap.entrySet()) {
+      tur.put(e.getKey(), new Turtle(e.getValue()));
+    }
+    List<Integer> ids = new ArrayList<>(turtleIDStack.getLast());
+    historyStack.push(new TurtleMemoryState(tur, ids));
+    while (historyStack.size() > Memory.MAX_HISTORY_STORED) {
+      historyStack.removeLast();
+    }
+  }
+
+  public void undo() {
+    TurtleMemoryState state = historyStack.pop();
+    turtleMap = state.getTurtleMap();
+    turtleIDStack.removeLast();
+    turtleIDStack.addLast(state.getIDs());
   }
 
   public void setErrorMsgs(ResourceBundle msgs) {

@@ -46,13 +46,14 @@ public abstract class Command {
     return name;
   }
 
-  public double execute(){
+  public double execute() {
     executed = true;
     return executeCommand();
   }
 
   /**
    * Runs and executes the commands, returning its double return value
+   *
    * @return the double return value
    */
   public abstract double executeCommand();

@@ -2,6 +2,7 @@ package slogo.turtle;
 
 import java.util.ArrayList;
 import java.util.List;
+import slogo.compiler.parser.memory.TurtleMemory;
 
 public class Turtle {
     public static final double CENTER_X = 0.0;
@@ -18,6 +19,9 @@ public class Turtle {
     private boolean oldPenDown;
     private boolean isActive;
     private int ID;
+    private int shapeIndex;
+    private int penColorIndex;
+    private double penSize;
 
     private List<Point> locations;
 
@@ -29,6 +33,28 @@ public class Turtle {
         showTurtle = true;
         locations = new ArrayList<>();
         ID = -1;
+        shapeIndex = 1;
+        penColorIndex = 1;
+    }
+
+    public Turtle(Turtle other) {
+        xLocation = other.xLocation;
+        yLocation = other.yLocation;
+        heading = other.heading;
+        penDown = other.penDown;
+        showTurtle = other.showTurtle;
+        ID = other.ID;
+        shapeIndex = other.shapeIndex;
+        penColorIndex = other.penColorIndex;
+        isActive = other.isActive;
+        oldPenDown = other.oldPenDown;
+        clearScreen = other.clearScreen;
+        penSize = other.penSize;
+
+        locations = new ArrayList<>();
+        for (Point p: other.locations) {
+            locations.add(new Point(p));
+        }
     }
 
     public Turtle(int id) {
@@ -132,5 +158,29 @@ public class Turtle {
 
     public int getID() {
         return ID;
+    }
+
+    public int getShapeIndex() {
+        return shapeIndex;
+    }
+
+    public void setShapeIndex(int shapeIndex) {
+        this.shapeIndex = shapeIndex;
+    }
+
+    public int getPenColorIndex() {
+        return penColorIndex;
+    }
+
+    public void setPenColorIndex(int colorIndex) {
+        this.penColorIndex = colorIndex;
+    }
+
+    public void setPenSize(double psize) {
+        penSize = psize;
+    }
+
+    public double getPenSize() {
+        return penSize;
     }
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -82,6 +83,7 @@ public class Compiler {
   }
 
   public String execute(String input) {
+    save(input);
     input = spliceInput(input);
     try {
       Command comm = parse(input);
@@ -296,6 +298,34 @@ public class Compiler {
 
   public List<String> getCommandVariables(String name) {
     return memory.getCommandVariables(name);
+  }
+
+  public int getBackgroundColor() {
+    return memory.getBackgroundColor();
+  }
+
+  public void setBackgroundColor(int backgroundColor) {
+    memory.setBackgroundColor(backgroundColor);
+  }
+
+  public void addColor(int idx, int r, int g, int b) {
+    memory.addColor(idx, r, g, b);
+  }
+
+  public Map<Integer, int[]> getPaletteColors() {
+    return memory.getPaletteColors();
+  }
+
+  public void undo() {
+    memory.undo();
+  }
+
+  private void save(String input) {
+    memory.save(input);
+  }
+
+  public String getEnteredText() {
+    return memory.getEnteredText();
   }
 
 }
