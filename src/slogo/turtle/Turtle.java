@@ -32,6 +32,8 @@ public class Turtle {
         showTurtle = true;
         locations = new ArrayList<>();
         ID = -1;
+        shapeIndex = 1;
+        penColorIndex = 1;
     }
 
     public Turtle(int id) {

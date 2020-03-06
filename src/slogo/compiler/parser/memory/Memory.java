@@ -13,17 +13,19 @@ public class Memory {
   private VariableMemory varMemory;
   private CommandMemory commMemory;
   private TurtleMemory turtleMemory;
+  private DisplayMemory displayMemory;
 
   public Memory() {
     varMemory = new VariableMemory();
     commMemory = new CommandMemory();
     turtleMemory = new TurtleMemory();
+    displayMemory = new DisplayMemory();
   }
 
   public Memory(Memory other) {
     this();
     commMemory = other.commMemory;
-    varMemory = other.varMemory;
+    displayMemory = other.displayMemory;
   }
 
   public void setErrorMsgs(ResourceBundle msgs) {
@@ -123,5 +125,21 @@ public class Memory {
 
   public int getCurrentTurtleID() {
     return turtleMemory.getCurrentTurtleID();
+  }
+
+  public int getBackgroundColor() {
+    return displayMemory.getBackgroundColor();
+  }
+
+  public void setBackgroundColor(int backgroundColor) {
+    displayMemory.setBackgroundColor(backgroundColor);
+  }
+
+  public void addColor(int idx, int r, int g, int b) {
+    displayMemory.addColor(idx, r, g, b);
+  }
+
+  public Map<Integer, int[]> getPaletteColors() {
+    return displayMemory.getPaletteColors();
   }
 }
