@@ -15,7 +15,7 @@ public class Workspace extends BorderPane {
     private TerminalController myTerminalController;
     private int status;
     private static final double HEADER_HEIGHT = 80;
-    private static final double VARIABLE_EXPLORER_HEIGHT = 150;
+    private double VARIABLE_EXPLORER_HEIGHT;
     private static final double TAB_HEIGHT = 30;
     private double TABPANE_WIDTH;
     private double TERMINAL_WIDTH;
@@ -65,13 +65,13 @@ public class Workspace extends BorderPane {
     private void setSizes(double scene_width, double scene_height){
         TABPANE_WIDTH = scene_width;
         HABITAT_WIDTH = scene_width/2;
+        VARIABLE_EXPLORER_HEIGHT = scene_height/5;
         HABITAT_HEIGHT = scene_height - HEADER_HEIGHT - VARIABLE_EXPLORER_HEIGHT;
         TERMINAL_WIDTH = scene_width/2;
         TERMINAL_HEIGHT = scene_height - HEADER_HEIGHT - VARIABLE_EXPLORER_HEIGHT - TAB_HEIGHT;
     }
     private void setTerminalView() {
         myTerminalView = new TerminalView( (int) TERMINAL_WIDTH, (int) TERMINAL_HEIGHT);
-        System.out.println(TERMINAL_HEIGHT);
         myTerminalController = new TerminalController(myTerminalView);
         myTerminalController.setExternals(comp);
         status = -1;
