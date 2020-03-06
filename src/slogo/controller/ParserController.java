@@ -55,8 +55,6 @@ public class ParserController extends Application{
     private static final double TABPANE_WIDTH = SCENE_WIDTH;
     private static final double TABPANE_HEIGHT = SCENE_HEIGHT/5;
 
-    private static final double MARGIN = SCENE_WIDTH/40;
-
     private static final Color ALL_COLOR = Color.WHITE;
     private static final int NUMBER_OF_TABS = 10;
     private static int currentTab;
@@ -166,12 +164,12 @@ public class ParserController extends Application{
     }
 
     private void step() throws IOException {
+        currentWorkspace.getTerminalController().setSize((int)myStage.getWidth()/2, (int)(myStage.getHeight()- 2*TABPANE_HEIGHT));
         Color compilerColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
         if (!compilerColor.equals(DefaultColor)){
             setBackground(compilerColor);
             currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
         }
-        currentWorkspace.getTerminalController().setSize((int)myStage.getWidth()/2, (int)(myStage.getHeight()- TABPANE_HEIGHT- 110-MARGIN));
         String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
         int current = currentWorkspace.getCurrentWorkspace(workspaceString);
         currentWorkspace = workspaces.get(current);
@@ -328,8 +326,7 @@ public class ParserController extends Application{
                 selectButtons.add(button);
             }
             header.getButtons().chooserPane(selectButtons);
-            penColorChooser.close();
-        });
+            penColorChooser.close();});
         penColorChooser.show();
     }
 
