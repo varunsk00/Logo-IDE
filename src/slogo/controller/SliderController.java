@@ -16,6 +16,7 @@ public class SliderController {
 
     private Slider zoom;
     private Slider imagesize;
+    private Slider penWidth;
 
     private static final int MIN_ZOOM = 1;
     private static final int DEFAULT_ZOOM = 3;
@@ -24,6 +25,10 @@ public class SliderController {
     private static final int MIN_SIZE = 1;
     private static final int DEFAULT_SIZE = 3;
     private static final int MAX_SIZE = 5;
+
+    private static final int MIN_PEN_WIDTH = 2;
+    private static final int DEFAULT_PEN_WIDTH = 2;
+    private static final int MAX_PEN_WIDTH = 5;
 
     private VBox sliders;
 
@@ -40,6 +45,8 @@ public class SliderController {
         return imagesize.getValue();
     }
 
+    public double getPenWidth() {return penWidth.getValue();}
+
     public VBox getVBox() {
         return sliders;
     }
@@ -53,6 +60,8 @@ public class SliderController {
         current.getHabitat().getTurtle(turtleId).setScaleX(getSizeValue()/3.0);
         current.getHabitat().getTurtle(turtleId).setScaleY(getSizeValue()/3.0);
     }
+
+    public void updatePenWidth(Workspace current, int )
 
     private void renderSliders() {
         sliders = new VBox();
