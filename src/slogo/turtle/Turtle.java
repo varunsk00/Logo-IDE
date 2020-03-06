@@ -17,7 +17,7 @@ public class Turtle {
     private boolean showTurtle;
     private boolean clearScreen;
     private boolean oldPenDown;
-    private boolean isActive;
+    private boolean isActive = true;
     private int ID;
     private int shapeIndex;
     private int penColorIndex;
