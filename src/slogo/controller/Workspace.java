@@ -62,6 +62,7 @@ public class Workspace extends BorderPane {
     private void setSizes(double scene_width, double scene_height){
         TABPANE_WIDTH = scene_width;
         HABITAT_WIDTH = scene_width/2;
+        System.out.println(HABITAT_WIDTH);
         VARIABLE_EXPLORER_HEIGHT = scene_height/5;
         HABITAT_HEIGHT = scene_height - HEADER_HEIGHT - VARIABLE_EXPLORER_HEIGHT;
         TERMINAL_WIDTH = scene_width/2;
@@ -77,6 +78,10 @@ public class Workspace extends BorderPane {
 
     private void setTurtleHabitat() {
         myHabitat = new TurtleHabitat(HABITAT_WIDTH, HABITAT_HEIGHT);
+        myHabitat.setOnMouseDragged(event -> {
+            myHabitat.setTranslateX(event.getX() + event.getSceneX());
+            myHabitat.setTranslateY(event.getY() + event.getSceneY());
+        });
         setRight(myHabitat);
     }
 }

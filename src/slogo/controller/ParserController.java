@@ -6,20 +6,25 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.turtle.Point;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLOutput;
 import java.util.*;
+import java.util.List;
 
 //FIXME: replace JAVA FILENOTFOUND EXCEPTION WITH comp.executeFile()
 //FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
@@ -48,12 +54,15 @@ public class ParserController extends Application{
 
     private static double FRAMES_PER_SECOND = 30;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+    private static final int NUMBER_OF_TABS = 15;
 
     private double SCENE_WIDTH = 1280;
     private double SCENE_HEIGHT = 720;
 
     private double TABPANE_WIDTH = SCENE_WIDTH;
     private double TABPANE_HEIGHT = SCENE_HEIGHT/5;
+
+    private double MARGIN = 32;
 
     private static final Color ALL_COLOR = Color.WHITE;
     private int currentTab;
@@ -118,32 +127,23 @@ public class ParserController extends Application{
         scene.getStylesheets().add(STYLESHEET);
         myStage = primaryStage;
         myStage.setScene(scene);
-        //myStage.setResizable(false);
         myStage.show();
     }
 
     private void startWorkspaces(){
         workspaces = new ArrayList<>();
-        Workspace turtleWorkspace1 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
-        currentWorkspace = turtleWorkspace1;
-        workspaceEnvironment = new TabPane();
+        workspaces.add(null);
+        for(int i = 0; i< NUMBER_OF_TABS; i++){
+            workspaces.add(new Workspace((SCENE_WIDTH), SCENE_HEIGHT));
+        }
+        currentWorkspace = workspaces.get(1);
         currentTab = 1;
-        Tab tab1 = new Tab();
-        tab1.setText("Workspace 1");
-        tab1.setContent(turtleWorkspace1);
-
-        Workspace turtleWorkspace2 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
-        Tab tab2 = new Tab();
-        tab2.setText("Workspace 2");
-        tab2.setContent(turtleWorkspace2);
-
-        Workspace turtleWorkspace3 = new Workspace(SCENE_WIDTH, SCENE_HEIGHT);
-        Tab tab3 = new Tab();
-        tab3.setText("Workspace 3");
-        tab3.setContent(turtleWorkspace3);
-
-        workspaces = Arrays.asList(null, turtleWorkspace1, turtleWorkspace2, turtleWorkspace3);
-        workspaceEnvironment.getTabs().addAll(tab1, tab2, tab3);
+        workspaceEnvironment = new TabPane();
+        for(int i = 1; i < workspaces.size(); i++){
+            Tab tab = new Tab("Workspace " + String.valueOf(i));
+            tab.setContent(workspaces.get(i));
+            workspaceEnvironment.getTabs().add(tab);
+        }
     }
 
     private void setBorderPane() {
@@ -184,8 +184,10 @@ public class ParserController extends Application{
     }
 
     private void step() throws IOException {
+        currentWorkspace.getTerminalController().setSize((int)myStage.getWidth()/2, (int)(myStage.getHeight()- TABPANE_HEIGHT- 110-MARGIN));
+
         String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
-        int current = Integer.parseInt(workspaceString.substring(workspaceString.length()-1));
+        int current = findEndInt(workspaceString);
         currentWorkspace = workspaces.get(current);
         for (int turtleId: currentWorkspace.getCompiler().getAllTurtleIDs()){
             currentWorkspace.getHabitat().updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
@@ -431,8 +433,17 @@ public class ParserController extends Application{
         currentWorkspace.getHabitat().setScaleY(sliders.getZoom()/3.0);
     }
 
+
     private void updateImageSize(int turtleId){
         currentWorkspace.getHabitat().getTurtle(turtleId).setScaleX(sliders.getSizeValue()/3.0);
         currentWorkspace.getHabitat().getTurtle(turtleId).setScaleY(sliders.getSizeValue()/3.0);
+    }
+
+    private int findEndInt(String str){
+        int i = str.length();
+        while (i > 0 && Character.isDigit(str.charAt(i - 1))) {
+            i--;
+        }
+        return Integer.parseInt(str.substring(i));
     }
 }
