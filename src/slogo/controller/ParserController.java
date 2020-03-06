@@ -3,17 +3,11 @@ package slogo.controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -21,6 +15,7 @@ import javafx.util.Duration;
 import slogo.turtle.Point;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
+import slogo.workspace.ColorFactory;
 import slogo.workspace.Workspace;
 
 import java.io.File;
@@ -28,10 +23,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.List;
+import java.util.ArrayList;
 
-//FIXME: replace JAVA FILENOTFOUND EXCEPTION WITH comp.executeFile()
+import java.util.List;
+import java.util.ResourceBundle;
+
 //FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
 //FIXME: BREAK UP CLASS....REFACTOR ALMOST EVERYTHING LOL
 
@@ -46,39 +42,37 @@ public class ParserController extends Application{
     private static final String HELP_DIRECTORY = "src/slogo/resources/help/Help_";
     private static final String LOGO_DIRECTORY = "data/examples";
     private static final String RESOURCES_PACKAGE = "slogo.resources.languages.GUI.";
-    private static String GUI_LANGUAGE = "English_GUI";
-    private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + GUI_LANGUAGE);
-
-    private static double FRAMES_PER_SECOND = 30;
-    private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-    private static final int NUMBER_OF_TABS = 15;
-
-    private double SCENE_WIDTH = 1280;
-    private double SCENE_HEIGHT = 720;
-
-    private double TABPANE_WIDTH = SCENE_WIDTH;
-    private double TABPANE_HEIGHT = SCENE_HEIGHT/5;
-
-    private double MARGIN = 32;
-
-    private static final Color ALL_COLOR = Color.WHITE;
-    private int currentTab;
-
+    private static String guiLanguage = "English_GUI";
     private static final String IMAGE_FILE_EXTENSIONS = "*.png,*.jpg";
     private static final String LOGO_FILE_EXTENSIONS = "*.logo";
+    private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + guiLanguage);
 
-    public FileChooser IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
-    public FileChooser LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
+    private static final double FRAMES_PER_SECOND = 30;
+    private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+
+    private static final double SCENE_WIDTH = 1280;
+    private static final double SCENE_HEIGHT = 720;
+
+    private static final double TABPANE_WIDTH = SCENE_WIDTH;
+    private static final double TABPANE_HEIGHT = SCENE_HEIGHT/5;
+
+    private static final double MARGIN = SCENE_WIDTH/40;
+
+    private static final Color ALL_COLOR = Color.WHITE;
+    private static final int NUMBER_OF_TABS = 10;
+    private static int currentTab;
+    private static String currentLang = "English";
+
+    public FileChooser IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"));
+    public FileChooser LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"));
 
     private BorderPane root;
-
-    private VBox header = new VBox();
-    private ButtonController buttons;
-    private SliderController sliders;
+    private HeaderController header;
 
     private Stage myStage;
     private Timeline animation;
-    private Color backgroundColor = Color.LIGHTSKYBLUE;
+    private int DEFAULT_COLOR_CODE = -1;
+    private Color DefaultColor = Color.SKYBLUE;
     private Color penColor = Color.BLACK;
 
     private Workspace currentWorkspace;
@@ -89,10 +83,10 @@ public class ParserController extends Application{
     private VariablesTabPaneView tabPaneView;
     private VariablesTabPaneController tabPaneController;
 
-    private ArrayList<Button> selectButtons = new ArrayList<>();
+    private ColorFactory cf = new ColorFactory();
+    private List<Button> selectButtons = new ArrayList<>();
     /**
-     * Empty Constructor Needed to run the application due to Application requirements Not called
-     * explicitly in code
+     * Empty Constructor needed to run the application due to Application requirements
      */
     public ParserController() {
     }
@@ -137,7 +131,7 @@ public class ParserController extends Application{
         currentTab = 1;
         workspaceEnvironment = new TabPane();
         for(int i = 1; i < workspaces.size(); i++){
-            Tab tab = new Tab("Workspace " + String.valueOf(i));
+            Tab tab = new Tab(myResources.getString("Workspace") + String.valueOf(i));
             tab.setContent(workspaces.get(i));
             workspaceEnvironment.getTabs().add(tab);
         }
@@ -152,10 +146,7 @@ public class ParserController extends Application{
     }
 
     private void setHeader() throws FileNotFoundException {
-        buttons = new ButtonController(RESOURCES_PACKAGE + GUI_LANGUAGE);
-        sliders = new SliderController(RESOURCES_PACKAGE + GUI_LANGUAGE);
-        sliders.getVBox().getStyleClass().add("slider-box");
-        header.getChildren().addAll(buttons.getHBox(), sliders.getVBox());
+        header = new HeaderController(RESOURCES_PACKAGE + guiLanguage);
         root.setTop(header);
     }
 
@@ -165,15 +156,10 @@ public class ParserController extends Application{
         root.setBottom(tabPaneView);
     }
 
-    //FIXME: BIG NO NO!! REMOVE PRINTSTACKTRACE IMMEDIATELY
     private void startAnimationLoop() {
         KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
-            try {
-                step();
-            } catch (IOException ex) {
-                System.out.println("Help Text File Not Found.");
-            }
-        });
+            try { step(); } catch (IOException ex) {
+                System.out.println("Help Text File Not Found."); } });
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
@@ -181,10 +167,14 @@ public class ParserController extends Application{
     }
 
     private void step() throws IOException {
+        Color compilerColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
+        if (!compilerColor.equals(DefaultColor)){
+            setBackground(compilerColor);
+            currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
+        }
         currentWorkspace.getTerminalController().setSize((int)myStage.getWidth()/2, (int)(myStage.getHeight()- TABPANE_HEIGHT- 110-MARGIN));
-
         String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
-        int current = findEndInt(workspaceString);
+        int current = currentWorkspace.getCurrentWorkspace(workspaceString);
         currentWorkspace = workspaces.get(current);
         for (int turtleId: currentWorkspace.getCompiler().getAllTurtleIDs()){
             currentWorkspace.getHabitat().updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
@@ -193,40 +183,37 @@ public class ParserController extends Application{
                     currentWorkspace.getHabitat().penDraw(currentWorkspace.getHabitat().getTurtle(turtleId).getPenColor(), loc, turtleId);
                 }
             }
-            updateImageSize(turtleId);
+            header.getSliders().updateImageSize(currentWorkspace, turtleId);
         }
-        handleLanguage(buttons.getLanguageStatus());
-        updateZoom();
-        if(!buttons.getHelpStatus().equals(myResources.getString("HelpButton"))){
-            handleHelp(buttons.getHelpStatus(), GUI_LANGUAGE);
-            //launchHelpWindow(buttons.getHelpStatus(), buttons.getLanguageStatus());
+        handleLanguage(header.getButtons().getLanguageStatus());
+        header.getSliders().updateZoom(currentWorkspace);
+        if(!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))){
+            handleHelp(header.getButtons().getHelpStatus(), guiLanguage);
         }
-        if(buttons.getFileStatus()){
+        if(header.getButtons().getFileStatus()){
             handleLogoFiles();
         }
-        if(buttons.getPenColorStatus()){
+        if(header.getButtons().getPenColorStatus()){
             launchPenColorChooser();
         }
-        if(buttons.getBackgroundColorStatus()){
+        if(header.getButtons().getBackgroundColorStatus()){
             launchBackgroundColorChooser();
         }
-        if(buttons.getImageStatus()){
+        if(header.getButtons().getImageStatus()){
             handleImageFileChooser();
         }
-        if(buttons.isViewAllTurtles()){
+        if(header.getButtons().isViewAllTurtles()){
             currentWorkspace.getHabitat().viewTurtleInformation();
-            buttons.setViewAllTurtlesOff();
+            header.getButtons().setViewAllTurtlesOff();
         }
-
         if (current != currentTab) {
             currentTab = current;
             tabPaneController.updateCompiler(currentWorkspace.getCompiler());
             tabPaneController.updateTerminal(currentWorkspace.getTerminalController());
             updateTabPanes(true);
         }
-
-        setGlobalBackground(backgroundColor);
         updateTabPanes(false);
+        currentWorkspace.getCompiler().setLanguage(currentLang);
     }
 
     private void updateTabPanes(boolean isSwitch) {
@@ -236,49 +223,48 @@ public class ParserController extends Application{
         }
     }
 
-    private void setGlobalBackground(Color c){
-        root.setBackground(new Background(new BackgroundFill(backgroundColor, CornerRadii.EMPTY, Insets.EMPTY)));
-        currentWorkspace.getHabitat().setBackground(backgroundColor);
+    private void setBackground(Color c){
+        currentWorkspace.getHabitat().setBackground(c);
     }
 
     //FIXME: OFFLOAD INTO PROPERTIES FILE TO REFACTOR
     private void handleLanguage(String lang) throws FileNotFoundException {
         switch(lang){
             case "\u6c49\u8bed\u62fc\u97f3":
-                GUI_LANGUAGE = "Chinese_GUI";
-                updateLanguage(GUI_LANGUAGE);
+                guiLanguage = "Chinese_GUI";
+                updateLanguage(guiLanguage);
                 break;
             case "français":
-                GUI_LANGUAGE = "French_GUI";
-                updateLanguage(GUI_LANGUAGE);
+                guiLanguage = "French_GUI";
+                updateLanguage(guiLanguage);
                 break;
             case "Deutsch":
-                GUI_LANGUAGE = "German_GUI";
-                updateLanguage(GUI_LANGUAGE);
+                guiLanguage = "German_GUI";
+                updateLanguage(guiLanguage);
                 break;
             case "italiano":
-                GUI_LANGUAGE = "Italian_GUI";
-                updateLanguage(GUI_LANGUAGE);
+                guiLanguage = "Italian_GUI";
+                updateLanguage(guiLanguage);
                 break;
             case "português":
-                GUI_LANGUAGE = "Portuguese_GUI";
-                updateLanguage(GUI_LANGUAGE);
+                guiLanguage = "Portuguese_GUI";
+                updateLanguage(guiLanguage);
                 break;
             case "\u0070\u0443\u0441\u0441\u043a\u0438\u0439":
-                GUI_LANGUAGE = "Russian_GUI";
-                updateLanguage(GUI_LANGUAGE);
+                guiLanguage = "Russian_GUI";
+                updateLanguage(guiLanguage);
                 break;
             case "español":
-                GUI_LANGUAGE = "Spanish_GUI";
-                updateLanguage(GUI_LANGUAGE);
+                guiLanguage = "Spanish_GUI";
+                updateLanguage(guiLanguage);
                 break;
             case "\u0939\u093f\u0902\u0926\u0940/\u0627\u0631\u062f\u0648":
-                GUI_LANGUAGE = "Urdu_GUI";
-                updateLanguage(GUI_LANGUAGE);
+                guiLanguage = "Urdu_GUI";
+                updateLanguage(guiLanguage);
                 break;
             case "English":
-                GUI_LANGUAGE = "English_GUI";
-                updateLanguage(GUI_LANGUAGE);
+                guiLanguage = "English_GUI";
+                updateLanguage(guiLanguage);
                 break;
         }
     }
@@ -302,13 +288,19 @@ public class ParserController extends Application{
     }
 
     private void updateLanguage(String language) throws FileNotFoundException {
-        String currentLang = language.substring(0, language.indexOf("_"));
+        currentLang = language.substring(0, language.indexOf("_"));
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
-        IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY);
-        LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY);
+        IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"));
+        LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"));
         header.getChildren().clear();
         root.getChildren().remove(header);
         setHeader();
+        workspaceEnvironment.getTabs().clear();
+        for(int i = 1; i < workspaces.size(); i++){
+            Tab tab = new Tab(myResources.getString("Workspace") + String.valueOf(i));
+            tab.setContent(workspaces.get(i));
+            workspaceEnvironment.getTabs().add(tab);
+        }
         currentWorkspace.getCompiler().setLanguage(currentLang);
         currentWorkspace.getTerminalController().changeLanguage(currentLang);
         tabPaneController.changeLanguage(currentLang);
@@ -316,7 +308,7 @@ public class ParserController extends Application{
 
     private void launchHelpWindow(String prompt, String language) throws IOException {
         String currentLang = language.substring(0, language.indexOf("_"));
-        buttons.setHelpStatus(myResources.getString("HelpButton"));
+        header.getButtons().setHelpStatus(myResources.getString("HelpButton"));
         Stage s = new Stage();
         s.setTitle(myResources.getString(prompt));
         Text text = new Text(new String(Files.readAllBytes(Paths.get(HELP_DIRECTORY + prompt + "_" + currentLang + ".txt"))));
@@ -326,56 +318,38 @@ public class ParserController extends Application{
         s.show();
     }
 
-    //FIXME: Refactor following two methods
     private void launchPenColorChooser() {
         selectButtons.clear();
-        buttons.setPenColorOff();
-        Stage s = new Stage();
-        s.setTitle(myResources.getString("ColorWindow"));
-        TilePane r = new TilePane();
-        ColorPicker cp = new ColorPicker();
-        EventHandler<ActionEvent> event = e -> {
+        header.getButtons().setPenColorOff();
+        ColorController penColorChooser = new ColorController(RESOURCES_PACKAGE + guiLanguage, penColor);
+        penColorChooser.getColorPicker().setOnAction(e -> {
             for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
                 Button button = new Button("Turtle " + turtleID);
-                button.setOnAction(event1 -> currentWorkspace.getHabitat().getTurtle(turtleID).setPenColor(cp.getValue()));
+                button.setOnAction(event1 -> currentWorkspace.getHabitat().getTurtle(turtleID).setPenColor(penColorChooser.getColorPicker().getValue()));
                 selectButtons.add(button);
             }
-            chooserPane(selectButtons);
-            s.close();
-        };
-        cp.setValue(penColor);
-        cp.setOnAction(event);
-        r.getChildren().add(cp);
-        Scene sc = new Scene(r, 200, 200);
-        s.setScene(sc);
-        s.show();
+            header.getButtons().chooserPane(selectButtons);
+            penColorChooser.close();
+        });
+        penColorChooser.show();
     }
 
     private void launchBackgroundColorChooser() {
-        buttons.setBackgroundColorOff();
-        Stage s = new Stage();
-        s.setTitle(myResources.getString("ColorWindow"));
-        TilePane r = new TilePane();
-        ColorPicker cp = new ColorPicker();
-        EventHandler<ActionEvent> event = e -> {
-            backgroundColor = cp.getValue();
-            s.close();
-        };
-        cp.setValue(backgroundColor);
-        cp.setOnAction(event);
-        r.getChildren().add(cp);
-        Scene sc = new Scene(r, 200, 200);
-        s.setScene(sc);
-        s.show();
+        header.getButtons().setBackgroundColorOff();
+        ColorController bgColorChooser = new ColorController(RESOURCES_PACKAGE + guiLanguage, currentWorkspace.getHabitat().getBackgroundColor());
+        bgColorChooser.getColorPicker().setOnAction(e -> {
+            setBackground(bgColorChooser.getColorPicker().getValue());
+            bgColorChooser.close();});
+        bgColorChooser.show();
     }
 
-    private static FileChooser makeChooser(String extensionsAccepted, String directory) {
+    private static FileChooser makeChooser(String extensionsAccepted, String directory, String type) {
         String[] extensions = extensionsAccepted.split(",");
         FileChooser result = new FileChooser();
         result.setTitle(myResources.getString("OpenFile"));
         result.setInitialDirectory(new File(System.getProperty("user.dir"),directory));
         result.getExtensionFilters()
-                .setAll(new FileChooser.ExtensionFilter(myResources.getString("ImageFile"), extensions));
+                .setAll(new FileChooser.ExtensionFilter(type, extensions));
         return result;
     }
 
@@ -383,69 +357,26 @@ public class ParserController extends Application{
         selectButtons.clear();
         File dataFile = IMAGE_FILE_CHOOSER.showOpenDialog(myStage);
         if(dataFile == null){
-            buttons.setImageOff();
+            header.getButtons().setImageOff();
             return;
         }
-        buttons.setImageOff();
-
+        header.getButtons().setImageOff();
         for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
             Button button = new Button("Turtle " + turtleID);
-            button.setOnAction(event -> currentWorkspace.getHabitat().getTurtle(turtleID).setFill(new ImagePattern(new Image("file:" + dataFile.getPath()))));
+            button.setOnAction(event -> currentWorkspace.getHabitat().getTurtle(turtleID).setImage("file:" + dataFile.getPath()));
+
             selectButtons.add(button);
         }
-        chooserPane(selectButtons);
+        header.getButtons().chooserPane(selectButtons);
     }
 
-    private void chooserPane(List<Button> turtleButtons){
-        Stage s = new Stage();
-        Pane root = new Pane();
-        Scene sc = new Scene(root, 200, 200);
-        ListView<Button> turtleOptions = new ListView<Button>();
-        for (Button button: turtleButtons){
-            turtleOptions.getItems().addAll(button);
-        }
-        root.getChildren().addAll(turtleOptions);
-        s.setScene(sc);
-        s.show();
-    }
-
-    //FIXME: directly call comp.executeFile, and run in the terminal (maybe add method to TerminalView)
     private void handleLogoFiles() throws FileNotFoundException {
         File dataFile = LOGO_FILE_CHOOSER.showOpenDialog(myStage);
-        String input = "";
         if(dataFile == null){
-            buttons.setLoadFilePressedOff();
+            header.getButtons().setLoadFilePressedOff();
             return;
         }
-        buttons.setLoadFilePressedOff();
-        /*Scanner scanner = new Scanner(dataFile);
-        while (scanner.hasNext()){
-            String line = scanner.nextLine();
-            if(line.startsWith("#")) {
-                continue;
-            }
-            input += line + " ";
-        }
-        currentWorkspace.getTerminal().setCurrentInput(input);*/
+        header.getButtons().setLoadFilePressedOff();
         currentWorkspace.getTerminalController().sendFileInput(dataFile);
-    }
-
-    private void updateZoom(){
-        currentWorkspace.getHabitat().setScaleX(sliders.getZoom()/3.0);
-        currentWorkspace.getHabitat().setScaleY(sliders.getZoom()/3.0);
-    }
-
-
-    private void updateImageSize(int turtleId){
-        currentWorkspace.getHabitat().getTurtle(turtleId).setScaleX(sliders.getSizeValue()/3.0);
-        currentWorkspace.getHabitat().getTurtle(turtleId).setScaleY(sliders.getSizeValue()/3.0);
-    }
-
-    private int findEndInt(String str){
-        int i = str.length();
-        while (i > 0 && Character.isDigit(str.charAt(i - 1))) {
-            i--;
-        }
-        return Integer.parseInt(str.substring(i));
     }
 }

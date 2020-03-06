@@ -48,6 +48,12 @@ public class PrefProcessor {
 
     }
 
+    public void loadPref(Workspace workspace, String filePath){
+        this.wspace = workspace;
+        prefDict = loadDict(filePath);
+        loadPrefDict();
+    }
+
     private void loadPrefDict(){
         initializeBackgroundColor();
         initializePenColor();
@@ -56,32 +62,19 @@ public class PrefProcessor {
         initializeLoadedFile();
     }
 
-    public void loadPref(Workspace workspace, String filePath){
-        this.wspace = workspace;
-        prefDict = loadDict(filePath);
-
-
-    }
-
     public void saveWorkspace(Workspace workspace){}
 
     private void initializeTurtleImageShape(){
         for (Map.Entry<String, String> entry : prefDict){
-            if (entry.getKey().equals(PEN_COLOR_KEY)){
-                if (entry.getKey().equals(IS_TURTLE_SHAPE_KEY) && entry.getValue().equals(TRUE_VAL)){
-                    initializeTurtleShape();
-                }
-                else if (entry.getKey().equals(IS_TURTLE_SHAPE_KEY) && entry.getValue().equals(FALSE_VAL)){
-                    initializeTurtleImage();
-                }
-            }
+            if (entry.getKey().equals(IS_TURTLE_SHAPE_KEY) && entry.getValue().equals(TRUE_VAL)){ initializeTurtleShape(); }
+            else if (entry.getKey().equals(IS_TURTLE_SHAPE_KEY) && entry.getValue().equals(FALSE_VAL)){ initializeTurtleImage(); }
         }
     }
 
     private void initializeBackgroundColor(){
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(BACKGROUND_COLOR_KEY)){
-                //
+                wspace.getHabitat().setBackground();
             }
         }
     }
@@ -128,7 +121,7 @@ public class PrefProcessor {
 
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(PRELOAD_FILE_KEY)){
-                
+
             }
         }
     }

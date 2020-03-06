@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import slogo.workspace.Workspace;
 
 import java.util.ResourceBundle;
 
@@ -41,6 +42,16 @@ public class SliderController {
 
     public VBox getVBox() {
         return sliders;
+    }
+
+    public void updateZoom(Workspace wk){
+        wk.getHabitat().setScaleX(getZoom()/3.0);
+        wk.getHabitat().setScaleY(getZoom()/3.0);
+    }
+
+    public void updateImageSize(Workspace wk, int turtleId){
+        wk.getHabitat().getTurtle(turtleId).setScaleX(getSizeValue()/3.0);
+        wk.getHabitat().getTurtle(turtleId).setScaleY(getSizeValue()/3.0);
     }
 
     private void renderSliders() {

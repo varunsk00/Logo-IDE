@@ -1,8 +1,11 @@
 package slogo.controller;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -105,6 +108,19 @@ public class ButtonController {
     }
 
     public void setViewAllTurtlesOff() {viewAllTurtles = false;}
+
+    public void chooserPane(List<Button> turtleButtons){
+        Stage s = new Stage();
+        Pane root = new Pane();
+        Scene sc = new Scene(root, 200, 200);
+        ListView<Button> turtleOptions = new ListView<Button>();
+        for (Button button: turtleButtons){
+            turtleOptions.getItems().addAll(button);
+        }
+        root.getChildren().addAll(turtleOptions);
+        s.setScene(sc);
+        s.show();
+    }
 
     private void renderButtons() {
         myButtons = new HBox();
