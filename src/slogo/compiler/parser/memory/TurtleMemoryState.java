@@ -1,5 +1,7 @@
 package slogo.compiler.parser.memory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import slogo.turtle.Turtle;
@@ -15,10 +17,10 @@ public class TurtleMemoryState {
   }
 
   public Map<Integer, Turtle> getTurtleMap() {
-    return turtleMap;
+    return new HashMap<>(turtleMap);
   }
 
   public List<Integer> getIDs() {
-    return IDs;
+    return new ArrayList<>(IDs);
   }
 }
