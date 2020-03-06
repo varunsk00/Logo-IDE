@@ -8,6 +8,8 @@ import javafx.scene.input.MouseEvent;
 import slogo.compiler.parser.Compiler;
 import slogo.terminal.utils.history.HistoryBuffer;
 import slogo.terminal.utils.textLines.TestLine;
+import slogo.turtle.Turtle;
+import slogo.turtle.TurtleHabitat;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,6 +23,7 @@ import java.util.Scanner;
 public class TerminalController {
     private static int STATUS_MAX = 5000;
     private TerminalView terminalView;
+    private TurtleHabitat habitat;
     private HistoryBuffer history;
     private Compiler compiler;
     private int status;
@@ -70,6 +73,8 @@ public class TerminalController {
     public void setSize(int width, int height){terminalView.setSize(width, height);}
 
     public void setCompiler(Compiler c) {this.compiler = c;}
+
+    public void setHabitat(TurtleHabitat h){this.habitat = h;}
 
     public List<String> getAllCommands(){return history.getCommands();}
 
@@ -135,6 +140,7 @@ public class TerminalController {
             else if (CtrlZ.match(keyEvent)){
                 terminalView.getOutputPanel().undoEntry();
                 compiler.undo();
+                //habitat.undo();
                 clearLastHistoryEntry();
             }
         });
