@@ -55,6 +55,7 @@ public class TerminalController {
         if (command.equals("")) return;
         appendToOutput(terminalView.formatInput(command));
 
+        habitat.saveToStack();
         String systemMessage = compiler.execute(command);
 
         //update local memory
@@ -140,7 +141,7 @@ public class TerminalController {
             else if (CtrlZ.match(keyEvent)){
                 terminalView.getOutputPanel().undoEntry();
                 compiler.undo();
-                //habitat.undo();
+                habitat.undoPen();
                 clearLastHistoryEntry();
             }
         });
@@ -161,7 +162,9 @@ public class TerminalController {
         String userInput = terminalView.getCurrentInput().substring(terminalView.getUSER_INPUT_CODE().length());
         if (userInput.equals("")) return null;
 
+        habitat.saveToStack();
         String systemMessage = compiler.execute(userInput);
+
 
         //update local memory
         history.addHistory(userInput, systemMessage);
