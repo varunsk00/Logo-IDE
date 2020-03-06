@@ -165,14 +165,56 @@ public class ParserController extends Application{
 
     private void step() throws IOException {
         currentWorkspace.getTerminalController().setSize((int)myStage.getWidth()/2, (int)(myStage.getHeight()- 2*TABPANE_HEIGHT));
+        updateTerminalBackgroundColor();
+        updateCurrentWorkspace();
+        handleMultipleTurtles();
+        updateTabPanes(false);
+        currentWorkspace.getCompiler().setLanguage(currentLang);
+        handleLanguage(header.getButtons().getLanguageStatus());
+        header.getSliders().updateZoom(currentWorkspace);
+        if(!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))){
+            handleHelp(header.getButtons().getHelpStatus(), guiLanguage); }
+        if(header.getButtons().getFileStatus()){
+            handleLogoFiles(); }
+        if(header.getButtons().getPenColorStatus()){
+            launchPenColorChooser(); }
+        if(header.getButtons().getBackgroundColorStatus()){
+            launchBackgroundColorChooser(); }
+        if(header.getButtons().getImageStatus()){
+            handleImageFileChooser(); }
+        if(header.getButtons().isViewAllTurtles()){
+            currentWorkspace.getHabitat().viewTurtleInformation();
+            header.getButtons().setViewAllTurtlesOff(); }
+    }
+
+    private void updateTabPanes(boolean isSwitch) {
+        if (currentWorkspace.getStatus() != currentWorkspace.getTerminalController().getStatus() || isSwitch) {
+            currentWorkspace.setStatus(currentWorkspace.getTerminalController().getStatus());
+            tabPaneController.updateAllTables();
+        }
+    }
+
+    private void updateCurrentWorkspace(){
+        String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
+        int current = currentWorkspace.getCurrentWorkspace(workspaceString);
+        currentWorkspace = workspaces.get(current);
+        if (current != currentTab) {
+            currentTab = current;
+            tabPaneController.updateCompiler(currentWorkspace.getCompiler());
+            tabPaneController.updateTerminal(currentWorkspace.getTerminalController());
+            updateTabPanes(true);
+        }
+    }
+
+    private void updateTerminalBackgroundColor(){
         Color compilerColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
         if (!compilerColor.equals(DefaultColor)){
             setBackground(compilerColor);
             currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
         }
-        String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
-        int current = currentWorkspace.getCurrentWorkspace(workspaceString);
-        currentWorkspace = workspaces.get(current);
+    }
+
+    private void handleMultipleTurtles(){
         for (int turtleId: currentWorkspace.getCompiler().getAllTurtleIDs()){
             currentWorkspace.getHabitat().updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
             if(currentWorkspace.getCompiler().getTurtleByID(turtleId).isPenDown()){
@@ -181,42 +223,6 @@ public class ParserController extends Application{
                 }
             }
             header.getSliders().updateImageSize(currentWorkspace, turtleId);
-        }
-        handleLanguage(header.getButtons().getLanguageStatus());
-        header.getSliders().updateZoom(currentWorkspace);
-        if(!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))){
-            handleHelp(header.getButtons().getHelpStatus(), guiLanguage);
-        }
-        if(header.getButtons().getFileStatus()){
-            handleLogoFiles();
-        }
-        if(header.getButtons().getPenColorStatus()){
-            launchPenColorChooser();
-        }
-        if(header.getButtons().getBackgroundColorStatus()){
-            launchBackgroundColorChooser();
-        }
-        if(header.getButtons().getImageStatus()){
-            handleImageFileChooser();
-        }
-        if(header.getButtons().isViewAllTurtles()){
-            currentWorkspace.getHabitat().viewTurtleInformation();
-            header.getButtons().setViewAllTurtlesOff();
-        }
-        if (current != currentTab) {
-            currentTab = current;
-            tabPaneController.updateCompiler(currentWorkspace.getCompiler());
-            tabPaneController.updateTerminal(currentWorkspace.getTerminalController());
-            updateTabPanes(true);
-        }
-        updateTabPanes(false);
-        currentWorkspace.getCompiler().setLanguage(currentLang);
-    }
-
-    private void updateTabPanes(boolean isSwitch) {
-        if (currentWorkspace.getStatus() != currentWorkspace.getTerminalController().getStatus() || isSwitch) {
-            currentWorkspace.setStatus(currentWorkspace.getTerminalController().getStatus());
-            tabPaneController.updateAllTables();
         }
     }
 
