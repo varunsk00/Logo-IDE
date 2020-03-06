@@ -55,7 +55,7 @@ public class ParserController extends Application{
     private double SCENE_HEIGHT = 720;
 
     private double TABPANE_WIDTH = SCENE_WIDTH;
-    private double TABPANE_HEIGHT = 150;
+    private double TABPANE_HEIGHT = SCENE_HEIGHT/5;
 
     private static final Color ALL_COLOR = Color.WHITE;
     private int currentTab;
@@ -112,7 +112,6 @@ public class ParserController extends Application{
      */
     public void start(Stage primaryStage) throws FileNotFoundException {
         primaryStage.setTitle("SLogo");
-        //primaryStage.setMaximized(true);
         startWorkspaces();
         startAnimationLoop();
         setBorderPane();
@@ -122,7 +121,7 @@ public class ParserController extends Application{
         scene.getStylesheets().add(STYLESHEET);
         myStage = primaryStage;
         myStage.setScene(scene);
-        myStage.setResizable(false);
+        //myStage.setResizable(false);
         myStage.show();
     }
 
@@ -183,12 +182,9 @@ public class ParserController extends Application{
     private void step() throws IOException {
         String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
         int current = Integer.parseInt(workspaceString.substring(workspaceString.length()-1));
-        System.out.println(current);
-//        currentWorkspace = turtleWorkspace2;
         //FIXME: PARSE INT AS INSTANCE VARIABLE DON'T HARDCODE
         if(current == 1){
             currentWorkspace = turtleWorkspace1;
-            //updateTabPanes();
         }
         else if(current ==2){
             currentWorkspace = turtleWorkspace2;
@@ -441,9 +437,4 @@ public class ParserController extends Application{
         currentWorkspace.getHabitat().getTurtle(turtleId).setScaleX(sliders.getSizeValue()/3.0);
         currentWorkspace.getHabitat().getTurtle(turtleId).setScaleY(sliders.getSizeValue()/3.0);
     }
-
-//    private void setWorkspace(int tabNumber){
-//        String workspace = "turtleworkspace" + String.valueOf(tabNumber);
-//        this.currentWorkspace = workspace;
-//    }
 }
