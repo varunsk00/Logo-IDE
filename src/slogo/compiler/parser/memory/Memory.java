@@ -1,5 +1,7 @@
 package slogo.compiler.parser.memory;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,8 @@ public class Memory {
   private CommandMemory commMemory;
   private TurtleMemory turtleMemory;
   private DisplayMemory displayMemory;
+  private List<String> enteredCommands = new ArrayList<>();
+  private ArrayDeque<List<String>> enteredStack = new ArrayDeque<>();
 
   public Memory() {
     varMemory = new VariableMemory();
@@ -37,18 +41,37 @@ public class Memory {
     turtleMemory.setErrorMsgs(errorMsgs);
   }
 
-  public void save(){
+  public void save(String input){
+    saveSelf();
     varMemory.save();
     commMemory.save();
     turtleMemory.save();
     displayMemory.save();
+    enteredCommands.add(input);
+  }
+
+  private void saveSelf() {
+    List<String> list = new ArrayList<>(enteredCommands);
+    enteredStack.push(list);
+    while (enteredStack.size() > MAX_HISTORY_STORED) {
+      enteredStack.removeLast();
+    }
   }
 
   public void undo() {
+    undoSelf();
     varMemory.undo();
     commMemory.undo();
     turtleMemory.undo();
     displayMemory.undo();
+  }
+
+  private void undoSelf() {
+    enteredCommands = enteredStack.pop();
+  }
+
+  public String getEnteredText() {
+    return String.join("\n", enteredCommands);
   }
 
   public double getVariable(String name) {

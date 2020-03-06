@@ -83,7 +83,7 @@ public class Compiler {
   }
 
   public String execute(String input) {
-    save();
+    save(input);
     input = spliceInput(input);
     try {
       Command comm = parse(input);
@@ -320,8 +320,12 @@ public class Compiler {
     memory.undo();
   }
 
-  private void save() {
-    memory.save();
+  private void save(String input) {
+    memory.save(input);
+  }
+  
+  public String getEnteredText() {
+    return memory.getEnteredText();
   }
 
 }
