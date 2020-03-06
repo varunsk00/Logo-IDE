@@ -15,12 +15,26 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * HeaderController.java
+ * Organizes Buttons and Sliders into a VBox and organizes popup windows activated from the Header
+ *
+ * @author Varun Kosgi
+ */
 public class HeaderController extends VBox {
     private static final String HELP_DIRECTORY = "src/slogo/resources/help/Help_";
+    private static final int HELP_WINDOW_WIDTH = 400;
+    private static final int HELP_WINDOW_HEIGHT = 400;
     private ResourceBundle myResources;
     private ButtonController buttons;
     private SliderController sliders;
 
+    /**
+     * Constructor that sets Resource Bundle initializes Buttons and Sliders into VBox
+     *
+     * @param language the current language passed in from ParserController
+     * @throws FileNotFoundException in case the File does not exist
+     */
     public HeaderController(String language) throws FileNotFoundException {
         myResources = ResourceBundle.getBundle(language);
         buttons = new ButtonController(language);
@@ -29,10 +43,16 @@ public class HeaderController extends VBox {
         getChildren().addAll(buttons.getHBox(), sliders.getVBox());
     }
 
+    /**
+     * @return ButtonController at tob of VBox
+     */
     public ButtonController getButtons(){
         return buttons;
     }
 
+    /**
+     * @return SliderController under ButtonController
+     */
     public SliderController getSliders(){ return sliders; }
 
     public void launchHelpWindow(String prompt, String language) throws IOException {
@@ -42,7 +62,7 @@ public class HeaderController extends VBox {
         s.setTitle(myResources.getString(prompt));
         Text text = new Text(new String(Files.readAllBytes(Paths.get(HELP_DIRECTORY + prompt + "_" + currentLang + ".txt"))));
         ScrollPane root = new ScrollPane(text);
-        Scene sc = new Scene(root, 400, 400);
+        Scene sc = new Scene(root, HELP_WINDOW_WIDTH, HELP_WINDOW_HEIGHT);
         s.setScene(sc);
         s.show();
     }
