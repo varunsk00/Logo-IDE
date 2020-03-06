@@ -8,8 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.turtle.Point;
@@ -21,8 +19,6 @@ import slogo.workspace.Workspace;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,7 +34,6 @@ import java.util.ResourceBundle;
 public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
     private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
-    private static final String HELP_DIRECTORY = "src/slogo/resources/help/Help_";
     private static final String LOGO_DIRECTORY = "data/examples";
     private static final String RESOURCES_PACKAGE = "slogo.resources.languages.GUI.";
     private static String guiLanguage = "English_GUI";
@@ -60,8 +55,8 @@ public class ParserController extends Application{
     private static int currentTab;
     private static String currentLang = "English";
 
-    public FileChooser IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"));
-    public FileChooser LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"));
+    public FileController imageFile = new FileController(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
+    public FileController logoFile = new FileController(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
 
     private BorderPane root;
     private HeaderController header;
@@ -70,7 +65,6 @@ public class ParserController extends Application{
     private Timeline animation;
     private int DEFAULT_COLOR_CODE = -1;
     private Color DefaultColor = Color.SKYBLUE;
-    private Color penColor = Color.BLACK;
 
     private Workspace currentWorkspace;
     private List<Workspace> workspaces;
@@ -165,21 +159,25 @@ public class ParserController extends Application{
 
     private void step() throws IOException {
         currentWorkspace.getTerminalController().setSize((int)myStage.getWidth()/2, (int)(myStage.getHeight()- 2*TABPANE_HEIGHT));
+        currentWorkspace.getCompiler().setLanguage(currentLang);
+        header.getSliders().updateZoom(currentWorkspace);
         updateTerminalBackgroundColor();
         updateCurrentWorkspace();
-        handleMultipleTurtles();
         updateTabPanes(false);
-        currentWorkspace.getCompiler().setLanguage(currentLang);
+        handleMultipleTurtles();
         handleLanguage(header.getButtons().getLanguageStatus());
-        header.getSliders().updateZoom(currentWorkspace);
+        handleButtonActions();
+    }
+
+    private void handleButtonActions() throws IOException {
         if(!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))){
-            launchHelpWindow(myResources.getString(header.getButtons().getHelpStatus()), guiLanguage);}
+            header.launchHelpWindow(myResources.getString(header.getButtons().getHelpStatus()), guiLanguage);}
+        if(header.getButtons().getPenColorStatus()){
+            header.launchPenColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage, selectButtons); }
+        if(header.getButtons().getBackgroundColorStatus()){
+            header.launchBackgroundColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage); }
         if(header.getButtons().getFileStatus()){
             handleLogoFiles(); }
-        if(header.getButtons().getPenColorStatus()){
-            launchPenColorChooser(); }
-        if(header.getButtons().getBackgroundColorStatus()){
-            launchBackgroundColorChooser(); }
         if(header.getButtons().getImageStatus()){
             handleImageFileChooser(); }
         if(header.getButtons().isViewAllTurtles()){
@@ -226,9 +224,7 @@ public class ParserController extends Application{
         }
     }
 
-    private void setBackground(Color c){
-        currentWorkspace.getHabitat().setBackground(c);
-    }
+    private void setBackground(Color c){ currentWorkspace.getHabitat().setBackground(c); }
 
     private void handleLanguage(String lang) throws FileNotFoundException {
         guiLanguage = myResources.getString(lang) + "_GUI";
@@ -240,8 +236,8 @@ public class ParserController extends Application{
     private void updateLanguage(String language) throws FileNotFoundException {
         currentLang = language.substring(0, language.indexOf("_"));
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
-        IMAGE_FILE_CHOOSER = makeChooser(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"));
-        LOGO_FILE_CHOOSER = makeChooser(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"));
+        imageFile = new FileController(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
+        logoFile = new FileController(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
         header.getChildren().clear();
         root.getChildren().remove(header);
         setHeader();
@@ -256,55 +252,9 @@ public class ParserController extends Application{
         tabPaneController.changeLanguage(currentLang);
     }
 
-    private void launchHelpWindow(String prompt, String language) throws IOException {
-        String currentLang = language.substring(0, language.indexOf("_"));
-        header.getButtons().setHelpStatus(myResources.getString("HelpButton"));
-        Stage s = new Stage();
-        s.setTitle(myResources.getString(prompt));
-        Text text = new Text(new String(Files.readAllBytes(Paths.get(HELP_DIRECTORY + prompt + "_" + currentLang + ".txt"))));
-        ScrollPane root = new ScrollPane(text);
-        Scene sc = new Scene(root, 400, 400);
-        s.setScene(sc);
-        s.show();
-    }
-
-    private void launchPenColorChooser() {
-        selectButtons.clear();
-        header.getButtons().setPenColorOff();
-        ColorController penColorChooser = new ColorController(RESOURCES_PACKAGE + guiLanguage, penColor);
-        penColorChooser.getColorPicker().setOnAction(e -> {
-            for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
-                Button button = new Button("Turtle " + turtleID);
-                button.setOnAction(event1 -> currentWorkspace.getHabitat().getTurtle(turtleID).setPenColor(penColorChooser.getColorPicker().getValue()));
-                selectButtons.add(button);
-            }
-            header.getButtons().chooserPane(selectButtons);
-            penColorChooser.close();});
-        penColorChooser.show();
-    }
-
-    private void launchBackgroundColorChooser() {
-        header.getButtons().setBackgroundColorOff();
-        ColorController bgColorChooser = new ColorController(RESOURCES_PACKAGE + guiLanguage, currentWorkspace.getHabitat().getBackgroundColor());
-        bgColorChooser.getColorPicker().setOnAction(e -> {
-            setBackground(bgColorChooser.getColorPicker().getValue());
-            bgColorChooser.close();});
-        bgColorChooser.show();
-    }
-
-    private static FileChooser makeChooser(String extensionsAccepted, String directory, String type) {
-        String[] extensions = extensionsAccepted.split(",");
-        FileChooser result = new FileChooser();
-        result.setTitle(myResources.getString("OpenFile"));
-        result.setInitialDirectory(new File(System.getProperty("user.dir"),directory));
-        result.getExtensionFilters()
-                .setAll(new FileChooser.ExtensionFilter(type, extensions));
-        return result;
-    }
-
     private void handleImageFileChooser(){
         selectButtons.clear();
-        File dataFile = IMAGE_FILE_CHOOSER.showOpenDialog(myStage);
+        File dataFile = imageFile.getFileChooser().showOpenDialog(myStage);
         if(dataFile == null){
             header.getButtons().setImageOff();
             return;
@@ -312,15 +262,16 @@ public class ParserController extends Application{
         header.getButtons().setImageOff();
         for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
             Button button = new Button("Turtle " + turtleID);
-            button.setOnAction(event -> currentWorkspace.getHabitat().getTurtle(turtleID).setImage("file:" + dataFile.getPath()));
-
+            button.setOnAction(event -> {
+                currentWorkspace.getHabitat().getTurtle(turtleID).setImage("file:" + dataFile.getPath());
+                header.getButtons().closeTurtleSelect();});
             selectButtons.add(button);
         }
-        header.getButtons().chooserPane(selectButtons);
+        header.getButtons().launchTurtleSelect(selectButtons);
     }
 
     private void handleLogoFiles() throws FileNotFoundException {
-        File dataFile = LOGO_FILE_CHOOSER.showOpenDialog(myStage);
+        File dataFile = logoFile.getFileChooser().showOpenDialog(myStage);
         if(dataFile == null){
             header.getButtons().setLoadFilePressedOff();
             return;
