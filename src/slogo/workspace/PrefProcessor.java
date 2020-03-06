@@ -7,27 +7,131 @@ public class PrefProcessor {
     final private static String DEFAULT_PREF_PATH = "slogo.resources.preferences.default.";
     final private static String USER_PREF_PATH = "slogo.resources.preferences.user.";
 
-    private Workspace wspace;
+    final private static String BACKGROUND_COLOR_KEY = "BACKGROUND_COLOR";
+    final private static String PEN_COLOR_KEY = "PEN_COLOR";
+    final private static String IS_TURTLE_SHAPE_KEY = "IS_TURTLE_SHAPE";
+    final private static String TURTLE_SHAPE_KEY = "TURTLE_SHAPE";
+    final private static String TURTLE_IMAGE_KEY = "TURTLE_IMAGE";
+    final private static String TURTLE_NUM_KEY = "NUM_TURTLES";
+    final private static String IS_LOAD_FILE_KEY = "IS_LOAD_FROM_FILE";
+    final private static String PRELOAD_FILE_KEY = "PRELOAD_FILE";
 
-    public PrefProcessor(){}
+    final private static String TRUE_VAL = "T";
+    final private static String FALSE_VAL = "F";
+    final private static String NA_VAL = "NA";
+
+    private Workspace wspace;
+    List<Map.Entry<String, String>> prefDict;
+
+    public PrefProcessor(){prefDict = new LinkedList<>();}
 
     public void initializeWorkspace(Workspace workspace, String prefKey){
         wspace = workspace;
+        List<Map.Entry<String, String>> pathMap = loadDict(DEFAULT_PREF_DIRMAP);
+
+        boolean isFound = false;
+
+        String defaultUnfoundPrefPath = "";
+        for (Map.Entry<String, String> entry: pathMap){
+            defaultUnfoundPrefPath = entry.getValue();
+            if (entry.getKey().equals(prefKey)){
+                isFound = true;
+                prefDict = loadDict(String.format("%s%s", DEFAULT_PREF_PATH, entry.getValue()));
+            }
+        }
+        if (!isFound) {
+            System.out.println("Error: unfounded keyword for the preference resource file");
+            prefDict = loadDict(String.format("%s%s", DEFAULT_PREF_PATH, defaultUnfoundPrefPath));
+        }
+
+        loadPrefDict();
+
+    }
+
+    private void loadPrefDict(){
+        initializeBackgroundColor();
+        initializePenColor();
+        initializeTurtleNum();
+        initializeTurtleImageShape();
+        initializeLoadedFile();
+    }
+
+    public void loadPref(Workspace workspace, String filePath){
+        this.wspace = workspace;
+        prefDict = loadDict(filePath);
+
+
     }
 
     public void saveWorkspace(Workspace workspace){}
 
-    private void initializeBackgroundColor(){}
+    private void initializeTurtleImageShape(){
+        for (Map.Entry<String, String> entry : prefDict){
+            if (entry.getKey().equals(PEN_COLOR_KEY)){
+                if (entry.getKey().equals(IS_TURTLE_SHAPE_KEY) && entry.getValue().equals(TRUE_VAL)){
+                    initializeTurtleShape();
+                }
+                else if (entry.getKey().equals(IS_TURTLE_SHAPE_KEY) && entry.getValue().equals(FALSE_VAL)){
+                    initializeTurtleImage();
+                }
+            }
+        }
+    }
 
-    private void initializePenColor(){}
+    private void initializeBackgroundColor(){
+        for (Map.Entry<String, String> entry : prefDict){
+            if (entry.getKey().equals(BACKGROUND_COLOR_KEY)){
+                //
+            }
+        }
+    }
 
-    private void initializeTurtleNum(){}
+    private void initializePenColor(){
 
-    private void initializeTurtleShape(){}
+        for (Map.Entry<String, String> entry : prefDict){
+            if (entry.getKey().equals(PEN_COLOR_KEY)){
+                //
+            }
+        }
+    }
 
-    private void initializeTurtleImage(){}
+    private void initializeTurtleNum(){
+        for (Map.Entry<String, String> entry : prefDict){
+            if (entry.getKey().equals(TURTLE_NUM_KEY)){
+                //
+            }
+        }
+    }
 
-    private void initializeLoadedFile(){}
+    private void initializeTurtleShape(){
+        for (Map.Entry<String, String> entry : prefDict){
+            if (entry.getKey().equals(TURTLE_SHAPE_KEY)){
+                //
+            }
+        }
+    }
+
+    private void initializeTurtleImage(){
+        for (Map.Entry<String, String> entry : prefDict){
+            if (entry.getKey().equals(TURTLE_IMAGE_KEY)){
+                //
+            }
+        }
+    }
+
+    private void initializeLoadedFile(){
+        for (Map.Entry<String, String> entry : prefDict){
+            if (entry.getKey().equals(IS_LOAD_FILE_KEY) && entry.getValue().equals(FALSE_VAL)){
+                return;
+            }
+        }
+
+        for (Map.Entry<String, String> entry : prefDict){
+            if (entry.getKey().equals(PRELOAD_FILE_KEY)){
+                
+            }
+        }
+    }
 
     private void buildPrefMap(){}
 
@@ -45,12 +149,3 @@ public class PrefProcessor {
         return dict;
     }
 }
-
-BACKGROUND_COLOR = WHITE
-        PEN_COLOR = BLACK
-        IS_TURTLE_SHAPE = FALSE
-        TURTLE_SHAPE = NA
-        TURTLE_IMAGE = slogo/resources/images/turtle_green.png
-        NUM_TURTLES = 1
-        IS_LOAD_FROM_FILE = T
-        PRELOAD_FILE = data/examples/recursion/spiral.logo
