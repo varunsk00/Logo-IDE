@@ -67,7 +67,9 @@ public class Memory {
   }
 
   private void undoSelf() {
-    enteredCommands = enteredStack.pop();
+    if (!enteredCommands.isEmpty()) {
+      enteredCommands = enteredStack.pop();
+    }
   }
 
   public String getEnteredText() {
@@ -144,6 +146,10 @@ public class Memory {
 
   public Map<Integer, Turtle> getTurtleMapCopy() {
     return turtleMemory.getTurtleMapCopy();
+  }
+
+  public void toggleActiveTurtle(int id) {
+    turtleMemory.toggleActiveTurtle(id);
   }
 
   public void pushTurtleStack(List<Integer> newActives) {

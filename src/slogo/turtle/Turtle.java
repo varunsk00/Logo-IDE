@@ -139,9 +139,12 @@ public class Turtle {
         if (clear) {
             oldPenDown = penDown;
             setPenDown(false);
-            locations.add(new Point(xLocation,yLocation));
-
+            resetLocation();
         }
+    }
+
+    public void resetLocation() {
+        locations.add(new Point(xLocation,yLocation));
     }
 
     public void handleClear() {

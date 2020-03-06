@@ -40,10 +40,15 @@ public class TurtleMemory {
   }
 
   public void undo() {
-    TurtleMemoryState state = historyStack.pop();
-    turtleMap = state.getTurtleMap();
-    turtleIDStack.removeLast();
-    turtleIDStack.addLast(state.getIDs());
+    if (!historyStack.isEmpty()) {
+      TurtleMemoryState state = historyStack.pop();
+      turtleMap = state.getTurtleMap();
+      turtleIDStack.removeLast();
+      turtleIDStack.addLast(state.getIDs());
+      for (int i: getAllTurtleIDs()) {
+        getTurtleByID(i).resetLocation();
+      }
+    }
   }
 
   public void setErrorMsgs(ResourceBundle msgs) {
@@ -86,6 +91,16 @@ public class TurtleMemory {
 
   public List<Integer> getActiveTurtleIDs() {
     return new ArrayList<>(turtleIDStack.peek());
+  }
+
+  public void toggleActiveTurtle(int id) {
+    List<Integer> actives = getActiveTurtleIDs();
+    if (actives.contains(id)) {
+      actives.remove(Integer.valueOf(id));
+    } else {
+      actives.add(id);
+    }
+    tellTurtleStack(actives);
   }
 
   public void pushTurtleStack(List<Integer> newActives) {

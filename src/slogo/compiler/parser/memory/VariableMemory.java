@@ -34,8 +34,10 @@ public class VariableMemory {
   }
 
   public void undo() {
-    variableStack.removeLast();
-    variableStack.addLast(historyStack.pop());
+    if (!historyStack.isEmpty()) {
+      variableStack.removeLast();
+      variableStack.addLast(historyStack.pop());
+    }
   }
 
   public double getVariable(String name) {
