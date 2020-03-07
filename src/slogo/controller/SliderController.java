@@ -1,17 +1,14 @@
 package slogo.controller;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import slogo.workspace.Workspace;
 
 import java.util.ResourceBundle;
 
 public class SliderController {
-
     private ResourceBundle myResources;
 
     private Slider zoom;
