@@ -12,7 +12,7 @@ public class Workspace extends BorderPane {
     private TerminalController myTerminalController;
     private ColorFactory myColorFactory;
     private int status;
-    private static final double HEADER_HEIGHT = 80;
+    private static final double HEADER_HEIGHT = 110;
     private double VARIABLE_EXPLORER_HEIGHT;
     private static final double TAB_HEIGHT = 30;
     private double TERMINAL_WIDTH;
