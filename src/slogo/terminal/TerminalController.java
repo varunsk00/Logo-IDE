@@ -123,13 +123,13 @@ public class TerminalController {
     //barHorizontal.setValue(barHorizontal.getMax());
 
     // Control+S: save slogo
-    KeyCombination CtrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY);
+    KeyCodeCombination CtrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY);
     // Control+V: paste the selected text
-    KeyCombination CtrlV = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
+    KeyCodeCombination CtrlV = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
     // Control+Z: undo
-    KeyCombination CtrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
+    KeyCodeCombination CtrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
     // Control+Shift+S: save preference
-    KeyCombination CtrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY, KeyCombination.SHIFT_ANY);
+    KeyCodeCombination CtrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY, KeyCombination.SHIFT_ANY);
 
     terminalView.getInputArea().setOnKeyPressed(keyEvent -> {
 
@@ -158,7 +158,7 @@ public class TerminalController {
         terminalView.resetInputPanel();
 
       }
-      else if (CtrlS.match(keyEvent)) {
+      else if (KeyCode.SHIFT==keyEvent.getCode()) {
         try {
           saveInputToFile(compiler.getEnteredText());
         } catch (IOException e) {
@@ -174,7 +174,7 @@ public class TerminalController {
         habitat.undoPen();
         clearLastHistoryEntry();
       }
-      else if (CtrlShiftS.match(keyEvent)) {
+      else if (KeyCode.TAB==keyEvent.getCode()) {
         try {
           appendToOutput(String.format("%s%s", workspace.getPrefProcessor().buildPrefMap(), PREF_SAVED_MSG));
         } catch (IOException e) {
