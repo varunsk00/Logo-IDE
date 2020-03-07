@@ -81,7 +81,9 @@ public class TurtleHabitat extends Pane{
         clrBox.setLayoutY(COLORBOX_Y_LOCATION);
         rec.setFill(allTurtleViews.get(id).getFill());
         clrBox.setFill(allTurtleViews.get(id).getPenColor());
-        information = new Text(TEXT_X_LOCATION, TEXT_Y_LOCATION, "Position: (" + allTurtles.get(id).getXLocation() + " , "+ allTurtles.get(id).getYLocation()+")\n"+
+        double xLoc = allTurtleViews.get(id).getX() - allTurtleViews.get(id).getXOffset();
+        double yLoc = allTurtleViews.get(id).getY() - allTurtleViews.get(id).getYOffset();
+        information = new Text(TEXT_X_LOCATION, TEXT_Y_LOCATION, "Position: (" + xLoc + " , "+ yLoc +")\n"+
                 "Heading: " + allTurtles.get(id).getHeading()+"\n"+
                 "PenDown: " + allTurtles.get(id).isPenDown()+"\n"+
                 "PenColor: ");
@@ -106,10 +108,12 @@ public class TurtleHabitat extends Pane{
     }
 
     private void checkClickToActivate(){
-        setOnMousePressed(new EventHandler<>() {
+        setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent me) {
-                for (Turtle t: allTurtles.values()){
-                    t.setActive(!t.getIsActive());
+                for (TurtleView t: allTurtleViews.values()){
+                    if(t.contains(me.getSceneX(), me.getSceneY())){
+                        t.setActive(!t.getActive());
+                    }
                 }
             }
         });

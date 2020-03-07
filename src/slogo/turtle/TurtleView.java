@@ -14,6 +14,8 @@ public class TurtleView extends Rectangle {
     private boolean cleared;
     private Color penColor = Color.BLACK;
     private double penWidth;
+    private boolean isActive;
+    private boolean prevActive;
 
     public TurtleView(double width, double height, double habitatWidth, double habitatHeight){
         super(width, height);
@@ -21,6 +23,8 @@ public class TurtleView extends Rectangle {
         this.yOffset = habitatHeight/2 - getHeight();
         this.img = new Image(image_filepath);
         penWidth = 2.0;
+        isActive = true;
+        prevActive = true;
     }
 
     public ImagePattern getImage(){
@@ -39,6 +43,10 @@ public class TurtleView extends Rectangle {
         setVisible(turtle.isShowTurtle());
         penWidth = turtle.getPenSize();
         cleared = turtle.isCleared();
+        isActive = turtle.getIsActive();
+        if(prevActive!= isActive){
+            turtle.setActive(isActive);
+        }
         if (cleared) {
             turtle.setCleared(false);
             turtle.handleClear();
@@ -49,6 +57,7 @@ public class TurtleView extends Rectangle {
         if(turtle.getIsActive()){
             setTurtleViewColor();
         }
+        prevActive = isActive;
     }
 
     public Color getPenColor(){return penColor;}
@@ -58,6 +67,10 @@ public class TurtleView extends Rectangle {
     public void setPenWidth(double width){penWidth = width;}
 
     public void setPenColor(Color inputColor){penColor = inputColor;}
+
+    public void setActive(boolean b){isActive = b;}
+
+    public boolean getActive(){return isActive;}
 
     public double getXOffset(){
         return xOffset;
@@ -72,6 +85,7 @@ public class TurtleView extends Rectangle {
     }
 
     private void setTurtleViewGray(){
+        isActive = false;
         if(!extension.contains("_gray")){
             String gray_image_filepath = image_filepath.substring(0, image_filepath.lastIndexOf(".")) + "_gray" + extension;
             setImage(gray_image_filepath);
@@ -80,6 +94,7 @@ public class TurtleView extends Rectangle {
     }
 
     private void setTurtleViewColor(){
+        isActive = true;
         if(extension.contains("_gray")){
             String filepath = image_filepath.substring(0, image_filepath.lastIndexOf("_")) + image_filepath.substring(image_filepath.lastIndexOf("."));
             setImage(filepath);
