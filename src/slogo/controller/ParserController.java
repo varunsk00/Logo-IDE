@@ -136,6 +136,7 @@ public class ParserController extends Application {
     workspaces.add(null);
     for (int i = 0; i < NUMBER_OF_TABS; i++) {
       workspaces.add(new Workspace((SCENE_WIDTH), SCENE_HEIGHT));
+      workspaces.get(workspaces.size()-1).setColorFactory(cf);
     }
     currentWorkspace = workspaces.get(1);
     currentTab = 1;

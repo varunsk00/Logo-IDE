@@ -18,17 +18,23 @@ import slogo.compiler.parser.Compiler;
 import slogo.terminal.utils.history.HistoryBuffer;
 import slogo.terminal.utils.textLines.TestLine;
 import slogo.turtle.TurtleHabitat;
+import slogo.workspace.Workspace;
 
 /**
  * TerminalController manages the communication between a TerminalView object and the compiler
  */
 public class TerminalController {
-  final private String USER_SAVE_FILE = "slogo/resources/userspace/";
+  final private String USER_SAVE_FILE = "src/slogo/resources/userspace/";
+  final private String SLOGO_SAVED_MSG = " slogo file saved successfully.";
+  final private String PREF_SAVED_MSG = " preference file saved successfully.";
   private static int STATUS_MAX = 5000;
+
   private TerminalView terminalView;
   private TurtleHabitat habitat;
   private HistoryBuffer history;
   private Compiler compiler;
+  private Workspace workspace;
+
   private int status;
   private int saveCnt;
 
@@ -77,6 +83,8 @@ public class TerminalController {
     appendToOutput(systemMessage);
   }
 
+  public void setWorkspace(Workspace w){workspace = w;}
+
   public void sendFileInput(File file) throws FileNotFoundException {
     sendInput(readFromFile(file));
   }
@@ -116,12 +124,14 @@ public class TerminalController {
     //final ScrollBar barHorizontal = (ScrollBar) terminalView.getInputPanel().lookup(".scroll-bar:horizontal");
     //barHorizontal.setValue(barHorizontal.getMax());
 
-    // Control+S: save
+    // Control+S: save slogo
     KeyCombination CtrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY);
     // Control+V: paste the selected text
     KeyCombination CtrlV = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
     // Control+Z: undo
     KeyCombination CtrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
+    // Control+Shift+S: save preference
+    KeyCombination CtrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY, KeyCombination.SHIFT_ANY);
 
     terminalView.getInputArea().setOnKeyPressed(keyEvent -> {
 
@@ -154,16 +164,24 @@ public class TerminalController {
         try {
           saveInputToFile(compiler.getEnteredText());
         } catch (IOException e) {
-          System.out.println("Error: The output file is missing.");
+          System.out.println("Error: The output slogo file is missing.");
         }
       }
       else if (CtrlV.match(keyEvent)) {
         terminalView.getInputPanel().setPositionCaretAtEnding();
-      } else if (CtrlZ.match(keyEvent)) {
+      }
+      else if (CtrlZ.match(keyEvent)) {
         terminalView.getOutputPanel().undoEntry();
         compiler.undo();
         habitat.undoPen();
         clearLastHistoryEntry();
+      }
+      else if (CtrlShiftS.match(keyEvent)) {
+        try {
+          appendToOutput(String.format("%s%s", workspace.getPrefProcessor().buildPrefMap(), PREF_SAVED_MSG));
+        } catch (IOException e) {
+          System.out.println("Error: The output pref file is missing.");
+        }
       }
     });
   }
@@ -225,12 +243,20 @@ public class TerminalController {
   }
 
   private void saveInputToFile(String text) throws IOException {
-    String filepath = String.format("%s%d.logo", USER_SAVE_FILE, ++saveCnt);
+    String filename = String.format("%d.logo", ++saveCnt);
+    String filepath = String.format("%s%s", USER_SAVE_FILE, filename);
+
     File newOuputFile = new File(filepath);
-    newOuputFile.createNewFile();
-    new FileOutputStream(newOuputFile, true).close();
-    BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true));
-    writer.append(text);
-    writer.close();
+    if (newOuputFile.createNewFile()){
+      System.out.println(String.format("%s File created.", filename));
+    }
+    else {
+      System.out.println(String.format("%s already exists.", filename));
+    }
+    appendToOutput(String.format("%s%s", filename, SLOGO_SAVED_MSG));
+    FileWriter fileWriter = new FileWriter(newOuputFile);
+    fileWriter.write(text);
+    fileWriter.close();
+
   }
 }
