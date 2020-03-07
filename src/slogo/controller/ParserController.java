@@ -23,14 +23,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-//FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINES OVER TURTLE)
-//FIXME: BREAK UP CLASS....REFACTOR ALMOST EVERYTHING LOL
+//FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINE OVER TURTLE)
 
-//TODO(REQUIRED): HELP MENU IN DIFF LANGUAGES
-
-//TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
+//TODO(COMPLETE): CREATE VARIABLE PEN WIDTH SLIDER
 //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
-
+/**
+ * ParserController.java
+ * Sets up and runs Slogo environment as an Application
+ *
+ * @author Varun Kosgi
+ * @author Qiaoyi Fang
+ * @author Alexander Uzochukwu
+ */
 public class ParserController extends Application{
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
     private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
@@ -55,8 +59,8 @@ public class ParserController extends Application{
     private static int currentTab;
     private static String currentLang = "English";
 
-    public FileController imageFile = new FileController(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
-    public FileController logoFile = new FileController(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
+    private static FileController imageFile = new FileController(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
+    private static FileController logoFile = new FileController(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
 
     private BorderPane root;
     private HeaderController header;
@@ -96,7 +100,7 @@ public class ParserController extends Application{
 
     /**
      *
-     * @param primaryStage is the stage to display the Application
+     * @param primaryStage is the stage to display the Application, runs loop, organizes elements BorderPane
      */
     public void start(Stage primaryStage) throws FileNotFoundException {
         primaryStage.setTitle("SLogo");
@@ -217,10 +221,11 @@ public class ParserController extends Application{
             currentWorkspace.getHabitat().updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
             if(currentWorkspace.getCompiler().getTurtleByID(turtleId).isPenDown()){
                 for (Point loc: currentWorkspace.getCompiler().getTurtleByID(turtleId).locationsList()) {
-                    currentWorkspace.getHabitat().penDraw(currentWorkspace.getHabitat().getTurtle(turtleId).getPenColor(), loc, turtleId);
+                    currentWorkspace.getHabitat().penDraw(currentWorkspace.getHabitat().getTurtleView(turtleId).getPenColor(), loc, turtleId);
                 }
             }
             header.getSliders().updateImageSize(currentWorkspace, turtleId);
+            header.getSliders().updatePenWidth(currentWorkspace, turtleId);
         }
     }
 
@@ -263,7 +268,7 @@ public class ParserController extends Application{
         for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
             Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event -> {
-                currentWorkspace.getHabitat().getTurtle(turtleID).setImage("file:" + dataFile.getPath());
+                currentWorkspace.getHabitat().getTurtleView(turtleID).setImage("file:" + dataFile.getPath());
                 header.getButtons().closeTurtleSelect();});
             selectButtons.add(button);
         }

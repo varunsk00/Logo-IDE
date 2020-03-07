@@ -16,6 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+
+/**
+ * ButtonController.java
+ * Creates all the Buttons and Pop-Ups in a Slogo environment
+ *
+ * @author Varun Kosgi
+ */
 public class ButtonController {
     private static final String SUPPORTED_LANGUAGES = "src/slogo/resources/languages/LanguageList.txt";
     private static final String PROMPTS = "src/slogo/resources/languages/HelpPrompts.txt";
@@ -32,12 +39,19 @@ public class ButtonController {
     private boolean viewAllTurtles;
     private String languagePressed;
     private String helpPressed;
-
     private HBox myButtons;
 
     //TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
     //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
 
+    /**
+     * Constructor that sets Resource Bundle and initializes all initial states of buttons
+     *
+     * Button states are initially False; ComboBox states have a defined initial String
+     *
+     * @param language the current language passed in from ParserController
+     * @throws FileNotFoundException in case the File does not exist
+     */
     public ButtonController(String language) throws FileNotFoundException {
         myResources = ResourceBundle.getBundle(language);
         this.languages = text2Regex(new File(SUPPORTED_LANGUAGES));
@@ -52,36 +66,82 @@ public class ButtonController {
         renderButtons();
     }
 
+    /**
+     * @return the JavaFX HBox that contains all the buttons
+     */
     public HBox getHBox() { return myButtons; }
 
+    /**
+     * @return the pressed state (boolean) of the View Turtles Button
+     */
     public boolean isViewAllTurtles() {return viewAllTurtles;}
 
-    public String getLanguageStatus() { return languagePressed; }
-
-    public boolean getImageStatus() { return turtleImagePressed; }
-
-    public void setImageOff() { turtleImagePressed = false; }
-
-    public boolean getFileStatus() { return loadFilePressed; }
-
-    public void setLoadFilePressedOff() { loadFilePressed = false; }
-
-    public boolean getPenColorStatus() { return penColorPressed; }
-
-    public void setPenColorOff() { penColorPressed = false; }
-
-    public boolean getBackgroundColorStatus() { return backgroundColorPressed; }
-
-    public void setBackgroundColorOff() { backgroundColorPressed = false; }
-
+    /**
+     * Unpresses the View Turtles Button
+     */
     public void setViewAllTurtlesOff() { viewAllTurtles = false;}
 
+    /**
+     * @return the pressed state (String) of the Language ComboBox
+     */
+    public String getLanguageStatus() { return languagePressed; }
+
+    /**
+     * @return the pressed state (boolean) of the Load Image Button
+     */
+    public boolean getImageStatus() { return turtleImagePressed; }
+
+    /**
+     * Unpresses the Load Image Button
+     */
+    public void setImageOff() { turtleImagePressed = false; }
+
+    /**
+     * @return the pressed state (boolean) of the Load File Button
+     */
+    public boolean getFileStatus() { return loadFilePressed; }
+
+    /**
+     * Unpresses the Load File Button
+     */
+    public void setLoadFilePressedOff() { loadFilePressed = false; }
+
+    /**
+     * @return the pressed state (boolean) of the Pen Color Button
+     */
+    public boolean getPenColorStatus() { return penColorPressed; }
+
+    /**
+     * Unpresses the Pen Color Button
+     */
+    public void setPenColorOff() { penColorPressed = false; }
+
+    /**
+     * @return the pressed state (boolean) of the Background Color Button
+     */
+    public boolean getBackgroundColorStatus() { return backgroundColorPressed; }
+
+    /**
+     * Unpresses the Background Color Button
+     */
+    public void setBackgroundColorOff() { backgroundColorPressed = false; }
+
+    /**
+     * @return the pressed state (String) of the Help Combo Box
+     */
     public String getHelpStatus() { return helpPressed; }
 
-    public void setHelpStatus(String help) {
-        this.helpPressed = help;
-    }
+    /**
+     * Sets the Help Button Text to the chosen submenu
+     */
+    public void setHelpStatus(String help) { this.helpPressed = help; }
 
+    /**
+     * Launches a window to allow user to choose specific Turtle on Screen
+     * Used for Image switching and Pen Color switching
+     *
+     * @param turtleButtons the List of Buttons, one for each turtle on screen
+     */
     public void launchTurtleSelect(List<Button> turtleButtons){
         Pane root = new Pane();
         Scene sc = new Scene(root, TURTLE_SELECT_WIDTH, TURTLE_SELECT_HEIGHT);
@@ -94,8 +154,14 @@ public class ButtonController {
         imageWindow.show();
     }
 
+    /**
+     * Closes Turtle Select Window
+     */
     public void closeTurtleSelect(){ imageWindow.close(); }
 
+    /**
+     * Creates and initializes all Buttons based on Regex Values
+     */
     private void renderButtons() {
         myButtons = new HBox();
         Button loadButton = makeButton("LoadButton", event -> loadFilePressed = true);

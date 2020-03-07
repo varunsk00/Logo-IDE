@@ -13,12 +13,14 @@ public class TurtleView extends Rectangle {
     private Image img;
     private boolean cleared;
     private Color penColor = Color.BLACK;
+    private double penWidth;
 
     public TurtleView(double width, double height, double habitatWidth, double habitatHeight){
         super(width, height);
         this.xOffset = habitatWidth/2 - getWidth()/2;
         this.yOffset = habitatHeight/2 - getHeight();
         this.img = new Image(image_filepath);
+        penWidth = 2.0;
     }
 
     public ImagePattern getImage(){
@@ -35,6 +37,7 @@ public class TurtleView extends Rectangle {
         setX(turtle.getXLocation() + xOffset);
         setY(turtle.getYLocation() + yOffset);
         setVisible(turtle.isShowTurtle());
+        penWidth = turtle.getPenSize();
         cleared = turtle.isCleared();
         if (cleared) {
             turtle.setCleared(false);
@@ -49,6 +52,10 @@ public class TurtleView extends Rectangle {
     }
 
     public Color getPenColor(){return penColor;}
+
+    public double getPenWidth(){return penWidth;}
+
+    public void setPenWidth(double width){penWidth = width;}
 
     public void setPenColor(Color inputColor){penColor = inputColor;}
 
