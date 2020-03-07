@@ -6,7 +6,7 @@ public class PenDownCommand extends TurtleCommand {
 
   public PenDownCommand(String declaration) {
     super(declaration);
-    desiredArgs = 1;
+    desiredArgs = 0;
   }
 
   @Override

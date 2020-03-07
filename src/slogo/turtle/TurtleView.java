@@ -32,6 +32,7 @@ public class TurtleView extends Rectangle {
   private String DEFAULT_TYPE = "CIRCLE";
   private String SQUARE_TYPE = "SQUARE"; // 1.0 width & 1.0 height
   private double penWidth;
+  private boolean updated = false;
 
   public TurtleView(double width, double height, double habitatWidth, double habitatHeight) {
     super(width, height);
@@ -212,6 +213,14 @@ public class TurtleView extends Rectangle {
       dict.add(new AbstractMap.SimpleEntry<>(tabType, tabName));
     }
     return dict;
+  }
+
+  public boolean isUpdated() {
+    return updated;
+  }
+
+  public void setUpdated(boolean updated) {
+    this.updated = updated;
   }
 }
 

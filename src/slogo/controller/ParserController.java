@@ -24,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.turtle.Point;
+import slogo.turtle.Turtle;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 import slogo.workspace.ColorFactory;
@@ -129,6 +130,7 @@ public class ParserController extends Application {
     workspaces.add(null);
     for (int i = 0; i < NUMBER_OF_TABS; i++) {
       workspaces.add(new Workspace((SCENE_WIDTH), SCENE_HEIGHT));
+      workspaces.get(workspaces.size()-1).setColorFactory(cf);
     }
     currentWorkspace = workspaces.get(1);
     currentTab = 1;
@@ -276,19 +278,20 @@ public class ParserController extends Application {
 
 
   private void handleMultipleTurtles() {
+    List<Integer> ids = new ArrayList<>(currentWorkspace.getCompiler().getAllTurtleIDs());
+    List<Turtle> turtles = new ArrayList<>();
+    List<Color> colors = new ArrayList<>();
+    for (int i: ids) {
+      Turtle t = currentWorkspace.getCompiler().getTurtleByID(i);
+      turtles.add(t);
+      Color c = cf.parseColor(t.getPenColorIndex());
+      colors.add(c);
+    }
+    currentWorkspace.getHabitat().updateHabitat(ids, turtles, colors);
     for (int turtleId : currentWorkspace.getCompiler().getAllTurtleIDs()) {
-      currentWorkspace.getHabitat()
-          .updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
-      if (currentWorkspace.getCompiler().getTurtleByID(turtleId).isPenDown()) {
-        for (Point loc : currentWorkspace.getCompiler().getTurtleByID(turtleId).locationsList()) {
-          currentWorkspace.getHabitat()
-              .penDraw(currentWorkspace.getHabitat().getTurtleView(turtleId).getPenColor(), loc,
-                  turtleId);
-        }
-      }
-      currentWorkspace.getPrefProcessor().updateShapeImage();
       header.getSliders().updateImageSize(currentWorkspace, turtleId);
       header.getSliders().updatePenWidth(currentWorkspace, turtleId);
+
     }
   }
 
