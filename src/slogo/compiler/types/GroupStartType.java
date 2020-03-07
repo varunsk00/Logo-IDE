@@ -23,15 +23,13 @@ public class GroupStartType extends TypeCommand {
 
   @Override
   public double executeCommand() {
-    if (args.size()-2 < memberDesiredArgs) {
-      throw new GroupingException("Bad number of args for grouping"); //fixme error msg
+    if (args.size() - 2 < memberDesiredArgs) {
+      throw new GroupingException(errorMsgs.getString("InvalidGroupArgs")); //fixme error msg
     }
     try {
       return methodMap.getOrDefault(args.get(0).getGroupingType(), this::executeInvalid).call();
     } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println(e);
-      throw new GroupingException("Invalid grouping");
+      throw new GroupingException(errorMsgs.getString("InvalidGroup"));
     }
   }
 
@@ -41,13 +39,13 @@ public class GroupStartType extends TypeCommand {
 
   private double executeIterative() {
     if ((args.size() - 2) % memberDesiredArgs != 0) {
-      throw new GroupingException("Bad number of args for grouping"); //fixme error msg
+      throw new GroupingException(errorMsgs.getString("InvalidGroupArgs"));
     }
     double ret = 0;
     Command exe = args.get(0);
     for (int i = 1; i < args.size() - 1; i += memberDesiredArgs) {
       for (int j = 0; j < memberDesiredArgs; j++) {
-        exe.setArg(args.get(i+j), j);
+        exe.setArg(args.get(i + j), j);
       }
       ret = exe.execute();
     }
@@ -58,9 +56,9 @@ public class GroupStartType extends TypeCommand {
     double ret = 1;
     Command exe = args.get(0);
     exe.setArg(args.get(1), 0);
-    for (int i = 1; i < args.size()-2; i += memberDesiredArgs - 1) { //fixme odd logic here
+    for (int i = 1; i < args.size() - 2; i += memberDesiredArgs - 1) { //fixme odd logic here
       for (int j = 1; j < memberDesiredArgs; j++) {
-        exe.setArg(args.get(i+j), j);
+        exe.setArg(args.get(i + j), j);
       }
       ret *= exe.execute();
     }
@@ -72,13 +70,13 @@ public class GroupStartType extends TypeCommand {
     Command exe = args.get(0);
     exe.setArg(args.get(1), 0);
 
-    for (int i = 1; i < args.size()-2; i += memberDesiredArgs - 1) {
+    for (int i = 1; i < args.size() - 2; i += memberDesiredArgs - 1) {
       for (int j = 1; j < memberDesiredArgs; j++) {
-        exe.setArg(args.get(i+j), j);
+        exe.setArg(args.get(i + j), j);
       }
       ret = exe.executeCommand();
       System.out.println(ret);
-      exe.setArg(new ConstantType(""+ret), 0);
+      exe.setArg(new ConstantType("" + ret), 0);
     }
     return ret;
   }
@@ -89,9 +87,8 @@ public class GroupStartType extends TypeCommand {
     if (!args.isEmpty()) {
       memberDesiredArgs = args.get(0).getDesiredArgs();
       if (memberDesiredArgs == 0) {
-        throw new GroupingException(String
-            .format("Attempted to group type (%s) which takes no arguments.",
-                args.get(0).getType()));
+        throw new GroupingException(
+            String.format(errorMsgs.getString("ZeroGroup"), args.get(0).getType()));
       }
     }
     return !args.isEmpty() && args.get(args.size() - 1).typeEquals("groupend");

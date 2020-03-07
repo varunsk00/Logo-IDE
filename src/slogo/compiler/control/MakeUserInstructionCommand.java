@@ -29,7 +29,7 @@ public class MakeUserInstructionCommand extends Command {
       System.out.println("Compiler Exception in MakeUserCommand:" + e.toString());
       return 0;
     } catch (IndexOutOfBoundsException e) {
-      throw new GroupingException("Attempted to group a make user instruction command");
+      throw new GroupingException(errorMsgs.getString("GroupTo"));
     }
     return 1;
   }
