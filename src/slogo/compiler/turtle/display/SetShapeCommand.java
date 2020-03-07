@@ -13,6 +13,7 @@ public class SetShapeCommand extends TurtleCommand {
   public double executeTurtle() {
     int ret = (int) args.get(0).execute();
     turtle.setShapeIndex(ret);
+    memory.setShapeIndex(ret);
     return ret;
   }
 }

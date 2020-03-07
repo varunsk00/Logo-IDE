@@ -13,6 +13,7 @@ public class SetPenColorCommand extends TurtleCommand {
   public double executeTurtle() {
     int ret = (int) args.get(0).execute();
     turtle.setPenColorIndex(ret);
+    memory.setPenColorIndex(ret);
     return ret;
   }
 }

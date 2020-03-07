@@ -164,6 +164,14 @@ public class Memory {
     displayMemory.setBackgroundColor(backgroundColor);
   }
 
+  public void setPenColorIndex(int penColorIndex) {
+    turtleMemory.setPenColorIndex(penColorIndex);
+  }
+
+  public void setShapeIndex(int shapeIndex) {
+    turtleMemory.setShapeIndex(shapeIndex);
+  }
+
   public void addColor(int idx, int r, int g, int b) {
     displayMemory.addColor(idx, r, g, b);
   }
