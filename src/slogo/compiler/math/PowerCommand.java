@@ -7,6 +7,7 @@ public class PowerCommand extends Command {
   public PowerCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_RECURSIVE;
   }
 
   @Override

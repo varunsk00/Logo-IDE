@@ -1,10 +1,8 @@
 package slogo.turtle;
 
-import javafx.scene.shape.Polyline;
-
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Just a simple class to hold a 2-dimensional point. Used for drawing purposes
  */
 public class Point {
@@ -31,12 +29,12 @@ public class Point {
     return y;
   }
 
-  public void setDrawn(boolean d) {
-    drawn = d;
-  }
-
   public boolean getDrawn() {
     return drawn;
+  }
+
+  public void setDrawn(boolean d) {
+    drawn = d;
   }
 
 }

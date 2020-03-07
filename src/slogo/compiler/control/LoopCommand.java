@@ -8,6 +8,7 @@ public abstract class LoopCommand extends Command {
 
   public LoopCommand(String declaration) {
     super(declaration);
+    groupingType = Command.GROUPING_ITERATIVE;
   }
 
   protected double executeLoop(String varName, double start, double end, double inc) {

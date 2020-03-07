@@ -80,10 +80,6 @@ public class Memory {
     return varMemory.getVariable(name);
   }
 
-  public Map<String, Double> getVariableMapCopy() {
-    return varMemory.getVariableMapCopy();
-  }
-
   public void setVariable(String name, double value) {
     varMemory.setVariable(name, value);
   }
@@ -120,14 +116,6 @@ public class Memory {
     return commMemory.getAllUserDefinedCommands();
   }
 
-  public Map<String, List<String>> getUserCommandMapCopy() {
-    return commMemory.getUserCommandMapCopy();
-  }
-
-  public void addTurtle(int id) {
-    turtleMemory.addTurtle(id);
-  }
-
   public Turtle getTurtleByID(int id) {
     return turtleMemory.getTurtleByID(id);
   }
@@ -142,10 +130,6 @@ public class Memory {
 
   public Collection<Integer> getAllTurtleIDs() {
     return turtleMemory.getAllTurtleIDs();
-  }
-
-  public Map<Integer, Turtle> getTurtleMapCopy() {
-    return turtleMemory.getTurtleMapCopy();
   }
 
   public void toggleActiveTurtle(int id) {

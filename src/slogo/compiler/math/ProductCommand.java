@@ -7,6 +7,7 @@ public class ProductCommand extends Command {
   public ProductCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_RECURSIVE;
   }
 
   @Override

@@ -7,6 +7,7 @@ public class IfCommand extends Command {
   public IfCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_ITERATIVE;
   }
 
   @Override

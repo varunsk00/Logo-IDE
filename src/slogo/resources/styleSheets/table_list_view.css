@@ -1,58 +1,58 @@
-@font-face{
-    font-family: "Consolas";
-    src: url("/slogo/resources/font/consola.ttf");
+@font-face {
+  font-family: "Consolas";
+  src: url("/slogo/resources/font/consola.ttf");
 }
 
-.text-field{
-    -fx-text-fill: white;
-    -fx-highlight-fill: white;
-    -fx-highlight-text-fill: black;
+.text-field {
+  -fx-text-fill: white;
+  -fx-highlight-fill: white;
+  -fx-highlight-text-fill: black;
 }
 
-.table-view{
-    -fx-background-color: black;
-    -fx-border-color: black;
-     -fx-table-cell-border-color: transparent;
-    -fx-background-insets: 0 1 0 1,0,0;
-    -fx-control-inner-background: black;
+.table-view {
+  -fx-background-color: black;
+  -fx-border-color: black;
+  -fx-table-cell-border-color: transparent;
+  -fx-background-insets: 0 1 0 1, 0, 0;
+  -fx-control-inner-background: black;
 }
 
 .table-cell:empty {
-    -fx-text-fill: white;
-    -fx-background-color: transparent;
-    -fx-border-color: black;
-    -fx-background-insets: 0;
-    -fx-border-width: 0px;
+  -fx-text-fill: white;
+  -fx-background-color: transparent;
+  -fx-border-color: black;
+  -fx-background-insets: 0;
+  -fx-border-width: 0px;
 }
 
-.table-cell:hover{
-    -fx-text-fill: white;
-    -fx-background-color: black;
-    -fx-border-color: black;
-    -fx-background-insets: 0;
-    -fx-border-width: 0px;
+.table-cell:hover {
+  -fx-text-fill: white;
+  -fx-background-color: black;
+  -fx-border-color: black;
+  -fx-background-insets: 0;
+  -fx-border-width: 0px;
 }
 
-.table-row-cell:selected{
-    -fx-text-fill: white;
-    -fx-background-color: black;
-    -fx-border-color: black;
-    -fx-background-insets: 0;
-    -fx-border-width: 0px;
+.table-row-cell:selected {
+  -fx-text-fill: white;
+  -fx-background-color: black;
+  -fx-border-color: black;
+  -fx-background-insets: 0;
+  -fx-border-width: 0px;
 }
 
 .table-row-cell:selected .table-cell {
-    -fx-text-fill: black;
-    -fx-background-color: white;
-    -fx-border-color: black;
-    -fx-background-insets: 0;
-    -fx-border-width: 0px;
+  -fx-text-fill: black;
+  -fx-background-color: white;
+  -fx-border-color: black;
+  -fx-background-insets: 0;
+  -fx-border-width: 0px;
 }
 
-.table-cell:selected{
-    -fx-text-fill: white;
-    -fx-background-color: black;
-    -fx-border-color: black;
-    -fx-background-insets: 0;
-    -fx-border-width: 0px;
+.table-cell:selected {
+  -fx-text-fill: white;
+  -fx-background-color: black;
+  -fx-border-color: black;
+  -fx-background-insets: 0;
+  -fx-border-width: 0px;
 }

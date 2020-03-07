@@ -7,6 +7,7 @@ public class AndCommand extends Command {
   public AndCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_RECURSIVE;
   }
 
   @Override

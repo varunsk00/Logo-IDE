@@ -1,45 +1,43 @@
-@font-face{
-    font-family: "Consolas";
-    src: url("/slogo/resources/font/consola.ttf");
+@font-face {
+  font-family: "Consolas";
+  src: url("/slogo/resources/font/consola.ttf");
 }
 
 .tab-pane .tab-header-area .tab-header-background {
-    -fx-opacity: 0;
+  -fx-opacity: 0;
 }
 
-.tab-pane
-{
-    -fx-tab-min-width: 90px;
-    -fx-background-color: white;
+.tab-pane {
+  -fx-tab-min-width: 90px;
+  -fx-background-color: white;
 }
 
-.tab{
-    -fx-background-insets: 0 1 0 1,0,0;
+.tab {
+  -fx-background-insets: 0 1 0 1, 0, 0;
 }
-.tab-pane .tab
-{
-    -fx-background-color: #e6e6e6;
+
+.tab-pane .tab {
+  -fx-background-color: #e6e6e6;
 
 }
 
-.tab-pane .tab:selected
-{
-    -fx-background-color: black;
+.tab-pane .tab:selected {
+  -fx-background-color: black;
 }
 
 .tab .tab-label {
-    -fx-alignment: CENTER;
-    -fx-text-fill: black;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
+  -fx-alignment: CENTER;
+  -fx-text-fill: black;
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
 }
 
 .tab:selected .tab-label {
-    -fx-alignment: CENTER;
-    -fx-text-fill: white;
+  -fx-alignment: CENTER;
+  -fx-text-fill: white;
 }
 
-.list-cell{
-    -fx-background-color: black;
-    -fx-text-fill: white;
+.list-cell {
+  -fx-background-color: black;
+  -fx-text-fill: white;
 }

@@ -7,6 +7,7 @@ public class LessThanCommand extends Command {
   public LessThanCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_COMPARISON;
   }
 
   @Override

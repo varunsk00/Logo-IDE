@@ -45,8 +45,9 @@ public class TurtleMemory {
       turtleMap = state.getTurtleMap();
       turtleIDStack.removeLast();
       turtleIDStack.addLast(state.getIDs());
-      for (int i: getAllTurtleIDs()) {
+      for (int i : getAllTurtleIDs()) {
         getTurtleByID(i).resetLocation();
+        setCurrentTurtle(i);
       }
     }
   }
