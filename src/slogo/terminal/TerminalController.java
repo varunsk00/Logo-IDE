@@ -18,6 +18,7 @@ import slogo.compiler.parser.Compiler;
 import slogo.terminal.utils.history.HistoryBuffer;
 import slogo.terminal.utils.textLines.TestLine;
 import slogo.turtle.TurtleHabitat;
+import slogo.workspace.Workspace;
 
 /**
  * TerminalController manages the communication between a TerminalView object and the compiler
@@ -27,10 +28,13 @@ public class TerminalController {
   final private String SLOGO_SAVED_MSG = " slogo file saved successfully.";
   final private String PREF_SAVED_MSG = " preference file saved successfully.";
   private static int STATUS_MAX = 5000;
+
   private TerminalView terminalView;
   private TurtleHabitat habitat;
   private HistoryBuffer history;
   private Compiler compiler;
+  private Workspace workspace;
+
   private int status;
   private int saveCnt;
 
@@ -80,6 +84,8 @@ public class TerminalController {
     appendToOutput(systemMessage);
   }
 
+  public void setWorkspace(Workspace w){workspace = w;}
+
   public void sendFileInput(File file) throws FileNotFoundException {
     sendInput(readFromFile(file));
   }
@@ -119,12 +125,14 @@ public class TerminalController {
     //final ScrollBar barHorizontal = (ScrollBar) terminalView.getInputPanel().lookup(".scroll-bar:horizontal");
     //barHorizontal.setValue(barHorizontal.getMax());
 
-    // Control+S: save
+    // Control+S: save slogo
     KeyCombination CtrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY);
     // Control+V: paste the selected text
     KeyCombination CtrlV = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
     // Control+Z: undo
     KeyCombination CtrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
+    // Control+Shift+S: save preference
+    KeyCombination CtrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY, KeyCombination.SHIFT_ANY);
 
     terminalView.getInputArea().setOnKeyPressed(keyEvent -> {
 
@@ -157,16 +165,24 @@ public class TerminalController {
         try {
           saveInputToFile(compiler.getEnteredText());
         } catch (IOException e) {
-          System.out.println("Error: The output file is missing.");
+          System.out.println("Error: The output slogo file is missing.");
         }
       }
       else if (CtrlV.match(keyEvent)) {
         terminalView.getInputPanel().setPositionCaretAtEnding();
-      } else if (CtrlZ.match(keyEvent)) {
+      }
+      else if (CtrlZ.match(keyEvent)) {
         terminalView.getOutputPanel().undoEntry();
         compiler.undo();
         habitat.undoPen();
         clearLastHistoryEntry();
+      }
+      else if (CtrlShiftS.match(keyEvent)) {
+        try {
+          appendToOutput(String.format("%s%s", workspace.getPrefProcessor().buildPrefMap(), PREF_SAVED_MSG));
+        } catch (IOException e) {
+          System.out.println("Error: The output pref file is missing.");
+        }
       }
     });
   }
