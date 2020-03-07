@@ -38,7 +38,7 @@ public class TurtleView extends Rectangle {
     shapeWidth = width;
     shapeHeight = height;
     this.xOffset = habitatWidth / 2 - getWidth() / 2;
-    this.yOffset = habitatHeight / 2 - getHeight() / 2;
+    this.yOffset = habitatHeight / 2 - getHeight();
     isIMG = true;
     this.img = new Image(image_filepath);
     penWidth = 2.0;

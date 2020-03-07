@@ -10,7 +10,7 @@ import slogo.turtle.TurtleHabitat;
 
 public class Workspace extends BorderPane {
 
-  private static final double HEADER_HEIGHT = 80;
+  private static final double HEADER_HEIGHT = 110;
   private static final double TAB_HEIGHT = 30;
   private TurtleHabitat myHabitat;
   private TerminalView myTerminalView;

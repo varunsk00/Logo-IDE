@@ -21,7 +21,7 @@ import javafx.stage.Stage;
  *
  * @author Varun Kosgi
  */
-public class ButtonController {
+public class GUIButtons {
 
   private static final String SUPPORTED_LANGUAGES = "src/slogo/resources/languages/LanguageList.txt";
   private static final String PROMPTS = "src/slogo/resources/languages/HelpPrompts.txt";
@@ -51,7 +51,7 @@ public class ButtonController {
    * @param language the current language passed in from ParserController
    * @throws FileNotFoundException in case the File does not exist
    */
-  public ButtonController(String language) throws FileNotFoundException {
+  public GUIButtons(String language) throws FileNotFoundException {
     myResources = ResourceBundle.getBundle(language);
     this.languages = text2Regex(new File(SUPPORTED_LANGUAGES));
     this.helpPrompts = text2Regex(new File(PROMPTS));

@@ -7,7 +7,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class ColorController extends Stage {
+public class ColorSelect extends Stage {
 
   private static final int WINDOW_HEIGHT = 200;
   private static final int WINDOW_WIDTH = 200;
@@ -15,7 +15,7 @@ public class ColorController extends Stage {
   private TilePane tp;
   private ColorPicker cp;
 
-  public ColorController(String lang, Color color) {
+  public ColorSelect(String lang, Color color) {
     setResizable(false);
     myResources = ResourceBundle.getBundle(lang);
     setTitle(myResources.getString("ColorWindow"));

@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.ResourceBundle;
 import javafx.stage.FileChooser;
 
-public class FileController {
+public class FileSelect {
 
   private ResourceBundle myResources;
   private FileChooser myFileChooser;
   private String[] validExtensions;
 
-  public FileController(String extensions, String directory, String type, String language) {
+  public FileSelect(String extensions, String directory, String type, String language) {
     myResources = ResourceBundle.getBundle(language);
     myFileChooser = makeChooser(extensions, directory, type);
   }
