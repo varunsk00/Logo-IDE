@@ -27,6 +27,7 @@ public class TurtleHabitat extends Pane {
   public static final int COLORBOXSIZE = 10;
   public static final int COLORBOX_X_LOCATION = 260;
   public static final int COLORBOX_Y_LOCATION = 140;
+
   private static final int INFO_PANE_SIZE = 400;
   private static final int TURTLE_LIST_WIDTH = 100;
   private static final int BUTTON_HEIGHT = 30;
@@ -97,13 +98,13 @@ public class TurtleHabitat extends Pane {
   public void updateHabitat(int id, Turtle turtle) {
     TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
         habitatWidth, habitatHeight);
-    tempTurtle.setFill(tempTurtle.getImage());
+    tempTurtle.setFill(tempTurtle.getImage()); // FIXME:
     tempTurtle.setX(tempTurtle.getXOffset());
     tempTurtle.setY(tempTurtle.getYOffset());
     if (!allTurtleViews.containsKey(id)) {
       allTurtleViews.putIfAbsent(id, tempTurtle);
-      lastx.putIfAbsent(id, tempTurtle.getX() + tempTurtle.getWidth() / 2);
-      lasty.putIfAbsent(id, tempTurtle.getY() + tempTurtle.getHeight() / 2);
+      lastx.putIfAbsent(id, tempTurtle.getLayoutX() + tempTurtle.getShapeWidth() / 2);
+      lasty.putIfAbsent(id, tempTurtle.getLayoutY() + tempTurtle.getShapeHeight() / 2);
       getChildren().addAll(tempTurtle);
     }
     allTurtles.put(id, turtle);
@@ -121,6 +122,28 @@ public class TurtleHabitat extends Pane {
 
   public Turtle getTurtle(int turtleID) {
     return allTurtles.get(turtleID);
+  }
+
+  public ArrayList<TurtleView> getAllTurtleViews(){
+    return new ArrayList<TurtleView>(allTurtleViews.values());
+  }
+
+  public void setAllTurtlesPenColor(Color newPenColor) {
+    for (TurtleView turtle : new ArrayList<>(allTurtleViews.values())) {
+      turtle.setPenColor(newPenColor);
+    }
+  }
+
+  public void updateAllTurtlesImage(String filepath) {
+    for (TurtleView turtleView : getAllTurtleViews()) {
+      turtleView.setImage(filepath);
+    }
+  }
+
+  public void updateAllTurtlesShapeColor(int colorID) {
+    for (TurtleView turtleView : getAllTurtleViews()) {
+      turtleView.setShape(colorID, true);
+    }
   }
 
   public void setBackground(Color c) {
@@ -146,6 +169,7 @@ public class TurtleHabitat extends Pane {
       }
     }
   }
+
 // add current list to a stack
 
   public void saveToStack() {
