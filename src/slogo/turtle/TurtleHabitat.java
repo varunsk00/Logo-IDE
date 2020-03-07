@@ -107,8 +107,12 @@ public class TurtleHabitat extends Pane{
         setPrefHeight(height);
     }
 
-    public TurtleView getTurtle(int turtleID){
+    public TurtleView getTurtleView(int turtleID){
         return allTurtleViews.get(turtleID);
+    }
+
+    public Turtle getTurtle(int turtleID){
+        return allTurtles.get(turtleID);
     }
 
     public void setBackground(Color c){
@@ -164,7 +168,7 @@ public class TurtleHabitat extends Pane{
         }
         pen.setStroke(penColor);
         //p.getStrokeDashArray().addAll(2d, 21d);
-        pen.setStrokeWidth(PEN_WIDTH);
+        pen.setStrokeWidth(turtle.getPenWidth());
         if(turtle.isCleared()){
             for (Polyline p : myLines) {
                 p.getPoints().clear();

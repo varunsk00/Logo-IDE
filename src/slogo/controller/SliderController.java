@@ -1,13 +1,12 @@
 package slogo.controller;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import slogo.workspace.Workspace;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SliderController {
@@ -57,11 +56,15 @@ public class SliderController {
     }
 
     public void updateImageSize(Workspace current, int turtleId){
-        current.getHabitat().getTurtle(turtleId).setScaleX(getSizeValue()/3.0);
-        current.getHabitat().getTurtle(turtleId).setScaleY(getSizeValue()/3.0);
+        current.getHabitat().getTurtleView(turtleId).setScaleX(getSizeValue()/3.0);
+        current.getHabitat().getTurtleView(turtleId).setScaleY(getSizeValue()/3.0);
     }
 
-    public void updatePenWidth(Workspace current, int )
+    public void updatePenWidth(Workspace current, int turtleId){
+        if(current.getHabitat().getTurtle(turtleId).getIsActive()){
+            current.getHabitat().getTurtle(turtleId).setPenSize(getPenWidth());
+        }
+    }
 
     private void renderSliders() {
         sliders = new VBox();
@@ -69,11 +72,13 @@ public class SliderController {
         HBox allLabels = new HBox();
         addLabel("SizeSlider", allLabels);
         addLabel("ZoomSlider", allLabels);
+        addLabel("PenSlider", allLabels);
 
         HBox allSliders = new HBox();
         imagesize = addAndReturnSlider(MIN_SIZE, MAX_SIZE, DEFAULT_SIZE, allSliders);
         zoom = addAndReturnSlider(MIN_ZOOM, MAX_ZOOM, DEFAULT_ZOOM,
                 allSliders);
+        penWidth = addAndReturnSlider(MIN_PEN_WIDTH, MAX_PEN_WIDTH, DEFAULT_PEN_WIDTH, allSliders);
 
         sliders.getChildren().add(allLabels);
         sliders.getChildren().add(allSliders);
