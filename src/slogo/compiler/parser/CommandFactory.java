@@ -8,7 +8,6 @@ import slogo.compiler.exceptions.InvalidSyntaxException;
 public class CommandFactory {
 
   private static Map<String, Command> registeredCommands = new HashMap<>();
-  private static ResourceBundle errorMsgs;
 
   private CommandFactory() {
     //do nothing
@@ -19,14 +18,6 @@ public class CommandFactory {
   }
 
   public static Command createCommand(String name, String declaration) {
-    try {
       return registeredCommands.get(name).createCommand(declaration);
-    } catch (NullPointerException e) {
-      throw new InvalidSyntaxException(String.format(errorMsgs.getString("SeenNotParsed"), name));
-    }
-  }
-
-  public static void setErrorMsgs(ResourceBundle msgs) {
-    errorMsgs = msgs;
   }
 }

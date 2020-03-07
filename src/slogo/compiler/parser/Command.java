@@ -4,11 +4,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.parser.memory.Memory;
 
 public abstract class Command {
 
   protected static final String INITIALIZATION = "this is an initialization string that should never happen";
+  protected static final int GROUPING_INVALID = -1;
+  protected static final int GROUPING_ITERATIVE = 0;
+  protected static final int GROUPING_COMPARISON = 1;
+  protected static final int GROUPING_RECURSIVE = 2;
 
   protected Memory memory;
   protected ArrayList<Command> args;
@@ -18,9 +23,11 @@ public abstract class Command {
   protected String name;
   protected String type;
   private boolean isComplete;
+  protected int groupingType;
 
   public Command(String declaration) {
     args = new ArrayList<>();
+    groupingType = GROUPING_ITERATIVE;
     if (declaration.equals(INITIALIZATION)) {
       return;
     }
@@ -61,6 +68,14 @@ public abstract class Command {
   public void register() {
     String className = findClass();
     factoryRegister(className);
+  }
+
+  public int getDesiredArgs() {
+    return desiredArgs;
+  }
+
+  public String getType() {
+    return type;
   }
 
   private String findClass() {
@@ -117,6 +132,22 @@ public abstract class Command {
 
   public void addArg(Command arg) {
     args.add(arg);
+  }
+
+  public void setArg(Command c, int n) {
+    try {
+      if (args.size() == n) {
+        args.add(c);
+      } else {
+        args.set(n, c);
+      }
+    } catch (IndexOutOfBoundsException e) {
+      throw new InvalidSyntaxException("Attempted to set argument out of bounds"); //fixme error msg
+    }
+  }
+
+  public int getGroupingType() {
+    return groupingType;
   }
 
   public List<Command> getArgs() {

@@ -7,6 +7,7 @@ public abstract class TypeCommand extends Command {
 
   public TypeCommand(String declaration) {
     super(declaration);
+    groupingType = Command.GROUPING_INVALID;
   }
 
   @Override

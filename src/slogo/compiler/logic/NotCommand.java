@@ -7,6 +7,7 @@ public class NotCommand extends Command {
   public NotCommand(String declaration) {
     super(declaration);
     desiredArgs = 1;
+    groupingType = Command.GROUPING_ITERATIVE;
   }
 
   @Override

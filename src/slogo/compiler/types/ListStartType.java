@@ -6,6 +6,7 @@ public class ListStartType extends TypeCommand {
 
   public ListStartType(String declaration) {
     super(declaration);
+    groupingType = Command.GROUPING_INVALID;
     desiredArgs = -1; //should never be used
   }
 

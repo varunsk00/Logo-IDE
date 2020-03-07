@@ -7,6 +7,7 @@ public class DifferenceCommand extends Command {
   public DifferenceCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_RECURSIVE;
   }
 
   @Override
