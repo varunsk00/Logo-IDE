@@ -2,6 +2,8 @@ package slogo.workspace;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +16,7 @@ public class PrefProcessor {
 
   final private static String DEFAULT_PREF_DIRMAP = "slogo.resources.preferences.default.path_map";
   final private static String DEFAULT_PREF_PATH = "slogo.resources.preferences.default.";
-  final private static String USER_PREF_PATH = "slogo.resources.preferences.user.";
+  final private static String USER_PREF_PATH = "src/slogo/resources/preferences/user/";
 
   final private static String BACKGROUND_COLOR_KEY = "BACKGROUND_COLOR";
   final private static String PEN_COLOR_KEY = "PEN_COLOR";
@@ -32,6 +34,7 @@ public class PrefProcessor {
   private Workspace wspace;
   private ColorFactory colorFactory;
   private boolean isInitializedShapeImage;
+  int saveCnt = 0;
 
   public PrefProcessor() {
     prefDict = new LinkedList<>();
@@ -78,11 +81,8 @@ public class PrefProcessor {
     initializeClearScreen();
   }
 
-  public void saveWorkspace(Workspace workspace) {
-  }
-
   public void initializeClearScreen(){
-    wspace.getTerminalController().sendInput(generateClearscreen());
+    wspace.getTerminalController().sendInput(generateClearScreen());
   }
 
   private void initializeTurtleImageShape() {
@@ -160,13 +160,29 @@ public class PrefProcessor {
     }
   }
 
-  private void buildPrefMap() {
+  public String buildPrefMap() throws IOException {
+    StringBuffer text = new StringBuffer();
+    String colorID = colorFactory.parseColor(wspace.getHabitat().getBackgroundColor());
+    text.append(generatePropertiesEntry(BACKGROUND_COLOR_KEY, colorID));
+
+    return savePrefMap(text.toString());
   }
 
-  private void savePrefMap() {
-  }
+  private String savePrefMap(String text) throws IOException {
+    String filename = String.format("%d.properties", ++saveCnt);
+    String filepath = String.format("%s%s", USER_PREF_PATH, filename);
 
-  private void saveCompilerCode() {
+    File newOuputFile = new File(filepath);
+    if (newOuputFile.createNewFile()){
+      System.out.println(String.format("%s File created.", filename));
+    }
+    else {
+      System.out.println(String.format("%s already exists.", filename));
+    }
+    FileWriter fileWriter = new FileWriter(newOuputFile);
+    fileWriter.write(text);
+    fileWriter.close();
+    return filename;
   }
 
   private List<Map.Entry<String, String>> loadDict(String resourcePath) {
@@ -200,7 +216,7 @@ public class PrefProcessor {
     return String.format("%s%s", DEFAULT_PREF_PATH, relativeFilePath);
   }
 
-  private String generateClearscreen(){return "cs";}
+  private String generateClearScreen(){return "cs";}
 
-
+  private String generatePropertiesEntry(String key, String val){return String.format("%s=%s\n", key, val);}
 }

@@ -11,6 +11,7 @@ public class ColorFactory {
 
   private static final String RESOURCES_DIRECTORY = "slogo.resources.preferences.Colors";
   private Map<String, Color> myColorMap;
+  private String UNMATCHED_COLOR_CODE = "-1";
 
   public ColorFactory() {
     myColorMap = loadDict(RESOURCES_DIRECTORY);
@@ -23,6 +24,15 @@ public class ColorFactory {
       }
     }
     return Color.SKYBLUE;
+  }
+
+  public String parseColor(Color c) {
+    for (Entry<String, Color> color : myColorMap.entrySet()) {
+      if (color.getValue().equals(c)) {
+        return color.getKey();
+      }
+    }
+    return UNMATCHED_COLOR_CODE;
   }
 
   public void addColor(int idx, Color c) {
