@@ -1,9 +1,7 @@
 package slogo.terminal;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +22,7 @@ import slogo.workspace.Workspace;
  * TerminalController manages the communication between a TerminalView object and the compiler
  */
 public class TerminalController {
-  final private String USER_SAVE_FILE = "src/slogo/resources/userspace/";
+
   final private String SLOGO_SAVED_MSG = " slogo file saved successfully.";
   final private String PREF_SAVED_MSG = " preference file saved successfully.";
   private static int STATUS_MAX = 5000;
@@ -245,6 +243,7 @@ public class TerminalController {
 
   private void saveInputToFile(String text) throws IOException {
     String filename = String.format("%d.logo", ++saveCnt);
+    String USER_SAVE_FILE = "src/slogo/resources/userspace/";
     String filepath = String.format("%s%s", USER_SAVE_FILE, filename);
 
     File newOuputFile = new File(filepath);
