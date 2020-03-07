@@ -76,7 +76,6 @@ public class ParserController extends Application{
 
     private TabPane workspaceEnvironment;
 
-    private VariablesTabPaneView tabPaneView;
     private VariablesTabPaneController tabPaneController;
 
     private ColorFactory cf = new ColorFactory();
