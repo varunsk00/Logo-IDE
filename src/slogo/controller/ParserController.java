@@ -239,9 +239,7 @@ public class ParserController extends Application{
             @Override
             public void handle(MouseEvent me) {
                 for(int id: all.keySet()){
-                    System.out.println("YES");
                     if(all.get(id).contains(me.getX(), me.getY())){
-                        System.out.println("passed if");
                         all.get(id).setActive(!all.get(id).getActive());
                         currentWorkspace.getCompiler().toggleActiveTurtle(id);
                     }

@@ -16,6 +16,7 @@ public class TurtleView extends Rectangle {
     private double penWidth;
     private boolean isActive;
     private boolean prevActive;
+    private boolean isPenDown;
 
     public TurtleView(double width, double height, double habitatWidth, double habitatHeight){
         super(width, height);
@@ -25,6 +26,7 @@ public class TurtleView extends Rectangle {
         penWidth = 2.0;
         isActive = true;
         prevActive = true;
+        isPenDown = true;
     }
 
     public ImagePattern getImage(){
@@ -42,6 +44,7 @@ public class TurtleView extends Rectangle {
         setY(turtle.getYLocation() + yOffset);
         setVisible(turtle.isShowTurtle());
         penWidth = turtle.getPenSize();
+        isPenDown = turtle.isPenDown();
         cleared = turtle.isCleared();
         if(prevActive!= isActive){
             turtle.setActive(isActive);
@@ -64,6 +67,8 @@ public class TurtleView extends Rectangle {
     public double getPenWidth(){return penWidth;}
 
     public void setPenWidth(double width){penWidth = width;}
+
+    public boolean getPenDown(){return isPenDown;}
 
     public void setPenColor(Color inputColor){penColor = inputColor;}
 

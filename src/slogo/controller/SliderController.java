@@ -60,8 +60,8 @@ public class SliderController {
     }
 
     public void updatePenWidth(Workspace current, int turtleId){
-        if(current.getHabitat().getTurtle(turtleId).getIsActive()){
-            current.getHabitat().getTurtle(turtleId).setPenSize(getPenWidth());
+        if(current.getHabitat().getTurtleView(turtleId).getActive()){
+            current.getHabitat().getTurtleView(turtleId).setPenWidth(getPenWidth());
         }
     }
 

@@ -84,8 +84,8 @@ public class TurtleHabitat extends Pane{
         double xLoc = allTurtleViews.get(id).getX() - allTurtleViews.get(id).getXOffset();
         double yLoc = allTurtleViews.get(id).getY() - allTurtleViews.get(id).getYOffset();
         information = new Text(TEXT_X_LOCATION, TEXT_Y_LOCATION, "Position: (" + xLoc + " , "+ yLoc +")\n"+
-                "Heading: " + allTurtles.get(id).getHeading()+"\n"+
-                "PenDown: " + allTurtles.get(id).isPenDown()+"\n"+
+                "Heading: " + allTurtleViews.get(id).getRotate()+"\n"+
+                "PenDown: " + allTurtleViews.get(id).getPenDown()+"\n"+
                 "PenColor: ");
         p.getChildren().addAll(rec, information, clrBox);
     }
@@ -102,7 +102,6 @@ public class TurtleHabitat extends Pane{
             lasty.putIfAbsent(id, tempTurtle.getY() + tempTurtle.getHeight()/2);
             getChildren().addAll(tempTurtle);
         }
-        allTurtles.put(id, turtle);
         allTurtleViews.get(id).updateTurtleView(turtle);
     }
 
@@ -116,10 +115,6 @@ public class TurtleHabitat extends Pane{
     }
 
     public Map<Integer, TurtleView> getExistingTurtleViews(){return allTurtleViews;}
-
-    public Turtle getTurtle(int turtleID){
-        return allTurtles.get(turtleID);
-    }
 
     public void setBackground(Color c){
         setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
