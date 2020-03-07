@@ -125,16 +125,31 @@ appended, just as a proof of extensibility. If the appropriate resource file is 
 to displaying English error messages.
 
 #### Interesting data files:
+* To demonstrate recursion and scope, 3 logo files are provided. The first is the bog-standard recursive factorial.
+The second is again standard Fibonacci sequence. This is included because it has an exponential runtime which is 
+easily demonstrated for values of n larger than ~30, and because it proves that scope is functional - if it were not,
+there would be no way to pass a valid value into the second recursive call. And finally, there is a logo file that
+calculates the value of e. This doesn't demonstrate too much more, except for adding in a command to calculate the
+value of e, a command notably missing from the original set.
 
 #### Known Bugs:
 * Window dragging is erratic
 * The background does not color past the starting shown window
 * The `to` command cannot be grouped
-* Attempting to undo redefining a command may have unexpected behavior
-* 
+* Attempting to undo redefining a command may have unexpected behavior due to stack logic
+* Placing an extra close list character `]` within a command will cause execution of a command to terminate
+without reading further if the already parsed commands represent a syntactically valid command
+* The group end character `)` is an alias for 0 if not used to close a group
+* Defining a user command that relies on as-yet-undefined user commands will pass parsing but will almost
+certainly have unexpected results
 
 #### Extra credit:
+N/a, unfortunately
 
 
 ### Impressions
 
+This project was very interesting. It was fascinating literally write a programming language, and see the
+struggles and design decisions that can go into such an undertaking. I (Maverick) very much enjoyed 
+the quirks of nested control structures and how they fell out of a few basic assumptions, and I'm very glad
+to have spent my time programming this parser.
