@@ -150,7 +150,7 @@ public class TerminalController {
                 if (!selectedText.equals("")) {
                     ClipboardContent clipboardContent = new ClipboardContent();
                     clipboardContent.putString(selectedText);
-                    clipboard.setContent(clipboardContent);
+                    clipboard.setContent(clipboardContent);+
                 }
             }
             */
