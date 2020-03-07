@@ -6,7 +6,9 @@ import javafx.scene.paint.Color;
 import slogo.compiler.parser.Compiler;
 import slogo.terminal.TerminalController;
 import slogo.terminal.TerminalView;
+import slogo.turtle.Turtle;
 import slogo.turtle.TurtleHabitat;
+import slogo.turtle.TurtleView;
 
 public class Workspace extends BorderPane {
 
@@ -83,6 +85,15 @@ public class Workspace extends BorderPane {
     return defaultPenColor;
   }
 
+  public void setTurtlePenColor(int turtleID, Color c) {
+    TurtleView tview = getHabitat().getTurtleView(turtleID);
+    Turtle t = getCompiler().getTurtleByID(turtleID);
+    tview.setPenColor(c);
+    int idx = myColorFactory.addColor(c);
+    t.setPenColorIndex(idx);
+
+  }
+
   public TerminalController getTerminalController() {
     return myTerminalController;
   }
@@ -153,5 +164,9 @@ public class Workspace extends BorderPane {
     });
 
     setRight(myHabitat);
+  }
+
+  public void setColorFactory(ColorFactory cf) {
+    myColorFactory = cf;
   }
 }
