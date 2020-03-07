@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import slogo.workspace.Workspace;
@@ -91,8 +92,8 @@ public class Header extends VBox {
       for (int turtleID : current.getCompiler().getAllTurtleIDs()) {
         Button button = new Button("Turtle " + turtleID);
         button.setOnAction(event1 -> {
-          current.getHabitat().getTurtleView(turtleID)
-              .setPenColor(penColorChooser.getColorPicker().getValue());
+          Color c = penColorChooser.getColorPicker().getValue();
+          current.setTurtlePenColor(turtleID, c);
           buttons.closeTurtleSelect();
         });
         selection.add(button);

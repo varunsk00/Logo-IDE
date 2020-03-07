@@ -39,6 +39,18 @@ public class ColorFactory {
     myColorMap.put(""+idx, c);
   }
 
+  public int addColor(Color c) {
+    int i = 1;
+    while (true) {
+      if (myColorMap.getOrDefault(""+i, null) == null ) {
+        myColorMap.put(""+i, c);
+        System.out.println(i);
+        return i;
+      }
+      i++;
+    }
+  }
+
   private Map<String, Color> loadDict(String resourcePath) {
     ResourceBundle resources = ResourceBundle.getBundle(resourcePath);
     Map<String, Color> dict = new HashMap<>();
