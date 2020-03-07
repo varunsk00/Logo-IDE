@@ -24,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.turtle.Point;
+import slogo.turtle.Turtle;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 import slogo.workspace.ColorFactory;
@@ -250,18 +251,16 @@ public class ParserController extends Application {
   }
 
   private void handleMultipleTurtles() {
+    List<Integer> ids = new ArrayList<>(currentWorkspace.getCompiler().getAllTurtleIDs());
+    List<Turtle> turtles = new ArrayList<>();
+    for (int i: ids) {
+      turtles.add(currentWorkspace.getCompiler().getTurtleByID(i));
+    }
+    currentWorkspace.getHabitat().updateHabitat(ids, turtles);
     for (int turtleId : currentWorkspace.getCompiler().getAllTurtleIDs()) {
-      currentWorkspace.getHabitat()
-          .updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
-      if (currentWorkspace.getCompiler().getTurtleByID(turtleId).isPenDown()) {
-        for (Point loc : currentWorkspace.getCompiler().getTurtleByID(turtleId).locationsList()) {
-          currentWorkspace.getHabitat()
-              .penDraw(currentWorkspace.getHabitat().getTurtleView(turtleId).getPenColor(), loc,
-                  turtleId);
-        }
-      }
       header.getSliders().updateImageSize(currentWorkspace, turtleId);
       header.getSliders().updatePenWidth(currentWorkspace, turtleId);
+
     }
   }
 

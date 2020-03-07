@@ -15,6 +15,7 @@ public class TurtleView extends Rectangle {
   private boolean cleared;
   private Color penColor = Color.BLACK;
   private double penWidth;
+  private boolean updated = false;
 
   public TurtleView(double width, double height, double habitatWidth, double habitatHeight) {
     super(width, height);
@@ -97,6 +98,14 @@ public class TurtleView extends Rectangle {
       setImage(filepath);
       extension = filepath.substring(image_filepath.lastIndexOf("."));
     }
+  }
+
+  public boolean isUpdated() {
+    return updated;
+  }
+
+  public void setUpdated(boolean updated) {
+    this.updated = updated;
   }
 }
 

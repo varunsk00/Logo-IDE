@@ -2,8 +2,10 @@ package slogo.turtle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Stack;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -94,7 +96,21 @@ public class TurtleHabitat extends Pane {
     p.getChildren().addAll(rec, information, clrBox);
   }
 
-  public void updateHabitat(int id, Turtle turtle) {
+  public void updateHabitat(List<Integer> ids, List<Turtle> turtles) {
+    for (int i = 0; i < ids.size(); i++) {
+      updateSingleTurtle(ids.get(i), turtles.get(i));
+    }
+    for (Entry<Integer, TurtleView> e: new HashSet<>(allTurtleViews.entrySet())) {
+      if (!e.getValue().isUpdated()) {
+        getChildren().remove(e.getValue());
+        allTurtles.remove(e.getKey(), allTurtles.get(e.getKey()));
+        allTurtleViews.remove(e.getKey(), e.getValue());
+      }
+      e.getValue().setUpdated(false);
+    }
+  }
+
+  public void updateSingleTurtle(int id, Turtle turtle) {
     TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
         habitatWidth, habitatHeight);
     tempTurtle.setFill(tempTurtle.getImage());
@@ -108,6 +124,14 @@ public class TurtleHabitat extends Pane {
     }
     allTurtles.put(id, turtle);
     allTurtleViews.get(id).updateTurtleView(turtle);
+    allTurtleViews.get(id).setUpdated(true);
+
+    if (turtle.isPenDown()) { //fixme drawing doesn't work anymore
+      for (Point loc : turtle.locationsList()) {
+        System.out.println(getTurtleView(id).getPenColor());
+        penDraw(loc,id);
+      }
+    }
   }
 
   private void changeSize(double width, double height) {
@@ -158,8 +182,9 @@ public class TurtleHabitat extends Pane {
     polylineStack.add(temp);
   }
 
-  public void penDraw(Color penColor, Point loc, int turtleID) {
+  public void penDraw(Point loc, int turtleID) {
     TurtleView turtle = allTurtleViews.get(turtleID);
+    Color penColor = turtle.getPenColor();
     double x_coor = loc.getX();
     double y_coor = loc.getY();
     Polyline pen = new Polyline();
