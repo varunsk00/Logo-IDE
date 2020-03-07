@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class SliderController {
-
     private ResourceBundle myResources;
 
     private Slider zoom;
