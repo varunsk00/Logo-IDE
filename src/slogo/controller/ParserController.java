@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 
 //TODO(COMPLETE): CREATE VARIABLE PEN WIDTH SLIDER
 //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
+
 /**
  * ParserController.java
  * Sets up and runs Slogo environment as an Application
@@ -37,7 +38,7 @@ import java.util.ResourceBundle;
  * @author Qiaoyi Fang
  * @author Alexander Uzochukwu
  */
-public class ParserController extends Application{
+public class ParserController extends Application {
     private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
     private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
     private static final String LOGO_DIRECTORY = "data/examples";
@@ -54,7 +55,7 @@ public class ParserController extends Application{
     private static final double SCENE_HEIGHT = 720;
 
     private static final double TABPANE_WIDTH = SCENE_WIDTH;
-    private static final double TABPANE_HEIGHT = SCENE_HEIGHT/5;
+    private static final double TABPANE_HEIGHT = SCENE_HEIGHT / 5;
 
     private static final Color ALL_COLOR = Color.WHITE;
     private static final int NUMBER_OF_TABS = 10;
@@ -81,6 +82,7 @@ public class ParserController extends Application{
 
     private ColorFactory cf = new ColorFactory();
     private List<Button> selectButtons = new ArrayList<>();
+
     /**
      * Empty Constructor needed to run the application due to Application requirements
      */
@@ -100,7 +102,6 @@ public class ParserController extends Application{
     }
 
     /**
-     *
      * @param primaryStage is the stage to display the Application, runs loop, organizes elements BorderPane
      */
     public void start(Stage primaryStage) throws FileNotFoundException {
@@ -120,13 +121,13 @@ public class ParserController extends Application{
     private void startWorkspaces() throws FileNotFoundException {
         workspaces = new ArrayList<>();
         workspaces.add(null);
-        for(int i = 0; i< NUMBER_OF_TABS; i++){
+        for (int i = 0; i < NUMBER_OF_TABS; i++) {
             workspaces.add(new Workspace((SCENE_WIDTH), SCENE_HEIGHT));
         }
         currentWorkspace = workspaces.get(1);
         currentTab = 1;
         workspaceEnvironment = new TabPane();
-        for(int i = 1; i < workspaces.size(); i++){
+        for (int i = 1; i < workspaces.size(); i++) {
             Tab tab = new Tab(myResources.getString("Workspace") + String.valueOf(i));
             tab.setContent(workspaces.get(i));
             workspaceEnvironment.getTabs().add(tab);
@@ -154,8 +155,12 @@ public class ParserController extends Application{
 
     private void startAnimationLoop() {
         KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
-            try { step(); } catch (IOException ex) {
-                System.out.println("Help Text File Not Found."); } });
+            try {
+                step();
+            } catch (IOException ex) {
+                System.out.println("Help Text File Not Found.");
+            }
+        });
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
@@ -163,7 +168,7 @@ public class ParserController extends Application{
     }
 
     private void step() throws IOException {
-        currentWorkspace.getTerminalController().setSize((int)myStage.getWidth()/2, (int)(myStage.getHeight()- 2*TABPANE_HEIGHT));
+        currentWorkspace.getTerminalController().setSize((int) myStage.getWidth() / 2, (int) (myStage.getHeight() - 2 * TABPANE_HEIGHT));
         updateHabitatBackgroundColor();
         currentWorkspace.getCompiler().setLanguage(currentLang);
         header.getSliders().updateZoom(currentWorkspace);
@@ -175,19 +180,25 @@ public class ParserController extends Application{
     }
 
     private void handleButtonActions() throws IOException {
-        if(!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))){
-            header.launchHelpWindow(myResources.getString(header.getButtons().getHelpStatus()), guiLanguage);}
-        if(header.getButtons().getPenColorStatus()){
-            header.launchPenColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage, selectButtons); }
-        if(header.getButtons().getBackgroundColorStatus()){
-            header.launchBackgroundColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage); }
-        if(header.getButtons().getFileStatus()){
-            handleLogoFiles(); }
-        if(header.getButtons().getImageStatus()){
-            handleImageFileChooser(); }
-        if(header.getButtons().isViewAllTurtles()){
+        if (!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))) {
+            header.launchHelpWindow(myResources.getString(header.getButtons().getHelpStatus()), guiLanguage);
+        }
+        if (header.getButtons().getPenColorStatus()) {
+            header.launchPenColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage, selectButtons);
+        }
+        if (header.getButtons().getBackgroundColorStatus()) {
+            header.launchBackgroundColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage);
+        }
+        if (header.getButtons().getFileStatus()) {
+            handleLogoFiles();
+        }
+        if (header.getButtons().getImageStatus()) {
+            handleImageFileChooser();
+        }
+        if (header.getButtons().isViewAllTurtles()) {
             currentWorkspace.getHabitat().viewTurtleInformation();
-            header.getButtons().setViewAllTurtlesOff(); }
+            header.getButtons().setViewAllTurtlesOff();
+        }
     }
 
     private void updateTabPanes(boolean isSwitch) {
@@ -197,7 +208,7 @@ public class ParserController extends Application{
         }
     }
 
-    private void updateCurrentWorkspace(){
+    private void updateCurrentWorkspace() {
         String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
         int current = currentWorkspace.getCurrentWorkspace(workspaceString);
         currentWorkspace = workspaces.get(current);
@@ -209,9 +220,9 @@ public class ParserController extends Application{
         }
     }
 
-    private void updateHabitatBackgroundColor(){
+    private void updateHabitatBackgroundColor() {
         int compilerColorID = currentWorkspace.getCompiler().getBackgroundColor();
-        if (compilerColorID != DEFAULT_COLOR_CODE){
+        if (compilerColorID != DEFAULT_COLOR_CODE) {
             Color compilerBGColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
             setBackground(compilerBGColor);
             currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
@@ -228,12 +239,11 @@ public class ParserController extends Application{
     }*/
 
 
-
-    private void handleMultipleTurtles(){
-        for (int turtleId: currentWorkspace.getCompiler().getAllTurtleIDs()){
+    private void handleMultipleTurtles() {
+        for (int turtleId : currentWorkspace.getCompiler().getAllTurtleIDs()) {
             currentWorkspace.getHabitat().updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
-            if(currentWorkspace.getCompiler().getTurtleByID(turtleId).isPenDown()){
-                for (Point loc: currentWorkspace.getCompiler().getTurtleByID(turtleId).locationsList()) {
+            if (currentWorkspace.getCompiler().getTurtleByID(turtleId).isPenDown()) {
+                for (Point loc : currentWorkspace.getCompiler().getTurtleByID(turtleId).locationsList()) {
                     currentWorkspace.getHabitat().penDraw(currentWorkspace.getHabitat().getTurtle(turtleId).getPenColor(), loc, turtleId);
                 }
             }
@@ -242,11 +252,13 @@ public class ParserController extends Application{
         }
     }
 
-    private void setBackground(Color c){ currentWorkspace.getHabitat().setBackground(c); }
+    private void setBackground(Color c) {
+        currentWorkspace.getHabitat().setBackground(c);
+    }
 
     private void handleLanguage(String lang) throws FileNotFoundException {
         guiLanguage = myResources.getString(lang) + "_GUI";
-        if(!guiLanguage.contains(currentLang)){
+        if (!guiLanguage.contains(currentLang)) {
             updateLanguage(guiLanguage);
         }
     }
@@ -260,7 +272,7 @@ public class ParserController extends Application{
         root.getChildren().remove(header);
         setHeader();
         workspaceEnvironment.getTabs().clear();
-        for(int i = 1; i < workspaces.size(); i++){
+        for (int i = 1; i < workspaces.size(); i++) {
             Tab tab = new Tab(myResources.getString("Workspace") + String.valueOf(i));
             tab.setContent(workspaces.get(i));
             workspaceEnvironment.getTabs().add(tab);
@@ -270,19 +282,20 @@ public class ParserController extends Application{
         tabPaneController.changeLanguage(currentLang);
     }
 
-    private void handleImageFileChooser(){
+    private void handleImageFileChooser() {
         selectButtons.clear();
         File dataFile = imageFile.getFileChooser().showOpenDialog(myStage);
-        if(dataFile == null){
+        if (dataFile == null) {
             header.getButtons().setImageOff();
             return;
         }
         header.getButtons().setImageOff();
-        for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
+        for (int turtleID : currentWorkspace.getCompiler().getAllTurtleIDs()) {
             Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event -> {
                 currentWorkspace.getHabitat().getTurtle(turtleID).setImage("file:" + dataFile.getPath());
-                header.getButtons().closeTurtleSelect();});
+                header.getButtons().closeTurtleSelect();
+            });
             selectButtons.add(button);
         }
         header.getButtons().launchTurtleSelect(selectButtons);
@@ -290,7 +303,7 @@ public class ParserController extends Application{
 
     private void handleLogoFiles() throws FileNotFoundException {
         File dataFile = logoFile.getFileChooser().showOpenDialog(myStage);
-        if(dataFile == null){
+        if (dataFile == null) {
             header.getButtons().setLoadFilePressedOff();
             return;
         }
