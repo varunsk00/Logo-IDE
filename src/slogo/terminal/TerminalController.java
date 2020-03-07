@@ -139,6 +139,7 @@ public class TerminalController {
         appendToOutput(terminalView.getCurrentInput());
         history.addBufferEntry(terminalView.getCurrentInput(),
             1); // add method now automatically resets the index
+        System.out.println(terminalView.getCurrentInput());
         appendToOutput(sendCurrentInput());
 
         terminalView.resetInputPanel();
