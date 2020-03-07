@@ -117,7 +117,7 @@ public class ParserController extends Application{
         myStage.show();
     }
 
-    private void startWorkspaces(){
+    private void startWorkspaces() throws FileNotFoundException {
         workspaces = new ArrayList<>();
         workspaces.add(null);
         for(int i = 0; i< NUMBER_OF_TABS; i++){
@@ -210,8 +210,9 @@ public class ParserController extends Application{
     }
 
     private void updateHabitatBackgroundColor(){
-        Color compilerBGColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
-        if (!compilerBGColor.equals(currentWorkspace.getDefaultBackgroundColor())){
+        int compilerColorID = currentWorkspace.getCompiler().getBackgroundColor();
+        if (compilerColorID != DEFAULT_COLOR_CODE){
+            Color compilerBGColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
             setBackground(compilerBGColor);
             currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
         }
@@ -236,6 +237,7 @@ public class ParserController extends Application{
                     currentWorkspace.getHabitat().penDraw(currentWorkspace.getHabitat().getTurtle(turtleId).getPenColor(), loc, turtleId);
                 }
             }
+            currentWorkspace.getPrefProcessor().updateShapeImage();
             header.getSliders().updateImageSize(currentWorkspace, turtleId);
         }
     }

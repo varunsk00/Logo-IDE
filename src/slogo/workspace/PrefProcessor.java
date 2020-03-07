@@ -1,7 +1,7 @@
 package slogo.workspace;
 
-import javafx.scene.paint.Color;
-
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class PrefProcessor {
@@ -26,9 +26,11 @@ public class PrefProcessor {
     private ColorFactory colorFactory;
     List<Map.Entry<String, String>> prefDict;
 
-    public PrefProcessor(){prefDict = new LinkedList<>(); colorFactory = new ColorFactory();}
+    private boolean isInitializedShapeImage;
 
-    public void initializeWorkspace(Workspace workspace, String prefKey){
+    public PrefProcessor(){prefDict = new LinkedList<>(); colorFactory = new ColorFactory(); isInitializedShapeImage = false;}
+
+    public void initializeWorkspace(Workspace workspace, String prefKey) throws FileNotFoundException {
         wspace = workspace;
         List<Map.Entry<String, String>> pathMap = loadDict(DEFAULT_PREF_DIRMAP);
 
@@ -51,13 +53,13 @@ public class PrefProcessor {
 
     }
 
-    public void loadPref(Workspace workspace, String filePath){
+    public void loadPref(Workspace workspace, String filePath) throws FileNotFoundException {
         this.wspace = workspace;
         prefDict = loadDict(filePath);
         loadPrefDict();
     }
 
-    private void loadPrefDict(){
+    private void loadPrefDict() throws FileNotFoundException {
         initializeBackgroundColor();
         initializePenColor();
         initializeTurtleNum();
@@ -77,19 +79,17 @@ public class PrefProcessor {
     private void initializeBackgroundColor(){
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(BACKGROUND_COLOR_KEY)){
-                Color newColor = colorFactory.parseColor(Integer.parseInt(entry.getValue()));
-                wspace.getHabitat().setBackground(newColor);
-                wspace.setDefaultBackgroundColor(newColor);
+                wspace.getTerminalController().sendInput(generateBackgroundCommand(entry.getValue()));
+                return;
             }
         }
     }
 
     private void initializePenColor(){
         for (Map.Entry<String, String> entry : prefDict){
-            if (entry.getKey().equals(PEN_COLOR_KEY)){
-                Color newColor = colorFactory.parseColor(Integer.parseInt(entry.getValue()));
-                wspace.setDefaultPenColorColor(newColor);
-                wspace.getHabitat().setAllTurtlesPenColor(newColor);
+            if (entry.getKey().equals(TURTLE_NUM_KEY)){
+                wspace.getTerminalController().sendInput(generatePenCommand(entry.getValue()));
+                return;
             }
         }
     }
@@ -97,7 +97,8 @@ public class PrefProcessor {
     private void initializeTurtleNum(){
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(TURTLE_NUM_KEY)){
-                //
+                wspace.getTerminalController().sendInput(generateTurtleCommand(Integer.parseInt(entry.getValue())));
+                return;
             }
         }
     }
@@ -105,20 +106,27 @@ public class PrefProcessor {
     private void initializeTurtleShape(){
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(TURTLE_SHAPE_KEY)){
-                //
+                wspace.getHabitat().updateAllTurtlesShapeColor(Integer.parseInt(entry.getValue()));
             }
+        }
+    }
+
+    public void updateShapeImage(){
+        if (!isInitializedShapeImage){
+            isInitializedShapeImage = true;
+            initializeTurtleImageShape();
         }
     }
 
     private void initializeTurtleImage(){
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(TURTLE_IMAGE_KEY)){
-                //
+                wspace.getHabitat().updateAllTurtlesImage(entry.getValue());
             }
         }
     }
 
-    private void initializeLoadedFile(){
+    private void initializeLoadedFile() throws FileNotFoundException {
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(IS_LOAD_FILE_KEY) && entry.getValue().equals(FALSE_VAL)){
                 return;
@@ -127,7 +135,7 @@ public class PrefProcessor {
 
         for (Map.Entry<String, String> entry : prefDict){
             if (entry.getKey().equals(PRELOAD_FILE_KEY)){
-
+                wspace.getTerminalController().sendFileInput(new File(entry.getValue()));
             }
         }
     }
@@ -147,4 +155,21 @@ public class PrefProcessor {
         }
         return dict;
     }
+
+    private String generateBackgroundCommand(String colorID){return String.format("setbg %s", colorID);}
+
+    private String generatePenCommand(String colorID){return String.format("setpc %s", colorID);}
+
+    private String generateTurtleCommand(int num){
+        String command = "tell [ ";
+        for (int i =1; i<=num; i++){
+            command = String.format("%s %s",command, String.valueOf(i));
+        }
+        command = String.format("%s]", command);
+        return  command;
+    }
+
+    private String getFilePath(String relativeFilePath){return String.format("%s%s", DEFAULT_PREF_PATH, relativeFilePath);}
+
+
 }

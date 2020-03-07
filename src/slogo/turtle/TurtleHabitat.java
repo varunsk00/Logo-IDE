@@ -67,8 +67,8 @@ public class TurtleHabitat extends Pane{
     private void displayInformation(int id, Pane p){
         p.getChildren().removeAll(rec, information, clrBox);
         rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
-        rec.setLayoutX(PICTURE_X_LOCATION);
-        rec.setLayoutY(PICTURE_Y_LOCATION);
+        rec.setX(PICTURE_X_LOCATION);
+        rec.setY(PICTURE_Y_LOCATION);
         rec.setFill(allTurtleViews.get(id).getFill());
         information = new Text(200, 100, "Position: (" + allTurtles.get(id).getXLocation() + " , "+ allTurtles.get(id).getYLocation()+")\n"+
                 "Heading: " + allTurtles.get(id).getHeading()+"\n"+
@@ -85,13 +85,16 @@ public class TurtleHabitat extends Pane{
         TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
                 habitatWidth, habitatHeight);
         //System.out.println(habitatHeight);
+        //
         tempTurtle.setFill(tempTurtle.getImage());
+        //System.out.println("retertre");
+        //System.out.println(tempTurtle.isIMG());
         tempTurtle.setX(tempTurtle.getXOffset());
         tempTurtle.setY(tempTurtle.getYOffset());
         if (!allTurtleViews.containsKey(id)){
             allTurtleViews.putIfAbsent(id, tempTurtle);
-            lastx.putIfAbsent(id, tempTurtle.getX() + tempTurtle.getWidth()/2);
-            lasty.putIfAbsent(id, tempTurtle.getY() + tempTurtle.getHeight()/2);
+            lastx.putIfAbsent(id, tempTurtle.getLayoutX() + tempTurtle.getShapeWidth()/2);
+            lasty.putIfAbsent(id, tempTurtle.getLayoutY() + tempTurtle.getShapeHeight()/2);
             getChildren().addAll(tempTurtle);
         }
         allTurtles.put(id, turtle);
@@ -112,6 +115,18 @@ public class TurtleHabitat extends Pane{
     public void setAllTurtlesPenColor(Color newPenColor){
         for (TurtleView turtle: new ArrayList<>(allTurtleViews.values())){
             turtle.setPenColor(newPenColor);
+        }
+    }
+
+    public void updateAllTurtlesImage(String filepath){
+        for (TurtleView turtleView:getAllTurtleViews()){
+            turtleView.setImage(filepath);
+        }
+    }
+
+    public void updateAllTurtlesShapeColor(int colorID){
+        for (TurtleView turtleView:getAllTurtleViews()){
+            turtleView.setShape(colorID, true);
         }
     }
 

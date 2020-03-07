@@ -7,6 +7,8 @@ import slogo.terminal.TerminalController;
 import slogo.terminal.TerminalView;
 import slogo.turtle.TurtleHabitat;
 
+import java.io.FileNotFoundException;
+
 public class Workspace extends BorderPane {
     private TurtleHabitat myHabitat;
     private TerminalView myTerminalView;
@@ -20,6 +22,7 @@ public class Workspace extends BorderPane {
     private double TERMINAL_HEIGHT;
     private double HABITAT_WIDTH;
     private double HABITAT_HEIGHT;
+    private String DEFAULT_PREF = "MULTI_TURTLES"; // "TURTLE_SHAPE"
 
     private Color defaultBackgroundColor = Color.WHITE;
     private Color defaultPenColor = Color.BLACK;
@@ -30,15 +33,21 @@ public class Workspace extends BorderPane {
     private double sumY;
     private Compiler comp;
 
-    public Workspace(double width, double height){
+    private PrefProcessor prefProcessor;
+
+    public Workspace(double width, double height) throws FileNotFoundException {
          myColorFactory = new ColorFactory();
+         prefProcessor = new PrefProcessor();
          setSizes(width, height);
          startCompiler();
          setPrefWidth(width);
          setPrefHeight(height);
          setTurtleHabitat();
          setTerminalView();
+         prefProcessor.initializeWorkspace(this, DEFAULT_PREF);
     }
+
+    public PrefProcessor getPrefProcessor(){return prefProcessor;}
 
     public int getStatus(){
         return status;
