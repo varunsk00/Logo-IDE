@@ -14,7 +14,7 @@ public class ClearScreenCommand extends TurtleQuery {
   public double executeTurtle() {
     double x = 0;
     double y = 0;
-    for (int i: memory.getAllTurtleIDs()) {
+    for (int i : memory.getAllTurtleIDs()) {
       Turtle t = memory.getTurtleByID(i);
       x = t.getXLocation();
       y = t.getYLocation();
