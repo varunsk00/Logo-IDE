@@ -1,7 +1,11 @@
 package slogo.terminal;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -19,13 +23,14 @@ import slogo.turtle.TurtleHabitat;
  * TerminalController manages the communication between a TerminalView object and the compiler
  */
 public class TerminalController {
-
+  final private String USER_SAVE_FILE = "slogo/resources/userspace/";
   private static int STATUS_MAX = 5000;
   private TerminalView terminalView;
   private TurtleHabitat habitat;
   private HistoryBuffer history;
   private Compiler compiler;
   private int status;
+  private int saveCnt;
 
   /**
    * Constructor
@@ -36,6 +41,7 @@ public class TerminalController {
     this.terminalView = view;
     this.history = new HistoryBuffer();
     status = 0;
+    saveCnt = 0;
     keyBinding();
   }
 
@@ -111,8 +117,8 @@ public class TerminalController {
     //final ScrollBar barHorizontal = (ScrollBar) terminalView.getInputPanel().lookup(".scroll-bar:horizontal");
     //barHorizontal.setValue(barHorizontal.getMax());
 
-    // Control+C: copy the selected text
-    //KeyCombination CtrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY);
+    // Control+S: save
+    KeyCombination CtrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY);
     // Control+V: paste the selected text
     KeyCombination CtrlV = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
     // Control+Z: undo
@@ -139,21 +145,19 @@ public class TerminalController {
         appendToOutput(terminalView.getCurrentInput());
         history.addBufferEntry(terminalView.getCurrentInput(),
             1); // add method now automatically resets the index
+        System.out.println(terminalView.getCurrentInput());
         appendToOutput(sendCurrentInput());
 
         terminalView.resetInputPanel();
 
       }
-            /*
-            else if (CtrlC.match(keyEvent)) {
-                String selectedText = terminalView.getSelectedText();
-                if (!selectedText.equals("")) {
-                    ClipboardContent clipboardContent = new ClipboardContent();
-                    clipboardContent.putString(selectedText);
-                    clipboard.setContent(clipboardContent);
-                }
-            }
-            */
+      else if (CtrlS.match(keyEvent)) {
+        try {
+          saveInputToFile(compiler.getEnteredText());
+        } catch (IOException e) {
+          System.out.println("Error: The output file is missing.");
+        }
+      }
       else if (CtrlV.match(keyEvent)) {
         terminalView.getInputPanel().setPositionCaretAtEnding();
       } else if (CtrlZ.match(keyEvent)) {
@@ -219,5 +223,15 @@ public class TerminalController {
       input += line + " ";
     }
     return input;
+  }
+
+  private void saveInputToFile(String text) throws IOException {
+    String filepath = String.format("%s%d.logo", USER_SAVE_FILE, ++saveCnt);
+    File newOuputFile = new File(filepath);
+    newOuputFile.createNewFile();
+    new FileOutputStream(newOuputFile, true).close();
+    BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true));
+    writer.append(text);
+    writer.close();
   }
 }

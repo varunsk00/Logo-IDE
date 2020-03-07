@@ -20,13 +20,13 @@ import slogo.workspace.Workspace;
  *
  * @author Varun Kosgi
  */
-public class HeaderController extends VBox {
+public class Header extends VBox {
 
   private static final String HELP_DIRECTORY = "src/slogo/resources/help/Help_";
   private static final int HELP_WINDOW_WIDTH = 400;
   private static final int HELP_WINDOW_HEIGHT = 400;
   private ResourceBundle myResources;
-  private ButtonController buttons;
+  private GUIButtons buttons;
   private SliderController sliders;
 
   /**
@@ -35,9 +35,9 @@ public class HeaderController extends VBox {
    * @param language the current language passed in from ParserController
    * @throws FileNotFoundException in case the File does not exist
    */
-  public HeaderController(String language) throws FileNotFoundException {
+  public Header(String language) throws FileNotFoundException {
     myResources = ResourceBundle.getBundle(language);
-    buttons = new ButtonController(language);
+    buttons = new GUIButtons(language);
     sliders = new SliderController(language);
     sliders.getVBox().getStyleClass().add("slider-box");
     getChildren().addAll(buttons.getHBox(), sliders.getVBox());
@@ -46,7 +46,7 @@ public class HeaderController extends VBox {
   /**
    * @return ButtonController at tob of VBox
    */
-  public ButtonController getButtons() {
+  public GUIButtons getButtons() {
     return buttons;
   }
 
@@ -72,7 +72,7 @@ public class HeaderController extends VBox {
 
   public void launchBackgroundColorChooser(Workspace current, String lang) {
     buttons.setBackgroundColorOff();
-    ColorController bgColorChooser = new ColorController(lang,
+    ColorSelect bgColorChooser = new ColorSelect(lang,
         current.getHabitat().getBackgroundColor());
     bgColorChooser.getColorPicker().setOnAction(e -> {
       current.getHabitat().setBackground(bgColorChooser.getColorPicker().getValue());
@@ -84,7 +84,7 @@ public class HeaderController extends VBox {
   public void launchPenColorChooser(Workspace current, String lang, List<Button> selection) {
     selection.clear();
     getButtons().setPenColorOff();
-    ColorController penColorChooser = new ColorController(lang,
+    ColorSelect penColorChooser = new ColorSelect(lang,
         current.getHabitat().getTurtleView(1).getPenColor());
 
     penColorChooser.getColorPicker().setOnAction(e -> {
