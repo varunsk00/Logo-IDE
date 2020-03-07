@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.turtle.Point;
-import slogo.turtle.Turtle;
 import slogo.turtle.TurtleView;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
@@ -232,7 +231,7 @@ public class ParserController extends Application{
             header.getSliders().updateImageSize(currentWorkspace, turtleId);
             header.getSliders().updatePenWidth(currentWorkspace, turtleId);
         }
-        checkClickToActivate(currentWorkspace.getHabitat().getAll());
+        checkClickToActivate(currentWorkspace.getHabitat().getExistingTurtleViews());
     }
 
     private void checkClickToActivate(Map<Integer, TurtleView> all){

@@ -115,7 +115,7 @@ public class TurtleHabitat extends Pane{
         return allTurtleViews.get(turtleID);
     }
 
-    public Map<Integer, TurtleView> getAll(){return allTurtleViews;}
+    public Map<Integer, TurtleView> getExistingTurtleViews(){return allTurtleViews;}
 
     public Turtle getTurtle(int turtleID){
         return allTurtles.get(turtleID);
