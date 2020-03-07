@@ -335,7 +335,7 @@ public class Compiler {
     return memory.getEnteredText();
   }
 
-  public void toggleActiveTurtle(int id){
+  public void toggleActiveTurtle(int id) {
     memory.toggleActiveTurtle(id);
   }
 

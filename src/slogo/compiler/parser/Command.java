@@ -22,8 +22,8 @@ public abstract class Command {
   protected int desiredArgs;
   protected String name;
   protected String type;
-  private boolean isComplete;
   protected int groupingType;
+  private boolean isComplete;
 
   public Command(String declaration) {
     args = new ArrayList<>();

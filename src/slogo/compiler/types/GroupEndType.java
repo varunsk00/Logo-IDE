@@ -1,6 +1,6 @@
 package slogo.compiler.types;
 
-public class GroupEndType extends TypeCommand{
+public class GroupEndType extends TypeCommand {
 
   public GroupEndType(String declaration) {
     super(declaration);

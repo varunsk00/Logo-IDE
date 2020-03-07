@@ -2,8 +2,6 @@ package slogo.compiler.parser;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
-import slogo.compiler.exceptions.InvalidSyntaxException;
 
 public class CommandFactory {
 
@@ -18,6 +16,6 @@ public class CommandFactory {
   }
 
   public static Command createCommand(String name, String declaration) {
-      return registeredCommands.get(name).createCommand(declaration);
+    return registeredCommands.get(name).createCommand(declaration);
   }
 }

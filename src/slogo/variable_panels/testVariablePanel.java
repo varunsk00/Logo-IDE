@@ -6,21 +6,21 @@ import javafx.stage.Stage;
 
 public class testVariablePanel extends Application {
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        stage.setTitle("Test");
+  public static void main(String[] args) {
+    launch(args);
+  }
 
-        VariablesTabPaneView view = new VariablesTabPaneView(1000, 400);
-        //VariablesTabPaneController controller = new VariablesTabPaneController(view);
+  @Override
+  public void start(Stage stage) throws Exception {
+    stage.setTitle("Test");
 
-        Scene sceneVis = new Scene(view);
+    VariablesTabPaneView view = new VariablesTabPaneView(1000, 400);
+    //VariablesTabPaneController controller = new VariablesTabPaneController(view);
 
-        stage.setScene(sceneVis);
-        stage.show();
+    Scene sceneVis = new Scene(view);
 
-    }
+    stage.setScene(sceneVis);
+    stage.show();
 
-    public static void main (String[] args) {
-        launch(args);
-    }
+  }
 }

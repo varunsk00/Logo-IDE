@@ -1,7 +1,6 @@
 package slogo.compiler.control;
 
 import slogo.compiler.parser.Command;
-import slogo.compiler.parser.Compiler;
 
 public abstract class LoopCommand extends Command {
 
