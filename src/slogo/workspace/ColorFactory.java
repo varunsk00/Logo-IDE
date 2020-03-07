@@ -3,22 +3,24 @@ package slogo.workspace;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import javafx.scene.paint.Color;
 
 public class ColorFactory {
 
   private static final String RESOURCES_DIRECTORY = "slogo.resources.preferences.Colors";
-  private List<Map.Entry<String, Color>> myColorMap;
+  private Map<String, Color> myColorMap;
 
   public ColorFactory() {
     myColorMap = loadDict(RESOURCES_DIRECTORY);
   }
 
   public Color parseColor(int id) {
-    for (Map.Entry<String, Color> color : myColorMap) {
+    for (Entry<String, Color> color : myColorMap.entrySet()) {
       if (color.getKey().equals(String.valueOf(id))) {
         return color.getValue();
       }
@@ -26,12 +28,16 @@ public class ColorFactory {
     return Color.SKYBLUE;
   }
 
-  private List<Map.Entry<String, Color>> loadDict(String resourcePath) {
+  public void addColor(int idx, Color c) {
+    myColorMap.put(""+idx, c);
+  }
+
+  private Map<String, Color> loadDict(String resourcePath) {
     ResourceBundle resources = ResourceBundle.getBundle(resourcePath);
-    List<Map.Entry<String, Color>> dict = new ArrayList<>();
+    Map<String, Color> dict = new HashMap<>();
     for (String colorID : Collections.list(resources.getKeys())) {
       String hexCode = resources.getString(colorID);
-      dict.add(new AbstractMap.SimpleEntry<>(colorID, Color.valueOf(hexCode)));
+      dict.put(colorID, Color.valueOf(hexCode));
     }
     return dict;
   }

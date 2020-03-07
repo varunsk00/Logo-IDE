@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -177,6 +179,7 @@ public class ParserController extends Application {
         .setSize((int) myStage.getWidth() / 2, (int) (myStage.getHeight() - 2 * TABPANE_HEIGHT));
     currentWorkspace.getCompiler().setLanguage(currentLang);
     header.getSliders().updateZoom(currentWorkspace);
+    updateColorFactory();
     updateTerminalBackgroundColor();
     updateCurrentWorkspace();
     updateTabPanes(false);
@@ -234,6 +237,15 @@ public class ParserController extends Application {
     if (!compilerColor.equals(DefaultColor)) {
       setBackground(compilerColor);
       currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
+    }
+  }
+
+  private void updateColorFactory() {
+    Map<Integer, int[]> colors = currentWorkspace.getCompiler().getPaletteColors();
+    for (Entry<Integer, int[]> e : colors.entrySet()) {
+      Color color = Color.color(e.getValue()[0] / 255.0, e.getValue()[1] / 255.0,
+          e.getValue()[2] / 255.0); //fixme magic val
+      cf.addColor(e.getKey(), color);
     }
   }
 

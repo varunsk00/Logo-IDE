@@ -272,7 +272,6 @@ public class Compiler {
         String.format(errorMsgs.getString("IdentifierNotRecognized"), text));
   }
 
-
   // Returns true if the given text matches the given regular expression pattern
   private boolean match(String text, Pattern regex) {
     // THIS IS THE IMPORTANT LINE
