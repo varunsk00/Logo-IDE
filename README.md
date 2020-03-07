@@ -16,25 +16,25 @@ Finish Date: March 6th
 Planning:
 * Maverick: 5
 * Qiaoyi: 5
-* Alex: 
+* Alex: 5
 * Varun: 5
 
 Basic:
 * Maverick: 14
 * Qiaoyi: 23
-* Alex: 
+* Alex: 10
 * Varun: 25
 
 Complete:
 * Maverick: 25
 * Qiaoyi: 28
-* Alex: 
+* Alex: 20
 * Varun: 20
 
 Total:
 * Maverick: 44
 * Qiaoyi: 46
-* Alex: 
+* Alex: 35
 * Varun: 50
 
 ### Primary Roles
