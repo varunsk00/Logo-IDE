@@ -21,6 +21,11 @@ public class TurtleHabitat extends Pane{
     private static final int PICTURE_X_LOCATION = 200;
     private static final int PICTURE_Y_LOCATION = 50;
     private static final double PEN_WIDTH = 2.0;
+    public static final int TEXT_X_LOCATION = 200;
+    public static final int TEXT_Y_LOCATION = 100;
+    public static final int COLORBOXSIZE = 10;
+    public static final int COLORBOX_X_LOCATION = 260;
+    public static final int COLORBOX_Y_LOCATION = 140;
     private Stack<List<Polyline>> polylineStack = new Stack<>();
     private List<Polyline> myLines;
     private static double DEFAULT_TURTLE_WIDTH = 50.0;
@@ -67,24 +72,23 @@ public class TurtleHabitat extends Pane{
     private void displayInformation(int id, Pane p){
         p.getChildren().removeAll(rec, information, clrBox);
         rec = new Rectangle(DEFAULT_TURTLE_WIDTH,DEFAULT_TURTLE_HEIGHT);
+        clrBox = new Rectangle(COLORBOXSIZE,COLORBOXSIZE);
         rec.setLayoutX(PICTURE_X_LOCATION);
         rec.setLayoutY(PICTURE_Y_LOCATION);
+        clrBox.setLayoutX(COLORBOX_X_LOCATION);
+        clrBox.setLayoutY(COLORBOX_Y_LOCATION);
         rec.setFill(allTurtleViews.get(id).getFill());
-        information = new Text(200, 100, "Position: (" + allTurtles.get(id).getXLocation() + " , "+ allTurtles.get(id).getYLocation()+")\n"+
+        clrBox.setFill(allTurtleViews.get(id).getPenColor());
+        information = new Text(TEXT_X_LOCATION, TEXT_Y_LOCATION, "Position: (" + allTurtles.get(id).getXLocation() + " , "+ allTurtles.get(id).getYLocation()+")\n"+
                 "Heading: " + allTurtles.get(id).getHeading()+"\n"+
                 "PenDown: " + allTurtles.get(id).isPenDown()+"\n"+
                 "PenColor: ");
-        clrBox = new Rectangle(10,10);
-        clrBox.setLayoutX(260);
-        clrBox.setLayoutY(140);
-        clrBox.setFill(allTurtleViews.get(id).getPenColor());
         p.getChildren().addAll(rec, information, clrBox);
     }
 
     public void updateHabitat(int id, Turtle turtle){
         TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
                 habitatWidth, habitatHeight);
-        //System.out.println(habitatHeight);
         tempTurtle.setFill(tempTurtle.getImage());
         tempTurtle.setX(tempTurtle.getXOffset());
         tempTurtle.setY(tempTurtle.getYOffset());
@@ -103,8 +107,12 @@ public class TurtleHabitat extends Pane{
         setPrefHeight(height);
     }
 
-    public TurtleView getTurtle(int turtleID){
+    public TurtleView getTurtleView(int turtleID){
         return allTurtleViews.get(turtleID);
+    }
+
+    public Turtle getTurtle(int turtleID){
+        return allTurtles.get(turtleID);
     }
 
     public void setBackground(Color c){
@@ -160,7 +168,7 @@ public class TurtleHabitat extends Pane{
         }
         pen.setStroke(penColor);
         //p.getStrokeDashArray().addAll(2d, 21d);
-        pen.setStrokeWidth(PEN_WIDTH);
+        pen.setStrokeWidth(turtle.getPenWidth());
         if(turtle.isCleared()){
             for (Polyline p : myLines) {
                 p.getPoints().clear();

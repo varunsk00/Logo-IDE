@@ -6,6 +6,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import slogo.workspace.Workspace;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SliderController {
@@ -13,6 +14,7 @@ public class SliderController {
 
     private Slider zoom;
     private Slider imagesize;
+    private Slider penWidth;
 
     private static final int MIN_ZOOM = 1;
     private static final int DEFAULT_ZOOM = 3;
@@ -21,6 +23,10 @@ public class SliderController {
     private static final int MIN_SIZE = 1;
     private static final int DEFAULT_SIZE = 3;
     private static final int MAX_SIZE = 5;
+
+    private static final int MIN_PEN_WIDTH = 2;
+    private static final int DEFAULT_PEN_WIDTH = 2;
+    private static final int MAX_PEN_WIDTH = 5;
 
     private VBox sliders;
 
@@ -37,6 +43,8 @@ public class SliderController {
         return imagesize.getValue();
     }
 
+    public double getPenWidth() {return penWidth.getValue();}
+
     public VBox getVBox() {
         return sliders;
     }
@@ -47,8 +55,14 @@ public class SliderController {
     }
 
     public void updateImageSize(Workspace current, int turtleId){
-        current.getHabitat().getTurtle(turtleId).setScaleX(getSizeValue()/3.0);
-        current.getHabitat().getTurtle(turtleId).setScaleY(getSizeValue()/3.0);
+        current.getHabitat().getTurtleView(turtleId).setScaleX(getSizeValue()/3.0);
+        current.getHabitat().getTurtleView(turtleId).setScaleY(getSizeValue()/3.0);
+    }
+
+    public void updatePenWidth(Workspace current, int turtleId){
+        if(current.getHabitat().getTurtle(turtleId).getIsActive()){
+            current.getHabitat().getTurtle(turtleId).setPenSize(getPenWidth());
+        }
     }
 
     private void renderSliders() {
@@ -57,11 +71,13 @@ public class SliderController {
         HBox allLabels = new HBox();
         addLabel("SizeSlider", allLabels);
         addLabel("ZoomSlider", allLabels);
+        addLabel("PenSlider", allLabels);
 
         HBox allSliders = new HBox();
         imagesize = addAndReturnSlider(MIN_SIZE, MAX_SIZE, DEFAULT_SIZE, allSliders);
         zoom = addAndReturnSlider(MIN_ZOOM, MAX_ZOOM, DEFAULT_ZOOM,
                 allSliders);
+        penWidth = addAndReturnSlider(MIN_PEN_WIDTH, MAX_PEN_WIDTH, DEFAULT_PEN_WIDTH, allSliders);
 
         sliders.getChildren().add(allLabels);
         sliders.getChildren().add(allSliders);
