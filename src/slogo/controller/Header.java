@@ -21,13 +21,13 @@ import java.util.ResourceBundle;
  *
  * @author Varun Kosgi
  */
-public class HeaderController extends VBox {
+public class Header extends VBox {
     private static final String HELP_DIRECTORY = "src/slogo/resources/help/Help_";
     private static final int HELP_WINDOW_WIDTH = 400;
     private static final int HELP_WINDOW_HEIGHT = 400;
     private ResourceBundle myResources;
-    private ButtonController buttons;
-    private SliderController sliders;
+    private GUIButtons buttons;
+    private Sliders sliders;
 
     /**
      * Constructor that sets Resource Bundle initializes Buttons and Sliders into VBox
@@ -35,10 +35,10 @@ public class HeaderController extends VBox {
      * @param language the current language passed in from ParserController
      * @throws FileNotFoundException in case the File does not exist
      */
-    public HeaderController(String language) throws FileNotFoundException {
+    public Header(String language) throws FileNotFoundException {
         myResources = ResourceBundle.getBundle(language);
-        buttons = new ButtonController(language);
-        sliders = new SliderController(language);
+        buttons = new GUIButtons(language);
+        sliders = new Sliders(language);
         sliders.getVBox().getStyleClass().add("slider-box");
         getChildren().addAll(buttons.getHBox(), sliders.getVBox());
     }
@@ -46,14 +46,14 @@ public class HeaderController extends VBox {
     /**
      * @return ButtonController at tob of VBox
      */
-    public ButtonController getButtons(){
+    public GUIButtons getButtons(){
         return buttons;
     }
 
     /**
      * @return SliderController under ButtonController
      */
-    public SliderController getSliders(){ return sliders; }
+    public Sliders getSliders(){ return sliders; }
 
     public void launchHelpWindow(String prompt, String language) throws IOException {
         String currentLang = language.substring(0, language.indexOf("_"));
@@ -69,26 +69,26 @@ public class HeaderController extends VBox {
 
     public void launchBackgroundColorChooser(Workspace current, String lang) {
         buttons.setBackgroundColorOff();
-        ColorController bgColorChooser = new ColorController(lang, current.getHabitat().getBackgroundColor());
-        bgColorChooser.getColorPicker().setOnAction(e -> {
-            current.getHabitat().setBackground(bgColorChooser.getColorPicker().getValue());
-            bgColorChooser.close();});
-        bgColorChooser.show();
+        ColorSelect bgColorSelect = new ColorSelect(lang, current.getHabitat().getBackgroundColor());
+        bgColorSelect.getColorPicker().setOnAction(e -> {
+            current.getHabitat().setBackground(bgColorSelect.getColorPicker().getValue());
+            bgColorSelect.close();});
+        bgColorSelect.show();
     }
 
     public void launchPenColorChooser(Workspace current, String lang, List<Button> selection) {
         selection.clear();
         getButtons().setPenColorOff();
-        ColorController penColorChooser = new ColorController(lang, current.getHabitat().getTurtle(1).getPenColor());
-        penColorChooser.getColorPicker().setOnAction(e -> {
+        ColorSelect penColorSelect = new ColorSelect(lang, current.getHabitat().getTurtle(1).getPenColor());
+        penColorSelect.getColorPicker().setOnAction(e -> {
             for (int turtleID: current.getCompiler().getAllTurtleIDs()){
                 Button button = new Button("Turtle " + turtleID);
-                button.setOnAction(event1 -> {current.getHabitat().getTurtle(turtleID).setPenColor(penColorChooser.getColorPicker().getValue());
+                button.setOnAction(event1 -> {current.getHabitat().getTurtle(turtleID).setPenColor(penColorSelect.getColorPicker().getValue());
                                             buttons.closeTurtleSelect();});
                 selection.add(button);
             }
             getButtons().launchTurtleSelect(selection);
-            penColorChooser.close();});
-        penColorChooser.show();
+            penColorSelect.close();});
+        penColorSelect.show();
     }
 }

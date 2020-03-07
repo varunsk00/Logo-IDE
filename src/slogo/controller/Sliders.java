@@ -8,7 +8,7 @@ import slogo.workspace.Workspace;
 
 import java.util.ResourceBundle;
 
-public class SliderController {
+public class Sliders {
     private ResourceBundle myResources;
 
     private Slider zoom;
@@ -24,7 +24,7 @@ public class SliderController {
 
     private VBox sliders;
 
-    public SliderController(String language) {
+    public Sliders(String language) {
         this.myResources = ResourceBundle.getBundle(language);
         renderSliders();
     }

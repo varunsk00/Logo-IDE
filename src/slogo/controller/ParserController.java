@@ -59,11 +59,12 @@ public class ParserController extends Application{
     private static int currentTab;
     private static String currentLang = "English";
 
-    private static FileController imageFile = new FileController(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
-    private static FileController logoFile = new FileController(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
+    private static FileSelect imageFile = new FileSelect(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
+    private static FileSelect logoFile = new FileSelect(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
 
     private BorderPane root;
-    private HeaderController header;
+    private Header header;
+    private Footer footer;
 
     private Stage myStage;
     private Timeline animation;
@@ -104,14 +105,14 @@ public class ParserController extends Application{
      */
     public void start(Stage primaryStage) throws FileNotFoundException {
         primaryStage.setTitle("SLogo");
+        myStage = primaryStage;
         startWorkspaces();
         startAnimationLoop();
         setBorderPane();
-        setTabPaneView();
         setHeader();
+        setFooter();
         Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.getStylesheets().add(STYLESHEET);
-        myStage = primaryStage;
         myStage.setScene(scene);
         myStage.show();
     }
@@ -141,14 +142,14 @@ public class ParserController extends Application{
     }
 
     private void setHeader() throws FileNotFoundException {
-        header = new HeaderController(RESOURCES_PACKAGE + guiLanguage);
+        header = new Header(RESOURCES_PACKAGE + guiLanguage);
         root.setTop(header);
     }
 
-    private void setTabPaneView() {
-        tabPaneView = new VariablesTabPaneView(TABPANE_WIDTH, TABPANE_HEIGHT);
-        tabPaneController = new VariablesTabPaneController(tabPaneView, currentWorkspace.getCompiler(), currentWorkspace.getTerminalController());
-        root.setBottom(tabPaneView);
+    private void setFooter() throws FileNotFoundException {
+        footer = new Footer(TABPANE_WIDTH, TABPANE_HEIGHT, RESOURCES_PACKAGE + guiLanguage);
+        tabPaneController = new VariablesTabPaneController(footer.getVariableExplorer(), currentWorkspace.getCompiler(), currentWorkspace.getTerminalController());
+        root.setBottom(footer);
     }
 
     private void startAnimationLoop() {
@@ -187,6 +188,14 @@ public class ParserController extends Application{
         if(header.getButtons().isViewAllTurtles()){
             currentWorkspace.getHabitat().viewTurtleInformation();
             header.getButtons().setViewAllTurtlesOff(); }
+        if(footer.getButtons().getUpPressed()){
+            footer.getButtons().executeUp(currentWorkspace); }
+        if(footer.getButtons().getDownPressed()){
+            footer.getButtons().executeDown(currentWorkspace); }
+        if(footer.getButtons().getLeftPressed()){
+            footer.getButtons().executeLeft(currentWorkspace); }
+        if(footer.getButtons().getRightPressed()){
+            footer.getButtons().executeRight(currentWorkspace); }
     }
 
     private void updateTabPanes(boolean isSwitch) {
@@ -240,11 +249,14 @@ public class ParserController extends Application{
     private void updateLanguage(String language) throws FileNotFoundException {
         currentLang = language.substring(0, language.indexOf("_"));
         myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
-        imageFile = new FileController(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
-        logoFile = new FileController(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
+        imageFile = new FileSelect(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY, myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
+        logoFile = new FileSelect(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY, myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
         header.getChildren().clear();
         root.getChildren().remove(header);
         setHeader();
+        footer.getChildren().clear();
+        root.getChildren().remove(footer);
+        setFooter();
         workspaceEnvironment.getTabs().clear();
         for(int i = 1; i < workspaces.size(); i++){
             Tab tab = new Tab(myResources.getString("Workspace") + String.valueOf(i));
