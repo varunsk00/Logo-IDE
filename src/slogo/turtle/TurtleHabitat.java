@@ -2,8 +2,10 @@ package slogo.turtle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Stack;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -18,7 +20,6 @@ import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 
 public class TurtleHabitat extends Pane {
 
@@ -95,20 +96,42 @@ public class TurtleHabitat extends Pane {
     p.getChildren().addAll(rec, information, clrBox);
   }
 
-  public void updateHabitat(int id, Turtle turtle) {
+  public void updateHabitat(List<Integer> ids, List<Turtle> turtles, List<Color> colors) {
+    for (int i = 0; i < ids.size(); i++) {
+      updateSingleTurtle(ids.get(i), turtles.get(i), colors.get(i));
+    }
+    for (Entry<Integer, TurtleView> e: new HashSet<>(allTurtleViews.entrySet())) {
+      if (!e.getValue().isUpdated()) {
+        getChildren().remove(e.getValue());
+        allTurtles.remove(e.getKey(), allTurtles.get(e.getKey()));
+        allTurtleViews.remove(e.getKey(), e.getValue());
+      }
+      e.getValue().setUpdated(false);
+    }
+  }
+
+  public void updateSingleTurtle(int id, Turtle turtle, Color c) {
     TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
         habitatWidth, habitatHeight);
-    tempTurtle.setFill(tempTurtle.getImage());
+    tempTurtle.setFill(tempTurtle.getImage()); // FIXME:
     tempTurtle.setX(tempTurtle.getXOffset());
     tempTurtle.setY(tempTurtle.getYOffset());
     if (!allTurtleViews.containsKey(id)) {
       allTurtleViews.putIfAbsent(id, tempTurtle);
-      lastx.putIfAbsent(id, tempTurtle.getX() + tempTurtle.getWidth() / 2);
-      lasty.putIfAbsent(id, tempTurtle.getY() + tempTurtle.getHeight() / 2);
+      lastx.putIfAbsent(id, tempTurtle.getLayoutX() + tempTurtle.getShapeWidth() / 2);
+      lasty.putIfAbsent(id, tempTurtle.getLayoutY() + tempTurtle.getShapeHeight() / 2);
       getChildren().addAll(tempTurtle);
     }
     allTurtles.put(id, turtle);
     allTurtleViews.get(id).updateTurtleView(turtle);
+    allTurtleViews.get(id).setUpdated(true);
+    allTurtleViews.get(id).setPenColor(c);
+
+    if (turtle.isPenDown()) {
+      for (Point loc : turtle.locationsList()) {
+        penDraw(loc,id);
+      }
+    }
   }
 
   private void changeSize(double width, double height) {
@@ -120,12 +143,35 @@ public class TurtleHabitat extends Pane {
     return allTurtleViews.get(turtleID);
   }
 
-  public Turtle getTurtle(int turtleID){
-    return allTurtles.get(turtleID);
-  }
 
   public Map<Integer, TurtleView> getExistingTurtleViews() {
     return allTurtleViews;
+  }
+
+  public Turtle getTurtle(int turtleID) {
+    return allTurtles.get(turtleID);
+  }
+
+  public ArrayList<TurtleView> getAllTurtleViews(){
+    return new ArrayList<TurtleView>(allTurtleViews.values());
+  }
+
+  public void setAllTurtlesPenColor(Color newPenColor) {
+    for (TurtleView turtle : new ArrayList<>(allTurtleViews.values())) {
+      turtle.setPenColor(newPenColor);
+    }
+  }
+
+  public void updateAllTurtlesImage(String filepath) {
+    for (TurtleView turtleView : getAllTurtleViews()) {
+      turtleView.setImage(filepath);
+    }
+  }
+
+  public void updateAllTurtlesShapeColor(int colorID) {
+    for (TurtleView turtleView : getAllTurtleViews()) {
+      turtleView.setShape(colorID, true);
+    }
   }
 
   public void setBackground(Color c) {
@@ -151,6 +197,7 @@ public class TurtleHabitat extends Pane {
       }
     }
   }
+
 // add current list to a stack
 
   public void saveToStack() {
@@ -163,8 +210,10 @@ public class TurtleHabitat extends Pane {
     polylineStack.add(temp);
   }
 
-  public void penDraw(Color penColor, Point loc, int turtleID) {
+
+  public void penDraw(Point loc, int turtleID) {
     TurtleView turtle = allTurtleViews.get(turtleID);
+    Color penColor = turtle.getPenColor();
     double x_coor = loc.getX();
     double y_coor = loc.getY();
     Polyline pen = new Polyline();

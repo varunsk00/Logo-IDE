@@ -19,6 +19,8 @@ public class TurtleMemory {
   private ArrayDeque<List<Integer>> turtleIDStack = new ArrayDeque<>();
   private ArrayDeque<TurtleMemoryState> historyStack = new ArrayDeque<>();
   private int currentTurtleID;
+  private int shapeIndex;
+  private int penColorIndex;
 
   public TurtleMemory() {
     List<Integer> startIDs = new ArrayList<>();
@@ -33,7 +35,7 @@ public class TurtleMemory {
       tur.put(e.getKey(), new Turtle(e.getValue()));
     }
     List<Integer> ids = new ArrayList<>(turtleIDStack.getLast());
-    historyStack.push(new TurtleMemoryState(tur, ids));
+    historyStack.push(new TurtleMemoryState(tur, ids, shapeIndex, penColorIndex));
     while (historyStack.size() > Memory.MAX_HISTORY_STORED) {
       historyStack.removeLast();
     }
@@ -43,10 +45,13 @@ public class TurtleMemory {
     if (!historyStack.isEmpty()) {
       TurtleMemoryState state = historyStack.pop();
       turtleMap = state.getTurtleMap();
+      penColorIndex = state.getPenColor();
+      shapeIndex = state.getShape();
       turtleIDStack.removeLast();
       turtleIDStack.addLast(state.getIDs());
       for (int i : getAllTurtleIDs()) {
         getTurtleByID(i).resetLocation();
+        setCurrentTurtle(i);
       }
     }
   }
@@ -60,6 +65,8 @@ public class TurtleMemory {
   }
 
   public void addTurtle(int id, Turtle t) {
+    t.setPenColorIndex(penColorIndex);
+    t.setShapeIndex(shapeIndex);
     turtleMap.put(id, t);
     currentTurtleID = id;
   }
@@ -142,6 +149,14 @@ public class TurtleMemory {
       e.getValue().setActive(turtleIDStack.peek().contains(e.getKey()));
       //set each turtle's active value to whether or not the top layer of the stack contains its id
     }
+  }
+
+  public void setShapeIndex(int shapeIndex) {
+    this.shapeIndex = shapeIndex;
+  }
+
+  public void setPenColorIndex(int penColorIndex) {
+    this.penColorIndex = penColorIndex;
   }
 
   //FIXME does this do a copy? should it?

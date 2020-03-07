@@ -7,6 +7,7 @@ public class SumCommand extends Command {
   public SumCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_RECURSIVE;
   }
 
   @Override

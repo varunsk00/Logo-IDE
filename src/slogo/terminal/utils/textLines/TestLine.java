@@ -157,6 +157,7 @@ public class TestLine extends ListCell<String> {
   }
 
   private String getTextStrType(String str) {
+
     if (isDigits(str)) {
       return DIGITS_CODE;
     }

@@ -7,6 +7,7 @@ public class GreaterThanCommand extends Command {
   public GreaterThanCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_COMPARISON;
   }
 
   @Override

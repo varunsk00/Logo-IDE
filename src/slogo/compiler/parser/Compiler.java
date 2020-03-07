@@ -150,7 +150,7 @@ public class Compiler {
 
 
   public Command parse(String input) {
-    boolean defineFlag = false;
+    String defineFlag = "";
     ArrayDeque<Command> stack = new ArrayDeque<>();
     for (String word : input.split(getWhitespace())) {
       Command comm = getCommandFromString(word);
@@ -168,13 +168,18 @@ public class Compiler {
     return stack.getLast();
   }
 
-  private boolean checkRecursion(boolean defineFlag, Command comm, String word) {
-    if (defineFlag) {
-      defineFlag = false;
+  private String checkRecursion(String defineFlag, Command comm, String word) {
+    if (defineFlag.equals("user")) {
+      defineFlag = "";
       markDefinition(comm, word);
+    } else if (defineFlag.equals("group")) {
+      defineFlag = "";
+      comm.setIsComplete(true);
     }
     if (comm.typeEquals("makeuserinstruction")) {
-      defineFlag = true;
+      defineFlag = "user";
+    } else if (comm.typeEquals("groupstart")) {
+      defineFlag = "group";
     }
     return defineFlag;
   }
@@ -224,15 +229,19 @@ public class Compiler {
     Command ret = null;
     str = str.toLowerCase();
     String type = getSymbol(str, myTypes);
-    if (!type.equals("Command")) { //FIXME magic val
-      ret = TypeFactory.createCommand(type, str);
-    } else {
-      try {
-        String commType = getSymbol(str, myCommands);
-        ret = CommandFactory.createCommand(commType, str);
-      } catch (InvalidSyntaxException e) {
-        ret = TypeFactory.createCommand("Command", str); //FIXME magic val
+    try {
+      if (!type.equals("Command")) { //FIXME magic val
+        ret = TypeFactory.createCommand(type, str);
+      } else {
+        try {
+          String commType = getSymbol(str, myCommands);
+          ret = CommandFactory.createCommand(commType, str);
+        } catch (InvalidSyntaxException e) {
+          ret = TypeFactory.createCommand("Command", str); //FIXME magic val
+        }
       }
+    } catch (NullPointerException e) {
+      throw new InvalidSyntaxException(String.format(errorMsgs.getString("SeenNotParsed"), type));
     }
     ret.setMemory(memory);
     ret.setErrorMsgs(errorMsgs);
@@ -246,9 +255,7 @@ public class Compiler {
     ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + filename);
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
-      list.add(new SimpleEntry<>(key,
-          // THIS IS THE IMPORTANT LINE
-          Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
+      list.add(new SimpleEntry<>(key, Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
     }
   }
 
@@ -264,7 +271,6 @@ public class Compiler {
     throw new InvalidSyntaxException(
         String.format(errorMsgs.getString("IdentifierNotRecognized"), text));
   }
-
 
   // Returns true if the given text matches the given regular expression pattern
   private boolean match(String text, Pattern regex) {

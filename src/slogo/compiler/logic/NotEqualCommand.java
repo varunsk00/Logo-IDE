@@ -7,6 +7,7 @@ public class NotEqualCommand extends Command {
   public NotEqualCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_COMPARISON;
   }
 
   @Override

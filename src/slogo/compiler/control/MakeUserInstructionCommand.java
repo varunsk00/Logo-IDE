@@ -2,6 +2,7 @@ package slogo.compiler.control;
 
 import java.util.ArrayList;
 import slogo.compiler.exceptions.CompilerException;
+import slogo.compiler.exceptions.GroupingException;
 import slogo.compiler.parser.Command;
 
 public class MakeUserInstructionCommand extends Command {
@@ -9,6 +10,7 @@ public class MakeUserInstructionCommand extends Command {
   public MakeUserInstructionCommand(String declaration) {
     super(declaration);
     desiredArgs = 3;
+    groupingType = Command.GROUPING_INVALID;
   }
 
   @Override
@@ -26,6 +28,8 @@ public class MakeUserInstructionCommand extends Command {
     } catch (CompilerException e) {
       System.out.println("Compiler Exception in MakeUserCommand:" + e.toString());
       return 0;
+    } catch (IndexOutOfBoundsException e) {
+      throw new GroupingException(errorMsgs.getString("GroupTo"));
     }
     return 1;
   }

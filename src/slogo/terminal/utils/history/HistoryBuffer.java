@@ -80,7 +80,7 @@ public class HistoryBuffer {
     if (isEmpty()) {
       return handleEmptyBuffer();
     }
-    return buffer[moveIndexBy(-1)];
+    return stripInputText(buffer[moveIndexBy(-1)]);
   }
 
   /**
@@ -97,7 +97,7 @@ public class HistoryBuffer {
     if (isEmpty()) {
       return handleEmptyBuffer();
     }
-    return buffer[moveIndexBy(1)];
+    return stripInputText(buffer[moveIndexBy(1)]);
   }
 
   /**
@@ -157,7 +157,12 @@ public class HistoryBuffer {
   }
 
   private String stripInputText(String input) {
-    return input.substring(USER_INPUT_CODE.length());
+    String tempInput = new String(input);
+
+    while (tempInput.length() >= USER_INPUT_CODE.length() && tempInput.substring(0, USER_INPUT_CODE.length()).equals(USER_INPUT_CODE)){
+      tempInput = new String(tempInput.substring(USER_INPUT_CODE.length()));
+    }
+    return tempInput;
   }
 
 }

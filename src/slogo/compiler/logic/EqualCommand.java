@@ -7,6 +7,7 @@ public class EqualCommand extends Command {
   public EqualCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_COMPARISON;
   }
 
   @Override

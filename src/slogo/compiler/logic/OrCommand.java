@@ -7,6 +7,7 @@ public class OrCommand extends Command {
   public OrCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
+    groupingType = Command.GROUPING_RECURSIVE;
   }
 
   @Override
