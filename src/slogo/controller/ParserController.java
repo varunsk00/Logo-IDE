@@ -11,11 +11,13 @@ import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -24,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.turtle.Point;
+import slogo.turtle.TurtleView;
 import slogo.turtle.Turtle;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
@@ -77,6 +80,8 @@ public class ParserController extends Application {
   private Timeline animation;
   private int DEFAULT_COLOR_CODE = -1;
 
+  private Color DefaultColor = Color.SKYBLUE;
+
   private Workspace currentWorkspace;
   private List<Workspace> workspaces;
 
@@ -125,6 +130,7 @@ public class ParserController extends Application {
     myStage.show();
   }
 
+
   private void startWorkspaces() throws FileNotFoundException {
     workspaces = new ArrayList<>();
     workspaces.add(null);
@@ -161,13 +167,6 @@ public class ParserController extends Application {
     tabPaneController = new VariablesTabPaneController(footer.getVariableExplorer(), currentWorkspace.getCompiler(), currentWorkspace.getTerminalController());
     root.setBottom(footer);
   }
-  /*
-  {
-    tabPaneView = new VariablesTabPaneView(TABPANE_WIDTH, TABPANE_HEIGHT);
-    tabPaneController = new VariablesTabPaneController(tabPaneView, currentWorkspace.getCompiler(),
-        currentWorkspace.getTerminalController());
-    root.setBottom(tabPaneView);
-  }*/
 
   private void startAnimationLoop() {
     KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
@@ -267,16 +266,6 @@ public class ParserController extends Application {
     }
   }
 
-    /*
-    private void updateHabitatPenColor(){
-        Color compilerColor = cf.parseColor(currentWorkspace.getCompiler().);
-        if (!compilerColor.equals(currentWorkspace.getDefaultPenColor())){
-            for (currentWorkspace.getHabitat().
-            currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
-        }
-    }*/
-
-
   private void handleMultipleTurtles() {
     List<Integer> ids = new ArrayList<>(currentWorkspace.getCompiler().getAllTurtleIDs());
     List<Turtle> turtles = new ArrayList<>();
@@ -293,6 +282,21 @@ public class ParserController extends Application {
       header.getSliders().updatePenWidth(currentWorkspace, turtleId);
 
     }
+    checkClickToActivate(currentWorkspace.getHabitat().getExistingTurtleViews());
+  }
+
+  private void checkClickToActivate(Map<Integer, TurtleView> all) {
+    currentWorkspace.getHabitat().setOnMouseClicked(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent me) {
+        for (int id : all.keySet()) {
+          if (all.get(id).contains(me.getX(), me.getY())) {
+            all.get(id).setActive(!all.get(id).getActive());
+            currentWorkspace.getCompiler().toggleActiveTurtle(id);
+          }
+        }
+      }
+    });
   }
 
   private void setBackground(Color c) {
@@ -341,7 +345,8 @@ public class ParserController extends Application {
     for (int turtleID : currentWorkspace.getCompiler().getAllTurtleIDs()) {
       Button button = new Button("Turtle " + turtleID);
       button.setOnAction(event -> {
-        currentWorkspace.getHabitat().getTurtleView(turtleID).setImage("file:" + dataFile.getPath());
+        currentWorkspace.getHabitat().getTurtleView(turtleID)
+            .setImage("file:" + dataFile.getPath());
         header.getButtons().closeTurtleSelect();
       });
       selectButtons.add(button);

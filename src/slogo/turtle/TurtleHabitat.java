@@ -21,7 +21,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
 public class TurtleHabitat extends Pane {
 
   public static final int TEXT_X_LOCATION = 200;
@@ -29,7 +28,6 @@ public class TurtleHabitat extends Pane {
   public static final int COLORBOXSIZE = 10;
   public static final int COLORBOX_X_LOCATION = 260;
   public static final int COLORBOX_Y_LOCATION = 140;
-
   private static final int INFO_PANE_SIZE = 400;
   private static final int TURTLE_LIST_WIDTH = 100;
   private static final int BUTTON_HEIGHT = 30;
@@ -88,10 +86,11 @@ public class TurtleHabitat extends Pane {
     clrBox.setLayoutY(COLORBOX_Y_LOCATION);
     rec.setFill(allTurtleViews.get(id).getFill());
     clrBox.setFill(allTurtleViews.get(id).getPenColor());
+    double xLoc = allTurtleViews.get(id).getX() - allTurtleViews.get(id).getXOffset();
+    double yLoc = allTurtleViews.get(id).getY() - allTurtleViews.get(id).getYOffset();
     information = new Text(TEXT_X_LOCATION, TEXT_Y_LOCATION,
-        "Position: (" + allTurtles.get(id).getXLocation() + " , " + allTurtles.get(id)
-            .getYLocation() + ")\n" +
-            "Heading: " + allTurtles.get(id).getHeading() + "\n" +
+        "Position: (" + xLoc + " , " + yLoc + ")\n" +
+            "Heading: " + allTurtleViews.get(id).getRotate() + "\n" +
             "PenDown: " + allTurtles.get(id).isPenDown() + "\n" +
             "PenColor: ");
     p.getChildren().addAll(rec, information, clrBox);
@@ -142,6 +141,11 @@ public class TurtleHabitat extends Pane {
 
   public TurtleView getTurtleView(int turtleID) {
     return allTurtleViews.get(turtleID);
+  }
+
+
+  public Map<Integer, TurtleView> getExistingTurtleViews() {
+    return allTurtleViews;
   }
 
   public Turtle getTurtle(int turtleID) {
@@ -206,6 +210,7 @@ public class TurtleHabitat extends Pane {
     polylineStack.add(temp);
   }
 
+
   public void penDraw(Point loc, int turtleID) {
     TurtleView turtle = allTurtleViews.get(turtleID);
     Color penColor = turtle.getPenColor();
@@ -225,7 +230,6 @@ public class TurtleHabitat extends Pane {
       pen.getPoints().addAll(points);
     }
     pen.setStroke(penColor);
-    //p.getStrokeDashArray().addAll(2d, 21d);
     pen.setStrokeWidth(turtle.getPenWidth());
     if (turtle.isCleared()) {
       for (Polyline p : myLines) {

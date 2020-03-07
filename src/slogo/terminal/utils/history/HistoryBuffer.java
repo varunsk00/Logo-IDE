@@ -94,7 +94,6 @@ public class HistoryBuffer {
       index = currentSize;
       initialized = true;
     }
-
     if (isEmpty()) {
       return handleEmptyBuffer();
     }

@@ -29,7 +29,6 @@ public class Workspace extends BorderPane {
 
   private Color defaultBackgroundColor = Color.WHITE;
   private Color defaultPenColor = Color.BLACK;
-
   private double deltaX;
   private double deltaY;
   private double sumX;
@@ -41,20 +40,17 @@ public class Workspace extends BorderPane {
   public Workspace(double width, double height) throws FileNotFoundException {
     myColorFactory = new ColorFactory();
     prefProcessor = new PrefProcessor();
-
     setSizes(width, height);
     startCompiler();
     setPrefWidth(width);
     setPrefHeight(height);
     setTurtleHabitat();
     setTerminalView();
-
     prefProcessor.initializeWorkspace(this, DEFAULT_PREF);
   }
 
   public PrefProcessor getPrefProcessor() {
     return prefProcessor;
-
   }
 
   public int getStatus() {
