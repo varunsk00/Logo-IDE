@@ -15,7 +15,7 @@ Finish Date: March 6th
 #### Hours Spent:
 Planning:
 * Maverick: 5
-* Qiaoyi:
+* Qiaoyi: 
 * Alex: 
 * Varun: 5
 
@@ -27,7 +27,7 @@ Basic:
 
 Complete:
 * Maverick: 25
-* Qiaoyi:
+* Qiaoyi: 
 * Alex: 
 * Varun: 20
 
@@ -102,15 +102,19 @@ Features implemented:
 * Logo errors (e.g syntax errors) are displayed in the terminal window
 * The user can see command history, current stored variables, and current defined commands in the window
 * The user can switch the language, changing the understood commands, as well as the button labels and other GUI members
+* The user can access the most recent command by pressing the up arrow a la a normal terminal window
 * The user can undo commands run by pressing Ctrl+Z
 * The user can set the pen color of the turtle and the background color of the workspace
 * Multiple workspaces are available, with shared user commands, but different variable and turtle memories
 * Variable values are editable from the variable explorer
-* The active state of turtles can be toggled on click
 * View help about different commands
 * The command window can be dragged around to see the turtles as they move offscreen
-* Code executed can be saved to a preference file
+* Logo files can be loaded and run
+* Code executed can be saved to a logo file to be loaded and run
 * The user can input commands with infinite parameters via grouping, as well as recursive commands
+* Preferences can be saved to a properties file
+* The user can move the turtle graphically with buttons in the GUI
+* The pen size of the turtles can be changed
 
 ### Notes/Assumptions
 
