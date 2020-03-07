@@ -75,7 +75,6 @@ public class ParserController extends Application {
   private Stage myStage;
   private Timeline animation;
   private int DEFAULT_COLOR_CODE = -1;
-  private Color DefaultColor = Color.SKYBLUE;
 
   private Workspace currentWorkspace;
   private List<Workspace> workspaces;
@@ -124,7 +123,7 @@ public class ParserController extends Application {
     myStage.show();
   }
 
-  private void startWorkspaces() {
+  private void startWorkspaces() throws FileNotFoundException {
     workspaces = new ArrayList<>();
     workspaces.add(null);
     for (int i = 0; i < NUMBER_OF_TABS; i++) {
@@ -178,10 +177,9 @@ public class ParserController extends Application {
   private void step() throws IOException {
     currentWorkspace.getTerminalController()
         .setSize((int) myStage.getWidth() / 2, (int) (myStage.getHeight() - 2 * TABPANE_HEIGHT));
+    updateHabitatBackgroundColor();
     currentWorkspace.getCompiler().setLanguage(currentLang);
     header.getSliders().updateZoom(currentWorkspace);
-    updateColorFactory();
-    updateTerminalBackgroundColor();
     updateCurrentWorkspace();
     updateTabPanes(false);
     handleMultipleTurtles();
@@ -233,10 +231,11 @@ public class ParserController extends Application {
     }
   }
 
-  private void updateTerminalBackgroundColor() {
-    Color compilerColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
-    if (!compilerColor.equals(DefaultColor)) {
-      setBackground(compilerColor);
+  private void updateHabitatBackgroundColor() {
+    int compilerColorID = currentWorkspace.getCompiler().getBackgroundColor();
+    if (compilerColorID != DEFAULT_COLOR_CODE) {
+      Color compilerBGColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
+      setBackground(compilerBGColor);
       currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
     }
   }
@@ -249,6 +248,16 @@ public class ParserController extends Application {
       cf.addColor(e.getKey(), color);
     }
   }
+
+    /*
+    private void updateHabitatPenColor(){
+        Color compilerColor = cf.parseColor(currentWorkspace.getCompiler().);
+        if (!compilerColor.equals(currentWorkspace.getDefaultPenColor())){
+            for (currentWorkspace.getHabitat().
+            currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
+        }
+    }*/
+
 
   private void handleMultipleTurtles() {
     List<Integer> ids = new ArrayList<>(currentWorkspace.getCompiler().getAllTurtleIDs());
@@ -311,8 +320,7 @@ public class ParserController extends Application {
     for (int turtleID : currentWorkspace.getCompiler().getAllTurtleIDs()) {
       Button button = new Button("Turtle " + turtleID);
       button.setOnAction(event -> {
-        currentWorkspace.getHabitat().getTurtleView(turtleID)
-            .setImage("file:" + dataFile.getPath());
+        currentWorkspace.getHabitat().getTurtleView(turtleID).setImage("file:" + dataFile.getPath());
         header.getButtons().closeTurtleSelect();
       });
       selectButtons.add(button);

@@ -157,12 +157,14 @@ public class TestLine extends ListCell<String> {
   }
 
   private String getTextStrType(String str) {
+
     if (isDigits(str)) {
       return DIGITS_CODE;
     }
     if (isReservedWord(str)) {
       return RESERVED_COMMAND_CODE;
     }
+
     return OTHER_COMMAND_CODE;
   }
 

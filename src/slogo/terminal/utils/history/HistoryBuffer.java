@@ -94,6 +94,7 @@ public class HistoryBuffer {
       index = currentSize;
       initialized = true;
     }
+
     if (isEmpty()) {
       return handleEmptyBuffer();
     }
@@ -157,6 +158,8 @@ public class HistoryBuffer {
   }
 
   private String stripInputText(String input) {
+    String tempInput = new String(input);
+    if (input.length() < USER_INPUT_CODE.length() || !tempInput.substring(USER_INPUT_CODE.length()).equals(USER_INPUT_CODE)){return input;}
     return input.substring(USER_INPUT_CODE.length());
   }
 
