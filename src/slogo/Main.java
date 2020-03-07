@@ -12,7 +12,7 @@ public class Main {
    * Start of the program.
    */
   public static void main(String[] args) throws FileNotFoundException {
-    ParserController simulator = new ParserController(args);
+    ParserController slogo = new ParserController(args);
   }
 
 }
