@@ -106,7 +106,6 @@ public class VariablesTabPaneController {
 
     List<String> messageList = terminal.getAllMessages();
     Iterator<String> messageIterator = messageList.iterator();
-
     variablesTabPaneView.clearAll(COMMAND_TYPE);
     while (commandIterator.hasNext() && messageIterator.hasNext()) {
       variablesTabPaneView

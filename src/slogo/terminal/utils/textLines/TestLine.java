@@ -164,7 +164,6 @@ public class TestLine extends ListCell<String> {
     if (isReservedWord(str)) {
       return RESERVED_COMMAND_CODE;
     }
-
     return OTHER_COMMAND_CODE;
   }
 

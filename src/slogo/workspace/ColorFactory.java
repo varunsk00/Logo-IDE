@@ -1,5 +1,6 @@
 package slogo.workspace;
 
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import javafx.scene.paint.Color;
 public class ColorFactory {
 
   private static final String RESOURCES_DIRECTORY = "slogo.resources.preferences.Colors";
+
   private Map<String, Color> myColorMap;
   private String UNMATCHED_COLOR_CODE = "-1";
 

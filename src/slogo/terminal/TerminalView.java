@@ -16,6 +16,7 @@ import slogo.terminal.utils.UI.OutputPanel;
 public class TerminalView extends ScrollPane {
 
   final static int INPUT_PANEL_HEIGHT = 40; // font-size dependent
+
   final static int HEADER_HEIGHT = 38;
   final static String BANNER_FILEPATH = "src/slogo/resources/banners/";
   final static String WELCOME_BANNER = "welcome_small.txt";

@@ -12,7 +12,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 public class TurtleView extends Rectangle {
-
   final private String SHAPEMAP_RESOURCE = "slogo.resources.shape.shape_map";
   final private double RECTANGLE_RATIO = 1.426;
   final private Color COLOR = Color.GREEN;
@@ -32,6 +31,8 @@ public class TurtleView extends Rectangle {
   private String DEFAULT_TYPE = "CIRCLE";
   private String SQUARE_TYPE = "SQUARE"; // 1.0 width & 1.0 height
   private double penWidth;
+  private boolean isActive;
+  private boolean prevActive;
   private boolean updated = false;
 
   public TurtleView(double width, double height, double habitatWidth, double habitatHeight) {
@@ -43,6 +44,8 @@ public class TurtleView extends Rectangle {
     isIMG = true;
     this.img = new Image(image_filepath);
     penWidth = 2.0;
+    isActive = true;
+    prevActive = true;
   }
 
   public boolean isIMG() {
@@ -99,9 +102,9 @@ public class TurtleView extends Rectangle {
   }
 
   private Color getColor(boolean isColor) {
-      if (isColor) {
-          return COLOR;
-      }
+    if (isColor) {
+      return COLOR;
+    }
     return GREY;
   }
 
@@ -135,6 +138,9 @@ public class TurtleView extends Rectangle {
     setVisible(turtle.isShowTurtle());
     penWidth = turtle.getPenSize();
     cleared = turtle.isCleared();
+    if (prevActive != isActive) {
+      turtle.setActive(isActive);
+    }
     if (cleared) {
       turtle.setCleared(false);
       turtle.handleClear();
@@ -145,6 +151,7 @@ public class TurtleView extends Rectangle {
     if (turtle.getIsActive()) {
       setTurtleViewColor();
     }
+    prevActive = isActive;
   }
 
   public Color getPenColor() {
@@ -163,6 +170,13 @@ public class TurtleView extends Rectangle {
     penWidth = width;
   }
 
+  public boolean getActive() {
+    return isActive;
+  }
+
+  public void setActive(boolean b) {
+    isActive = b;
+  }
 
   public double getXOffset() {
     return xOffset;
@@ -177,6 +191,7 @@ public class TurtleView extends Rectangle {
   }
 
   private void setTurtleViewGray() {
+    isActive = false;
     if (isIMG) {
       if (!extension.contains("_gray")) {
         setShapeSize();
@@ -191,6 +206,7 @@ public class TurtleView extends Rectangle {
   }
 
   private void setTurtleViewColor() {
+    isActive = true;
     if (isIMG) {
       if (extension.contains("_gray")) {
         setShapeSize();
