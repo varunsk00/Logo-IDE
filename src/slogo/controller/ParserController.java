@@ -253,10 +253,14 @@ public class ParserController extends Application {
   private void handleMultipleTurtles() {
     List<Integer> ids = new ArrayList<>(currentWorkspace.getCompiler().getAllTurtleIDs());
     List<Turtle> turtles = new ArrayList<>();
+    List<Color> colors = new ArrayList<>();
     for (int i: ids) {
-      turtles.add(currentWorkspace.getCompiler().getTurtleByID(i));
+      Turtle t = currentWorkspace.getCompiler().getTurtleByID(i);
+      turtles.add(t);
+      Color c = cf.parseColor(t.getPenColorIndex());
+      colors.add(c);
     }
-    currentWorkspace.getHabitat().updateHabitat(ids, turtles);
+    currentWorkspace.getHabitat().updateHabitat(ids, turtles, colors);
     for (int turtleId : currentWorkspace.getCompiler().getAllTurtleIDs()) {
       header.getSliders().updateImageSize(currentWorkspace, turtleId);
       header.getSliders().updatePenWidth(currentWorkspace, turtleId);

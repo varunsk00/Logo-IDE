@@ -96,9 +96,9 @@ public class TurtleHabitat extends Pane {
     p.getChildren().addAll(rec, information, clrBox);
   }
 
-  public void updateHabitat(List<Integer> ids, List<Turtle> turtles) {
+  public void updateHabitat(List<Integer> ids, List<Turtle> turtles, List<Color> colors) {
     for (int i = 0; i < ids.size(); i++) {
-      updateSingleTurtle(ids.get(i), turtles.get(i));
+      updateSingleTurtle(ids.get(i), turtles.get(i), colors.get(i));
     }
     for (Entry<Integer, TurtleView> e: new HashSet<>(allTurtleViews.entrySet())) {
       if (!e.getValue().isUpdated()) {
@@ -110,7 +110,7 @@ public class TurtleHabitat extends Pane {
     }
   }
 
-  public void updateSingleTurtle(int id, Turtle turtle) {
+  public void updateSingleTurtle(int id, Turtle turtle, Color c) {
     TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
         habitatWidth, habitatHeight);
     tempTurtle.setFill(tempTurtle.getImage());
@@ -125,10 +125,10 @@ public class TurtleHabitat extends Pane {
     allTurtles.put(id, turtle);
     allTurtleViews.get(id).updateTurtleView(turtle);
     allTurtleViews.get(id).setUpdated(true);
+    allTurtleViews.get(id).setPenColor(c);
 
-    if (turtle.isPenDown()) { //fixme drawing doesn't work anymore
+    if (turtle.isPenDown()) {
       for (Point loc : turtle.locationsList()) {
-        System.out.println(getTurtleView(id).getPenColor());
         penDraw(loc,id);
       }
     }
