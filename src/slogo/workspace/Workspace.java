@@ -120,6 +120,7 @@ public class Workspace extends BorderPane {
     myTerminalController = new TerminalController(myTerminalView);
     myTerminalController.setCompiler(comp);
     myTerminalController.setHabitat(myHabitat);
+    myTerminalController.setWorkspace(this);
     status = -1;
     setLeft(myTerminalView);
   }
