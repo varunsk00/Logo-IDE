@@ -1,7 +1,9 @@
 package slogo.turtle;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
@@ -100,6 +102,17 @@ public class TurtleHabitat extends Pane{
         }
         allTurtles.put(id, turtle);
         allTurtleViews.get(id).updateTurtleView(turtle);
+        checkClickToActivate();
+    }
+
+    private void checkClickToActivate(){
+        setOnMousePressed(new EventHandler<>() {
+            public void handle(MouseEvent me) {
+                for (Turtle t: allTurtles.values()){
+                    t.setActive(!t.getIsActive());
+                }
+            }
+        });
     }
 
     private void changeSize(double width, double height){
@@ -167,7 +180,6 @@ public class TurtleHabitat extends Pane{
             pen.getPoints().addAll(points);
         }
         pen.setStroke(penColor);
-        //p.getStrokeDashArray().addAll(2d, 21d);
         pen.setStrokeWidth(turtle.getPenWidth());
         if(turtle.isCleared()){
             for (Polyline p : myLines) {
