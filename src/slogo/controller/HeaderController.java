@@ -86,6 +86,7 @@ public class HeaderController extends VBox {
     getButtons().setPenColorOff();
     ColorController penColorChooser = new ColorController(lang,
         current.getHabitat().getTurtleView(1).getPenColor());
+
     penColorChooser.getColorPicker().setOnAction(e -> {
       for (int turtleID : current.getCompiler().getAllTurtleIDs()) {
         Button button = new Button("Turtle " + turtleID);

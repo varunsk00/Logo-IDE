@@ -57,6 +57,7 @@ public class TerminalController {
     if (command.equals("")) {
       return;
     }
+
     appendToOutput(terminalView.formatInput(command));
 
     habitat.saveToStack();

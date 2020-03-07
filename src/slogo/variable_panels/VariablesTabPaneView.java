@@ -139,6 +139,7 @@ public class VariablesTabPaneView extends TabPane {
       String tabName = resources.getString(tabType);
       dict.add(new AbstractMap.SimpleEntry<>(tabType, tabName));
     }
+
     return dict;
   }
 

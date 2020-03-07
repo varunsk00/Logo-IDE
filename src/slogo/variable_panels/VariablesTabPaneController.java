@@ -138,7 +138,6 @@ public class VariablesTabPaneController {
           System.out.println("Error: unimplemented variable explore panel");
         }
       }
-
     }
   }
 

@@ -24,6 +24,7 @@ public class SliderController {
   private Slider zoom;
   private Slider imagesize;
   private Slider penWidth;
+
   private VBox sliders;
 
   public SliderController(String language) {
@@ -76,6 +77,7 @@ public class SliderController {
     zoom = addAndReturnSlider(MIN_ZOOM, MAX_ZOOM, DEFAULT_ZOOM,
         allSliders);
     penWidth = addAndReturnSlider(MIN_PEN_WIDTH, MAX_PEN_WIDTH, DEFAULT_PEN_WIDTH, allSliders);
+
 
     sliders.getChildren().add(allLabels);
     sliders.getChildren().add(allSliders);
