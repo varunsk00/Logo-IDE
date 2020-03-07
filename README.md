@@ -15,25 +15,25 @@ Finish Date: March 6th
 #### Hours Spent:
 Planning:
 * Maverick: 5
-* Qiaoyi: 
+* Qiaoyi: 5
 * Alex: 
 * Varun: 5
 
 Basic:
 * Maverick: 14
-* Qiaoyi:
+* Qiaoyi: 23
 * Alex: 
 * Varun: 25
 
 Complete:
 * Maverick: 25
-* Qiaoyi: 
+* Qiaoyi: 28
 * Alex: 
 * Varun: 20
 
 Total:
 * Maverick: 44
-* Qiaoyi:
+* Qiaoyi: 46
 * Alex: 
 * Varun: 50
 
@@ -48,8 +48,23 @@ Maverick:
 * Implemented all backend tasks.
 
 Qiaoyi:
+- Wrote the terminal 
+    - history buffer: allow user to jump to previous commands
+    - color to special words: allow user to identify words with functionalities (numbers, commands, etc)
+    - a welcome banner message to enhance the accessibility of the application
+- Also wrote the TabPane class the realizes the variable explorer
+    - utilized factory pattern to automatically generate tables from the content in properties file
+    - created the interaction between it and terminal to allow the user directly make input from the tab
+    - allows to automatically update with the compiler
+- Also wrote the prefprocessor
+    - allow workspace to directly load from the preset properties file
+    - allow user to save the current workspace
 
 Alex:
+* Created the Turtle.java backend and logic, allowing for storage of turtle states
+* Designed variable pen size
+* Wrote turtle active status toggle on click
+
 
 Varun:
 * Created controller package
