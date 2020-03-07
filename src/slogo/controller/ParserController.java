@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.turtle.Point;
 import slogo.variable_panels.VariablesTabPaneController;
-import slogo.variable_panels.VariablesTabPaneView;
 import slogo.workspace.ColorFactory;
 import slogo.workspace.Workspace;
 
@@ -229,7 +228,7 @@ public class ParserController extends Application{
             currentWorkspace.getHabitat().updateHabitat(turtleId, currentWorkspace.getCompiler().getTurtleByID(turtleId));
             if(currentWorkspace.getCompiler().getTurtleByID(turtleId).isPenDown()){
                 for (Point loc: currentWorkspace.getCompiler().getTurtleByID(turtleId).locationsList()) {
-                    currentWorkspace.getHabitat().penDraw(currentWorkspace.getHabitat().getTurtle(turtleId).getPenColor(), loc, turtleId);
+                    currentWorkspace.getHabitat().penDraw(currentWorkspace.getHabitat().getTurtleView(turtleId).getPenColor(), loc, turtleId);
                 }
             }
             header.getSliders().updateImageSize(currentWorkspace, turtleId);
@@ -278,7 +277,7 @@ public class ParserController extends Application{
         for (int turtleID: currentWorkspace.getCompiler().getAllTurtleIDs()){
             Button button = new Button("Turtle " + turtleID);
             button.setOnAction(event -> {
-                currentWorkspace.getHabitat().getTurtle(turtleID).setImage("file:" + dataFile.getPath());
+                currentWorkspace.getHabitat().getTurtleView(turtleID).setImage("file:" + dataFile.getPath());
                 header.getButtons().closeTurtleSelect();});
             selectButtons.add(button);
         }

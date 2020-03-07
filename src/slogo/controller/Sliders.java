@@ -47,8 +47,8 @@ public class Sliders {
     }
 
     public void updateImageSize(Workspace current, int turtleId){
-        current.getHabitat().getTurtle(turtleId).setScaleX(getSizeValue()/3.0);
-        current.getHabitat().getTurtle(turtleId).setScaleY(getSizeValue()/3.0);
+        current.getHabitat().getTurtleView(turtleId).setScaleX(getSizeValue()/3.0);
+        current.getHabitat().getTurtleView(turtleId).setScaleY(getSizeValue()/3.0);
     }
 
     private void renderSliders() {

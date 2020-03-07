@@ -79,11 +79,11 @@ public class Header extends VBox {
     public void launchPenColorChooser(Workspace current, String lang, List<Button> selection) {
         selection.clear();
         getButtons().setPenColorOff();
-        ColorSelect penColorSelect = new ColorSelect(lang, current.getHabitat().getTurtle(1).getPenColor());
+        ColorSelect penColorSelect = new ColorSelect(lang, current.getHabitat().getTurtleView(1).getPenColor());
         penColorSelect.getColorPicker().setOnAction(e -> {
             for (int turtleID: current.getCompiler().getAllTurtleIDs()){
                 Button button = new Button("Turtle " + turtleID);
-                button.setOnAction(event1 -> {current.getHabitat().getTurtle(turtleID).setPenColor(penColorSelect.getColorPicker().getValue());
+                button.setOnAction(event1 -> {current.getHabitat().getTurtleView(turtleID).setPenColor(penColorSelect.getColorPicker().getValue());
                                             buttons.closeTurtleSelect();});
                 selection.add(button);
             }
