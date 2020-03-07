@@ -23,7 +23,9 @@ import slogo.turtle.TurtleHabitat;
  * TerminalController manages the communication between a TerminalView object and the compiler
  */
 public class TerminalController {
-  final private String USER_SAVE_FILE = "slogo/resources/userspace/";
+  final private String USER_SAVE_FILE = "src/slogo/resources/userspace/";
+  final private String SLOGO_SAVED_MSG = " slogo file saved successfully.";
+  final private String PREF_SAVED_MSG = " preference file saved successfully.";
   private static int STATUS_MAX = 5000;
   private TerminalView terminalView;
   private TurtleHabitat habitat;
@@ -226,12 +228,20 @@ public class TerminalController {
   }
 
   private void saveInputToFile(String text) throws IOException {
-    String filepath = String.format("%s%d.logo", USER_SAVE_FILE, ++saveCnt);
+    String filename = String.format("%d.logo", ++saveCnt);
+    String filepath = String.format("%s%s", USER_SAVE_FILE, filename);
+
     File newOuputFile = new File(filepath);
-    newOuputFile.createNewFile();
-    new FileOutputStream(newOuputFile, true).close();
-    BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, true));
-    writer.append(text);
-    writer.close();
+    if (newOuputFile.createNewFile()){
+      System.out.println(String.format("%s File created.", filename));
+    }
+    else {
+      System.out.println(String.format("%s already exists.", filename));
+    }
+    appendToOutput(String.format("%s%s", filename, SLOGO_SAVED_MSG));
+    FileWriter fileWriter = new FileWriter(newOuputFile);
+    fileWriter.write(text);
+    fileWriter.close();
+
   }
 }
