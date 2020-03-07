@@ -3,14 +3,18 @@ package slogo.controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import slogo.turtle.Point;
+import slogo.turtle.Turtle;
+import slogo.turtle.TurtleView;
 import slogo.variable_panels.VariablesTabPaneController;
 import slogo.variable_panels.VariablesTabPaneView;
 import slogo.workspace.ColorFactory;
@@ -21,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 //FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINE OVER TURTLE)
@@ -227,6 +232,23 @@ public class ParserController extends Application{
             header.getSliders().updateImageSize(currentWorkspace, turtleId);
             header.getSliders().updatePenWidth(currentWorkspace, turtleId);
         }
+        checkClickToActivate(currentWorkspace.getHabitat().getAll());
+    }
+
+    private void checkClickToActivate(Map<Integer, TurtleView> all){
+        currentWorkspace.getHabitat().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent me) {
+                for(int id: all.keySet()){
+                    System.out.println("YES");
+                    if(all.get(id).contains(me.getX(), me.getY())){
+                        System.out.println("passed if");
+                        all.get(id).setActive(!all.get(id).getActive());
+                        currentWorkspace.getCompiler().toggleActiveTurtle(id);
+                    }
+                }
+            }
+        });
     }
 
     private void setBackground(Color c){ currentWorkspace.getHabitat().setBackground(c); }

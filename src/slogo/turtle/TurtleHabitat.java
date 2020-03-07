@@ -104,19 +104,6 @@ public class TurtleHabitat extends Pane{
         }
         allTurtles.put(id, turtle);
         allTurtleViews.get(id).updateTurtleView(turtle);
-        checkClickToActivate();
-    }
-
-    private void checkClickToActivate(){
-        setOnMousePressed(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent me) {
-                for (TurtleView t: allTurtleViews.values()){
-                    if(t.contains(me.getSceneX(), me.getSceneY())){
-                        t.setActive(!t.getActive());
-                    }
-                }
-            }
-        });
     }
 
     private void changeSize(double width, double height){
@@ -127,6 +114,8 @@ public class TurtleHabitat extends Pane{
     public TurtleView getTurtleView(int turtleID){
         return allTurtleViews.get(turtleID);
     }
+
+    public Map<Integer, TurtleView> getAll(){return allTurtleViews;}
 
     public Turtle getTurtle(int turtleID){
         return allTurtles.get(turtleID);

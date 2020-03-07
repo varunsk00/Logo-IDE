@@ -43,7 +43,6 @@ public class TurtleView extends Rectangle {
         setVisible(turtle.isShowTurtle());
         penWidth = turtle.getPenSize();
         cleared = turtle.isCleared();
-        isActive = turtle.getIsActive();
         if(prevActive!= isActive){
             turtle.setActive(isActive);
         }
