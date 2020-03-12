@@ -254,8 +254,7 @@ public class ParserController extends Application {
     for (Map.Entry<Integer, int[]> e : colors.entrySet()) {
       Color color = Color.color(e.getValue()[0] / 255.0, e.getValue()[1] / 255.0,
               e.getValue()[2] / 255.0); //fixme magic val
-      cf.addColor(e.getKey(), color);
-    }
+      cf.addColor(e.getKey(), color); }
   }
 
   private void handleLanguage(String lang) throws FileNotFoundException {
