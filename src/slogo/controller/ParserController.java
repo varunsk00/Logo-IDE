@@ -24,10 +24,7 @@ import slogo.workspace.Workspace;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * ParserController.java Sets up and runs Slogo environment as an Application
@@ -251,6 +248,15 @@ public class ParserController extends Application {
   }
 
   private void setBackground(Color c) { currentWorkspace.getHabitat().setBackground(c); }
+
+  private void updateColorFactory() {
+    Map<Integer, int[]> colors = currentWorkspace.getCompiler().getPaletteColors();
+    for (Map.Entry<Integer, int[]> e : colors.entrySet()) {
+      Color color = Color.color(e.getValue()[0] / 255.0, e.getValue()[1] / 255.0,
+              e.getValue()[2] / 255.0); //fixme magic val
+      cf.addColor(e.getKey(), color);
+    }
+  }
 
   private void handleLanguage(String lang) throws FileNotFoundException {
     guiLanguage = myResources.getString(lang) + "_GUI";
