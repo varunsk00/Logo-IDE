@@ -1,23 +1,13 @@
 package slogo.controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -25,18 +15,19 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import slogo.turtle.Point;
-import slogo.turtle.TurtleView;
 import slogo.turtle.Turtle;
+import slogo.turtle.TurtleView;
 import slogo.variable_panels.VariablesTabPaneController;
-import slogo.variable_panels.VariablesTabPaneView;
 import slogo.workspace.ColorFactory;
 import slogo.workspace.Workspace;
 
-//FIXME: DRAW TURTLE OVER LINES (CURRENTLY LINE OVER TURTLE)
-
-//TODO(COMPLETE): CREATE VARIABLE PEN WIDTH SLIDER
-//TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * ParserController.java Sets up and runs Slogo environment as an Application
@@ -62,15 +53,14 @@ public class ParserController extends Application {
   private static final Color ALL_COLOR = Color.WHITE;
   private static final int NUMBER_OF_TABS = 10;
   private static String guiLanguage = "English_GUI";
-  private static ResourceBundle myResources = ResourceBundle
-      .getBundle(RESOURCES_PACKAGE + guiLanguage);
+  private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + guiLanguage);
   private static int currentTab;
   private static String currentLang = "English";
 
-  private static FileSelect imageFile = new FileSelect(IMAGE_FILE_EXTENSIONS,
-      IMAGE_DIRECTORY, myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
+  private static FileSelect imageFile = new FileSelect(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY,
+          myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
   private static FileSelect logoFile = new FileSelect(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY,
-      myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
+          myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
 
   private BorderPane root;
   private Header header;
@@ -80,14 +70,11 @@ public class ParserController extends Application {
   private Timeline animation;
   private int DEFAULT_COLOR_CODE = -1;
 
-  private Color DefaultColor = Color.SKYBLUE;
-
   private Workspace currentWorkspace;
   private List<Workspace> workspaces;
 
   private TabPane workspaceEnvironment;
 
-  private VariablesTabPaneView tabPaneView;
   private VariablesTabPaneController tabPaneController;
 
   private ColorFactory cf = new ColorFactory();
@@ -121,7 +108,6 @@ public class ParserController extends Application {
     startWorkspaces();
     startAnimationLoop();
     setBorderPane();
-    //setTabPaneView();
     setHeader();
     setFooter();
     Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
@@ -136,22 +122,19 @@ public class ParserController extends Application {
     workspaces.add(null);
     for (int i = 0; i < NUMBER_OF_TABS; i++) {
       workspaces.add(new Workspace((SCENE_WIDTH), SCENE_HEIGHT));
-      workspaces.get(workspaces.size()-1).setColorFactory(cf);
-    }
+      workspaces.get(workspaces.size()-1).setColorFactory(cf); }
     currentWorkspace = workspaces.get(1);
     currentTab = 1;
     workspaceEnvironment = new TabPane();
     for (int i = 1; i < workspaces.size(); i++) {
       Tab tab = new Tab(myResources.getString("Workspace") + i);
       tab.setContent(workspaces.get(i));
-      workspaceEnvironment.getTabs().add(tab);
-    }
+      workspaceEnvironment.getTabs().add(tab); }
   }
 
   private void setBorderPane() {
     root = new BorderPane();
-    root.setBackground(
-        new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
+    root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
     root.setMaxWidth(SCENE_WIDTH);
     root.setMaxHeight(SCENE_HEIGHT);
     root.setCenter(workspaceEnvironment);
@@ -164,18 +147,17 @@ public class ParserController extends Application {
 
   private void setFooter() throws FileNotFoundException {
     footer = new Footer(TABPANE_WIDTH, TABPANE_HEIGHT, RESOURCES_PACKAGE + guiLanguage);
-    tabPaneController = new VariablesTabPaneController(footer.getVariableExplorer(), currentWorkspace.getCompiler(), currentWorkspace.getTerminalController());
+    tabPaneController = new VariablesTabPaneController(footer.getVariableExplorer(), currentWorkspace.getCompiler(),
+      currentWorkspace.getTerminalController());
     root.setBottom(footer);
   }
 
   private void startAnimationLoop() {
     KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
       try {
-        step();
-      } catch (IOException ex) {
-        System.out.println("Help Text File Not Found.");
-      }
-    });
+        step(); }
+      catch (IOException ex) {
+        System.out.println("Help Text File Not Found."); } });
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
@@ -184,7 +166,7 @@ public class ParserController extends Application {
 
   private void step() throws IOException {
     currentWorkspace.getTerminalController()
-        .setSize((int) myStage.getWidth() / 2, (int) (myStage.getHeight() - 2 * TABPANE_HEIGHT));
+            .setSize((int) myStage.getWidth() / 2, (int) (myStage.getHeight() - 2 * TABPANE_HEIGHT));
     updateHabitatBackgroundColor();
     currentWorkspace.getCompiler().setLanguage(currentLang);
     header.getSliders().updateZoom(currentWorkspace);
@@ -196,44 +178,33 @@ public class ParserController extends Application {
   }
 
   private void handleButtonActions() throws IOException {
-    if (!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))) {
-      header.launchHelpWindow(myResources.getString(header.getButtons().getHelpStatus()),
-          guiLanguage);
-    }
-    if (header.getButtons().getPenColorStatus()) {
-      header
-          .launchPenColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage, selectButtons);
-    }
-    if (header.getButtons().getBackgroundColorStatus()) {
-      header.launchBackgroundColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage);
-    }
     if (header.getButtons().getFileStatus()) {
-      handleLogoFiles();
-    }
+      handleLogoFiles(); }
     if (header.getButtons().getImageStatus()) {
-      handleImageFileChooser();
-    }
+      handleImageFileChooser(); }
+    if (!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))) {
+      header.launchHelpWindow(myResources.getString(header.getButtons().getHelpStatus()), guiLanguage); }
+    if (header.getButtons().getPenColorStatus()) {
+      header.launchPenColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage, selectButtons); }
+    if (header.getButtons().getBackgroundColorStatus()) {
+      header.launchBackgroundColorChooser(currentWorkspace, RESOURCES_PACKAGE + guiLanguage); }
     if (header.getButtons().isViewAllTurtles()) {
       currentWorkspace.getHabitat().viewTurtleInformation();
-      header.getButtons().setViewAllTurtlesOff();
-    }
-    if(footer.getButtons().getUpPressed()){
+      header.getButtons().setViewAllTurtlesOff(); }
+    if (footer.getButtons().getUpPressed()){
       footer.getButtons().executeUp(currentWorkspace); }
-    if(footer.getButtons().getDownPressed()){
+    if (footer.getButtons().getDownPressed()){
       footer.getButtons().executeDown(currentWorkspace); }
-    if(footer.getButtons().getLeftPressed()){
+    if (footer.getButtons().getLeftPressed()){
       footer.getButtons().executeLeft(currentWorkspace); }
-    if(footer.getButtons().getRightPressed()){
+    if (footer.getButtons().getRightPressed()){
       footer.getButtons().executeRight(currentWorkspace); }
-
   }
 
   private void updateTabPanes(boolean isSwitch) {
-    if (currentWorkspace.getStatus() != currentWorkspace.getTerminalController().getStatus()
-        || isSwitch) {
+    if (currentWorkspace.getStatus() != currentWorkspace.getTerminalController().getStatus() || isSwitch) {
       currentWorkspace.setStatus(currentWorkspace.getTerminalController().getStatus());
-      tabPaneController.updateAllTables();
-    }
+      tabPaneController.updateAllTables(); }
   }
 
   private void updateCurrentWorkspace() {
@@ -244,8 +215,7 @@ public class ParserController extends Application {
       currentTab = current;
       tabPaneController.updateCompiler(currentWorkspace.getCompiler());
       tabPaneController.updateTerminal(currentWorkspace.getTerminalController());
-      updateTabPanes(true);
-    }
+      updateTabPanes(true); }
   }
 
   private void updateHabitatBackgroundColor() {
@@ -253,17 +223,7 @@ public class ParserController extends Application {
     if (compilerColorID != DEFAULT_COLOR_CODE) {
       Color compilerBGColor = cf.parseColor(currentWorkspace.getCompiler().getBackgroundColor());
       setBackground(compilerBGColor);
-      currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE);
-    }
-  }
-
-  private void updateColorFactory() {
-    Map<Integer, int[]> colors = currentWorkspace.getCompiler().getPaletteColors();
-    for (Entry<Integer, int[]> e : colors.entrySet()) {
-      Color color = Color.color(e.getValue()[0] / 255.0, e.getValue()[1] / 255.0,
-          e.getValue()[2] / 255.0); //fixme magic val
-      cf.addColor(e.getKey(), color);
-    }
+      currentWorkspace.getCompiler().setBackgroundColor(DEFAULT_COLOR_CODE); }
   }
 
   private void handleMultipleTurtles() {
@@ -274,40 +234,28 @@ public class ParserController extends Application {
       Turtle t = currentWorkspace.getCompiler().getTurtleByID(i);
       turtles.add(t);
       Color c = cf.parseColor(t.getPenColorIndex());
-      colors.add(c);
-    }
+      colors.add(c); }
     currentWorkspace.getHabitat().updateHabitat(ids, turtles, colors);
     for (int turtleId : currentWorkspace.getCompiler().getAllTurtleIDs()) {
       header.getSliders().updateImageSize(currentWorkspace, turtleId);
-      header.getSliders().updatePenWidth(currentWorkspace, turtleId);
-
-    }
+      header.getSliders().updatePenWidth(currentWorkspace, turtleId); }
     checkClickToActivate(currentWorkspace.getHabitat().getExistingTurtleViews());
   }
 
   private void checkClickToActivate(Map<Integer, TurtleView> all) {
-    currentWorkspace.getHabitat().setOnMouseClicked(new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent me) {
-        for (int id : all.keySet()) {
-          if (all.get(id).contains(me.getX(), me.getY())) {
-            all.get(id).setActive(!all.get(id).getActive());
-            currentWorkspace.getCompiler().toggleActiveTurtle(id);
-          }
-        }
-      }
-    });
+    currentWorkspace.getHabitat().setOnMouseClicked(me -> {
+      for (int id : all.keySet()) {
+        if (all.get(id).contains(me.getX(), me.getY())) {
+          all.get(id).setActive(!all.get(id).getActive());
+          currentWorkspace.getCompiler().toggleActiveTurtle(id); } } });
   }
 
-  private void setBackground(Color c) {
-    currentWorkspace.getHabitat().setBackground(c);
-  }
+  private void setBackground(Color c) { currentWorkspace.getHabitat().setBackground(c); }
 
   private void handleLanguage(String lang) throws FileNotFoundException {
     guiLanguage = myResources.getString(lang) + "_GUI";
     if (!guiLanguage.contains(currentLang)) {
-      updateLanguage(guiLanguage);
-    }
+      updateLanguage(guiLanguage); }
   }
 
   private void updateLanguage(String language) throws FileNotFoundException {
@@ -327,8 +275,7 @@ public class ParserController extends Application {
     for (int i = 1; i < workspaces.size(); i++) {
       Tab tab = new Tab(myResources.getString("Workspace") + i);
       tab.setContent(workspaces.get(i));
-      workspaceEnvironment.getTabs().add(tab);
-    }
+      workspaceEnvironment.getTabs().add(tab); }
     currentWorkspace.getCompiler().setLanguage(currentLang);
     currentWorkspace.getTerminalController().changeLanguage(currentLang);
     tabPaneController.changeLanguage(currentLang);
@@ -339,18 +286,15 @@ public class ParserController extends Application {
     File dataFile = imageFile.getFileChooser().showOpenDialog(myStage);
     if (dataFile == null) {
       header.getButtons().setImageOff();
-      return;
-    }
+      return; }
     header.getButtons().setImageOff();
     for (int turtleID : currentWorkspace.getCompiler().getAllTurtleIDs()) {
       Button button = new Button("Turtle " + turtleID);
       button.setOnAction(event -> {
         currentWorkspace.getHabitat().getTurtleView(turtleID)
             .setImage("file:" + dataFile.getPath());
-        header.getButtons().closeTurtleSelect();
-      });
-      selectButtons.add(button);
-    }
+        header.getButtons().closeTurtleSelect(); });
+      selectButtons.add(button); }
     header.getButtons().launchTurtleSelect(selectButtons);
   }
 
@@ -358,8 +302,7 @@ public class ParserController extends Application {
     File dataFile = logoFile.getFileChooser().showOpenDialog(myStage);
     if (dataFile == null) {
       header.getButtons().setLoadFilePressedOff();
-      return;
-    }
+      return; }
     header.getButtons().setLoadFilePressedOff();
     currentWorkspace.getTerminalController().sendFileInput(dataFile);
   }
