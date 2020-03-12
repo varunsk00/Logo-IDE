@@ -208,6 +208,7 @@ public class ParserController extends Application {
     String workspaceString = workspaceEnvironment.getSelectionModel().getSelectedItem().getText();
     int current = currentWorkspace.getCurrentWorkspace(workspaceString);
     currentWorkspace = workspaces.get(current);
+    updateColorFactory();
     if (current != currentTab) {
       currentTab = current;
       tabPaneController.updateCompiler(currentWorkspace.getCompiler());
