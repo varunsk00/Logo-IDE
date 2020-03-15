@@ -19,7 +19,14 @@ import slogo.turtle.TurtleHabitat;
 import slogo.workspace.Workspace;
 
 /**
- * TerminalController manages the communication between a TerminalView object and the compiler
+ * TerminalController manages the communication between the view and the compiler. It allows inline input as an alternative to TextArea input.
+ * Several shortcut keys are included:
+ *  - Up | PageUo        :retrieve the previous command to the TextArea
+ *  - Down | PageDown    :retrieve the next command to the TextArea
+ *  - Shift              :save the current input commands a slogo file
+ *  - Tab                :save the current preference to a resource file
+ *  - Ctrl+Z             :undo
+ * @author Qiaoyi Fang
  */
 public class TerminalController {
   final private String USER_SAVE_FILE = "src/slogo/resources/userspace/";
@@ -81,37 +88,79 @@ public class TerminalController {
     appendToOutput(systemMessage);
   }
 
+  /**
+   * Sets the workspace
+   *
+   * @param w workspace
+   */
   public void setWorkspace(Workspace w){workspace = w;}
 
+  /**
+   * Processes input from file
+   *
+   * @param file input slogo file
+   * @throws FileNotFoundException
+   */
   public void sendFileInput(File file) throws FileNotFoundException {
     sendInput(readFromFile(file));
   }
 
+  /**
+   * Sets the size of the terminal
+   *
+   * @param width the preferred width
+   * @param height the preferred height
+   */
   public void setSize(int width, int height) {
     terminalView.setSize(width, height);
   }
 
+  /**
+   * Sets the compiler
+   *
+   * @param c compiler
+   */
   public void setCompiler(Compiler c) {
     this.compiler = c;
   }
 
+  /**
+   * Sets the habitat
+   *
+   * @param h habitat
+   */
   public void setHabitat(TurtleHabitat h) {
     this.habitat = h;
   }
 
+  /**
+   * Retrieves all commands from the local history
+   *
+   * @return a list of command string(s)
+   */
   public List<String> getAllCommands() {
     return history.getCommands();
   }
 
+  /**
+   * Retrieves all compiler messages from the local history
+   *
+   * @return a list of compiler message string(s)
+   */
   public List<String> getAllMessages() {
     return history.getMessages();
   }
 
+  /**
+   * Gets the status (whether to trigger the update of panels)
+   * @return the status number of current process
+   */
   public int getStatus() {
     return status;
   }
 
   private void keyBinding() {
+
     //set the focus to the scroll bar
     terminalView.getOutputPanel().addEventHandler(MouseEvent.ANY, e -> {
       final ScrollBar barVertical = (ScrollBar) terminalView.getOutputPanel()
@@ -119,17 +168,10 @@ public class TerminalController {
       barVertical.requestFocus();
     });
 
-    //final ScrollBar barHorizontal = (ScrollBar) terminalView.getInputPanel().lookup(".scroll-bar:horizontal");
-    //barHorizontal.setValue(barHorizontal.getMax());
-
-    // Control+S: save slogo
-    KeyCodeCombination CtrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY);
     // Control+V: paste the selected text
     KeyCodeCombination CtrlV = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_ANY);
     // Control+Z: undo
     KeyCodeCombination CtrlZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY);
-    // Control+Shift+S: save preference
-    KeyCodeCombination CtrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY, KeyCombination.SHIFT_ANY);
 
     terminalView.getInputArea().setOnKeyPressed(keyEvent -> {
 
@@ -152,7 +194,6 @@ public class TerminalController {
         appendToOutput(terminalView.getCurrentInput());
         history.addBufferEntry(terminalView.getCurrentInput(),
             1); // add method now automatically resets the index
-        System.out.println(terminalView.getCurrentInput());
         appendToOutput(sendCurrentInput());
 
         terminalView.resetInputPanel();

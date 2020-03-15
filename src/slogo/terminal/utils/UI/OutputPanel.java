@@ -5,8 +5,8 @@ import javafx.scene.control.ListView;
 import slogo.terminal.utils.textLines.TestLine;
 
 /**
- * Output Panel is responsible for the display of the user-entered commands and feedback information
- * from the compiler.
+ * Output Panel uses a ListView object to handle the display of the input commands and compiler message.
+ * @author Qiaoyi Fang
  */
 public class OutputPanel extends ListView<String> {
 
@@ -25,8 +25,6 @@ public class OutputPanel extends ListView<String> {
   public OutputPanel(int width, int max_height) {
     super(FXCollections.observableArrayList());
 
-    //disable focus
-    //setMouseTransparent(true);
     setFocusTraversable(false);
 
     setMinWidth(width);
@@ -40,6 +38,11 @@ public class OutputPanel extends ListView<String> {
     setCellFactory(listView -> new TestLine(width - DISPLAY_MARGIN));
   }
 
+  /**
+   * Sets the size
+   * @param width the preferred width
+   * @param height the preferred height
+   */
   public void setSize(int width, int height) {
     setMinWidth(width);
     setMaxWidth(width);
@@ -76,12 +79,4 @@ public class OutputPanel extends ListView<String> {
     getItems().clear();
   }
 
-  /**
-   * [unimplemented] Returns the selected highlight texts
-   *
-   * @return text string
-   */
-  public String getSelectedText() {
-    return null;
-  }
 }
