@@ -118,7 +118,7 @@ public class TerminalView extends ScrollPane {
   public OutputPanel getOutputPanel() {
     return outputPanel;
   }
-  
+
   private void initializeTerminal(int width, int height) {
     outputPanel = new OutputPanel(width, height - INPUT_PANEL_HEIGHT - HEADER_HEIGHT);
     inputPanel = new InputPanel(width, INPUT_PANEL_HEIGHT);
