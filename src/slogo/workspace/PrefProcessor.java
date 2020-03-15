@@ -12,6 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * PrefProcessor manages the loading and saving of preference settings in the workspace. Implemented
+ * reference settings include: turtle image, turtle shape, background color, pen color, whether to
+ * load slogo file and etc.
+ *
+ * @author Qiaoyi Fang
+ */
 public class PrefProcessor {
 
   final private static String DEFAULT_PREF_DIRMAP = "slogo.resources.preferences.default.path_map";
@@ -19,7 +26,7 @@ public class PrefProcessor {
   final private static String USER_PREF_PATH = "src/slogo/resources/preferences/user/";
 
   final private static String BACKGROUND_COLOR_KEY = "BACKGROUND_COLOR";
-  final private static String PEN_COLOR_KEY = "PEN_COLOR";
+  //final private static String PEN_COLOR_KEY = "PEN_COLOR";
   final private static String IS_TURTLE_SHAPE_KEY = "IS_TURTLE_SHAPE";
   final private static String TURTLE_SHAPE_KEY = "TURTLE_SHAPE";
   final private static String TURTLE_IMAGE_KEY = "TURTLE_IMAGE";
@@ -29,19 +36,27 @@ public class PrefProcessor {
 
   final private static String TRUE_VAL = "T";
   final private static String FALSE_VAL = "F";
-  final private static String NA_VAL = "NA";
-  List<Map.Entry<String, String>> prefDict;
+
+  private List<Map.Entry<String, String>> prefDict;
   private Workspace wspace;
   private ColorFactory colorFactory;
-  private boolean isInitializedShapeImage;
-  int saveCnt = 0;
+  private int saveCnt = 0;
 
+  /**
+   * Constructor
+   */
   public PrefProcessor() {
     prefDict = new LinkedList<>();
     colorFactory = new ColorFactory();
-    isInitializedShapeImage = false;
   }
 
+  /**
+   * Initializes the preference settings in the current workspace.
+   *
+   * @param workspace workspace
+   * @param prefKey   the type of the preference settings
+   * @throws FileNotFoundException
+   */
   public void initializeWorkspace(Workspace workspace, String prefKey)
       throws FileNotFoundException {
     wspace = workspace;
@@ -66,11 +81,42 @@ public class PrefProcessor {
 
   }
 
+  /**
+   * Clear the habitat screen in workspace
+   */
+  public void initializeClearScreen() {
+    wspace.getTerminalController().sendInput(generateClearScreen());
+  }
+
+  /**
+   * Saves the current preference to a resource file
+   *
+   * @return the saved resource file name
+   * @throws IOException
+   */
+  public String buildPrefMap() throws IOException {
+    StringBuilder text = new StringBuilder();
+    String colorID = colorFactory.parseColor(wspace.getHabitat().getBackgroundColor());
+    text.append(generatePropertiesEntry(colorID));
+
+    return savePrefMap(text.toString());
+  }
+
+  /* [Unimplemented] allows user to load the preference settings from a designated resource file
   public void loadPref(Workspace workspace, String filePath) throws FileNotFoundException {
     this.wspace = workspace;
     prefDict = loadDict(filePath);
     loadPrefDict();
+  }*/
+
+  /* [Unimplemented] updates the preferred type of turtle shape
+  public void updateShapeImage() {
+    if (!isInitializedShapeImage) {
+      isInitializedShapeImage = true;
+      initializeTurtleImageShape();
+    }
   }
+*/
 
   private void loadPrefDict() throws FileNotFoundException {
     initializeBackgroundColor();
@@ -79,10 +125,6 @@ public class PrefProcessor {
     initializeTurtleImageShape();
     initializeLoadedFile();
     initializeClearScreen();
-  }
-
-  public void initializeClearScreen(){
-    wspace.getTerminalController().sendInput(generateClearScreen());
   }
 
   private void initializeTurtleImageShape() {
@@ -131,13 +173,6 @@ public class PrefProcessor {
     }
   }
 
-  public void updateShapeImage() {
-    if (!isInitializedShapeImage) {
-      isInitializedShapeImage = true;
-      initializeTurtleImageShape();
-    }
-  }
-
   private void initializeTurtleImage() {
     for (Map.Entry<String, String> entry : prefDict) {
       if (entry.getKey().equals(TURTLE_IMAGE_KEY)) {
@@ -160,23 +195,14 @@ public class PrefProcessor {
     }
   }
 
-  public String buildPrefMap() throws IOException {
-    StringBuffer text = new StringBuffer();
-    String colorID = colorFactory.parseColor(wspace.getHabitat().getBackgroundColor());
-    text.append(generatePropertiesEntry(BACKGROUND_COLOR_KEY, colorID));
-
-    return savePrefMap(text.toString());
-  }
-
   private String savePrefMap(String text) throws IOException {
     String filename = String.format("%d.properties", ++saveCnt);
     String filepath = String.format("%s%s", USER_PREF_PATH, filename);
 
     File newOuputFile = new File(filepath);
-    if (newOuputFile.createNewFile()){
+    if (newOuputFile.createNewFile()) {
       System.out.println(String.format("%s File created.", filename));
-    }
-    else {
+    } else {
       System.out.println(String.format("%s already exists.", filename));
     }
     FileWriter fileWriter = new FileWriter(newOuputFile);
@@ -212,11 +238,12 @@ public class PrefProcessor {
     return command;
   }
 
-  private String getFilePath(String relativeFilePath) {
-    return String.format("%s%s", DEFAULT_PREF_PATH, relativeFilePath);
+  private String generateClearScreen() {
+    return "cs";
   }
 
-  private String generateClearScreen(){return "cs";}
-
-  private String generatePropertiesEntry(String key, String val){return String.format("%s=%s\n", key, val);}
+  private String generatePropertiesEntry(String val) {
+    return String.format("%s=%s\n",
+        PrefProcessor.BACKGROUND_COLOR_KEY, val);
+  }
 }
