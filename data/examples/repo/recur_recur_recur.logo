@@ -1,0 +1,29 @@
+to spiral [ :len ]
+[
+  if less? :len 200
+  [
+    fd :len
+    rt 89
+    spiral + :len 3
+  ]
+]
+
+to repspiral [ :times :lens ]
+[
+  if greater? :times 0
+  [
+    spiral :lens
+    repspiral - :times 1 :lens
+  ]
+]
+
+to reprepspiral [ :turns :times :lens ]
+[
+  if greater? :turns 0
+  [
+    repspiral :times :lens
+    reprepspiral - :turns 1 :times :lens
+  ]
+]
+
+reprepspiral 5 5 10
