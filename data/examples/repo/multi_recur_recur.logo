@@ -1,0 +1,35 @@
+to spiral [ :len ]
+[
+  if less? :len 200
+  [
+    fd :len
+    rt 89
+    spiral + :len 3
+  ]
+]
+
+to repspiral [ :times :lens ]
+[
+  if greater? :times 0
+  [
+    spiral :lens
+    repspiral - :times 1 :lens
+  ]
+]
+
+tell [ 1 2 3 4 5 6 7 8 9 10]
+set :n 10
+set :i 1
+
+repeat :n
+[
+  ask [ :i ]
+  [
+    set :x * random 20 random 20
+    set :y * random 20 random 20
+    goto - :x 100 - :y 100
+    repspiral 5 10
+  ]
+  set :i + :i 1
+]
+

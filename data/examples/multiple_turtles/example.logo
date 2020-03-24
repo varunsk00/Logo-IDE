@@ -19,3 +19,4 @@ fd set :x * id :x
 tell [ 10 ]
 rt 90
 fd 100
+
