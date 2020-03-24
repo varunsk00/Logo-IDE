@@ -2,3 +2,15 @@ setbg 1
 setpc 5
 tell [  1 2 3 4 5]
 cs
+tell[5] [fd 100] 
+tell[4] [fd 80] 
+tell[3 ] [fd 80] 
+tell[3 ] [bk 2 0] 
+tell[3 ] [bk 2 0] 
+tell [3] [bk 20] 
+tell [2 ] [fd 40]
+tell [2 ] [bk 2 0]
+tell [2 ] [bk 10 ]
+home 
+tell[1 2 3 4 5] [home] 
+cs 

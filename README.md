@@ -60,11 +60,22 @@ Qiaoyi:
     - allow workspace to directly load from the preset properties file
     - allow user to save the current workspace
 
-Alex:
+Alexander:
 * Created the Turtle.java backend and logic, allowing for storage of turtle states
 * Designed variable pen size
-* Wrote turtle active status toggle on click
-
+    - User can manually change the thickness of the pen for all active turtles
+* Implemented visualization of information for all turtles in the habitat
+    - Allows for runtime visualization of: 
+        - turtle position and heading 
+        - id 
+        - heading
+        - pen state and color 
+        - image associated to turtle
+* Implemented ability to select specific turtle to perform changes to in the main GUI
+    - Allows for more fine tuned control for the user 
+    - Example: User can assign each turtle a different image
+* Implemented turtle active status toggle on click
+    - User can toggle which turtles are currently active and which are not
 
 Varun:
 * Created controller package
