@@ -8,7 +8,7 @@ import javafx.scene.control.TextArea;
  */
 public class PromptArea extends TextArea {
 
-  private static int PREF_MARGIN_COUNT = 0;
+  private static int PREF_MARGIN_COUNT = 4;
   private static String defaultPromptText = ">>>";
 
   /**
