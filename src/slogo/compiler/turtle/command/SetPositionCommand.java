@@ -2,9 +2,9 @@ package slogo.compiler.turtle.command;
 
 import slogo.compiler.turtle.TurtleCommand;
 
-public class SetPostionCommand extends TurtleCommand {
+public class SetPositionCommand extends TurtleCommand {
 
-  public SetPostionCommand(String declaration) {
+  public SetPositionCommand(String declaration) {
     super(declaration);
     desiredArgs = 2;
   }

@@ -14,8 +14,10 @@ import slogo.variable_panels.subpanels.AutoTableView;
 import slogo.variable_panels.util_classes.TableEntry;
 
 /**
- * the Controller object that manages the tap pane (includes variable explore, history commands, and
- * user-defined methods)
+ * VairablesTabPnaeController manages the tap pane composing of the variable explore, the table of history commands, and of the
+ * user-defined methods. It allows user to directly interact with the table entry to make inputs.
+ *
+ * @author Qiaoyi Fang
  */
 public class VariablesTabPaneController {
 
@@ -55,9 +57,9 @@ public class VariablesTabPaneController {
   }
 
   /**
-   * Changes language
+   * Changes to a new language
    *
-   * @param language language ///////////////////
+   * @param language language
    */
   public void changeLanguage(String language) {
     variablesTabPaneView.changeLanguageTo(language);
@@ -118,12 +120,6 @@ public class VariablesTabPaneController {
 
       for (Object item : entry.getValue().getColumns()) {
         TableColumn col = (TableColumn) item;
-                /*if (item instanceof TableColumn){
-                    col = (TableColumn) item;}
-                else{
-                    System.out.println("Error: unimplemented type of table column");
-                    break;
-                }*/
 
         if (col.getId().equals(EDITABLE_MATCH_KEYWORD) && entry.getKey().equals(VAR_TYPE)) {
           varTableBinding(col);

@@ -15,8 +15,9 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import slogo.variable_panels.util_classes.TableEntry;
 
 /**
- * Generates the TableView object that automatically generates the content dependent on the table
+ * AutoTableView generates the TableView object that sets the content accordingly to the table
  * type (command history, defined methods, variable).
+ * @author Qiaoyi Fang
  */
 public class AutoTableView extends TableView {
 

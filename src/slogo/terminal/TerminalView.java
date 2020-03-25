@@ -11,7 +11,10 @@ import slogo.terminal.utils.UI.OutputPanel;
 
 
 /**
- * terminalView generates the visualization of the terminal console.
+ * TerminalView generates the visualization of the terminal console.
+ * It contains the input panel that allows user to make input and the ouput panel
+ * that displays the parsed user input and the compiler messages.
+ * @author Qiaoyi Fang
  */
 public class TerminalView extends ScrollPane {
 
@@ -114,11 +117,6 @@ public class TerminalView extends ScrollPane {
    */
   public OutputPanel getOutputPanel() {
     return outputPanel;
-  }
-
-  private void clearTerminal() {
-    inputPanel.clearInput();
-    outputPanel.clearTexts();
   }
 
   private void initializeTerminal(int width, int height) {
