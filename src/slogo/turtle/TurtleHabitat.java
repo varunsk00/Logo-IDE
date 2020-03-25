@@ -1,3 +1,11 @@
+/**
+ * This Class is responsible for the display of all the turtles currently
+ * available in the program.
+ *
+ * It is used and depends on the slogo.controller package as
+ * the buttons, to view information in the habitat, reside there
+ */
+
 package slogo.turtle;
 
 import java.util.ArrayList;
@@ -60,6 +68,9 @@ public class TurtleHabitat extends Pane {
     changeSize(width, height);
   }
 
+  /**
+   * Uses a pane to display all pertinent information about a specific turtle
+   */
   public void viewTurtleInformation() {
     Stage s = new Stage();
     Pane root = new Pane();
@@ -76,6 +87,11 @@ public class TurtleHabitat extends Pane {
     s.show();
   }
 
+  /**
+   * Information such as position and heading are added to the provided pane
+   * @param id, The id of the specific turtle in question
+   * @param p, The pane used to display the information
+   */
   private void displayInformation(int id, Pane p) {
     p.getChildren().removeAll(rec, information, clrBox);
     rec = new Rectangle(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT);
@@ -96,6 +112,12 @@ public class TurtleHabitat extends Pane {
     p.getChildren().addAll(rec, information, clrBox);
   }
 
+  /**
+   * Update the habitat and all its turtles as values change
+   * @param ids
+   * @param turtles
+   * @param colors
+   */
   public void updateHabitat(List<Integer> ids, List<Turtle> turtles, List<Color> colors) {
     for (int i = 0; i < ids.size(); i++) {
       updateSingleTurtle(ids.get(i), turtles.get(i), colors.get(i));
@@ -110,6 +132,12 @@ public class TurtleHabitat extends Pane {
     }
   }
 
+  /**
+   * Update a turtle's display information
+   * @param id
+   * @param turtle
+   * @param c
+   */
   public void updateSingleTurtle(int id, Turtle turtle, Color c) {
     TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
         habitatWidth, habitatHeight);
@@ -139,15 +167,26 @@ public class TurtleHabitat extends Pane {
     setPrefHeight(height);
   }
 
+  /**
+   *
+   * @param turtleID
+   * @return the turtleView associated with the turtle ID
+   */
   public TurtleView getTurtleView(int turtleID) {
     return allTurtleViews.get(turtleID);
   }
 
-
+  /**
+   * @return all the TurtleViews existing in the habitat at the moment
+   */
   public Map<Integer, TurtleView> getExistingTurtleViews() {
     return allTurtleViews;
   }
 
+  /**
+   * @param turtleID
+   * @return the Turtle object associated with the turtle ID
+   */
   public Turtle getTurtle(int turtleID) {
     return allTurtles.get(turtleID);
   }
@@ -183,6 +222,10 @@ public class TurtleHabitat extends Pane {
     return backgroundColor;
   }
 
+  /**
+   * This methods supports the undo command and allows
+   * for the removal of pen drawings
+   */
   public void undoPen() {
     if (!polylineStack.isEmpty()) {
       List<Polyline> toRemove = polylineStack.pop();
@@ -198,8 +241,9 @@ public class TurtleHabitat extends Pane {
     }
   }
 
-// add current list to a stack
-
+  /**
+   * Add current list of lines drawn to a stack
+   */
   public void saveToStack() {
     List<Polyline> temp = new ArrayList<>();
     for (Polyline p : myLines) {
@@ -210,7 +254,11 @@ public class TurtleHabitat extends Pane {
     polylineStack.add(temp);
   }
 
-
+  /**
+   * Supports the drawing of lines as the turtles move in the habitat
+   * @param loc, a Point object
+   * @param turtleID
+   */
   public void penDraw(Point loc, int turtleID) {
     TurtleView turtle = allTurtleViews.get(turtleID);
     Color penColor = turtle.getPenColor();

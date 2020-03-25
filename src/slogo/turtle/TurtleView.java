@@ -131,6 +131,10 @@ public class TurtleView extends Rectangle {
     setHeight(shapeWidth * RECTANGLE_RATIO);
   }
 
+  /**
+   * Updates the Turtle shape from location to Image
+   * @param turtle
+   */
   public void updateTurtleView(Turtle turtle) {
     setRotate(turtle.getHeading());
     setX(turtle.getXLocation() + xOffset);

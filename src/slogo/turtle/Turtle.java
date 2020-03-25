@@ -1,3 +1,11 @@
+/*
+@author Alexander Uzochukwu, Maverick Chung
+
+The purpose of this class is to provide the main framework and
+basis for each turtle object
+
+This class holds and modifies the critical information of the turtle
+ */
 package slogo.turtle;
 
 import java.util.ArrayList;
@@ -62,6 +70,10 @@ public class Turtle {
     ID = id;
   }
 
+  /**
+   * Updates the location of the turtle in its current heading
+   * @param pixel
+   */
   public void move(double pixel) {
     xLocation = Math.sin(Math.toRadians(heading)) * pixel + xLocation;
     yLocation = -Math.cos(Math.toRadians(heading)) * pixel + yLocation;
@@ -70,16 +82,29 @@ public class Turtle {
     locations.add(p);
   }
 
+  /**
+   *
+   * @return list of points which the turtle has been to
+   */
   public List<Point> locationsList() {
     List<Point> ret = new ArrayList<>(locations);
     locations.clear();
     return ret;
   }
 
+  /**
+   *
+   * @param degree, the desired heading of the turtle
+   */
   public void rotate(double degree) {
     setHeading(heading + degree);
   }
 
+  /**
+   *
+   * @param x, x coordinate of the intended direction
+   * @param y, y coordinate of the intended direction
+   */
   public void towards(double x, double y) {
     setHeading((Math.atan2(x - xLocation, -(y - yLocation)) * RAD_TO_DEG_RATIO));
   }
@@ -88,6 +113,9 @@ public class Turtle {
     this.showTurtle = showTurtle;
   }
 
+  /**
+   * Resets the turtle back to the center of the screen
+   */
   public void goHome() {
     xLocation = CENTER_X;
     yLocation = CENTER_Y;
