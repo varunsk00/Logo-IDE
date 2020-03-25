@@ -1,0 +1,28 @@
+to draw [ ]
+[
+  set :dist 100
+    repeat 5 [
+      fd :dist
+      rt 144
+      fd :dist
+      lt 72
+    ]
+]
+
+tell [1] [
+  draw
+]
+
+tell [2] [
+  setpc 6
+  lt 90
+  fd 100
+  draw
+]
+
+tell [3] [
+  setpc 20
+  rt 90
+  fd 100
+  draw
+]
