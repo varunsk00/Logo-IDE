@@ -1,17 +1,20 @@
 package slogo;
 
-import java.io.FileNotFoundException;
 import slogo.controller.ParserController;
 
 /**
- * Feel free to completely change this code or delete it entirely.
+ * Main.java
+ *
+ * Runs Slogo Application
+ *
+ * @author Varun Kosgi
  */
 public class Main {
 
   /**
    * Start of the program.
    */
-  public static void main(String[] args) throws FileNotFoundException {
+  public static void main(String[] args) {
     ParserController simulator = new ParserController(args);
   }
 

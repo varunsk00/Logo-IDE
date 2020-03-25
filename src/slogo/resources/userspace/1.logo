@@ -2,3 +2,12 @@ setbg 1
 setpc 5
 tell [  1 2 3 4 5]
 cs
+setheading 0 fd 50
+setheading 90 fd 50
+setheading -90 fd 50
+setheading 180 fd 50
+setheading 90 fd 50
+setheading 0 fd 50
+cs 
+setheading 0 fd 50
+setheading 90 fd 50

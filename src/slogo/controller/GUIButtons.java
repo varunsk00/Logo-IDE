@@ -17,20 +17,17 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 /**
- * ButtonController.java Creates all the Buttons and Pop-Ups in a Slogo environment
+ * GUIButtons.java
+ * Creates all the Buttons and Pop-Ups in a Slogo environment
  *
  * @author Varun Kosgi
  */
 public class GUIButtons {
 
-  private static final String SUPPORTED_LANGUAGES = "src/slogo/resources/languages/LanguageList.txt";
-  private static final String PROMPTS = "src/slogo/resources/languages/HelpPrompts.txt";
-  private static final int TURTLE_SELECT_WIDTH = 200;
-  private static final int TURTLE_SELECT_HEIGHT = 200;
-  private ResourceBundle myResources;
-  private List<String> languages;
-  private List<String> helpPrompts;
-  private Stage imageWindow = new Stage();
+  private final String SUPPORTED_LANGUAGES = "src/slogo/resources/languages/LanguageList.txt";
+  private final String PROMPTS = "src/slogo/resources/languages/HelpPrompts.txt";
+  private final int TURTLE_SELECT_WIDTH = 200;
+  private final int TURTLE_SELECT_HEIGHT = 200;
   private boolean loadFilePressed;
   private boolean turtleImagePressed;
   private boolean penColorPressed;
@@ -38,14 +35,14 @@ public class GUIButtons {
   private boolean viewAllTurtles;
   private String languagePressed;
   private String helpPressed;
+  private ResourceBundle myResources;
+  private List<String> languages;
+  private List<String> helpPrompts;
+  private Stage imageWindow = new Stage();
   private HBox myButtons;
-
-  //TODO(FUN): CREATE VARIABLE PEN WIDTH SLIDER
-  //TODO(FUN): DIFF LINE TYPES (DOTTED, DASHED) BUTTON
 
   /**
    * Constructor that sets Resource Bundle and initializes all initial states of buttons
-   * <p>
    * Button states are initially False; ComboBox states have a defined initial String
    *
    * @param language the current language passed in from ParserController
@@ -174,8 +171,7 @@ public class GUIButtons {
     Scene sc = new Scene(root, TURTLE_SELECT_WIDTH, TURTLE_SELECT_HEIGHT);
     ListView<Button> turtleOptions = new ListView<Button>();
     for (Button button : turtleButtons) {
-      turtleOptions.getItems().addAll(button);
-    }
+      turtleOptions.getItems().addAll(button); }
     root.getChildren().addAll(turtleOptions);
     imageWindow.setScene(sc);
     imageWindow.show();
@@ -188,25 +184,20 @@ public class GUIButtons {
     imageWindow.close();
   }
 
-  /**
-   * Creates and initializes all Buttons based on Regex Values
-   */
-  private void renderButtons() {
+  private void renderButtons() { //Creates and initializes all Buttons based on Regex Values
     myButtons = new HBox();
     Button loadButton = makeButton("LoadButton", event -> loadFilePressed = true);
     Button imageButton = makeButton("ImageButton", event -> turtleImagePressed = true);
     Button viewAllTurtlesButton = makeButton("ViewTurtle", event -> viewAllTurtles = true);
     Button penButton = makeButton("PenButton", event -> penColorPressed = true);
-    Button backgroundButton = makeButton("BackgroundButton",
-        event -> backgroundColorPressed = true);
+    Button backgroundButton = makeButton("BackgroundButton", event -> backgroundColorPressed = true);
     ComboBox langMenu = makeDropDown("LanguageButton", languages);
     ComboBox helpMenu = new ComboBox();
     helpMenu.setValue(helpPressed);
     helpMenu.getItems().addAll(helpPrompts);
     helpMenu.setOnAction(event -> this.helpPressed = (String) helpMenu.getValue());
     myButtons.getChildren()
-        .addAll(loadButton, imageButton, viewAllTurtlesButton, penButton, backgroundButton,
-            helpMenu, langMenu);
+        .addAll(loadButton, imageButton, viewAllTurtlesButton, penButton, backgroundButton, helpMenu, langMenu);
     formatButton(loadButton);
     formatButton(imageButton);
     formatButton(penButton);
@@ -228,10 +219,9 @@ public class GUIButtons {
     tempMenu.getItems().addAll(options);
     tempMenu.setValue(myResources.getString(key));
     if (key.equals("LanguageButton")) {
-      tempMenu.setOnAction(event -> languagePressed = (String) tempMenu.getValue());
-    } else if (key.equals("HelpButton")) {
-      tempMenu.setOnAction(event -> this.helpPressed = (String) tempMenu.getValue());
-    }
+      tempMenu.setOnAction(event -> languagePressed = (String) tempMenu.getValue()); }
+    else if (key.equals("HelpButton")) {
+      tempMenu.setOnAction(event -> this.helpPressed = (String) tempMenu.getValue()); }
     return tempMenu;
   }
 
@@ -247,8 +237,7 @@ public class GUIButtons {
     List<String> ret = new ArrayList<>();
     Scanner scanner = new Scanner(dataFile);
     while (scanner.hasNextLine()) {
-      ret.add(myResources.getString(scanner.nextLine()));
-    }
+      ret.add(myResources.getString(scanner.nextLine())); }
     return ret;
   }
 }

@@ -21,45 +21,80 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * TurtleHabitat.java
+ *
+ * A JavaFX Pane upon which multiple TurtleView objects can be modified and a Pen can be drawn and modified.
+ *
+ * @author Varun Kosgi
+ * @author Alexander Uzochukwu
+ */
 public class TurtleHabitat extends Pane {
 
-  public static final int TEXT_X_LOCATION = 200;
-  public static final int TEXT_Y_LOCATION = 100;
-  public static final int COLORBOXSIZE = 10;
-  public static final int COLORBOX_X_LOCATION = 260;
-  public static final int COLORBOX_Y_LOCATION = 140;
-  private static final int INFO_PANE_SIZE = 400;
-  private static final int TURTLE_LIST_WIDTH = 100;
-  private static final int BUTTON_HEIGHT = 30;
-  private static final int PICTURE_X_LOCATION = 200;
-  private static final int PICTURE_Y_LOCATION = 50;
-  private static final double PEN_WIDTH = 2.0;
-  private static double DEFAULT_TURTLE_WIDTH = 50.0;
-  private static double DEFAULT_TURTLE_HEIGHT = 25.0;
-  private static Color backgroundColor;
-  Rectangle rec;
-  Rectangle clrBox;
-  Text information;
+  private final int TEXT_X_LOCATION = 200;
+  private final int TEXT_Y_LOCATION = 100;
+  private final int COLORBOXSIZE = 10;
+  private final int COLORBOX_X_LOCATION = 260;
+  private final int COLORBOX_Y_LOCATION = 140;
+  private final int INFO_PANE_SIZE = 400;
+  private final int TURTLE_LIST_WIDTH = 100;
+  private final int BUTTON_HEIGHT = 30;
+  private final int PICTURE_X_LOCATION = 200;
+  private final int PICTURE_Y_LOCATION = 50;
+  private final double DEFAULT_TURTLE_WIDTH = 50.0;
+  private final double DEFAULT_TURTLE_HEIGHT = 25.0;
+  private double habitatWidth;
+  private double habitatHeight;
+  private Color backgroundColor;
+  private Rectangle rec;
+  private Rectangle clrBox;
+  private Text information;
   private Stack<List<Polyline>> polylineStack = new Stack<>();
   private List<Polyline> myLines;
   private Map<Integer, TurtleView> allTurtleViews;
   private Map<Integer, Turtle> allTurtles;
   private Map<Integer, Double> lastx;
   private Map<Integer, Double> lasty;
-  private double habitatWidth;
-  private double habitatHeight;
 
+  /**
+   * Constructor to initialize Turtle->ID map, TurtleView->ID map, previous coordinate map, pen locations, and
+   * habitat size; automatically scales the Habitat to the user's window size.
+   *
+   * @param width the width of the habitat
+   * @param height the height of the habitat
+   */
   public TurtleHabitat(double width, double height) {
-    allTurtleViews = new HashMap<Integer, TurtleView>();
-    allTurtles = new HashMap<Integer, Turtle>();
-    lastx = new HashMap<Integer, Double>();
-    lasty = new HashMap<Integer, Double>();
+    allTurtleViews = new HashMap<>();
+    allTurtles = new HashMap<>();
+    lastx = new HashMap<>();
+    lasty = new HashMap<>();
     habitatWidth = width;
     habitatHeight = height;
     myLines = new ArrayList<>();
     changeSize(width, height);
   }
 
+  /**
+   * Updates each individual TurtleView object in the TurtleHabitat
+   *
+   * @param ids the list of all Turtle IDs in the TurtleHabitat
+   * @param turtles the list of all Turtle objects in the TurtleHabitat
+   * @param penColors the list of each Turtle's respective pen color
+   */
+  public void updateHabitat(List<Integer> ids, List<Turtle> turtles, List<Color> penColors) {
+    for (int i = 0; i < ids.size(); i++) {
+      updateSingleTurtle(ids.get(i), turtles.get(i), penColors.get(i)); }
+    for (Entry<Integer, TurtleView> e: new HashSet<>(allTurtleViews.entrySet())) {
+      if (!e.getValue().isUpdated()) {
+        getChildren().remove(e.getValue());
+        allTurtles.remove(e.getKey(), allTurtles.get(e.getKey()));
+        allTurtleViews.remove(e.getKey(), e.getValue()); }
+      e.getValue().setUpdated(false); }
+  }
+
+  /**
+   * Launches window to show all current Turtles in the habitat
+   */
   public void viewTurtleInformation() {
     Stage s = new Stage();
     Pane root = new Pane();
@@ -75,6 +110,101 @@ public class TurtleHabitat extends Pane {
     s.setScene(sc);
     s.show();
   }
+
+  /**
+   * Utilizes a Stack to remove the previously drawn Pen (Polyline)
+   * Called by Ctrl+Z keybind within TerminalController.java
+   */
+  public void undoPen() {
+    if (!polylineStack.isEmpty()) {
+      List<Polyline> toRemove = polylineStack.pop();
+      for (Polyline p : myLines) {
+        p.getPoints().clear();
+        getChildren().remove(p); }
+      myLines.clear();
+      myLines = toRemove;
+      for (Polyline p : myLines) {
+        getChildren().add(p); } }
+  }
+
+  /**
+   * Updates the current image file used for each TurtleView in the TurtleHabitat
+   * @param filepath the location of the Image File
+   */
+  public void updateAllTurtlesImage(String filepath) {
+    for (TurtleView turtleView : getAllTurtleViews()) {
+      turtleView.setImage(filepath); }
+  }
+
+  /**
+   * Updates the current Shape used for each TurtleView in the TurtleHabitat
+   * @param colorID the ID number assigned to the current color by the user
+   */
+  public void updateAllTurtlesShapeColor(int colorID) {
+    for (TurtleView turtleView : getAllTurtleViews()) {
+      turtleView.setShape(colorID, true); }
+  }
+
+  /**
+   * @param turtleID a chosen Turtle's ID
+   * @return the Turtle associated with that ID
+   */
+  public Turtle getTurtle(int turtleID) {
+    return allTurtles.get(turtleID);
+  }
+
+  /**
+   * @param turtleID a chosen Turtle's ID
+   * @return the TurtleView associated with that ID
+   */
+  public TurtleView getTurtleView(int turtleID) {
+    return allTurtleViews.get(turtleID);
+  }
+
+  /**
+   * @return the Map of IDs -> TurtleViews
+   */
+  public Map<Integer, TurtleView> getExistingTurtleViews() {
+    return allTurtleViews;
+  }
+
+  /**
+   * Updates the Pen Color associated with each TurtleView
+   * @param newPenColor the color to update
+   */
+  public void setAllTurtlesPenColor(Color newPenColor) {
+    for (TurtleView turtle : new ArrayList<>(allTurtleViews.values())) {
+      turtle.setPenColor(newPenColor); }
+  }
+
+  /**
+   * Sets the TurtleHabitat background color
+   * @param c new color
+   */
+  public void setBackground(Color c) {
+    setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
+    backgroundColor = c;
+  }
+
+  /**
+   * @return current color of the background
+   */
+  public Color getBackgroundColor() {
+    return backgroundColor;
+  }
+
+  /**
+   * Saves the previously drawn line to a Stack after each execution of a command
+   */
+  public void saveToStack() {
+    List<Polyline> temp = new ArrayList<>();
+    for (Polyline p : myLines) {
+      Polyline tempP = new Polyline();
+      tempP.getPoints().addAll(p.getPoints());
+      temp.add(tempP); }
+    polylineStack.add(temp);
+  }
+
 
   private void displayInformation(int id, Pane p) {
     p.getChildren().removeAll(rec, information, clrBox);
@@ -96,42 +226,24 @@ public class TurtleHabitat extends Pane {
     p.getChildren().addAll(rec, information, clrBox);
   }
 
-  public void updateHabitat(List<Integer> ids, List<Turtle> turtles, List<Color> colors) {
-    for (int i = 0; i < ids.size(); i++) {
-      updateSingleTurtle(ids.get(i), turtles.get(i), colors.get(i));
-    }
-    for (Entry<Integer, TurtleView> e: new HashSet<>(allTurtleViews.entrySet())) {
-      if (!e.getValue().isUpdated()) {
-        getChildren().remove(e.getValue());
-        allTurtles.remove(e.getKey(), allTurtles.get(e.getKey()));
-        allTurtleViews.remove(e.getKey(), e.getValue());
-      }
-      e.getValue().setUpdated(false);
-    }
-  }
-
-  public void updateSingleTurtle(int id, Turtle turtle, Color c) {
+  private void updateSingleTurtle(int id, Turtle turtle, Color c) {
     TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
         habitatWidth, habitatHeight);
-    tempTurtle.setFill(tempTurtle.getImage()); // FIXME:
+    tempTurtle.setFill(tempTurtle.getImage());
     tempTurtle.setX(tempTurtle.getXOffset());
     tempTurtle.setY(tempTurtle.getYOffset());
     if (!allTurtleViews.containsKey(id)) {
       allTurtleViews.putIfAbsent(id, tempTurtle);
       lastx.putIfAbsent(id, tempTurtle.getLayoutX() + tempTurtle.getShapeWidth() / 2);
       lasty.putIfAbsent(id, tempTurtle.getLayoutY() + tempTurtle.getShapeHeight() / 2);
-      getChildren().addAll(tempTurtle);
-    }
+      getChildren().addAll(tempTurtle); }
     allTurtles.put(id, turtle);
     allTurtleViews.get(id).updateTurtleView(turtle);
     allTurtleViews.get(id).setUpdated(true);
     allTurtleViews.get(id).setPenColor(c);
-
     if (turtle.isPenDown()) {
       for (Point loc : turtle.locationsList()) {
-        penDraw(loc,id);
-      }
-    }
+        penDraw(loc,id); } }
   }
 
   private void changeSize(double width, double height) {
@@ -139,79 +251,11 @@ public class TurtleHabitat extends Pane {
     setPrefHeight(height);
   }
 
-  public TurtleView getTurtleView(int turtleID) {
-    return allTurtleViews.get(turtleID);
+  private ArrayList<TurtleView> getAllTurtleViews(){
+    return new ArrayList<>(allTurtleViews.values());
   }
 
-
-  public Map<Integer, TurtleView> getExistingTurtleViews() {
-    return allTurtleViews;
-  }
-
-  public Turtle getTurtle(int turtleID) {
-    return allTurtles.get(turtleID);
-  }
-
-  public ArrayList<TurtleView> getAllTurtleViews(){
-    return new ArrayList<TurtleView>(allTurtleViews.values());
-  }
-
-  public void setAllTurtlesPenColor(Color newPenColor) {
-    for (TurtleView turtle : new ArrayList<>(allTurtleViews.values())) {
-      turtle.setPenColor(newPenColor);
-    }
-  }
-
-  public void updateAllTurtlesImage(String filepath) {
-    for (TurtleView turtleView : getAllTurtleViews()) {
-      turtleView.setImage(filepath);
-    }
-  }
-
-  public void updateAllTurtlesShapeColor(int colorID) {
-    for (TurtleView turtleView : getAllTurtleViews()) {
-      turtleView.setShape(colorID, true);
-    }
-  }
-
-  public void setBackground(Color c) {
-    setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
-    backgroundColor = c;
-  }
-
-  public Color getBackgroundColor() {
-    return backgroundColor;
-  }
-
-  public void undoPen() {
-    if (!polylineStack.isEmpty()) {
-      List<Polyline> toRemove = polylineStack.pop();
-      for (Polyline p : myLines) {
-        p.getPoints().clear();
-        getChildren().remove(p);
-      }
-      myLines.clear();
-      myLines = toRemove;
-      for (Polyline p : myLines) {
-        getChildren().add(p);
-      }
-    }
-  }
-
-// add current list to a stack
-
-  public void saveToStack() {
-    List<Polyline> temp = new ArrayList<>();
-    for (Polyline p : myLines) {
-      Polyline tempP = new Polyline();
-      tempP.getPoints().addAll(p.getPoints());
-      temp.add(tempP);
-    }
-    polylineStack.add(temp);
-  }
-
-
-  public void penDraw(Point loc, int turtleID) {
+  private void penDraw(Point loc, int turtleID) { //converts Turtle coordinates [center=(0,0)] to Scene coordinates in JavaFX
     TurtleView turtle = allTurtleViews.get(turtleID);
     Color penColor = turtle.getPenColor();
     double x_coor = loc.getX();
@@ -227,16 +271,13 @@ public class TurtleHabitat extends Pane {
     lasty.put(turtleID, yOffsetCoord);
 
     if (loc.getDrawn()) {
-      pen.getPoints().addAll(points);
-    }
+      pen.getPoints().addAll(points); }
     pen.setStroke(penColor);
     pen.setStrokeWidth(turtle.getPenWidth());
     if (turtle.isCleared()) {
       for (Polyline p : myLines) {
         p.getPoints().clear();
-        getChildren().remove(p);
-      }
-      myLines.clear();
-    }
+        getChildren().remove(p); }
+      myLines.clear(); }
   }
 }

@@ -27,14 +27,15 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * ParserController.java Sets up and runs Slogo environment as an Application
+ * ParserController.java
+ * Sets up and runs Slogo environment as an Application
  *
  * @author Varun Kosgi
  * @author Qiaoyi Fang
  * @author Alexander Uzochukwu
  */
 public class ParserController extends Application {
-
+  //only one instance of ParserController so all variables related to Application instance are declared static
   private static final String STYLESHEET = "slogo/resources/styleSheets/default.css";
   private static final String IMAGE_DIRECTORY = "src/slogo/resources/images";
   private static final String LOGO_DIRECTORY = "data/examples";
@@ -47,41 +48,33 @@ public class ParserController extends Application {
   private static final double SCENE_HEIGHT = 720;
   private static final double TABPANE_WIDTH = SCENE_WIDTH;
   private static final double TABPANE_HEIGHT = SCENE_HEIGHT / 5;
-  private static final Color ALL_COLOR = Color.WHITE;
   private static final int NUMBER_OF_TABS = 10;
+  private static final int DEFAULT_COLOR_CODE = -1;
+  private static final Color ALL_COLOR = Color.WHITE;
   private static String guiLanguage = "English_GUI";
   private static ResourceBundle myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + guiLanguage);
   private static int currentTab;
   private static String currentLang = "English";
-
   private static FileSelect imageFile = new FileSelect(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY,
           myResources.getString("ImageFile"), RESOURCES_PACKAGE + guiLanguage);
   private static FileSelect logoFile = new FileSelect(LOGO_FILE_EXTENSIONS, LOGO_DIRECTORY,
           myResources.getString("Logo"), RESOURCES_PACKAGE + guiLanguage);
-
+  private Timeline animation;
   private BorderPane root;
   private Header header;
   private Footer footer;
-
   private Stage myStage;
-  private Timeline animation;
-  private int DEFAULT_COLOR_CODE = -1;
-
   private Workspace currentWorkspace;
   private List<Workspace> workspaces;
-
   private TabPane workspaceEnvironment;
-
   private VariablesTabPaneController tabPaneController;
-
   private ColorFactory cf = new ColorFactory();
   private List<Button> selectButtons = new ArrayList<>();
 
   /**
    * Empty Constructor needed to run the application due to Application requirements
    */
-  public ParserController() {
-  }
+  public ParserController() { }
 
   /**
    * Constructor used in Main to begin the program Begins our JavaFX application Starts the
@@ -96,8 +89,10 @@ public class ParserController extends Application {
   }
 
   /**
+   * Begins Application by creating Workspaces, organizing GUI elements, starting animation loop, and creating Stage
+   *
    * @param primaryStage is the stage to display the Application, runs loop, organizes elements
-   *                     BorderPane
+   * BorderPane
    */
   public void start(Stage primaryStage) throws FileNotFoundException {
     primaryStage.setTitle("SLogo");
@@ -113,23 +108,22 @@ public class ParserController extends Application {
     myStage.show();
   }
 
-
-  private void startWorkspaces() throws FileNotFoundException {
+  private void startWorkspaces() throws FileNotFoundException { //initializes preset number of Workspaces
     workspaces = new ArrayList<>();
     workspaces.add(null);
-    for (int i = 0; i < NUMBER_OF_TABS; i++) {
+    for (int i = 0; i < NUMBER_OF_TABS; i++) { //creates 10 Workspaces
       workspaces.add(new Workspace((SCENE_WIDTH), SCENE_HEIGHT));
       workspaces.get(workspaces.size()-1).setColorFactory(cf); }
     currentWorkspace = workspaces.get(1);
     currentTab = 1;
     workspaceEnvironment = new TabPane();
-    for (int i = 1; i < workspaces.size(); i++) {
+    for (int i = 1; i < workspaces.size(); i++) { //creates 10 Tabs and populates each with Workspace
       Tab tab = new Tab(myResources.getString("Workspace") + i);
       tab.setContent(workspaces.get(i));
       workspaceEnvironment.getTabs().add(tab); }
   }
 
-  private void setBorderPane() {
+  private void setBorderPane() { //organizes root with JavaFX TabPane that holds all initializes Workspaces
     root = new BorderPane();
     root.setBackground(new Background(new BackgroundFill(ALL_COLOR, CornerRadii.EMPTY, Insets.EMPTY)));
     root.setMaxWidth(SCENE_WIDTH);
@@ -151,10 +145,8 @@ public class ParserController extends Application {
 
   private void startAnimationLoop() {
     KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
-      try {
-        step(); }
-      catch (IOException ex) {
-        System.out.println("Help Text File Not Found."); } });
+      try { step(); }
+      catch (IOException ex) {System.out.println("Help Text File Not Found."); } });
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
@@ -178,7 +170,7 @@ public class ParserController extends Application {
     if (header.getButtons().getFileStatus()) {
       handleLogoFiles(); }
     if (header.getButtons().getImageStatus()) {
-      handleImageFileChooser(); }
+      handleImageFiles(); }
     if (!header.getButtons().getHelpStatus().equals(myResources.getString("HelpButton"))) {
       header.launchHelpWindow(myResources.getString(header.getButtons().getHelpStatus()), guiLanguage); }
     if (header.getButtons().getPenColorStatus()) {
@@ -254,7 +246,7 @@ public class ParserController extends Application {
     Map<Integer, int[]> colors = currentWorkspace.getCompiler().getPaletteColors();
     for (Map.Entry<Integer, int[]> e : colors.entrySet()) {
       Color color = Color.color(e.getValue()[0] / 255.0, e.getValue()[1] / 255.0,
-              e.getValue()[2] / 255.0); //fixme magic val
+              e.getValue()[2] / 255.0);
       cf.addColor(e.getKey(), color); }
   }
 
@@ -264,7 +256,7 @@ public class ParserController extends Application {
       updateLanguage(guiLanguage); }
   }
 
-  private void updateLanguage(String language) throws FileNotFoundException {
+  private void updateLanguage(String language) throws FileNotFoundException { //resets everything on screen with the new language
     currentLang = language.substring(0, language.indexOf("_"));
     myResources = ResourceBundle.getBundle(RESOURCES_PACKAGE + language);
     imageFile = new FileSelect(IMAGE_FILE_EXTENSIONS, IMAGE_DIRECTORY,
@@ -287,7 +279,7 @@ public class ParserController extends Application {
     tabPaneController.changeLanguage(currentLang);
   }
 
-  private void handleImageFileChooser() {
+  private void handleImageFiles() {
     selectButtons.clear();
     File dataFile = imageFile.getFileChooser().showOpenDialog(myStage);
     if (dataFile == null) {
