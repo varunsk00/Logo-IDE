@@ -12,6 +12,15 @@ import slogo.compiler.exceptions.InvalidTurtleException;
 import slogo.compiler.exceptions.StackUnderflowException;
 import slogo.turtle.Turtle;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: Stores all turtles and relevant turtle data, as well as which turtles are currently active.
+ *
+ * Assumptions: All inputs are valid and verified elsewhere, as with Memory
+ *
+ * Dependencies: CompilerException, Turtle, Memory, TurtleMemoryState
+ */
 public class TurtleMemory {
 
   private ResourceBundle errorMsgs;
@@ -22,6 +31,9 @@ public class TurtleMemory {
   private int shapeIndex;
   private int penColorIndex;
 
+  /**
+   * Creates new TurtleMemory
+   */
   public TurtleMemory() {
     List<Integer> startIDs = new ArrayList<>();
     startIDs.add(1);
@@ -29,6 +41,9 @@ public class TurtleMemory {
     addTurtle(1);
   }
 
+  /**
+   * Saves the state of memory such that it can be reverted to
+   */
   public void save() {
     Map<Integer, Turtle> tur = new HashMap<>();
     for (Entry<Integer, Turtle> e : turtleMap.entrySet()) {
@@ -41,6 +56,9 @@ public class TurtleMemory {
     }
   }
 
+  /**
+   * Reverts to most recent saved state, throwing away current state
+   */
   public void undo() {
     if (!historyStack.isEmpty()) {
       TurtleMemoryState state = historyStack.pop();
@@ -56,14 +74,27 @@ public class TurtleMemory {
     }
   }
 
+  /**
+   * Sets the error message bundle for this memory
+   * @param msgs the resource bundle to be used
+   */
   public void setErrorMsgs(ResourceBundle msgs) {
     errorMsgs = msgs;
   }
 
+  /**
+   * Creates and adds new turtle with given id
+   * @param id the id of the new turtle
+   */
   public void addTurtle(int id) {
     addTurtle(id, new Turtle(id));
   }
 
+  /**
+   * Adds given turtle with given id
+   * @param id the id of the new turtle
+   * @param t the turtle object to be added
+   */
   public void addTurtle(int id, Turtle t) {
     t.setPenColorIndex(penColorIndex);
     t.setShapeIndex(shapeIndex);
@@ -71,6 +102,11 @@ public class TurtleMemory {
     currentTurtleID = id;
   }
 
+  /**
+   * Given a turtle id, return the corresponding turtle object
+   * @param id the id of the turtle
+   * @return the Turtle object corresponding to that ID
+   */
   public Turtle getTurtleByID(int id) {
     Turtle ret = turtleMap.getOrDefault(id, null);
     if (ret == null) {
@@ -80,26 +116,50 @@ public class TurtleMemory {
     return ret;
   }
 
+  /**
+   * Returns the current active turtle
+   * @return the current active turtle
+   */
   public Turtle getCurrentTurtle() {
     return getTurtleByID(currentTurtleID);
   }
 
+  /**
+   * Sets the current active turtle to the given id
+   * @param id the turtle to be set to active
+   */
   public void setCurrentTurtle(int id) {
     currentTurtleID = id;
   }
 
+  /**
+   * Gets the current active turtle ID
+   * @return the current active turtle ID
+   */
   public int getCurrentTurtleID() {
     return currentTurtleID;
   }
 
+  /**
+   * Returns all extant turtle IDs
+   * @return all extant turtle IDs
+   */
   public Collection<Integer> getAllTurtleIDs() {
     return turtleMap.keySet();
   }
 
+  /**
+   * Returns all currently active turtle ids
+   * @return all currently active turtle ids
+   */
   public List<Integer> getActiveTurtleIDs() {
     return new ArrayList<>(turtleIDStack.peek());
   }
 
+  /**
+   * Toggles the active state of the turtle associated with the given ID
+   * @param id the id of the turtle to toggle
+   */
   public void toggleActiveTurtle(int id) {
     List<Integer> actives = getActiveTurtleIDs();
     if (actives.contains(id)) {
@@ -110,6 +170,10 @@ public class TurtleMemory {
     tellTurtleStack(actives);
   }
 
+  /**
+   * Pushes the turtle stack during an ask
+   * @param newActives the new turtle to be set to active
+   */
   public void pushTurtleStack(List<Integer> newActives) {
     for (int i : newActives) {
       if (!turtleMap.containsKey(i)) {
@@ -121,6 +185,9 @@ public class TurtleMemory {
     updateTurtleActives();
   }
 
+  /**
+   * Pops the turtle stack, returning to the previous active turtles
+   */
   public void popTurtleStack() {
     turtleIDStack.pop();
     if (turtleIDStack.isEmpty()) {
@@ -132,6 +199,10 @@ public class TurtleMemory {
     updateTurtleActives();
   }
 
+  /**
+   * Sets a new set of global active turtles
+   * @param newActives
+   */
   public void tellTurtleStack(List<Integer> newActives) {
     turtleIDStack.pop();
     for (int i : newActives) {
@@ -151,17 +222,20 @@ public class TurtleMemory {
     }
   }
 
+  /**
+   * Sets the future shape for all new turtles
+   * @param shapeIndex the index of the future shape
+   */
   public void setShapeIndex(int shapeIndex) {
     this.shapeIndex = shapeIndex;
   }
 
+  /**
+   * Sets the future pen color for all new turtles
+   * @param penColorIndex the index of the new pen color
+   */
   public void setPenColorIndex(int penColorIndex) {
     this.penColorIndex = penColorIndex;
-  }
-
-  //FIXME does this do a copy? should it?
-  public Map<Integer, Turtle> getTurtleMapCopy() {
-    return new HashMap<>(turtleMap);
   }
 
 }
