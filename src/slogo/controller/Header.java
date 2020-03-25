@@ -28,7 +28,7 @@ public class Header extends VBox {
   private static final int HELP_WINDOW_HEIGHT = 400;
   private ResourceBundle myResources;
   private GUIButtons buttons;
-  private SliderController sliders;
+  private Sliders sliders;
 
   /**
    * Constructor that sets Resource Bundle initializes Buttons and Sliders into VBox
@@ -39,7 +39,7 @@ public class Header extends VBox {
   public Header(String language) throws FileNotFoundException {
     myResources = ResourceBundle.getBundle(language);
     buttons = new GUIButtons(language);
-    sliders = new SliderController(language);
+    sliders = new Sliders(language);
     sliders.getVBox().getStyleClass().add("slider-box");
     getChildren().addAll(buttons.getHBox(), sliders.getVBox());
   }
@@ -54,7 +54,7 @@ public class Header extends VBox {
   /**
    * @return SliderController under ButtonController
    */
-  public SliderController getSliders() {
+  public Sliders getSliders() {
     return sliders;
   }
 

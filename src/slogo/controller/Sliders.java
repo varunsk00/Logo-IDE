@@ -9,7 +9,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import slogo.workspace.Workspace;
 
-public class SliderController {
+public class Sliders {
 
   private static final int MIN_ZOOM = 1;
   private static final int DEFAULT_ZOOM = 3;
@@ -26,7 +26,7 @@ public class SliderController {
   private Slider penWidth;
   private VBox sliders;
 
-  public SliderController(String language) {
+  public Sliders(String language) {
     this.myResources = ResourceBundle.getBundle(language);
     renderSliders();
   }
