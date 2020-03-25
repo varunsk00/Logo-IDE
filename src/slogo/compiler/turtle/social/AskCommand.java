@@ -2,6 +2,11 @@ package slogo.compiler.turtle.social;
 
 import java.util.List;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for executing a command on some turtles
+ */
 public class AskCommand extends TurtleCreationCommand {
 
   public AskCommand(String declaration) {

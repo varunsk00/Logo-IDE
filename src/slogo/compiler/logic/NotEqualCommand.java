@@ -2,6 +2,11 @@ package slogo.compiler.logic;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for inequality logic
+ */
 public class NotEqualCommand extends Command {
 
   public NotEqualCommand(String declaration) {

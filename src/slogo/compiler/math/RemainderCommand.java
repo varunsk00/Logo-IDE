@@ -3,6 +3,11 @@ package slogo.compiler.math;
 import slogo.compiler.exceptions.InvalidArithmeticException;
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for modulo
+ */
 public class RemainderCommand extends Command {
 
   public RemainderCommand(String declaration) {

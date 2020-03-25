@@ -1,5 +1,10 @@
 package slogo.compiler.control;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for an if statement
+ */
 import slogo.compiler.parser.Command;
 
 public class IfCommand extends Command {

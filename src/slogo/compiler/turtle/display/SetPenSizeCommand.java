@@ -2,6 +2,11 @@ package slogo.compiler.turtle.display;
 
 import slogo.compiler.turtle.TurtleCommand;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for setting the pen width of a turtle
+ */
 public class SetPenSizeCommand extends TurtleCommand {
 
   public SetPenSizeCommand(String declaration) {

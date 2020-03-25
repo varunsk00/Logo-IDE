@@ -3,6 +3,11 @@ package slogo.compiler.math;
 import java.util.Random;
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for RNG
+ */
 public class RandomCommand extends Command {
 
   public RandomCommand(String declaration) {

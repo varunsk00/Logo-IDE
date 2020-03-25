@@ -4,6 +4,11 @@ import java.util.List;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for user defined commands
+ */
 public class CommandType extends TypeCommand {
 
   private List<String> variables;

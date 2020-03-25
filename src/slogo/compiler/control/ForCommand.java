@@ -1,5 +1,10 @@
 package slogo.compiler.control;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for a for loop
+ */
 public class ForCommand extends LoopCommand {
 
   public ForCommand(String declaration) {

@@ -2,6 +2,11 @@ package slogo.compiler.logic;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for or logic
+ */
 public class OrCommand extends Command {
 
   public OrCommand(String declaration) {

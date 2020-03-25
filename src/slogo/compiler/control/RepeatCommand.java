@@ -1,5 +1,10 @@
 package slogo.compiler.control;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for a repeat loop
+ */
 public class RepeatCommand extends LoopCommand {
 
   public RepeatCommand(String declaration) {

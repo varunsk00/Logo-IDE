@@ -1,5 +1,10 @@
 package slogo.compiler.turtle.query;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for getting the pen state of a turtle
+ */
 public class IsPenDownCommand extends TurtleQuery {
 
   public IsPenDownCommand(String declaration) {

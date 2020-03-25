@@ -2,9 +2,15 @@ package slogo.compiler.control;
 
 import slogo.compiler.parser.Command;
 
+
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: An abstract command for implementing all loops
+ */
 public abstract class LoopCommand extends Command {
 
-  public static final double DOUBLE_TOLERANCE = .000000001;
+  public static final double DOUBLE_TOLERANCE = .000000001; //such that the final value is included in loops
 
   public LoopCommand(String declaration) {
     super(declaration);

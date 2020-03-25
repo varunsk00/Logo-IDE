@@ -2,6 +2,11 @@ package slogo.compiler.control;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for an if/else statement
+ */
 public class IfElseCommand extends Command {
 
   public IfElseCommand(String declaration) {

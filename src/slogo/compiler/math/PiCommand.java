@@ -2,6 +2,11 @@ package slogo.compiler.math;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for the value pi
+ */
 public class PiCommand extends Command {
 
   public PiCommand(String declaration) {

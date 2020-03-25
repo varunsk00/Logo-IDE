@@ -2,6 +2,11 @@ package slogo.compiler.types;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for starting a list, in which all included commands are executed sequentially
+ */
 public class ListStartType extends TypeCommand {
 
   public ListStartType(String declaration) {

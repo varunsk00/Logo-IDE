@@ -2,6 +2,11 @@ package slogo.compiler.turtle.display;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for setting the background index
+ */
 public class SetBackgroundCommand extends Command {
 
   public SetBackgroundCommand(String declaration) {

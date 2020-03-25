@@ -3,6 +3,11 @@ package slogo.compiler.turtle.command;
 import slogo.compiler.turtle.query.TurtleQuery;
 import slogo.turtle.Turtle;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for clearing the screen
+ */
 public class ClearScreenCommand extends TurtleQuery {
 
   public ClearScreenCommand(String declaration) {

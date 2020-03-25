@@ -2,6 +2,11 @@ package slogo.compiler.turtle.social;
 
 import java.util.List;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for globally deciding active turtles
+ */
 public class TellCommand extends TurtleCreationCommand {
 
   public TellCommand(String declaration) {

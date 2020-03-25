@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for executing a command on turtles that meet a criteria
+ */
 public class AskWithCommand extends AskCommand {
 
   public AskWithCommand(String declaration) {

@@ -2,6 +2,11 @@ package slogo.compiler.math;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for arctan
+ */
 public class ArcTangentCommand extends Command {
 
   public ArcTangentCommand(String declaration) {

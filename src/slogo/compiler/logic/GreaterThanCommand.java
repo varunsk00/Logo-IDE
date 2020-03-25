@@ -2,6 +2,11 @@ package slogo.compiler.logic;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for greater than comparison
+ */
 public class GreaterThanCommand extends Command {
 
   public GreaterThanCommand(String declaration) {

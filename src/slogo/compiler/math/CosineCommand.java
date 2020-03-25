@@ -2,6 +2,11 @@ package slogo.compiler.math;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for cosine
+ */
 public class CosineCommand extends Command {
 
   public CosineCommand(String declaration) {

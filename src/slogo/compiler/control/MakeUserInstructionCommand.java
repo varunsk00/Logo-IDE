@@ -5,6 +5,11 @@ import slogo.compiler.exceptions.CompilerException;
 import slogo.compiler.exceptions.GroupingException;
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for creating user defined commands.
+ */
 public class MakeUserInstructionCommand extends Command {
 
   public MakeUserInstructionCommand(String declaration) {

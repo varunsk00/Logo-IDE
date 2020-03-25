@@ -2,6 +2,11 @@ package slogo.compiler.turtle.display;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for adding a palette color
+ */
 public class SetPaletteCommand extends Command {
 
   public SetPaletteCommand(String declaration) {

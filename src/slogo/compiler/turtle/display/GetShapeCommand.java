@@ -2,6 +2,11 @@ package slogo.compiler.turtle.display;
 
 import slogo.compiler.turtle.query.TurtleQuery;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for getting the shape of a turtle
+ */
 public class GetShapeCommand extends TurtleQuery {
 
   public GetShapeCommand(String declaration) {

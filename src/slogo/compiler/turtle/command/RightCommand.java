@@ -2,6 +2,11 @@ package slogo.compiler.turtle.command;
 
 import slogo.compiler.turtle.TurtleCommand;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for rotating right
+ */
 public class RightCommand extends TurtleCommand {
 
   public RightCommand(String declaration) {

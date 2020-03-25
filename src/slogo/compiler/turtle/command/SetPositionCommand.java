@@ -2,6 +2,11 @@ package slogo.compiler.turtle.command;
 
 import slogo.compiler.turtle.TurtleCommand;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for setting position
+ */
 public class SetPositionCommand extends TurtleCommand {
 
   public SetPositionCommand(String declaration) {

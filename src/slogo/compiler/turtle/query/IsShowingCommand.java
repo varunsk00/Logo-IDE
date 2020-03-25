@@ -1,5 +1,10 @@
 package slogo.compiler.turtle.query;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for getting whether the turtle is shown
+ */
 public class IsShowingCommand extends TurtleQuery {
 
   public IsShowingCommand(String declaration) {

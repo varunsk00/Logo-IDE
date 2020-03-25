@@ -2,6 +2,11 @@ package slogo.compiler.turtle.display;
 
 import slogo.compiler.turtle.TurtleCommand;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for setting the shape of a turtle
+ */
 public class SetShapeCommand extends TurtleCommand {
 
   public SetShapeCommand(String declaration) {

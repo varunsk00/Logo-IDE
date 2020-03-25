@@ -3,6 +3,11 @@ package slogo.compiler.math;
 import slogo.compiler.exceptions.InvalidArithmeticException;
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for division
+ */
 public class QuotientCommand extends Command {
 
   public QuotientCommand(String declaration) {

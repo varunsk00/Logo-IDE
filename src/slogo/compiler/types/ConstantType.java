@@ -2,6 +2,11 @@ package slogo.compiler.types;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for numeric values
+ */
 public class ConstantType extends TypeCommand {
 
   private double value;
@@ -35,6 +40,9 @@ public class ConstantType extends TypeCommand {
     return true;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String toString() {
     return "const:" + value;

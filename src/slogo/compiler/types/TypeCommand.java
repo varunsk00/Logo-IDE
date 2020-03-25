@@ -3,6 +3,11 @@ package slogo.compiler.types;
 import slogo.compiler.parser.Command;
 import slogo.compiler.parser.TypeFactory;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A abstract command for all data structures (numbers, variables, lists, etc)
+ */
 public abstract class TypeCommand extends Command {
 
   public TypeCommand(String declaration) {

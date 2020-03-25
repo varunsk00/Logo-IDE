@@ -2,6 +2,11 @@ package slogo.compiler.control;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for defining variables
+ */
 public class MakeVariableCommand extends Command {
 
   public MakeVariableCommand(String declaration) {

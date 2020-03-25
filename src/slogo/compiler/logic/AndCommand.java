@@ -1,5 +1,10 @@
 package slogo.compiler.logic;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for and logic
+ */
 import slogo.compiler.parser.Command;
 
 public class AndCommand extends Command {

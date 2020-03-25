@@ -1,5 +1,10 @@
 package slogo.compiler.types;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for variables, which store a numeric value
+ */
 public class VariableType extends TypeCommand {
 
   public VariableType(String nm) {

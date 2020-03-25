@@ -2,6 +2,11 @@ package slogo.compiler.types;
 
 import slogo.compiler.parser.Command;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for ending a list
+ */
 public class ListEndType extends TypeCommand {
 
   public ListEndType(String declaration) {

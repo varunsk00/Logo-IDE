@@ -1,5 +1,10 @@
 package slogo.compiler.types;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for ending a group
+ */
 public class GroupEndType extends TypeCommand {
 
   public GroupEndType(String declaration) {

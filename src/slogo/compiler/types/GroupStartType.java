@@ -5,7 +5,11 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import slogo.compiler.exceptions.GroupingException;
 import slogo.compiler.parser.Command;
-
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: A command for beginning a group, with arbitrary numbers of arguments
+ */
 public class GroupStartType extends TypeCommand {
 
   private Map<Integer, Callable<Double>> methodMap = new HashMap<>();
@@ -36,7 +40,7 @@ public class GroupStartType extends TypeCommand {
     }
   }
 
-  public double executeInvalid() {
+  private double executeInvalid() {
     return 0; //FIXME should I throw error?
   }
 
