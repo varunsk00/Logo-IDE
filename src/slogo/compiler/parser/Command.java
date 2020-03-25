@@ -7,6 +7,16 @@ import java.util.ResourceBundle;
 import slogo.compiler.exceptions.InvalidSyntaxException;
 import slogo.compiler.parser.memory.Memory;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: Superclass for all SLogo commands - all text commands are parsed and compiled into Command
+ * objects.
+ *
+ * Assumptions: Declaration is either contains no spaces or is the initialization string.
+ *
+ * Dependencies: InvalidSyntaxException, CommandFactory, Memory
+ */
 public abstract class Command {
 
   protected static final String INITIALIZATION = "this is an initialization string that should never happen";
@@ -25,6 +35,10 @@ public abstract class Command {
   protected int groupingType;
   private boolean isComplete;
 
+  /**
+   * Creates a Command object with the given string declaration
+   * @param declaration the text used to declare the command
+   */
   public Command(String declaration) {
     args = new ArrayList<>();
     groupingType = GROUPING_ITERATIVE;
@@ -41,6 +55,11 @@ public abstract class Command {
     type = names[names.length - 1];
   }
 
+  /**
+   * Returns true if this class is equal to the given type
+   * @param typeCheck the type to be compared to
+   * @return whether or not this command is the given type
+   */
   public boolean typeEquals(String typeCheck) {
     return type.toLowerCase().contains(typeCheck.toLowerCase());
   }
@@ -49,10 +68,18 @@ public abstract class Command {
     name = type;
   }
 
+  /**
+   * Returns the name of the command
+   * @return the name of the command
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Executes the command and returns the double return value
+   * @return the double return value of the executed command
+   */
   public double execute() {
     executed = true;
     return executeCommand();
@@ -65,15 +92,26 @@ public abstract class Command {
    */
   public abstract double executeCommand();
 
+  /**
+   * Registers this command in the CommandFactory
+   */
   public void register() {
     String className = findClass();
     factoryRegister(className);
   }
 
+  /**
+   * Returns the number of desired arguments
+   * @return the number of desired arguments
+   */
   public int getDesiredArgs() {
     return desiredArgs;
   }
 
+  /**
+   * Returns the type of this command
+   * @return the type of this command
+   */
   public String getType() {
     return type;
   }
@@ -91,6 +129,10 @@ public abstract class Command {
     CommandFactory.registerCommand(className, obj);
   }
 
+  /**
+   * Sets the memory for this command to the given object
+   * @param mem the memory for this command to use
+   */
   public void setMemory(Memory mem) {
     memory = mem;
     for (Command c : args) {
@@ -98,14 +140,27 @@ public abstract class Command {
     }
   }
 
+  /**
+   * Set the error message resource bundle for this command to use
+   * @param msgs the error message resource bundle for this command to use
+   */
   public void setErrorMsgs(ResourceBundle msgs) {
     errorMsgs = msgs;
   }
 
+  /**
+   * Returns true if the command is complete non recursively
+   * @return whether or not the command is complete non recursively
+   */
   public boolean isCompleteSub() {
     return args.size() == desiredArgs;
   }
 
+  /**
+   * Creates a new command given the string declaration
+   * @param declaration the text that declares the command
+   * @return the created command object
+   */
   public Command createCommand(String declaration) {
     try {
       return this.getClass().getConstructor(String.class).newInstance(declaration);
@@ -117,6 +172,10 @@ public abstract class Command {
     return null;
   }
 
+  /**
+   * Returns true if the command is recursively complete
+   * @return whether or not the command is recursively complete
+   */
   public boolean isComplete() {
     for (Command c : args) {
       if (!c.isComplete()) {
@@ -126,14 +185,27 @@ public abstract class Command {
     return isComplete || isCompleteSub();
   }
 
+  /**
+   * Overrides logic and declares this command as the input boolean
+   * @param comp the truth value of the completeness of the command
+   */
   public void setIsComplete(boolean comp) {
     isComplete = comp;
   }
 
+  /**
+   * Appends a command argument to this command
+   * @param arg the argument to be added
+   */
   public void addArg(Command arg) {
     args.add(arg);
   }
 
+  /**
+   * Sets the nth argument to the given command
+   * @param c the argument to be added
+   * @param n the index of the argument to be set, 0 indexed
+   */
   public void setArg(Command c, int n) {
     try {
       if (args.size() == n) {
@@ -146,14 +218,27 @@ public abstract class Command {
     }
   }
 
+  /**
+   * Returns the value of the grouping type of the command
+   * @return the value of the grouping type of the command
+   */
   public int getGroupingType() {
     return groupingType;
   }
 
+
+  /**
+   * Returns the list of command arguments
+   * @return the list of command arguments
+   */
   public List<Command> getArgs() {
     return args;
   }
 
+  /**
+   * Returns the string interpretation of the command
+   * @return the string interpretation of the command
+   */
   @Override
   public String toString() {
     StringBuilder ret = new StringBuilder(this.getClass().getName() + " ");
@@ -163,18 +248,10 @@ public abstract class Command {
     return ret.toString();
   }
 
-  public void recPrint() {
-    System.out.print("" + this + " ");
-    for (Command c : args) {
-      System.out.print("" + c + " ");
-    }
-    for (Command c : args) {
-      c.recPrint();
-    }
-    System.out.println();
-
-  }
-
+  /**
+   * Returns true if the command contains a user command definition
+   * @return true if the command contains a user command definition
+   */
   public boolean containsDefinition() {
     if (typeEquals("makeuserinstruction")) {
       return true;
@@ -187,8 +264,12 @@ public abstract class Command {
     return false;
   }
 
+  /**
+   * Returns the first definition in the command, or null if none exist
+   * @return the first definition in the command, or null if none exist
+   */
   public Command findFirstDef() {
-    if (typeEquals("makeuserinstruction") && !executed) { //fixme bad bad bad
+    if (typeEquals("makeuserinstruction") && !executed) {
       return this;
     }
     for (Command c : args) {

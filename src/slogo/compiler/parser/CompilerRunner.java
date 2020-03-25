@@ -2,6 +2,13 @@ package slogo.compiler.parser;
 
 import java.util.Scanner;
 
+/**
+ * @author Maverick Chung mc608
+ *
+ * Purpose: Used to test commands pre-GUI. Takes in a line of SLogo code, compiles it, and executes it.
+ *
+ * Dependencies: Compiler
+ */
 public class CompilerRunner {
 
   public static void main(String[] args) {
