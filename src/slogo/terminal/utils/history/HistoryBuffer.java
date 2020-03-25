@@ -5,8 +5,7 @@ import java.util.List;
 
 /**
  * HistoryBuffer enables the terminal to have an iterateable buffer that stores the previous
- * commands. It automates the process of retrieving the previous or next history entry (also strips off the encapsulated user code).
- * @author Qiaoyi Fang, Maverick Chung
+ * commands. To-do list: maybe it should extend List<String>?
  */
 public class HistoryBuffer {
 
@@ -29,6 +28,42 @@ public class HistoryBuffer {
   public HistoryBuffer() {
     initializeBuffer();
     initializeHistory();
+  }
+
+  private void initializeBuffer() {
+    buffer = new String[BUFFER_LIMIT];
+    initialized = false;
+    currentSize = 0;
+    storage_index = -1;
+    index = 0;
+  }
+
+  private void initializeHistory() {
+    commands = new ArrayList<>();
+    messages = new ArrayList<>();
+    cnt = 0;
+  }
+
+  public void addHistory(String command, String systemMessage) {
+    commands.add(String.format("%d: %s", cnt++, command));
+    messages.add(systemMessage);
+  }
+
+  public void removeLastHistory() {
+    if (!messages.isEmpty()) {
+      messages.remove(messages.size() - 1);
+    }
+    if (!commands.isEmpty()) {
+      commands.remove(commands.size() - 1);
+    }
+  }
+
+  public List<String> getCommands() {
+    return commands;
+  }
+
+  public List<String> getMessages() {
+    return messages;
   }
 
   /**
@@ -94,42 +129,6 @@ public class HistoryBuffer {
     index = storage_index + 1;
   }
 
-  private void initializeBuffer() {
-    buffer = new String[BUFFER_LIMIT];
-    initialized = false;
-    currentSize = 0;
-    storage_index = -1;
-    index = 0;
-  }
-
-  private void initializeHistory() {
-    commands = new ArrayList<>();
-    messages = new ArrayList<>();
-    cnt = 0;
-  }
-
-  public void addHistory(String command, String systemMessage) {
-    commands.add(String.format("%d: %s", cnt++, command));
-    messages.add(systemMessage);
-  }
-
-  public void removeLastHistory() {
-    if (!messages.isEmpty()) {
-      messages.remove(messages.size() - 1);
-    }
-    if (!commands.isEmpty()) {
-      commands.remove(commands.size() - 1);
-    }
-  }
-
-  public List<String> getCommands() {
-    return commands;
-  }
-
-  public List<String> getMessages() {
-    return messages;
-  }
-
   private String handleEmptyBuffer() {
     return "";
   }
@@ -158,10 +157,10 @@ public class HistoryBuffer {
   }
 
   private String stripInputText(String input) {
-    String tempInput = new String(input); //to prevent the passing of pointer
+    String tempInput = new String(input);
 
     while (tempInput.length() >= USER_INPUT_CODE.length() && tempInput.substring(0, USER_INPUT_CODE.length()).equals(USER_INPUT_CODE)){
-      tempInput = new String(tempInput.substring(USER_INPUT_CODE.length())); //to prevent the passing of pointer
+      tempInput = new String(tempInput.substring(USER_INPUT_CODE.length()));
     }
     return tempInput;
   }

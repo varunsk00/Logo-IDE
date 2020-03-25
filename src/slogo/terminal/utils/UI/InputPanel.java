@@ -5,9 +5,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 /**
- * InputPanel creates an HBox object that assembles InputArea and the PromptArea to build the input panel
- * (located at the bottom of the terminal).
- * @author Qiaoyi Fang
+ * InputPanel assembles InputArea and the PromptArea to build the input panel at the bottom of the
+ * terminal
  */
 public class InputPanel extends HBox {
 
@@ -32,7 +31,7 @@ public class InputPanel extends HBox {
   }
 
   /**
-   * Resize the panel
+   * Resizes the panel
    *
    * @param width  new width
    * @param height new height
@@ -108,7 +107,7 @@ public class InputPanel extends HBox {
   }
 
   private void initializeInputPanel() {
-    promptArea = new PromptArea();
+    promptArea = new PromptArea(height);
     inputArea = new InputArea(width, height);
     getChildren().addAll(promptArea, inputArea);
     getStylesheets().add(CSS_FILEPATH);

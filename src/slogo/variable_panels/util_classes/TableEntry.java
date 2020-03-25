@@ -3,10 +3,7 @@ package slogo.variable_panels.util_classes;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- * TableEntry serves as the ValueCellFactory for the AutoTableView class. It takes a pair of String
- * values and manages its update.
- *
- * @author Qiaoyi Fang
+ * ValueCellFactory object
  */
 public class TableEntry {
 

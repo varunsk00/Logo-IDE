@@ -15,16 +15,16 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /**
- * TestLine is the cell factory that generates a TextFlow object accordingly to the type and the content of the
+ * TestLine is the cell factory that generates a TextFlow object accordingly to the type of the
  * text.
- * @author Qiaoyi Fang
  */
 public class TestLine extends ListCell<String> {
 
   private final static String OTHER_TYPE_CODE = "OTHER_TYPE";
   private final static String ERROR_MSG_CODE = "ERROR_MSG";
   private final static String USER_INPUT_CODE = "USER_INPUT";
-  private final static String TERMINAL_USER_CODE = "U@@U"; //NON_TERMINAL_USER_CODE = "U--U";
+  private final static String TERMINAL_USER_CODE = "U@@U";
+  private final static String NON_TERMINAL_USER_CODE = "U--U";
   private final static String TERMINAL_INPUT_PROMPT = ">>>";
   private final static String NON_TERMINAL_INPUT_PROMPT = "<<<";
 
@@ -50,10 +50,6 @@ public class TestLine extends ListCell<String> {
     currentLanguage = "English";
   }
 
-  /**
-   * Constructor
-   * @param width the preferred width of the TextLine
-   */
   public TestLine(double width) {
     super();
     setWrapText(true);
@@ -61,7 +57,7 @@ public class TestLine extends ListCell<String> {
   }
 
   /**
-   * Updates the parsing language
+   * Change to new language
    *
    * @param newLanguage language string
    */
@@ -71,10 +67,13 @@ public class TestLine extends ListCell<String> {
 
   @Override
   protected void updateItem(String str, boolean empty) {
+    //System.out.println("updating a new item "+str);
     super.updateItem(str, empty);
     if (!checkEmpty(str)) {
+      //System.out.println(str+" is not empty");
       setGraphic(createTextFlow(str));
     } else {
+      //System.out.println(str+" is empty");
       setGraphic(null);
     }
   }
@@ -82,7 +81,7 @@ public class TestLine extends ListCell<String> {
   private Node createTextFlow(String str) {
     //determines the type of the text string
     matchDictionary = initializeDictionary(LOCAL_RESOURCE_MATCH_DICT);
-
+    //System.out.println(str+ "is "+getType(str));
     if (getType(str).equals(ERROR_MSG_CODE)) {
       return createErrorMsgFlow(str);
     } else if (getType(str).equals(USER_INPUT_CODE)) {
@@ -104,14 +103,21 @@ public class TestLine extends ListCell<String> {
   }
 
   private Node createUserInputFlow(String textLine) {
+    //System.out.println(textLine+" this is a user input");
+
+    //textLine = addPromptHeader(textLine);
+    //System.out.println(textLine+" this is a user input");
+
     TextFlow flow = new TextFlow();
     flow.getChildren()
         .addAll(new ColorText(getPrompt(textLine), getTextStrType(getPrompt(textLine))),
             createSpacer(), createSpacer(), createSpacer());
+    //flow.getChildren().addAll(new ColorText(stripInputText(textLine), OTHER_TYPE_CODE));
 
     String[] textsStr = stripInputText(textLine).split(SEPARATOR);
 
     //adding initial prompt
+
     boolean commentFlag = isComment(stripInputText(textLine));
 
     for (String textStr : textsStr) {

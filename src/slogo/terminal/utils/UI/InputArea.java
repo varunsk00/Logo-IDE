@@ -3,8 +3,7 @@ package slogo.terminal.utils.UI;
 import javafx.scene.control.TextArea;
 
 /**
- * InputArea generates the TextArea object that receives the input commands from user.
- * @author Qiaoyi Fang
+ * InputArea generates the textarea that user could put in commands
  */
 public class InputArea extends TextArea {
 
