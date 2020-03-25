@@ -9,6 +9,9 @@ public class SetPaletteCommand extends Command {
     desiredArgs = 4;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     int ret = (int) args.get(0).execute();

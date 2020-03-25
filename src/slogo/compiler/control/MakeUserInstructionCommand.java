@@ -13,6 +13,9 @@ public class MakeUserInstructionCommand extends Command {
     groupingType = Command.GROUPING_INVALID;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     try {
@@ -34,6 +37,9 @@ public class MakeUserInstructionCommand extends Command {
     return 1;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs &&

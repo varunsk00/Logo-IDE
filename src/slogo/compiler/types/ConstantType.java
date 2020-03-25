@@ -19,11 +19,17 @@ public class ConstantType extends TypeCommand {
     }
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     return value;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return true;

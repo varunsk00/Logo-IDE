@@ -9,6 +9,9 @@ public class MinusCommand extends Command {
     desiredArgs = 1;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     return -args.get(0).execute();

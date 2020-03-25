@@ -10,6 +10,9 @@ public class IfCommand extends Command {
     groupingType = Command.GROUPING_ITERATIVE;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     double val = args.get(0).execute();
@@ -20,6 +23,9 @@ public class IfCommand extends Command {
     return ret;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs && args.get(1).typeEquals("liststart");

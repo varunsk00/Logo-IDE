@@ -7,7 +7,7 @@ public class DoTimesCommand extends LoopCommand {
     desiredArgs = 2;
   }
 
-  /**
+/**
    * {@inheritDoc}
    */
   @Override
@@ -17,6 +17,9 @@ public class DoTimesCommand extends LoopCommand {
     return executeLoop(varName, 1, val, 1);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return args.size() == 2 &&

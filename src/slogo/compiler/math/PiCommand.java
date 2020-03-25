@@ -9,6 +9,9 @@ public class PiCommand extends Command {
     desiredArgs = 0;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     return Math.PI;

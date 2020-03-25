@@ -10,12 +10,18 @@ public class ListEndType extends TypeCommand {
     desiredArgs = 0;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     System.out.println("A list end was just executed, and that's bad.");
     return 0; //should never happen
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return true;

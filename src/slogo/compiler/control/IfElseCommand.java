@@ -10,6 +10,9 @@ public class IfElseCommand extends Command {
     groupingType = Command.GROUPING_ITERATIVE;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     double val = args.get(0).execute();
@@ -22,6 +25,9 @@ public class IfElseCommand extends Command {
     return ret;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs &&

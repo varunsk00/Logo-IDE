@@ -10,6 +10,9 @@ public class ClearScreenCommand extends TurtleQuery {
     desiredArgs = 0;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     double x = 0;

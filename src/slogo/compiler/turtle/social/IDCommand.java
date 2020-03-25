@@ -9,6 +9,9 @@ public class IDCommand extends TurtleQuery {
     desiredArgs = 0;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     return memory.getCurrentTurtleID();

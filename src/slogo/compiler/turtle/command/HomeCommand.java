@@ -9,6 +9,9 @@ public class HomeCommand extends TurtleCommand {
     desiredArgs = 0;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     double x = turtle.getXLocation();

@@ -9,6 +9,9 @@ public class SetPenSizeCommand extends TurtleCommand {
     desiredArgs = 1;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     double ret = args.get(0).execute();

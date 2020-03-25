@@ -7,6 +7,9 @@ public class GroupEndType extends TypeCommand {
     desiredArgs = 0;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     System.out.println("A group end was just executed, and that's bad.");

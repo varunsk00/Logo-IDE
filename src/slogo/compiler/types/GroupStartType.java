@@ -21,6 +21,9 @@ public class GroupStartType extends TypeCommand {
 
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     if (args.size() - 2 < memberDesiredArgs) {
@@ -82,6 +85,9 @@ public class GroupStartType extends TypeCommand {
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() { //fixme
     if (!args.isEmpty()) {

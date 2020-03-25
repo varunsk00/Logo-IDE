@@ -9,6 +9,9 @@ public class NaturalLogCommand extends Command {
     desiredArgs = 1;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     return Math.log(args.get(0).execute());

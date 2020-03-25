@@ -11,6 +11,9 @@ public class QuotientCommand extends Command {
     groupingType = Command.GROUPING_RECURSIVE;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     double denom = args.get(1).execute();

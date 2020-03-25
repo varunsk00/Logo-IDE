@@ -9,6 +9,9 @@ public class SetShapeCommand extends TurtleCommand {
     desiredArgs = 1;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     int ret = (int) args.get(0).execute();

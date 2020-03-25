@@ -10,6 +10,9 @@ public class ListStartType extends TypeCommand {
     desiredArgs = -1; //should never be used
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     double ret = 0;
@@ -20,6 +23,9 @@ public class ListStartType extends TypeCommand {
     return ret;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return args.size() > 0 && args.get(args.size() - 1).typeEquals("listend");

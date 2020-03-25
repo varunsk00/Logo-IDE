@@ -9,6 +9,9 @@ public class AskCommand extends TurtleCreationCommand {
     desiredArgs = 2;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     List<Integer> actives = parseIDs(args.get(0));
@@ -18,6 +21,9 @@ public class AskCommand extends TurtleCreationCommand {
     return ret;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs &&

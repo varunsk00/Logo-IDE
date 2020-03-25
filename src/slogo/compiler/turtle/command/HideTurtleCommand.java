@@ -9,6 +9,9 @@ public class HideTurtleCommand extends TurtleCommand {
     desiredArgs = 0;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     turtle.showTurtle(false);

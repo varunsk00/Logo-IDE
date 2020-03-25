@@ -10,6 +10,9 @@ public class SumCommand extends Command {
     groupingType = Command.GROUPING_RECURSIVE;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     return args.get(0).execute() + args.get(1).execute();

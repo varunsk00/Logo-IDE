@@ -7,12 +7,18 @@ public class RepeatCommand extends LoopCommand {
     desiredArgs = 2;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     double val = args.get(0).execute();
     return executeLoop(":repcount", 1, val, 1);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs && args.get(1).typeEquals("liststart");

@@ -9,6 +9,9 @@ public class SetPositionCommand extends TurtleCommand {
     desiredArgs = 2;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     double currx = turtle.getXLocation();

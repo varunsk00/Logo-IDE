@@ -16,6 +16,9 @@ public class CommandType extends TypeCommand {
     name = declaration;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     memory.pushMemoryStack();
@@ -38,6 +41,9 @@ public class CommandType extends TypeCommand {
     return ret;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     variables = memory.getCommandVariables(name);

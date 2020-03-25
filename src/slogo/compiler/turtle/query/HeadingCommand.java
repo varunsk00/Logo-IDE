@@ -7,6 +7,9 @@ public class HeadingCommand extends TurtleQuery {
     desiredArgs = 0;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     return turtle.getHeading();

@@ -10,6 +10,9 @@ public class NotCommand extends Command {
     groupingType = Command.GROUPING_ITERATIVE;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() { //FIXME add double tolerance (e.g. cos 90 != 0)
     boolean val = args.get(0).execute() == 0;

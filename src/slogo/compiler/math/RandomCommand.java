@@ -10,6 +10,9 @@ public class RandomCommand extends Command {
     desiredArgs = 1;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     Random rand = new Random();

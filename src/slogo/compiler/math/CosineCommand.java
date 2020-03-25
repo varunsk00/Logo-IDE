@@ -9,6 +9,9 @@ public class CosineCommand extends Command {
     desiredArgs = 1;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     return Math.cos(Math.toRadians(args.get(0).execute()));

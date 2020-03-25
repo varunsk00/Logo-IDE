@@ -9,6 +9,9 @@ public class LeftCommand extends TurtleCommand {
     desiredArgs = 1;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     double val = args.get(0).execute();

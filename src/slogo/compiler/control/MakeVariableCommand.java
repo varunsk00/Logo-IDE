@@ -9,6 +9,9 @@ public class MakeVariableCommand extends Command {
     desiredArgs = 2;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     double value = args.get(1).execute();
@@ -16,6 +19,9 @@ public class MakeVariableCommand extends Command {
     return value;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return args.size() == desiredArgs && args.get(0).typeEquals("variabletype");

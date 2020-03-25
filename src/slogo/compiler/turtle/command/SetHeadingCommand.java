@@ -9,6 +9,9 @@ public class SetHeadingCommand extends TurtleCommand {
     desiredArgs = 1;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public double executeTurtle() {
     double currentHead = turtle.getHeading();

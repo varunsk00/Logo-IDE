@@ -10,6 +10,9 @@ public class AndCommand extends Command {
     groupingType = Command.GROUPING_RECURSIVE;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() { //FIXME add double tolerance (e.g. cos 90 != 0)
     boolean val = args.get(0).execute() != 0 && args.get(1).execute() != 0;

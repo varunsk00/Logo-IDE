@@ -8,11 +8,17 @@ public class VariableType extends TypeCommand {
     desiredArgs = 0;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     return memory.getVariable(name);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return true;

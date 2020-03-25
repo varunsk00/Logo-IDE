@@ -8,6 +8,9 @@ public abstract class TurtleQuery extends TurtleCommand {
     super(declaration);
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     turtle = memory.getCurrentTurtle();

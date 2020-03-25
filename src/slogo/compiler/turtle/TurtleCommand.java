@@ -12,6 +12,9 @@ public abstract class TurtleCommand extends Command {
     super(declaration);
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     List<Integer> actives = memory.getActiveTurtleIDs();

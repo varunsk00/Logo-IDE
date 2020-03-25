@@ -10,6 +10,9 @@ public class NotEqualCommand extends Command {
     groupingType = Command.GROUPING_COMPARISON;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     boolean val = args.get(0).execute() != args.get(1).execute();

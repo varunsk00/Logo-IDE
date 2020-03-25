@@ -9,6 +9,9 @@ public class SineCommand extends Command {
     desiredArgs = 1;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     return Math.sin(Math.toRadians(args.get(0).execute()));

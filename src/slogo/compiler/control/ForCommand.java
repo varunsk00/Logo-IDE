@@ -7,6 +7,9 @@ public class ForCommand extends LoopCommand {
     desiredArgs = 2;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     String varName = args.get(0).getArgs().get(0).getName();
@@ -16,6 +19,9 @@ public class ForCommand extends LoopCommand {
     return executeLoop(varName, start, end, inc);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isCompleteSub() {
     return args.size() == 2 &&

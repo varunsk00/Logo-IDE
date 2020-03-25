@@ -10,6 +10,9 @@ public class PowerCommand extends Command {
     groupingType = Command.GROUPING_RECURSIVE;
   }
 
+/**
+   * {@inheritDoc}
+   */
   @Override
   public double executeCommand() {
     return Math.pow(args.get(0).execute(), args.get(1).execute());
