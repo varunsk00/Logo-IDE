@@ -1,0 +1,58 @@
+set :width 600
+set :height 400
+
+to getxcoord [:t:w:h] [
+  set :t - :t 1
+  %:t:w
+]
+
+to getycoord [:t:w:h] [
+  set :t - :t 1
+  set:t -:t %:t:w
+  /:t:h
+]
+
+to setup [:w:h][
+  cs
+  setpalette 9 255 255 255
+  setbg 9
+  repeat *:w:h [tell[:repcount]]
+  askwith [1] [pu]
+  repeat *:w:h [
+    tell [:repcount]
+    set :x getxcoord :repcount:w:h
+    set :y getycoord :repcount:w:h
+    set :xdiv / :width :turtlewidth
+    set :ydiv / :height :turtleheight
+    set :x - + * :x :xdiv /:xdiv 2 /:width 2
+    set :y - + * :y :ydiv /:ydiv 2 /:height 2
+    setxy:x:y
+  ]
+  tell[]
+]
+
+to f [:t] [
+  set :k 5
+  ( * + :t :k - :t :k :t )
+]
+
+to graph [] [
+  set :h :turtleheight
+  set :w :turtlewidth
+  repeat turtles [
+    set :id :repcount
+    set :x getxcoord :repcount:w:h
+    ask[:id][fd f - :x 9]
+  ]
+]
+
+
+set :turtleheight 1
+set :turtlewidth 19
+setup :turtlewidth :turtleheight
+
+graph
+
+
+
+
