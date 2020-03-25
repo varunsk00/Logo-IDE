@@ -42,13 +42,13 @@ to graph [] [
   repeat turtles [
     set :id :repcount
     set :x getxcoord :repcount:w:h
-    ask[:id][fd f - :x 9]
+    ask[:id][fd f - :x 8]
   ]
 ]
 
 
 set :turtleheight 1
-set :turtlewidth 19
+set :turtlewidth 17
 setup :turtlewidth :turtleheight
 
 graph
