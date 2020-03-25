@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for starting a list, in which all included commands are executed sequentially
  */
 public class ListStartType extends TypeCommand {
@@ -15,7 +15,7 @@ public class ListStartType extends TypeCommand {
     desiredArgs = -1; //should never be used
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

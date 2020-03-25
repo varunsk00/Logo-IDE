@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for the value pi
  */
 public class PiCommand extends Command {
@@ -14,7 +14,7 @@ public class PiCommand extends Command {
     desiredArgs = 0;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

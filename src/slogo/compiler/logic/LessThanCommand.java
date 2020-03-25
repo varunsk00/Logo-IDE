@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for less than comparison
  */
 public class LessThanCommand extends Command {
@@ -15,7 +15,7 @@ public class LessThanCommand extends Command {
     groupingType = Command.GROUPING_COMPARISON;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

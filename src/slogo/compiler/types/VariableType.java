@@ -2,7 +2,7 @@ package slogo.compiler.types;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for variables, which store a numeric value
  */
 public class VariableType extends TypeCommand {
@@ -13,7 +13,7 @@ public class VariableType extends TypeCommand {
     desiredArgs = 0;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

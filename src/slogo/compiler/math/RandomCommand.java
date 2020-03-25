@@ -5,7 +5,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for RNG
  */
 public class RandomCommand extends Command {
@@ -15,7 +15,7 @@ public class RandomCommand extends Command {
     desiredArgs = 1;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

@@ -6,7 +6,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for user defined commands
  */
 public class CommandType extends TypeCommand {
@@ -21,7 +21,7 @@ public class CommandType extends TypeCommand {
     name = declaration;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

@@ -6,7 +6,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: Store a state of the CommandMemory such that it can later be reverted to
  */
 public class CommandMemoryState {
@@ -21,6 +21,7 @@ public class CommandMemoryState {
 
   /**
    * Returns stored commands map
+   *
    * @return stored commands map
    */
   public Map<String, Command> getCommands() {
@@ -29,6 +30,7 @@ public class CommandMemoryState {
 
   /**
    * Returns stored variables map
+   *
    * @return stored variables map
    */
   public Map<String, List<String>> getVars() {

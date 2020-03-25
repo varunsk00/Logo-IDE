@@ -14,11 +14,12 @@ import slogo.turtle.Turtle;
 
 /**
  * @author Maverick Chung mc608
- *
- * Purpose: Stores all turtles and relevant turtle data, as well as which turtles are currently active.
- *
+ * <p>
+ * Purpose: Stores all turtles and relevant turtle data, as well as which turtles are currently
+ * active.
+ * <p>
  * Assumptions: All inputs are valid and verified elsewhere, as with Memory
- *
+ * <p>
  * Dependencies: CompilerException, Turtle, Memory, TurtleMemoryState
  */
 public class TurtleMemory {
@@ -76,6 +77,7 @@ public class TurtleMemory {
 
   /**
    * Sets the error message bundle for this memory
+   *
    * @param msgs the resource bundle to be used
    */
   public void setErrorMsgs(ResourceBundle msgs) {
@@ -84,6 +86,7 @@ public class TurtleMemory {
 
   /**
    * Creates and adds new turtle with given id
+   *
    * @param id the id of the new turtle
    */
   public void addTurtle(int id) {
@@ -92,8 +95,9 @@ public class TurtleMemory {
 
   /**
    * Adds given turtle with given id
+   *
    * @param id the id of the new turtle
-   * @param t the turtle object to be added
+   * @param t  the turtle object to be added
    */
   public void addTurtle(int id, Turtle t) {
     t.setPenColorIndex(penColorIndex);
@@ -104,6 +108,7 @@ public class TurtleMemory {
 
   /**
    * Given a turtle id, return the corresponding turtle object
+   *
    * @param id the id of the turtle
    * @return the Turtle object corresponding to that ID
    */
@@ -118,6 +123,7 @@ public class TurtleMemory {
 
   /**
    * Returns the current active turtle
+   *
    * @return the current active turtle
    */
   public Turtle getCurrentTurtle() {
@@ -126,6 +132,7 @@ public class TurtleMemory {
 
   /**
    * Sets the current active turtle to the given id
+   *
    * @param id the turtle to be set to active
    */
   public void setCurrentTurtle(int id) {
@@ -134,6 +141,7 @@ public class TurtleMemory {
 
   /**
    * Gets the current active turtle ID
+   *
    * @return the current active turtle ID
    */
   public int getCurrentTurtleID() {
@@ -142,6 +150,7 @@ public class TurtleMemory {
 
   /**
    * Returns all extant turtle IDs
+   *
    * @return all extant turtle IDs
    */
   public Collection<Integer> getAllTurtleIDs() {
@@ -150,6 +159,7 @@ public class TurtleMemory {
 
   /**
    * Returns all currently active turtle ids
+   *
    * @return all currently active turtle ids
    */
   public List<Integer> getActiveTurtleIDs() {
@@ -158,6 +168,7 @@ public class TurtleMemory {
 
   /**
    * Toggles the active state of the turtle associated with the given ID
+   *
    * @param id the id of the turtle to toggle
    */
   public void toggleActiveTurtle(int id) {
@@ -172,6 +183,7 @@ public class TurtleMemory {
 
   /**
    * Pushes the turtle stack during an ask
+   *
    * @param newActives the new turtle to be set to active
    */
   public void pushTurtleStack(List<Integer> newActives) {
@@ -201,6 +213,7 @@ public class TurtleMemory {
 
   /**
    * Sets a new set of global active turtles
+   *
    * @param newActives
    */
   public void tellTurtleStack(List<Integer> newActives) {
@@ -224,6 +237,7 @@ public class TurtleMemory {
 
   /**
    * Sets the future shape for all new turtles
+   *
    * @param shapeIndex the index of the future shape
    */
   public void setShapeIndex(int shapeIndex) {
@@ -232,6 +246,7 @@ public class TurtleMemory {
 
   /**
    * Sets the future pen color for all new turtles
+   *
    * @param penColorIndex the index of the new pen color
    */
   public void setPenColorIndex(int penColorIndex) {

@@ -4,7 +4,7 @@ import slogo.compiler.turtle.TurtleCommand;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for moving forward
  */
 public class ForwardCommand extends TurtleCommand {

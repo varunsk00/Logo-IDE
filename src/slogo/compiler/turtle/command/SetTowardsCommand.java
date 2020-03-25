@@ -4,7 +4,7 @@ import slogo.compiler.turtle.TurtleCommand;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for setting heading toward a point
  */
 public class SetTowardsCommand extends TurtleCommand {

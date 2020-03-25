@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for defining variables
  */
 public class MakeVariableCommand extends Command {
@@ -14,7 +14,7 @@ public class MakeVariableCommand extends Command {
     desiredArgs = 2;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

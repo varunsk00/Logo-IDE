@@ -5,7 +5,7 @@ import slogo.turtle.Turtle;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for clearing the screen
  */
 public class ClearScreenCommand extends TurtleQuery {

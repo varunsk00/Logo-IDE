@@ -5,7 +5,7 @@ import slogo.compiler.parser.TypeFactory;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A abstract command for all data structures (numbers, variables, lists, etc)
  */
 public abstract class TypeCommand extends Command {

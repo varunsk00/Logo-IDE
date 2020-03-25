@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for globally deciding active turtles
  */
 public class TellCommand extends TurtleCreationCommand {

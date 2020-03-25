@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for negation
  */
 public class MinusCommand extends Command {
@@ -14,7 +14,7 @@ public class MinusCommand extends Command {
     desiredArgs = 1;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

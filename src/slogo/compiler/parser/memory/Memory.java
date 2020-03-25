@@ -11,13 +11,13 @@ import slogo.turtle.Turtle;
 
 /**
  * @author Maverick Chung mc608
- *
- * Purpose: Holds all memory for a given compiler - turtles, variables, commands, and display ids such
- * as background color id and palette colors.
- *
- * Assumptions: All inputs (in particular, user commands) are validated in Compiler.
- * This class does almost no sanity checking, and just stores data (as per memory)
- *
+ * <p>
+ * Purpose: Holds all memory for a given compiler - turtles, variables, commands, and display ids
+ * such as background color id and palette colors.
+ * <p>
+ * Assumptions: All inputs (in particular, user commands) are validated in Compiler. This class does
+ * almost no sanity checking, and just stores data (as per memory)
+ * <p>
  * Dependencies: Command, CommandMemory, Variable Memory, TurtleMemory, DisplayMemory, Turtle
  */
 public class Memory {
@@ -44,6 +44,7 @@ public class Memory {
 
   /**
    * Copy constructor - creates new Memory object with old command and display memories
+   *
    * @param other
    */
   public Memory(Memory other) {
@@ -54,6 +55,7 @@ public class Memory {
 
   /**
    * Sets the error message bundle for this memory
+   *
    * @param msgs the resource bundle to be used
    */
   public void setErrorMsgs(ResourceBundle msgs) {
@@ -65,6 +67,7 @@ public class Memory {
 
   /**
    * Saves the state of memory such that it can be reverted to
+   *
    * @param input the text code that was entered
    */
   public void save(String input) {
@@ -103,6 +106,7 @@ public class Memory {
 
   /**
    * Returns all entered commands
+   *
    * @return all entered commands
    */
   public String getEnteredText() {
@@ -111,6 +115,7 @@ public class Memory {
 
   /**
    * Gets the double value of a variable
+   *
    * @param name name of the variable
    * @return the double value of the variable
    */
@@ -120,7 +125,8 @@ public class Memory {
 
   /**
    * Sets the value of a variable
-   * @param name the name of the variable to be set
+   *
+   * @param name  the name of the variable to be set
    * @param value the value of the variable
    */
   public void setVariable(String name, double value) {
@@ -143,6 +149,7 @@ public class Memory {
 
   /**
    * Returns all extant variable names
+   *
    * @return all extant variable names
    */
   public Collection<String> getAllVariableNames() {
@@ -151,8 +158,9 @@ public class Memory {
 
   /**
    * Saves a name to a user defined command
+   *
    * @param name the name of the command
-   * @param c the user defined command to be stored
+   * @param c    the user defined command to be stored
    */
   public void setUserDefinedCommand(String name, Command c) {
     commMemory.setUserDefinedCommand(name, c);
@@ -160,6 +168,7 @@ public class Memory {
 
   /**
    * Gets a user defined command based on its name
+   *
    * @param name the name of the command
    * @return the command associated with the name
    */
@@ -169,6 +178,7 @@ public class Memory {
 
   /**
    * Returns the variable arguments associated with a user defined command
+   *
    * @param name the name of the command
    * @return the list of the variable arguments
    */
@@ -178,6 +188,7 @@ public class Memory {
 
   /**
    * Sets the variables to be associated with a user defined command
+   *
    * @param name the name of the command
    * @param list the list of variables to be used as arguments
    */
@@ -187,6 +198,7 @@ public class Memory {
 
   /**
    * Returns all user defined commands
+   *
    * @return all user defined commands
    */
   public Collection<String> getAllUserDefinedCommands() {
@@ -195,6 +207,7 @@ public class Memory {
 
   /**
    * Given a turtle id, return the corresponding turtle object
+   *
    * @param id the id of the turtle
    * @return the Turtle object corresponding to that ID
    */
@@ -204,6 +217,7 @@ public class Memory {
 
   /**
    * Returns the current active turtle
+   *
    * @return the current active turtle
    */
   public Turtle getCurrentTurtle() {
@@ -212,6 +226,7 @@ public class Memory {
 
   /**
    * Sets the current active turtle to the given id
+   *
    * @param id the turtle to be set to active
    */
   public void setCurrentTurtle(int id) {
@@ -220,6 +235,7 @@ public class Memory {
 
   /**
    * Returns all extant turtle IDs
+   *
    * @return all extant turtle IDs
    */
   public Collection<Integer> getAllTurtleIDs() {
@@ -228,6 +244,7 @@ public class Memory {
 
   /**
    * Toggles the active state of the turtle associated with the given ID
+   *
    * @param id the id of the turtle to toggle
    */
   public void toggleActiveTurtle(int id) {
@@ -236,6 +253,7 @@ public class Memory {
 
   /**
    * Pushes the turtle stack during an ask
+   *
    * @param newActives the new turtle to be set to active
    */
   public void pushTurtleStack(List<Integer> newActives) {
@@ -251,6 +269,7 @@ public class Memory {
 
   /**
    * Sets a new set of global active turtles
+   *
    * @param newActives
    */
   public void tellTurtleStack(List<Integer> newActives) {
@@ -259,6 +278,7 @@ public class Memory {
 
   /**
    * Returns all currently active turtle ids
+   *
    * @return all currently active turtle ids
    */
   public List<Integer> getActiveTurtleIDs() {
@@ -267,6 +287,7 @@ public class Memory {
 
   /**
    * Gets the current active turtle ID
+   *
    * @return the current active turtle ID
    */
   public int getCurrentTurtleID() {
@@ -275,6 +296,7 @@ public class Memory {
 
   /**
    * Returns the id of the current background color
+   *
    * @return the id of the current background color
    */
   public int getBackgroundColor() {
@@ -283,6 +305,7 @@ public class Memory {
 
   /**
    * Sets the id of the current background color
+   *
    * @param backgroundColor the id to be set
    */
   public void setBackgroundColor(int backgroundColor) {
@@ -291,6 +314,7 @@ public class Memory {
 
   /**
    * Sets the future pen color for all new turtles
+   *
    * @param penColorIndex the index of the new pen color
    */
   public void setPenColorIndex(int penColorIndex) {
@@ -299,6 +323,7 @@ public class Memory {
 
   /**
    * Sets the future shape for all new turtles
+   *
    * @param shapeIndex the index of the future shape
    */
   public void setShapeIndex(int shapeIndex) {
@@ -307,10 +332,11 @@ public class Memory {
 
   /**
    * Adds a new RGB color to the palette
+   *
    * @param idx the index of the color
-   * @param r the red value
-   * @param g the green value
-   * @param b the blue value
+   * @param r   the red value
+   * @param g   the green value
+   * @param b   the blue value
    */
   public void addColor(int idx, int r, int g, int b) {
     displayMemory.addColor(idx, r, g, b);
@@ -318,6 +344,7 @@ public class Memory {
 
   /**
    * Gets a map mapping the IDs to the [r,g,b] colors in the current palette
+   *
    * @return
    */
   public Map<Integer, int[]> getPaletteColors() {

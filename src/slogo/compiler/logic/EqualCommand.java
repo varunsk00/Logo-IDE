@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for equality logic
  */
 public class EqualCommand extends Command {
@@ -15,7 +15,7 @@ public class EqualCommand extends Command {
     groupingType = Command.GROUPING_COMPARISON;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

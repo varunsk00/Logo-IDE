@@ -22,14 +22,14 @@ import slogo.turtle.Turtle;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: Takes in SLogo code and compiles it into a tree of Command objects, then executes the
  * tree and returns the string version of the double result, or the string version of the error
  * message thrown.
- *
+ * <p>
  * Assumptions: All text entered is line separated and space separated, all text encountered is
  * contained within the syntax regex, all resource files are valid and complete.
- *
+ * <p>
  * Dependencies: CompilerException, Command, CommandFactory, TypeFactory, Memory
  */
 public class Compiler {
@@ -46,7 +46,8 @@ public class Compiler {
   private ResourceBundle errorMsgs;
 
   /**
-   * Creates a new blank slate compiler - there is 1 turtle, no variables, and no user defined commands
+   * Creates a new blank slate compiler - there is 1 turtle, no variables, and no user defined
+   * commands
    */
   public Compiler() {
     myTypes = new ArrayList<>();
@@ -59,8 +60,9 @@ public class Compiler {
   }
 
   /**
-   * Copy constructor - makes a new compiler with the same language and memory as another.
-   * Copies user defined commands, but not turtles or variables
+   * Copy constructor - makes a new compiler with the same language and memory as another. Copies
+   * user defined commands, but not turtles or variables
+   *
    * @param other
    */
   public Compiler(Compiler other) {
@@ -90,6 +92,7 @@ public class Compiler {
 
   /**
    * Sets the language of the compiler to a new language
+   *
    * @param lang the language to be set
    */
   public void setLanguage(String lang) {
@@ -105,6 +108,7 @@ public class Compiler {
 
   /**
    * Parses and executes text SLogo code
+   *
    * @param input the code to be executed
    * @return the string version of the double result, or the string error message
    */
@@ -162,6 +166,7 @@ public class Compiler {
 
   /**
    * Takes text SLogo code and parses it into a Command object
+   *
    * @param input the code to be parsed
    * @return the Command object that was created
    */
@@ -296,6 +301,7 @@ public class Compiler {
 
   /**
    * Returns all entered variable names
+   *
    * @return all entered variable names
    */
   public Collection<String> getAllVariableNames() {
@@ -304,6 +310,7 @@ public class Compiler {
 
   /**
    * Returns the names of all the user defined commands
+   *
    * @return the names of all the user defined commands
    */
   public Collection<String> getAllUserDefinedCommands() {
@@ -312,6 +319,7 @@ public class Compiler {
 
   /**
    * Returns all extant turtle IDs
+   *
    * @return all extant turtle IDs
    */
   public Collection<Integer> getAllTurtleIDs() {
@@ -320,6 +328,7 @@ public class Compiler {
 
   /**
    * Given a turtle id, return the corresponding turtle object
+   *
    * @param id the id of the turtle
    * @return the Turtle object corresponding to that ID
    */
@@ -329,6 +338,7 @@ public class Compiler {
 
   /**
    * Given the name of a variable, returns its value
+   *
    * @param name the name of the variable
    * @return the value of the variable
    */
@@ -338,6 +348,7 @@ public class Compiler {
 
   /**
    * Given the name of a user defined command, returns a list of its variable arguments
+   *
    * @param name the name of the user defined command
    * @return the arguments of the user defined command
    */
@@ -347,6 +358,7 @@ public class Compiler {
 
   /**
    * Returns the id of the current background color
+   *
    * @return the id of the current background color
    */
   public int getBackgroundColor() {
@@ -355,6 +367,7 @@ public class Compiler {
 
   /**
    * Sets the id of the current background color
+   *
    * @param backgroundColor the id to be set
    */
   public void setBackgroundColor(int backgroundColor) {
@@ -363,6 +376,7 @@ public class Compiler {
 
   /**
    * Gets a map mapping the IDs to the [r,g,b] colors in the current palette
+   *
    * @return
    */
   public Map<Integer, int[]> getPaletteColors() {
@@ -382,6 +396,7 @@ public class Compiler {
 
   /**
    * Returns all commands entered
+   *
    * @return all commands entered
    */
   public String getEnteredText() {
@@ -390,6 +405,7 @@ public class Compiler {
 
   /**
    * Toggles the active state of the turtle associated with the given ID
+   *
    * @param id the id of the turtle to toggle
    */
   public void toggleActiveTurtle(int id) {

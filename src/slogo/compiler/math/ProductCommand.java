@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for multiplication
  */
 public class ProductCommand extends Command {
@@ -15,7 +15,7 @@ public class ProductCommand extends Command {
     groupingType = Command.GROUPING_RECURSIVE;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for inequality logic
  */
 public class NotEqualCommand extends Command {
@@ -15,7 +15,7 @@ public class NotEqualCommand extends Command {
     groupingType = Command.GROUPING_COMPARISON;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

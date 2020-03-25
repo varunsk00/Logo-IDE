@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for adding a palette color
  */
 public class SetPaletteCommand extends Command {
@@ -14,7 +14,7 @@ public class SetPaletteCommand extends Command {
     desiredArgs = 4;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

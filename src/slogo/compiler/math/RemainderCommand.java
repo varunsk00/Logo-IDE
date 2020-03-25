@@ -5,7 +5,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for modulo
  */
 public class RemainderCommand extends Command {
@@ -16,7 +16,7 @@ public class RemainderCommand extends Command {
     groupingType = Command.GROUPING_RECURSIVE;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

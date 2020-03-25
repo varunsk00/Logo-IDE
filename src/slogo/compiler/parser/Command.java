@@ -9,12 +9,12 @@ import slogo.compiler.parser.memory.Memory;
 
 /**
  * @author Maverick Chung mc608
- *
- * Purpose: Superclass for all SLogo commands - all text commands are parsed and compiled into Command
- * objects.
- *
+ * <p>
+ * Purpose: Superclass for all SLogo commands - all text commands are parsed and compiled into
+ * Command objects.
+ * <p>
  * Assumptions: Declaration is either contains no spaces or is the initialization string.
- *
+ * <p>
  * Dependencies: InvalidSyntaxException, CommandFactory, Memory
  */
 public abstract class Command {
@@ -37,6 +37,7 @@ public abstract class Command {
 
   /**
    * Creates a Command object with the given string declaration
+   *
    * @param declaration the text used to declare the command
    */
   public Command(String declaration) {
@@ -57,6 +58,7 @@ public abstract class Command {
 
   /**
    * Returns true if this class is equal to the given type
+   *
    * @param typeCheck the type to be compared to
    * @return whether or not this command is the given type
    */
@@ -70,6 +72,7 @@ public abstract class Command {
 
   /**
    * Returns the name of the command
+   *
    * @return the name of the command
    */
   public String getName() {
@@ -78,6 +81,7 @@ public abstract class Command {
 
   /**
    * Executes the command and returns the double return value
+   *
    * @return the double return value of the executed command
    */
   public double execute() {
@@ -102,6 +106,7 @@ public abstract class Command {
 
   /**
    * Returns the number of desired arguments
+   *
    * @return the number of desired arguments
    */
   public int getDesiredArgs() {
@@ -110,6 +115,7 @@ public abstract class Command {
 
   /**
    * Returns the type of this command
+   *
    * @return the type of this command
    */
   public String getType() {
@@ -131,6 +137,7 @@ public abstract class Command {
 
   /**
    * Sets the memory for this command to the given object
+   *
    * @param mem the memory for this command to use
    */
   public void setMemory(Memory mem) {
@@ -142,6 +149,7 @@ public abstract class Command {
 
   /**
    * Set the error message resource bundle for this command to use
+   *
    * @param msgs the error message resource bundle for this command to use
    */
   public void setErrorMsgs(ResourceBundle msgs) {
@@ -150,6 +158,7 @@ public abstract class Command {
 
   /**
    * Returns true if the command is complete non recursively
+   *
    * @return whether or not the command is complete non recursively
    */
   public boolean isCompleteSub() {
@@ -158,6 +167,7 @@ public abstract class Command {
 
   /**
    * Creates a new command given the string declaration
+   *
    * @param declaration the text that declares the command
    * @return the created command object
    */
@@ -174,6 +184,7 @@ public abstract class Command {
 
   /**
    * Returns true if the command is recursively complete
+   *
    * @return whether or not the command is recursively complete
    */
   public boolean isComplete() {
@@ -187,6 +198,7 @@ public abstract class Command {
 
   /**
    * Overrides logic and declares this command as the input boolean
+   *
    * @param comp the truth value of the completeness of the command
    */
   public void setIsComplete(boolean comp) {
@@ -195,6 +207,7 @@ public abstract class Command {
 
   /**
    * Appends a command argument to this command
+   *
    * @param arg the argument to be added
    */
   public void addArg(Command arg) {
@@ -203,6 +216,7 @@ public abstract class Command {
 
   /**
    * Sets the nth argument to the given command
+   *
    * @param c the argument to be added
    * @param n the index of the argument to be set, 0 indexed
    */
@@ -220,6 +234,7 @@ public abstract class Command {
 
   /**
    * Returns the value of the grouping type of the command
+   *
    * @return the value of the grouping type of the command
    */
   public int getGroupingType() {
@@ -229,6 +244,7 @@ public abstract class Command {
 
   /**
    * Returns the list of command arguments
+   *
    * @return the list of command arguments
    */
   public List<Command> getArgs() {
@@ -237,6 +253,7 @@ public abstract class Command {
 
   /**
    * Returns the string interpretation of the command
+   *
    * @return the string interpretation of the command
    */
   @Override
@@ -250,6 +267,7 @@ public abstract class Command {
 
   /**
    * Returns true if the command contains a user command definition
+   *
    * @return true if the command contains a user command definition
    */
   public boolean containsDefinition() {
@@ -266,6 +284,7 @@ public abstract class Command {
 
   /**
    * Returns the first definition in the command, or null if none exist
+   *
    * @return the first definition in the command, or null if none exist
    */
   public Command findFirstDef() {

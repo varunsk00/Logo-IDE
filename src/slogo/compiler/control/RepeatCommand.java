@@ -2,7 +2,7 @@ package slogo.compiler.control;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for a repeat loop
  */
 public class RepeatCommand extends LoopCommand {
@@ -12,7 +12,7 @@ public class RepeatCommand extends LoopCommand {
     desiredArgs = 2;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

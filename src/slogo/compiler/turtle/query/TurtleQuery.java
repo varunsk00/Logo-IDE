@@ -4,7 +4,7 @@ import slogo.compiler.turtle.TurtleCommand;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: An abstract command for asking for turtle information without affecting the turtle
  */
 public abstract class TurtleQuery extends TurtleCommand {
@@ -13,7 +13,7 @@ public abstract class TurtleQuery extends TurtleCommand {
     super(declaration);
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

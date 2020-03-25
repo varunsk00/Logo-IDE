@@ -8,7 +8,7 @@ import slogo.turtle.Turtle;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: Store a state of the TurtleMemory such that it can later be reverted to
  */
 public class TurtleMemoryState {
@@ -27,6 +27,7 @@ public class TurtleMemoryState {
 
   /**
    * Returns stored turtles
+   *
    * @return stored turtles
    */
   public Map<Integer, Turtle> getTurtleMap() {
@@ -35,6 +36,7 @@ public class TurtleMemoryState {
 
   /**
    * Returns stored IDs
+   *
    * @return stored IDs
    */
   public List<Integer> getIDs() {
@@ -43,6 +45,7 @@ public class TurtleMemoryState {
 
   /**
    * Returns stored shape index
+   *
    * @return stored shape index
    */
   public int getShape() {
@@ -51,6 +54,7 @@ public class TurtleMemoryState {
 
   /**
    * Returns stored pen color index
+   *
    * @return stored pen color index
    */
   public int getPenColor() {

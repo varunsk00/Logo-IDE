@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for numeric values
  */
 public class ConstantType extends TypeCommand {
@@ -24,7 +24,7 @@ public class ConstantType extends TypeCommand {
     }
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

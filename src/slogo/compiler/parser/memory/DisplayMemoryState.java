@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: Store a state of the DisplayMemory such that it can later be reverted to
  */
 public class DisplayMemoryState {
@@ -19,6 +19,7 @@ public class DisplayMemoryState {
 
   /**
    * Returns stored background index
+   *
    * @return stored background index
    */
   public int getBackground() {
@@ -27,6 +28,7 @@ public class DisplayMemoryState {
 
   /**
    * Returns stored palette
+   *
    * @return stored palette
    */
   public Map<Integer, int[]> getPal() {

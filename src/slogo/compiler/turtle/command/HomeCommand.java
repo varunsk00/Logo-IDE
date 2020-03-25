@@ -4,7 +4,7 @@ import slogo.compiler.turtle.TurtleCommand;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for moving a turtle to home
  */
 public class HomeCommand extends TurtleCommand {

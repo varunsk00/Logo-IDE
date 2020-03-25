@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for cosine
  */
 public class CosineCommand extends Command {
@@ -14,7 +14,7 @@ public class CosineCommand extends Command {
     desiredArgs = 1;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

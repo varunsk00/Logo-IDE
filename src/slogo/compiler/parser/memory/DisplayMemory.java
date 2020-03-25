@@ -7,11 +7,11 @@ import java.util.Map.Entry;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: Stores background color index and palette
- *
+ * <p>
  * Assumptions: All inputs are valid and verified elsewhere, as with Memory
- *
+ * <p>
  * Dependencies: Memory, DisplayMemoryState
  */
 public class DisplayMemory {
@@ -57,6 +57,7 @@ public class DisplayMemory {
 
   /**
    * Returns the id of the current background color
+   *
    * @return the id of the current background color
    */
   public int getBackgroundColor() {
@@ -65,6 +66,7 @@ public class DisplayMemory {
 
   /**
    * Sets the id of the current background color
+   *
    * @param backgroundColor the id to be set
    */
   public void setBackgroundColor(int backgroundColor) {
@@ -73,10 +75,11 @@ public class DisplayMemory {
 
   /**
    * Adds a new RGB color to the palette
+   *
    * @param idx the index of the color
-   * @param r the red value
-   * @param g the green value
-   * @param b the blue value
+   * @param r   the red value
+   * @param g   the green value
+   * @param b   the blue value
    */
   public void addColor(int idx, int r, int g, int b) {
     palette.put(idx, new int[]{r, g, b});
@@ -84,6 +87,7 @@ public class DisplayMemory {
 
   /**
    * Gets a map mapping the IDs to the [r,g,b] colors in the current palette
+   *
    * @return
    */
   public Map<Integer, int[]> getPaletteColors() {

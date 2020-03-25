@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for exponentiation
  */
 public class PowerCommand extends Command {
@@ -15,7 +15,7 @@ public class PowerCommand extends Command {
     groupingType = Command.GROUPING_RECURSIVE;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

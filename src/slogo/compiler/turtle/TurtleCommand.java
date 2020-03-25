@@ -7,7 +7,7 @@ import slogo.turtle.Turtle;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A abstract command for commands that interact with turtles
  */
 public abstract class TurtleCommand extends Command {
@@ -18,7 +18,7 @@ public abstract class TurtleCommand extends Command {
     super(declaration);
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override
@@ -35,6 +35,7 @@ public abstract class TurtleCommand extends Command {
 
   /**
    * Executes the command on the current active turtles
+   *
    * @return the return value of the last executed command
    */
   protected abstract double executeTurtle();

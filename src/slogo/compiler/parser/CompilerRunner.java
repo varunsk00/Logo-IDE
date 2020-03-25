@@ -4,9 +4,10 @@ import java.util.Scanner;
 
 /**
  * @author Maverick Chung mc608
- *
- * Purpose: Used to test commands pre-GUI. Takes in a line of SLogo code, compiles it, and executes it.
- *
+ * <p>
+ * Purpose: Used to test commands pre-GUI. Takes in a line of SLogo code, compiles it, and executes
+ * it.
+ * <p>
  * Dependencies: Compiler
  */
 public class CompilerRunner {

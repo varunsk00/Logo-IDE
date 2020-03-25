@@ -13,11 +13,11 @@ import slogo.compiler.exceptions.UnknownVariableException;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: Stores all defined variables and their values.
- *
+ * <p>
  * Assumptions: All input are valid and verified elsewhere, as with Memory
- *
+ * <p>
  * Dependencies: CompilerException, Memory, Comoiler
  */
 public class VariableMemory {
@@ -35,6 +35,7 @@ public class VariableMemory {
 
   /**
    * Sets the error message bundle for this memory
+   *
    * @param msgs the resource bundle to be used
    */
   public void setErrorMsgs(ResourceBundle msgs) {
@@ -64,6 +65,7 @@ public class VariableMemory {
 
   /**
    * Gets the double value of a variable
+   *
    * @param name name of the variable
    * @return the double value of the variable
    */
@@ -78,7 +80,8 @@ public class VariableMemory {
 
   /**
    * Sets the value of a variable
-   * @param name the name of the variable to be set
+   *
+   * @param name  the name of the variable to be set
    * @param value the value of the variable
    */
   public void setVariable(String name, double value) {
@@ -112,6 +115,7 @@ public class VariableMemory {
 
   /**
    * Returns all extant variable names
+   *
    * @return all extant variable names
    */
   public Collection<String> getAllVariableNames() {

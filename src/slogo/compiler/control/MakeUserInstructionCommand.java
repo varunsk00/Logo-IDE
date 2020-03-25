@@ -7,7 +7,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for creating user defined commands.
  */
 public class MakeUserInstructionCommand extends Command {
@@ -18,7 +18,7 @@ public class MakeUserInstructionCommand extends Command {
     groupingType = Command.GROUPING_INVALID;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

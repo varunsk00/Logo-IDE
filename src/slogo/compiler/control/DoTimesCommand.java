@@ -2,7 +2,7 @@ package slogo.compiler.control;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for looping with do-times
  */
 public class DoTimesCommand extends LoopCommand {
@@ -12,7 +12,7 @@ public class DoTimesCommand extends LoopCommand {
     desiredArgs = 2;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

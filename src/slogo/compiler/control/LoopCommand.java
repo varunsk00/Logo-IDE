@@ -5,7 +5,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: An abstract command for implementing all loops
  */
 public abstract class LoopCommand extends Command {

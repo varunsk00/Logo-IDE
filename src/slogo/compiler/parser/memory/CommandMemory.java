@@ -12,11 +12,11 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: Stores all user defined commands and their arguments
- *
+ * <p>
  * Assumptions: All inputs are valid and verified elsewhere, as with Memory
- *
+ * <p>
  * Dependencies: Command, Memory, CommandMemoryState
  */
 public class CommandMemory {
@@ -62,6 +62,7 @@ public class CommandMemory {
 
   /**
    * Sets the error message bundle for this memory
+   *
    * @param msgs the resource bundle to be used
    */
   public void setErrorMsgs(ResourceBundle msgs) {
@@ -70,8 +71,9 @@ public class CommandMemory {
 
   /**
    * Saves a name to a user defined command
+   *
    * @param name the name of the command
-   * @param c the user defined command to be stored
+   * @param c    the user defined command to be stored
    */
   public void setUserDefinedCommand(String name, Command c) {
     userDefinedCommandMap.put(name, c);
@@ -79,6 +81,7 @@ public class CommandMemory {
 
   /**
    * Gets a user defined command based on its name
+   *
    * @param name the name of the command
    * @return the command associated with the name
    */
@@ -92,6 +95,7 @@ public class CommandMemory {
 
   /**
    * Returns the variable arguments associated with a user defined command
+   *
    * @param name the name of the command
    * @return the list of the variable arguments
    */
@@ -105,6 +109,7 @@ public class CommandMemory {
 
   /**
    * Sets the variables to be associated with a user defined command
+   *
    * @param name the name of the command
    * @param list the list of variables to be used as arguments
    */
@@ -114,6 +119,7 @@ public class CommandMemory {
 
   /**
    * Returns all user defined commands
+   *
    * @return all user defined commands
    */
   public Collection<String> getAllUserDefinedCommands() {

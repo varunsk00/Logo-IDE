@@ -2,7 +2,7 @@ package slogo.compiler.types;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for ending a group
  */
 public class GroupEndType extends TypeCommand {
@@ -12,7 +12,7 @@ public class GroupEndType extends TypeCommand {
     desiredArgs = 0;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

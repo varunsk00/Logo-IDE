@@ -4,7 +4,7 @@ import slogo.compiler.turtle.query.TurtleQuery;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for getting the pen color
  */
 public class GetPenColorCommand extends TurtleQuery {

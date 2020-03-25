@@ -7,8 +7,9 @@ import slogo.compiler.turtle.query.TurtleQuery;
 
 /**
  * @author Maverick Chung mc608
- *
- * Purpose: A abstract command for all commands that execute on multiple turtles (tell, ask, askwith)
+ * <p>
+ * Purpose: A abstract command for all commands that execute on multiple turtles (tell, ask,
+ * askwith)
  */
 public abstract class TurtleCreationCommand extends TurtleQuery {
 

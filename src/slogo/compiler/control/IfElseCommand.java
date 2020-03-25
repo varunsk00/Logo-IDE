@@ -4,7 +4,7 @@ import slogo.compiler.parser.Command;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for an if/else statement
  */
 public class IfElseCommand extends Command {
@@ -15,7 +15,7 @@ public class IfElseCommand extends Command {
     groupingType = Command.GROUPING_ITERATIVE;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override

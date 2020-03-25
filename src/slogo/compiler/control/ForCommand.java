@@ -2,7 +2,7 @@ package slogo.compiler.control;
 
 /**
  * @author Maverick Chung mc608
- *
+ * <p>
  * Purpose: A command for a for loop
  */
 public class ForCommand extends LoopCommand {
@@ -12,7 +12,7 @@ public class ForCommand extends LoopCommand {
     desiredArgs = 2;
   }
 
-/**
+  /**
    * {@inheritDoc}
    */
   @Override
