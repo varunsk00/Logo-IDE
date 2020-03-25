@@ -13,10 +13,8 @@ import javafx.scene.control.TabPane;
 import slogo.variable_panels.subpanels.AutoTableView;
 
 /**
- * VariablesTabPaneView generates the TabPane object that contains the tables for command
- * history, variable explore, and user-defined methods.
- *
- * @author Qiaoyi Fang
+ * VariablesTabPaneView that generates the TabPane object that contains the tables for command
+ * history, variable explore, and user-defined methods
  */
 public class VariablesTabPaneView extends TabPane {
 

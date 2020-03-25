@@ -4,8 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 /**
- * ColorText fills color to the Javafx text object (usually the string content is a single word) according to its type.
- * @author Qiaoyi Fang
+ * ColorText fills color to the text according to its type
  */
 public class ColorText extends Text {
 
