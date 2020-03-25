@@ -1,4 +1,7 @@
 /**
+ * @author Varun Kosgi
+ * @author Alexander Uzochukwu
+ *
  * This Class is responsible for the display of all the turtles currently
  * available in the program.
  *
@@ -69,7 +72,7 @@ public class TurtleHabitat extends Pane {
   }
 
   /**
-   * Uses a pane to display all pertinent information about a specific turtle
+   * Initializes a Pane with buttons representing the different turtles
    */
   public void viewTurtleInformation() {
     Stage s = new Stage();
@@ -85,31 +88,6 @@ public class TurtleHabitat extends Pane {
     root.getChildren().addAll(turtleView);
     s.setScene(sc);
     s.show();
-  }
-
-  /**
-   * Information such as position and heading are added to the provided pane
-   * @param id, The id of the specific turtle in question
-   * @param p, The pane used to display the information
-   */
-  private void displayInformation(int id, Pane p) {
-    p.getChildren().removeAll(rec, information, clrBox);
-    rec = new Rectangle(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT);
-    clrBox = new Rectangle(COLORBOXSIZE, COLORBOXSIZE);
-    rec.setLayoutX(PICTURE_X_LOCATION);
-    rec.setLayoutY(PICTURE_Y_LOCATION);
-    clrBox.setLayoutX(COLORBOX_X_LOCATION);
-    clrBox.setLayoutY(COLORBOX_Y_LOCATION);
-    rec.setFill(allTurtleViews.get(id).getFill());
-    clrBox.setFill(allTurtleViews.get(id).getPenColor());
-    double xLoc = allTurtleViews.get(id).getX() - allTurtleViews.get(id).getXOffset();
-    double yLoc = allTurtleViews.get(id).getY() - allTurtleViews.get(id).getYOffset();
-    information = new Text(TEXT_X_LOCATION, TEXT_Y_LOCATION,
-        "Position: (" + xLoc + " , " + yLoc + ")\n" +
-            "Heading: " + allTurtleViews.get(id).getRotate() + "\n" +
-            "PenDown: " + allTurtles.get(id).isPenDown() + "\n" +
-            "PenColor: ");
-    p.getChildren().addAll(rec, information, clrBox);
   }
 
   /**
@@ -130,41 +108,6 @@ public class TurtleHabitat extends Pane {
       }
       e.getValue().setUpdated(false);
     }
-  }
-
-  /**
-   * Update a turtle's display information
-   * @param id
-   * @param turtle
-   * @param c
-   */
-  public void updateSingleTurtle(int id, Turtle turtle, Color c) {
-    TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
-        habitatWidth, habitatHeight);
-    tempTurtle.setFill(tempTurtle.getImage()); // FIXME:
-    tempTurtle.setX(tempTurtle.getXOffset());
-    tempTurtle.setY(tempTurtle.getYOffset());
-    if (!allTurtleViews.containsKey(id)) {
-      allTurtleViews.putIfAbsent(id, tempTurtle);
-      lastx.putIfAbsent(id, tempTurtle.getLayoutX() + tempTurtle.getShapeWidth() / 2);
-      lasty.putIfAbsent(id, tempTurtle.getLayoutY() + tempTurtle.getShapeHeight() / 2);
-      getChildren().addAll(tempTurtle);
-    }
-    allTurtles.put(id, turtle);
-    allTurtleViews.get(id).updateTurtleView(turtle);
-    allTurtleViews.get(id).setUpdated(true);
-    allTurtleViews.get(id).setPenColor(c);
-
-    if (turtle.isPenDown()) {
-      for (Point loc : turtle.locationsList()) {
-        penDraw(loc,id);
-      }
-    }
-  }
-
-  private void changeSize(double width, double height) {
-    setPrefWidth(width);
-    setPrefHeight(height);
   }
 
   /**
@@ -191,28 +134,40 @@ public class TurtleHabitat extends Pane {
     return allTurtles.get(turtleID);
   }
 
-  public ArrayList<TurtleView> getAllTurtleViews(){
-    return new ArrayList<TurtleView>(allTurtleViews.values());
-  }
-
+  /**
+   * Changes the pen color for all TurtleViews
+   * @param newPenColor, the new Pen Color
+   */
   public void setAllTurtlesPenColor(Color newPenColor) {
     for (TurtleView turtle : new ArrayList<>(allTurtleViews.values())) {
       turtle.setPenColor(newPenColor);
     }
   }
 
+  /**
+   * Update the images associated with each TurtleView
+   * @param filepath, file path where image resides
+   */
   public void updateAllTurtlesImage(String filepath) {
     for (TurtleView turtleView : getAllTurtleViews()) {
       turtleView.setImage(filepath);
     }
   }
 
+  /**
+   * Updates the current Shape used for each TurtleView in the TurtleHabitat
+   * @param colorID the ID number assigned to the current color by the user
+   */
   public void updateAllTurtlesShapeColor(int colorID) {
     for (TurtleView turtleView : getAllTurtleViews()) {
       turtleView.setShape(colorID, true);
     }
   }
 
+  /**
+   * Change the background color of the habitat
+   * @param c, the new background color
+   */
   public void setBackground(Color c) {
     setBackground(new Background(new BackgroundFill(c, CornerRadii.EMPTY, Insets.EMPTY)));
     backgroundColor = c;
@@ -254,12 +209,60 @@ public class TurtleHabitat extends Pane {
     polylineStack.add(temp);
   }
 
-  /**
-   * Supports the drawing of lines as the turtles move in the habitat
-   * @param loc, a Point object
-   * @param turtleID
-   */
-  public void penDraw(Point loc, int turtleID) {
+  private void changeSize(double width, double height) {
+    setPrefWidth(width);
+    setPrefHeight(height);
+  }
+
+  private ArrayList<TurtleView> getAllTurtleViews(){
+    return new ArrayList<TurtleView>(allTurtleViews.values());
+  }
+
+  private void displayInformation(int id, Pane p) {
+    p.getChildren().removeAll(rec, information, clrBox);
+    rec = new Rectangle(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT);
+    clrBox = new Rectangle(COLORBOXSIZE, COLORBOXSIZE);
+    rec.setLayoutX(PICTURE_X_LOCATION);
+    rec.setLayoutY(PICTURE_Y_LOCATION);
+    clrBox.setLayoutX(COLORBOX_X_LOCATION);
+    clrBox.setLayoutY(COLORBOX_Y_LOCATION);
+    rec.setFill(allTurtleViews.get(id).getFill());
+    clrBox.setFill(allTurtleViews.get(id).getPenColor());
+    double xLoc = allTurtleViews.get(id).getX() - allTurtleViews.get(id).getXOffset();
+    double yLoc = allTurtleViews.get(id).getY() - allTurtleViews.get(id).getYOffset();
+    information = new Text(TEXT_X_LOCATION, TEXT_Y_LOCATION,
+        "Position: (" + xLoc + " , " + yLoc + ")\n" +
+            "Heading: " + allTurtleViews.get(id).getRotate() + "\n" +
+            "PenDown: " + allTurtles.get(id).isPenDown() + "\n" +
+            "PenColor: ");
+    p.getChildren().addAll(rec, information, clrBox);
+  }
+
+  private void updateSingleTurtle(int id, Turtle turtle, Color c) {
+    TurtleView tempTurtle = new TurtleView(DEFAULT_TURTLE_WIDTH, DEFAULT_TURTLE_HEIGHT,
+        habitatWidth, habitatHeight);
+    tempTurtle.setFill(tempTurtle.getImage()); // FIXME:
+    tempTurtle.setX(tempTurtle.getXOffset());
+    tempTurtle.setY(tempTurtle.getYOffset());
+    if (!allTurtleViews.containsKey(id)) {
+      allTurtleViews.putIfAbsent(id, tempTurtle);
+      lastx.putIfAbsent(id, tempTurtle.getLayoutX() + tempTurtle.getShapeWidth() / 2);
+      lasty.putIfAbsent(id, tempTurtle.getLayoutY() + tempTurtle.getShapeHeight() / 2);
+      getChildren().addAll(tempTurtle);
+    }
+    allTurtles.put(id, turtle);
+    allTurtleViews.get(id).updateTurtleView(turtle);
+    allTurtleViews.get(id).setUpdated(true);
+    allTurtleViews.get(id).setPenColor(c);
+
+    if (turtle.isPenDown()) {
+      for (Point loc : turtle.locationsList()) {
+        penDraw(loc,id);
+      }
+    }
+  }
+
+  private void penDraw(Point loc, int turtleID) {
     TurtleView turtle = allTurtleViews.get(turtleID);
     Color penColor = turtle.getPenColor();
     double x_coor = loc.getX();
