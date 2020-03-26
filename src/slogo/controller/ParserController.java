@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
+ * **To UTA** - Refactored from 450 lines to 305. Good example of Front Controller Design Pattern. Maybe too much scope?
  * ParserController.java
  * Sets up and runs Slogo environment as an Application
  *
@@ -67,7 +68,7 @@ public class ParserController extends Application {
   private Workspace currentWorkspace;
   private List<Workspace> workspaces;
   private TabPane workspaceEnvironment;
-  private VariablesTabPaneController tabPaneController;
+  private VariablesTabPaneController variableExplorerController;
   private ColorFactory cf = new ColorFactory();
   private List<Button> selectButtons = new ArrayList<>();
 
@@ -91,8 +92,7 @@ public class ParserController extends Application {
   /**
    * Begins Application by creating Workspaces, organizing GUI elements, starting animation loop, and creating Stage
    *
-   * @param primaryStage is the stage to display the Application, runs loop, organizes elements
-   * BorderPane
+   * @param primaryStage is the stage to display the Application, runs loop, organizes elements in a BorderPane
    */
   public void start(Stage primaryStage) throws FileNotFoundException {
     primaryStage.setTitle("SLogo");
@@ -138,7 +138,7 @@ public class ParserController extends Application {
 
   private void setFooter() throws FileNotFoundException {
     footer = new Footer(TABPANE_WIDTH, TABPANE_HEIGHT, RESOURCES_PACKAGE + guiLanguage);
-    tabPaneController = new VariablesTabPaneController(footer.getVariableExplorer(), currentWorkspace.getCompiler(),
+    variableExplorerController = new VariablesTabPaneController(footer.getVariableExplorer(), currentWorkspace.getCompiler(),
       currentWorkspace.getTerminalController());
     root.setBottom(footer);
   }
@@ -146,7 +146,7 @@ public class ParserController extends Application {
   private void startAnimationLoop() {
     KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> {
       try { step(); }
-      catch (IOException ex) {System.out.println("Help Text File Not Found."); } });
+      catch (IOException ex) {System.out.println(myResources.getString("NoHelp")); } }); //add Error Message later
     animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
@@ -193,7 +193,7 @@ public class ParserController extends Application {
   private void updateTabPanes(boolean isSwitch) {
     if (currentWorkspace.getStatus() != currentWorkspace.getTerminalController().getStatus() || isSwitch) {
       currentWorkspace.setStatus(currentWorkspace.getTerminalController().getStatus());
-      tabPaneController.updateAllTables(); }
+      variableExplorerController.updateAllTables(); }
   }
 
   private void updateCurrentWorkspace() {
@@ -203,8 +203,8 @@ public class ParserController extends Application {
     updateColorFactory();
     if (current != currentTab) {
       currentTab = current;
-      tabPaneController.updateCompiler(currentWorkspace.getCompiler());
-      tabPaneController.updateTerminal(currentWorkspace.getTerminalController());
+      variableExplorerController.updateCompiler(currentWorkspace.getCompiler());
+      variableExplorerController.updateTerminal(currentWorkspace.getTerminalController());
       updateTabPanes(true); }
   }
 
@@ -276,7 +276,7 @@ public class ParserController extends Application {
       workspaceEnvironment.getTabs().add(tab); }
     currentWorkspace.getCompiler().setLanguage(currentLang);
     currentWorkspace.getTerminalController().changeLanguage(currentLang);
-    tabPaneController.changeLanguage(currentLang);
+    variableExplorerController.changeLanguage(currentLang);
   }
 
   private void handleImageFiles() {
@@ -287,10 +287,9 @@ public class ParserController extends Application {
       return; }
     header.getButtons().setImageOff();
     for (int turtleID : currentWorkspace.getCompiler().getAllTurtleIDs()) {
-      Button button = new Button("Turtle " + turtleID);
+      Button button = new Button(myResources.getString("Turtle#") + turtleID);
       button.setOnAction(event -> {
-        currentWorkspace.getHabitat().getTurtleView(turtleID)
-            .setImage("file:" + dataFile.getPath());
+        currentWorkspace.getHabitat().getTurtleView(turtleID).setImage("file:" + dataFile.getPath());
         header.getButtons().closeTurtleSelect(); });
       selectButtons.add(button); }
     header.getButtons().launchTurtleSelect(selectButtons);

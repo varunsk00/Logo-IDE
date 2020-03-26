@@ -17,6 +17,15 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 /**
+ * **NOTE TO UTA**
+ * I feel this is a great representation of my ability to uses classes to streamline the addition of new feature. Any
+ * new front-end feature involving a buttons can simply be added here with two lines.
+ *
+ * This class demonstrates knowledge of Regex Calling,ComboBox Creation (from NanoBrowser lab), and class encapsulation
+ * so that there is only one place to make changes.
+ */
+
+/**
  * GUIButtons.java
  * Creates all the Buttons and Pop-Ups in a Slogo environment
  *

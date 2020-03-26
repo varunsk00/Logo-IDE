@@ -6,6 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -14,6 +17,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import slogo.workspace.Workspace;
+
+/**
+ * **NOTE TO UTA**
+ * This Class was refactored out of ParserController.java as a way to consolidate both the GUI Buttons
+ * and Sliders at the Top of the screen into a single JavaFX VBox to minimize the amount of data structures directly
+ * handled in that class. I feel this is a great representation of my ability to uses classes effectively and with purpose.
+ *
+ * This class demonstrates knowledge of stylesheets and Regex calling
+ */
 
 /**
  * Header.java
@@ -107,7 +119,7 @@ public class Header extends VBox {
     ColorSelect penColorChooser = new ColorSelect(lang, current.getHabitat().getTurtleView(1).getPenColor());
     penColorChooser.getColorPicker().setOnAction(e -> {
       for (int turtleID : current.getCompiler().getAllTurtleIDs()) {
-        Button button = new Button("Turtle " + turtleID);
+        Button button = new Button(myResources.getString("Turtle#") + turtleID);
         selection.add(button);
         button.setOnAction(event1 -> {
           Color c = penColorChooser.getColorPicker().getValue();

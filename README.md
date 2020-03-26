@@ -69,23 +69,23 @@ Alex:
 Varun:
 * Created controller package
     * ParserController.java
-          * Application Class that organizes multiple Slogo Workspaces/Tabs, Header, and Footer into a BorderPane and executes animation loop
-          * Handles program-wide language switching
+         * Application Class that organizes multiple Slogo Workspaces/Tabs, Header, and Footer into a BorderPane and executes animation loop
+         * Handles program-wide language switching
      * GUIButtons.java
-          * Class that creates all Buttons and Combo Boxes that involve Gauzi controls, including loading .logo files, loading image files, getting Help, and setting GUI preferences like background color, pen color, language, etc.
-          * Holds states representative of the Buttons being pressed or not pressed (Boolean for Buttons and String for Combo Box)
+         * Class that creates all Buttons and Combo Boxes that involve GUI controls, including loading .logo files, loading image files, getting Help, and setting GUI preferences like background color, pen color, language, etc.
+         * Holds states representative of the Buttons being pressed or not pressed (Boolean for Buttons and String for Combo Box)
      * Sliders.java
-          * Creates Sliders for zooming and resizing the TurtleViews on screen
+         * Creates Sliders for zooming and resizing the TurtleViews on screen
      * Header.java
-          * Organizes GUIButtons and Sliders into a JavaFX VBox
+         * Organizes GUIButtons and Sliders into a JavaFX VBox
      * DirectionalButtons.java
-          * Class to create the four directional Buttons to move the Turtle sans TerminalView
+         * Class to create the four directional Buttons to move the Turtle sans TerminalView
      * Footer.java
-          * Organizes DirectionalButtons and Variable Explorer into a JavaFX VBox
+         * Organizes DirectionalButtons and Variable Explorer into a JavaFX VBox
      * FileSelect.java
-          * Handles File Choosing for both .logo and Image files. Creates appropriate pop-up window and changes with language
+         * Handles File Choosing for both .logo and Image files. Creates appropriate pop-up window and changes with language
      * ColorSelect.java
-          * Handles a JavaFX Colorpicker and associated window to allow for color customization of the pen and background color
+         * Handles a JavaFX Colorpicker and associated window to allow for color customization of the pen and background color
 
 * Created turtle package
      * TurtleView.java
@@ -93,11 +93,11 @@ Varun:
           * Is constantly pinging the values of the underlying Turtle in order to update all states accordingly
      * TurtleHabitat.java
           * Extends JavaFX Pane to provide a region upon which the TurtleViews and Pen can be drawn and constantly updated
-workspace package
+* Workspace package
      * Workspace.java
           * Extends BorderPane to organize a TerminalView object and TurtleHabitat object into a single Workspace that can then be instantiated for multiple tabs/Workspaces in ParserController
      * ColorFactory.java
-          * Creates a Map from Slogo Compiler colors (int) to actual JavaFX Color objects that can then be used dto update the visual state of the Workspace
+          * Creates a Map from Slogo Compiler colors (int) to actual JavaFX Color objects that can then be used to update the visual state of the Workspace
 
 ### Resources Used
 The 3rd party [Reflections Library](https://github.com/ronmamo/reflections) was used to register each Command class.
