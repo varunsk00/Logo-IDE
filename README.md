@@ -1,4 +1,4 @@
-parser
+Logo Integrated Development Environment
 ====
 
 This project implements a development environment that helps users write SLogo programs.
