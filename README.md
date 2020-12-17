@@ -38,33 +38,6 @@ Total:
 * Varun: 50
 
 ### Primary Roles
-Maverick:
-* Wrote the Compiler and everything in the compiler package
-    * Command.java
-        * Abstract class that represents a command to be executed
-    * Memory.java
-        * Stores all variables, user commands, and turtles
-* Designed all of the command parsing, memory storage, and turtle backend storage. 
-* Implemented all backend tasks.
-
-Qiaoyi:
-- Wrote the terminal 
-    - history buffer: allow user to jump to previous commands
-    - color to special words: allow user to identify words with functionalities (numbers, commands, etc)
-    - a welcome banner message to enhance the accessibility of the application
-- Also wrote the TabPane class the realizes the variable explorer
-    - utilized factory pattern to automatically generate tables from the content in properties file
-    - created the interaction between it and terminal to allow the user directly make input from the tab
-    - allows to automatically update with the compiler
-- Also wrote the prefprocessor
-    - allow workspace to directly load from the preset properties file
-    - allow user to save the current workspace
-
-Alex:
-* Created the Turtle.java backend and logic, allowing for storage of turtle states
-* Designed variable pen size
-* Wrote turtle active status toggle on click
-
 
 Varun:
 * Created controller package
@@ -98,6 +71,33 @@ workspace package
           * Extends BorderPane to organize a TerminalView object and TurtleHabitat object into a single Workspace that can then be instantiated for multiple tabs/Workspaces in ParserController
      * ColorFactory.java
           * Creates a Map from Slogo Compiler colors (int) to actual JavaFX Color objects that can then be used dto update the visual state of the Workspace
+          
+Maverick:
+* Wrote the Compiler and everything in the compiler package
+    * Command.java
+        * Abstract class that represents a command to be executed
+    * Memory.java
+        * Stores all variables, user commands, and turtles
+* Designed all of the command parsing, memory storage, and turtle backend storage. 
+* Implemented all backend tasks.
+
+Qiaoyi:
+- Wrote the terminal 
+    - history buffer: allow user to jump to previous commands
+    - color to special words: allow user to identify words with functionalities (numbers, commands, etc)
+    - a welcome banner message to enhance the accessibility of the application
+- Also wrote the TabPane class the realizes the variable explorer
+    - utilized factory pattern to automatically generate tables from the content in properties file
+    - created the interaction between it and terminal to allow the user directly make input from the tab
+    - allows to automatically update with the compiler
+- Also wrote the prefprocessor
+    - allow workspace to directly load from the preset properties file
+    - allow user to save the current workspace
+
+Alex:
+* Created the Turtle.java backend and logic, allowing for storage of turtle states
+* Designed variable pen size
+* Wrote turtle active status toggle on click
 
 ### Resources Used
 The 3rd party [Reflections Library](https://github.com/ronmamo/reflections) was used to register each Command class.
@@ -161,10 +161,6 @@ without reading further if the already parsed commands represent a syntactically
 * The group end character `)` is an alias for 0 if not used to close a group
 * Defining a user command that relies on as-yet-undefined user commands will pass parsing but will almost
 certainly have unexpected results
-
-#### Extra credit:
-N/a, unfortunately
-
 
 ### Impressions
 
