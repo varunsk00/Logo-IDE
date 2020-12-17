@@ -41,7 +41,7 @@ Total:
 
 Varun:
 * Created controller package
-    * ParserController.java
+     * ParserController.java
           * Application Class that organizes multiple Slogo Workspaces/Tabs, Header, and Footer into a BorderPane and executes animation loop
           * Handles program-wide language switching
      * GUIButtons.java
@@ -65,8 +65,7 @@ Varun:
           * Extends JavaFX Rectangle to visually represent a Turtle on screen
           * Is constantly pinging the values of the underlying Turtle in order to update all states accordingly
      * TurtleHabitat.java
-          * Extends JavaFX Pane to provide a region upon which the TurtleViews and Pen can be drawn and constantly updated
-workspace package
+          * Extends JavaFX Pane to provide a region upon which the TurtleViews and Pen can be drawn and constantly updated workspace package
      * Workspace.java
           * Extends BorderPane to organize a TerminalView object and TurtleHabitat object into a single Workspace that can then be instantiated for multiple tabs/Workspaces in ParserController
      * ColorFactory.java
